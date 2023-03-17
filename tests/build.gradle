@@ -1,0 +1,12 @@
+apply plugin: "kotlin"
+
+sourceCompatibility = 1.8
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.test.java.srcDirs = ["src/"]
+
+tasks.test.workingDir = file("../assets")
+
+tasks.test.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
+
+eclipse.project.name = appName + "-tests"
