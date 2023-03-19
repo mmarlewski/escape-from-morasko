@@ -184,7 +184,7 @@ object MenuScreen : BaseScreen()
                 Textures.cursorNinePatch,
                 Textures.selectionNinePatch
                                  )
-        val root = columnOf(
+        val column = columnOf(
                 rowOf(
                         label,
                         gameTextButton
@@ -212,9 +212,9 @@ object MenuScreen : BaseScreen()
                         radioButton
                      ),
                 textArea
-                           )
-        stage.setRootActor(root)
-        //stage.isDebugAll = true
+                             )
+        column.setFillParent(true)
+        stage.addActor(column)
     }
     
     override fun render(delta : Float)

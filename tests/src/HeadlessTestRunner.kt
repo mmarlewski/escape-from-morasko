@@ -10,8 +10,8 @@ class HeadlessTestRunner(klass : Class<Any>) : BlockJUnit4ClassRunner(klass), Ap
 {
     init
     {
-        val conf = HeadlessApplicationConfiguration()
-        HeadlessApplication(this, conf)
+        val config = HeadlessApplicationConfiguration()
+        HeadlessApplication(this, config)
         Gdx.gl = mock(GL20::class.java)
     }
     
