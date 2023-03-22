@@ -9,10 +9,19 @@ object Tiles
 {
     val assetManager = AssetManager()
     
-    val baseBlue = load("baseBlue.png")
-    val baseRed = load("baseRed.png")
-    val topTriangle = load("topTriangle.png")
-    val topRectangle = load("topRectangle.png")
+    val groundStone = load("groundStone.png")
+    
+    val doorUp = load("doorUp.png")
+    val doorRight = load("doorRight.png")
+    val doorDown = load("doorDown.png")
+    val doorLeft = load("doorLeft.png")
+    val column = load("column.png")
+    val chest = load("chest.png")
+    
+    val select = load("select.png")
+    
+    val hero = load("hero.png")
+    val demon = load("demon.png")
     
     fun load(name : String) : StaticTiledMapTile
     {

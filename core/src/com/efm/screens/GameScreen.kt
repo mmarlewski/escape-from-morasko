@@ -79,11 +79,13 @@ object GameScreen : BaseScreen(), InputProcessor
         
         // map
         
-        val baseLayer = TiledMapTileLayer(mapWidth, mapHeight, tileLength, tileLengthHalf).apply { name = "base" }
-        val topLayer = TiledMapTileLayer(mapWidth, mapHeight, tileLength, tileLengthHalf).apply { name = "top" }
+        val groundLayer= TiledMapTileLayer(mapWidth, mapHeight, tileLength, tileLengthHalf).apply { name = "ground" }
+        val selectLayer = TiledMapTileLayer(mapWidth, mapHeight, tileLength, tileLengthHalf).apply { name = "select" }
+        val entityLayer = TiledMapTileLayer(mapWidth, mapHeight, tileLength, tileLengthHalf).apply { name = "entity" }
         
-        map.layers.add(baseLayer)
-        map.layers.add(topLayer)
+        map.layers.add(groundLayer)
+        map.layers.add(selectLayer)
+        map.layers.add(entityLayer)
         
         for (layer in map.layers)
         {
@@ -100,12 +102,7 @@ object GameScreen : BaseScreen(), InputProcessor
         {
             for (j in 0 until mapWidth)
             {
-                val tile = when ((i + j) % 2 == 0)
-                {
-                    true  -> Tiles.baseBlue
-                    false -> Tiles.baseRed
-                }
-                changeMapTile("base", j, i, tile)
+                changeMapTile("ground", j, i, Tiles.groundStone)
             }
         }
     }
@@ -193,10 +190,11 @@ object GameScreen : BaseScreen(), InputProcessor
                     {
                         for (j in 0 until mapWidth)
                         {
-                            changeMapTile("top", j, i, null)
+                            changeMapTile("entity", j, i, null)
                         }
                     }
-                    changeMapTile("top", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.topTriangle)
+                    changeMapTile("entity", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
+                    changeMapTile("select", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.select)
                 }
             }
             Keys.F ->
