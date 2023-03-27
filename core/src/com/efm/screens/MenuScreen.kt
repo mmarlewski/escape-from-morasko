@@ -20,37 +20,18 @@ object MenuScreen : BaseScreen()
         super.inputProcessor = stage
         
         // hud
-        val medicalTextButton = textButtonOf(
-                "play medical",
-                Fonts.pixeloid30,
-                Colors.firebrick,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                            )
-        {
-            playMusic(Musics.medical)
-        }
-        val executiveTextButton = textButtonOf(
-                "play executive",
-                Fonts.pixeloid20,
-                Colors.forest,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                              )
-        {
-            playMusic(Musics.executive)
-        }
-        val gameTextButton = textButtonOf(
-                "go to game",
-                Fonts.freezing32,
-                Colors.sky,
-                Textures.upNinePatch,
+    
+        val gameTitle = imageOf(
+                Textures.title,
+                Scaling.contain
+                                   )
+        
+        
+        val playTextButton = textButtonOf(
+                "continue",
+                Fonts.inconsolata30,
+                Colors.black,
+                Textures.upLongNinePatch,
                 Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
@@ -60,10 +41,61 @@ object MenuScreen : BaseScreen()
             Sounds.blop.playOnce()
             GameScreen.setScreen()
         }
-        val exitTextButton = textButtonOf(
-                "exit",
-                Fonts.pixeloid20,
-                Colors.forest,
+    
+        val startAgainTextButton = textButtonOf(
+                "start again",
+                Fonts.inconsolata30,
+                Colors.black,
+                Textures.upLongNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                         )
+        {
+            Sounds.blop.playOnce()
+        }
+    
+        val creditsTextButton = textButtonOf(
+                "credits",
+                Fonts.inconsolata30,
+                Colors.black,
+                Textures.upLongNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                               )
+        {
+            Sounds.blop.playOnce()
+        }
+        
+        val exitButton = imageButtonOf(
+                Textures.exit,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+        )
+        {
+            Sounds.blop.playOnce()
+            exitGame()
+        }
+        val settingsButton = imageButtonOf(
+                Textures.settings,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                               )
+        {
+            Sounds.blop.playOnce()
+        }
+    
+        val infoButton = imageButtonOf(
+                Textures.info,
                 Textures.upNinePatch,
                 Textures.downNinePatch,
                 Textures.overNinePatch,
@@ -71,147 +103,98 @@ object MenuScreen : BaseScreen()
                 Textures.focusedNinePatch
                                          )
         {
-            exitGame()
+            Sounds.blop.playOnce()
         }
-        val label = labelOf(
-                "label",
-                Fonts.pixeloid30,
-                Colors.yellow,
-                Textures.upNinePatch
-                           )
-        val progressBar = progressBarOf(
-                0.0f,
-                1.0f,
-                0.1f,
-                Textures.knobBackgroundNinePatch,
-                Textures.knobBeforeNinePatch,
-                Textures.knobAfterNinePatch
-                                       )
-        val slider = sliderOf(
-                0.0f,
-                1.0f,
-                0.1f,
-                Textures.knobBackgroundNinePatch,
-                Textures.knobBeforeNinePatch,
-                Textures.knobAfterNinePatch,
-                Textures.knobNinePatch
-                             )
-        val imageButton = imageButtonOf(
-                Textures.coin,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                       )
-        {
-            Sounds.coin.playOnce()
-        }
-        val imageTextButton = imageTextButtonOf(
-                "image text",
-                Fonts.pixeloid30,
-                Colors.maroon,
-                Textures.coin,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                               )
-        {
-            Sounds.jump.playOnce()
-        }
-        val image = imageOf(
-                Textures.coin,
-                Scaling.contain
-                           )
-        val checkBox = checkBoxOf(
-                "meow",
-                Fonts.inconsolata20,
-                Colors.chartreuse,
-                Textures.checkBoxOn,
-                Textures.checkBoxOff,
-                Textures.checkBoxOnOver,
-                Textures.checkBoxOffOver,
-                Textures.checkBoxOnDisabled,
-                Textures.checkBoxOffDisabled
-                                 )
-        val radioButton = checkBoxOf(
-                "woof",
-                Fonts.inconsolata20,
-                Colors.firebrick,
-                Textures.radioButtonOn,
-                Textures.radioButtonOff,
-                Textures.radioButtonOnOver,
-                Textures.radioButtonOffOver,
-                Textures.radioButtonOnDisabled,
-                Textures.radioButtonOffDisabled
-                                    )
-        val textField1 = textFieldOf(
-                "field1",
-                Fonts.freezing32,
-                Colors.blue,
-                Colors.sky,
-                Colors.forest,
-                Textures.upNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch,
-                Textures.cursorNinePatch,
-                Textures.selectionNinePatch
-                                    )
-        val textField2 = textFieldOf(
-                "field2",
-                Fonts.freezing32,
-                Colors.blue,
-                Colors.sky,
-                Colors.forest,
-                Textures.upNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch,
-                Textures.cursorNinePatch,
-                Textures.selectionNinePatch
-                                    )
-        val textArea = textAreaOf(
-                5,
-                "area",
-                Fonts.freezing32,
-                Colors.blue,
-                Colors.sky,
-                Colors.forest,
-                Textures.upNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch,
-                Textures.cursorNinePatch,
-                Textures.selectionNinePatch
-                                 )
+//        val label = labelOf(
+//                "label",
+//                Fonts.pixeloid30,
+//                Colors.yellow,
+//                Textures.upNinePatch
+//                           )
+//        val progressBar = progressBarOf(
+//                0.0f,
+//                1.0f,
+//                0.1f,
+//                Textures.knobBackgroundNinePatch,
+//                Textures.knobBeforeNinePatch,
+//                Textures.knobAfterNinePatch
+//                                       )
+//        val slider = sliderOf(
+//                0.0f,
+//                1.0f,
+//                0.1f,
+//                Textures.knobBackgroundNinePatch,
+//                Textures.knobBeforeNinePatch,
+//                Textures.knobAfterNinePatch,
+//                Textures.knobNinePatch
+//                             )
+//        val checkBox = checkBoxOf(
+//                "meow",
+//                Fonts.inconsolata20,
+//                Colors.chartreuse,
+//                Textures.checkBoxOn,
+//                Textures.checkBoxOff,
+//                Textures.checkBoxOnOver,
+//                Textures.checkBoxOffOver,
+//                Textures.checkBoxOnDisabled,
+//                Textures.checkBoxOffDisabled
+//                                 )
+//        val radioButton = checkBoxOf(
+//                "woof",
+//                Fonts.inconsolata20,
+//                Colors.firebrick,
+//                Textures.radioButtonOn,
+//                Textures.radioButtonOff,
+//                Textures.radioButtonOnOver,
+//                Textures.radioButtonOffOver,
+//                Textures.radioButtonOnDisabled,
+//                Textures.radioButtonOffDisabled
+//                                    )
+//        val textArea = textAreaOf(
+//                5,
+//                "area",
+//                Fonts.freezing32,
+//                Colors.blue,
+//                Colors.sky,
+//                Colors.forest,
+//                Textures.upNinePatch,
+//                Textures.disabledNinePatch,
+//                Textures.focusedNinePatch,
+//                Textures.cursorNinePatch,
+//                Textures.selectionNinePatch
+//                                 )
         val column = columnOf(
                 rowOf(
-                        label,
-                        gameTextButton
+                        gameTitle
                      ),
+                rowOf(),
+                rowOf(),
+                rowOf(),
                 rowOf(
-                        medicalTextButton,
-                        executiveTextButton
+                        playTextButton
                      ),
+                rowOf(),
+                rowOf(),
+                rowOf(),
+
                 rowOf(
-                        textField1,
-                        textField2
+                        startAgainTextButton
                      ),
+                rowOf(),
+                rowOf(),
+                rowOf(),
                 rowOf(
-                        exitTextButton,
-                        image,
-                        imageButton,
-                        imageTextButton
+                        creditsTextButton
                      ),
+                rowOf(),
+                rowOf(),
+                rowOf(),
+
                 rowOf(
-                        progressBar,
-                        slider
-                     ),
-                rowOf(
-                        checkBox,
-                        radioButton
-                     ),
-                textArea
+                        settingsButton,
+                        infoButton,
+                        exitButton
+                     )
                              )
         column.setFillParent(true)
         stage.addActor(column)

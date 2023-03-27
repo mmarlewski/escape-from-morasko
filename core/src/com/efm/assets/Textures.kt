@@ -9,11 +9,13 @@ object Textures
     val assetManager = AssetManager()
     
     val up = load("up.png")
+    val upLong = load("upLong.png")
     val down = load("down.png")
     val over = load("over.png")
     val disabled = load("disabled.png")
     val focused = load("focused.png")
     val upNinePatch = NinePatch(up, 5, 5, 5, 5)
+    val upLongNinePatch = NinePatch(upLong, 5,5,5,5)
     val downNinePatch = NinePatch(down, 5, 5, 5, 5)
     val overNinePatch = NinePatch(over, 5, 5, 5, 5)
     val disabledNinePatch = NinePatch(disabled, 5, 5, 5, 5)
@@ -48,6 +50,11 @@ object Textures
     val radioButtonOffDisabled = load("radioButtonOffDisabled.png")
     
     val coin = load("coin.png")
+    
+    val title = load("title.png")
+    val settings = load("settings.png")
+    val exit = load("exit.png")
+    val info = load("info.png")
     
     private fun load(name : String) : Texture
     {
