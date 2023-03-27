@@ -35,7 +35,9 @@ object GameScreen : BaseScreen(), InputProcessor
     
     // dragging
     
-    var isDragging = false
+    private var touchStartTime = 0L
+    private var isDragging = false
+    private var hasMovedHero = false
     var dragOrigin = Vector2()
     var dragDifference = Vector2()
     
@@ -150,6 +152,28 @@ object GameScreen : BaseScreen(), InputProcessor
                                )
     }
     
+    fun moveHero(){
+        updateMouse()
+    
+        if (isMouseInMap)
+        {
+            selectPosition.set(mapMousePosition)
+        
+            for (i in 0 until mapHeight)
+            {
+                for (j in 0 until mapWidth)
+                {
+                    changeMapTile("entity", j, i, Tiles.groundStone)
+                
+                }
+            }
+            changeMapTile("entity", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
+            changeMapTile("select", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.select)
+            focusCamera(selectPosition)
+            isDragging = false
+        }
+    }
+    
     // overridden BaseScreen methods
     
     override fun render(delta : Float)
@@ -182,15 +206,17 @@ object GameScreen : BaseScreen(), InputProcessor
             Keys.S ->
             {
                 updateMouse()
-                
+    
                 if (isMouseInMap)
                 {
                     selectPosition.set(mapMousePosition)
+        
                     for (i in 0 until mapHeight)
                     {
                         for (j in 0 until mapWidth)
                         {
-                            changeMapTile("entity", j, i, null)
+                            changeMapTile("entity", j, i, Tiles.groundStone)
+                
                         }
                     }
                     changeMapTile("entity", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
@@ -216,22 +242,24 @@ object GameScreen : BaseScreen(), InputProcessor
         return true
     }
     
-    override fun touchDown(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
-    {
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        touchStartTime = System.currentTimeMillis()
+        isDragging = false
         return true
     }
     
-    override fun touchUp(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
-    {
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        if (!isDragging && (System.currentTimeMillis() - touchStartTime) < 400) {
+            moveHero()
+            touchDragged(screenX, screenY, pointer)
+        }
         isDragging = false
-        
         return true
     }
     
     override fun touchDragged(screenX : Int, screenY : Int, pointer : Int) : Boolean
     {
         updateMouse(screenX, screenY)
-        
         if (isDragging)
         {
             dragDifference.x = worldMousePosition.x - gameCamera.position.x
@@ -244,7 +272,6 @@ object GameScreen : BaseScreen(), InputProcessor
             dragOrigin.set(worldMousePosition)
             isDragging = true
         }
-        
         return true
     }
     
