@@ -5,10 +5,7 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.maps.tiled.TiledMap
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -17,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.*
+import com.efm.Map
 import kotlin.math.floor
 
 object GameScreen : BaseScreen(), InputProcessor
@@ -30,8 +28,7 @@ object GameScreen : BaseScreen(), InputProcessor
     
     // map
     
-    val map = TiledMap()
-    val mapRenderer = IsometricTiledMapRenderer(map, 1f, EscapeFromMorasko.spriteBatch)
+    val mapRenderer = IsometricTiledMapRenderer(Map.tiledMap, 1f, EscapeFromMorasko.spriteBatch)
     
     // dragging
     
@@ -81,39 +78,17 @@ object GameScreen : BaseScreen(), InputProcessor
         
         // map
         
-        val groundLayer= TiledMapTileLayer(mapWidth, mapHeight, tileLength, tileLengthHalf).apply { name = "ground" }
-        val selectLayer = TiledMapTileLayer(mapWidth, mapHeight, tileLength, tileLengthHalf).apply { name = "select" }
-        val entityLayer = TiledMapTileLayer(mapWidth, mapHeight, tileLength, tileLengthHalf).apply { name = "entity" }
+        Map.newLayer(MapLayer.base)
+        Map.newLayer(MapLayer.select)
+        Map.newLayer(MapLayer.entity)
         
-        map.layers.add(groundLayer)
-        map.layers.add(selectLayer)
-        map.layers.add(entityLayer)
-        
-        for (layer in map.layers)
+        for (i in 0 until Map.mapHeightInTiles)
         {
-            for (i in 0 until mapHeight)
+            for (j in 0 until Map.mapWidthInTiles)
             {
-                for (j in 0 until mapWidth)
-                {
-                    (layer as TiledMapTileLayer).setCell(j, i, TiledMapTileLayer.Cell())
-                }
+                Map.changeTile(MapLayer.base, j, i, Tiles.groundStone)
             }
         }
-        
-        for (i in 0 until mapHeight)
-        {
-            for (j in 0 until mapWidth)
-            {
-                changeMapTile("ground", j, i, Tiles.groundStone)
-            }
-        }
-    }
-    
-    // other methods
-    
-    fun changeMapTile(layer : String, x : Int, y : Int, tile : StaticTiledMapTile?)
-    {
-        (map.layers[layer] as TiledMapTileLayer).getCell(x, y).tile = tile
     }
     
     fun updateMouse(screenX : Int, screenY : Int)
@@ -129,20 +104,20 @@ object GameScreen : BaseScreen(), InputProcessor
     {
         isoToOrtho(worldMousePosition, mapMousePosition)
         mapMousePosition.set(
-                floor(mapMousePosition.x / tileLengthHalf),
-                floor(mapMousePosition.y / tileLengthHalf)
+                floor(mapMousePosition.x / Map.tileLengthHalfInPixels),
+                floor(mapMousePosition.y / Map.tileLengthHalfInPixels)
                             )
         isMouseInMap = (
-                mapMousePosition.x.toInt() in 0 until mapWidth &&
-                        mapMousePosition.y.toInt() in 0 until mapHeight
+                mapMousePosition.x.toInt() in 0 until Map.mapWidthInTiles &&
+                        mapMousePosition.y.toInt() in 0 until Map.mapHeightInTiles
                 )
     }
     
     fun focusCamera(mapPosition : Vector2)
     {
         orthoToIso(
-                mapPosition.x * tileLengthHalf,
-                mapPosition.y * tileLengthHalf,
+                mapPosition.x * Map.tileLengthHalfInPixels,
+                mapPosition.y * Map.tileLengthHalfInPixels,
                 tempVector2
                   )
         gameCamera.position.set(
@@ -152,23 +127,25 @@ object GameScreen : BaseScreen(), InputProcessor
                                )
     }
     
-    fun moveHero(){
+    fun moveHero()
+    {
         updateMouse()
-    
+        
         if (isMouseInMap)
         {
             selectPosition.set(mapMousePosition)
-        
-            for (i in 0 until mapHeight)
+            
+            for (i in 0 until Map.mapHeightInTiles)
             {
-                for (j in 0 until mapWidth)
+                for (j in 0 until Map.mapWidthInTiles)
                 {
-                    changeMapTile("entity", j, i, Tiles.groundStone)
-                
+                    Map.changeTile(MapLayer.base, j, i, Tiles.groundStone)
+                    
                 }
             }
-            changeMapTile("entity", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
-            changeMapTile("select", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.select)
+            
+            Map.changeTile(MapLayer.select, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.select)
+            Map.changeTile(MapLayer.entity, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
             focusCamera(selectPosition)
             isDragging = false
         }
@@ -197,7 +174,7 @@ object GameScreen : BaseScreen(), InputProcessor
         stage.dispose()
     }
     
-    // overrridden InputProcessor methods
+    // overridden InputProcessor methods
     
     override fun keyDown(keycode : Int) : Boolean
     {
@@ -206,21 +183,20 @@ object GameScreen : BaseScreen(), InputProcessor
             Keys.S ->
             {
                 updateMouse()
-    
+                
                 if (isMouseInMap)
                 {
                     selectPosition.set(mapMousePosition)
-        
-                    for (i in 0 until mapHeight)
+                    
+                    for (i in 0 until Map.mapHeightInTiles)
                     {
-                        for (j in 0 until mapWidth)
+                        for (j in 0 until Map.mapWidthInTiles)
                         {
-                            changeMapTile("entity", j, i, Tiles.groundStone)
-                
+                            Map.changeTile(MapLayer.entity, j, i, Tiles.groundStone)
                         }
                     }
-                    changeMapTile("entity", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
-                    changeMapTile("select", mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.select)
+                    Map.changeTile(MapLayer.select, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.select)
+                    Map.changeTile(MapLayer.entity, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
                 }
             }
             Keys.F ->
@@ -242,14 +218,17 @@ object GameScreen : BaseScreen(), InputProcessor
         return true
     }
     
-    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+    override fun touchDown(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
+    {
         touchStartTime = System.currentTimeMillis()
         isDragging = false
         return true
     }
     
-    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        if (!isDragging && (System.currentTimeMillis() - touchStartTime) < 400) {
+    override fun touchUp(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
+    {
+        if (!isDragging && (System.currentTimeMillis() - touchStartTime) < 400)
+        {
             moveHero()
             touchDragged(screenX, screenY, pointer)
         }

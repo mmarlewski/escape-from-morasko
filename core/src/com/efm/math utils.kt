@@ -12,7 +12,7 @@ fun orthoToIso(orthoX : Float, orthoY : Float, isoPosition : Vector2)
     isoPosition.x = orthoX + orthoY
     isoPosition.y = 0.5f * (orthoY - orthoX)
     
-    isoPosition.y += tileLengthQuarter
+    isoPosition.y += Map.tileLengthQuarterInPixels
 }
 
 fun isoToOrtho(isoPosition : Vector2, orthoPosition : Vector2)
@@ -22,6 +22,6 @@ fun isoToOrtho(isoPosition : Vector2, orthoPosition : Vector2)
 
 fun isoToOrtho(isoX : Float, isoY : Float, orthoPosition : Vector2)
 {
-    orthoPosition.x = 0.5f * isoX - (isoY - tileLengthQuarter)
-    orthoPosition.y = 0.5f * isoX + (isoY - tileLengthQuarter)
+    orthoPosition.x = 0.5f * isoX - (isoY - Map.tileLengthQuarterInPixels)
+    orthoPosition.y = 0.5f * isoX + (isoY - Map.tileLengthQuarterInPixels)
 }

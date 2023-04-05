@@ -2,6 +2,7 @@ import com.badlogic.gdx.utils.Scaling
 import com.efm.*
 import com.efm.assets.*
 import org.junit.*
+import org.junit.Assert.assertTrue
 import org.junit.runner.RunWith
 
 @RunWith(HeadlessTestRunner::class)
@@ -11,7 +12,7 @@ class `widget building functions`
     {
         val column = columnOf()
         
-        Assert.assertTrue(column.children.isEmpty)
+        assertTrue(column.children.isEmpty)
     }
     
     @Test fun `columnOf with one arguments`()
@@ -19,7 +20,7 @@ class `widget building functions`
         val label = labelOf("label", Fonts.freezing32, Colors.blue, Textures.upNinePatch)
         val column = columnOf(label)
         
-        Assert.assertTrue(label in column.children)
+        assertTrue(label in column.children)
     }
     
     @Test fun `columnOf with a few arguments`()
@@ -28,14 +29,14 @@ class `widget building functions`
         val label2 = labelOf("label", Fonts.freezing32, Colors.blue, Textures.upNinePatch)
         val column = columnOf(label1, label2)
         
-        Assert.assertTrue(label1 in column.children && label2 in column.children)
+        assertTrue(label1 in column.children && label2 in column.children)
     }
     
     @Test fun `rowOf with no arguments`()
     {
         val row = rowOf()
         
-        Assert.assertTrue(row.children.isEmpty)
+        assertTrue(row.children.isEmpty)
     }
     
     @Test fun `rowOf with one arguments`()
@@ -43,7 +44,7 @@ class `widget building functions`
         val label = labelOf("label", Fonts.freezing32, Colors.blue, Textures.upNinePatch)
         val row = rowOf(label)
         
-        Assert.assertTrue(label in row.children)
+        assertTrue(label in row.children)
     }
     
     @Test fun `rowOf with a few arguments`()
@@ -52,7 +53,7 @@ class `widget building functions`
         val label2 = labelOf("label", Fonts.freezing32, Colors.blue, Textures.upNinePatch)
         val row = rowOf(label1, label2)
         
-        Assert.assertTrue(label1 in row.children && label2 in row.children)
+        assertTrue(label1 in row.children && label2 in row.children)
     }
     
     @Test fun `labelOf initializes all members of Label`()
