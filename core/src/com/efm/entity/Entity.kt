@@ -1,14 +1,14 @@
 package com.efm.entity
 
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.room.RoomCoordinates
 
-/** Any interactive object that can be found in a Room.
- * @param roomCoordinates Position within a Room.
+/**
+ * Entity inhabits a Room, things happen to Entities and Entities make things happen
  */
 interface Entity
 {
     val roomCoordinates : RoomCoordinates
-    val texture : Texture
-    fun getCurrentTexture()
+    fun getTile() : TiledMapTile?
+    fun getOutlineTile() : TiledMapTile?
 }

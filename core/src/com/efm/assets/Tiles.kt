@@ -23,6 +23,7 @@ object Tiles
     
     // stoneWall
     
+    val stoneWallUpRightDownLeft = load("stoneWallUpRightDownLeft.png")
     val stoneWallUp = load("stoneWallUp.png")
     val stoneWallRight = load("stoneWallRight.png")
     val stoneWallDown = load("stoneWallDown.png")
