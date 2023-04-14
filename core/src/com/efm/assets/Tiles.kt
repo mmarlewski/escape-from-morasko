@@ -9,19 +9,61 @@ object Tiles
 {
     val assetManager = AssetManager()
     
-    val groundStone = load("groundStone.png")
+    // base
     
-    val doorUp = load("doorUp.png")
-    val doorRight = load("doorRight.png")
-    val doorDown = load("doorDown.png")
-    val doorLeft = load("doorLeft.png")
-    val column = load("column.png")
-    val chest = load("chest.png")
+    val stoneFloor = load("stoneFloor.png")
+    val grassFloor = load("grassFloor.png")
+    val lavaPool = load("lavaPool.png")
     
-    val select = load("select.png")
+    // select
+    
+    val selectYellow = load("selectYellow.png")
+    val selectGreen = load("selectGreen.png")
+    val selectRed = load("selectRed.png")
+    
+    // stoneWall
+    
+    val stoneWallUp = load("stoneWallUp.png")
+    val stoneWallRight = load("stoneWallRight.png")
+    val stoneWallDown = load("stoneWallDown.png")
+    val stoneWallLeft = load("stoneWallLeft.png")
+    val stoneWallUpRight = load("stoneWallUpRight.png")
+    val stoneWallRightDown = load("stoneWallRightDown.png")
+    val stoneWallDownLeft = load("stoneWallDownLeft.png")
+    val stoneWallLeftUp = load("stoneWallLeftUp.png")
+    
+    // stoneExit
+    
+    val stoneExitUp = load("stoneExitUp.png")
+    val stoneExitRight = load("stoneExitRight.png")
+    val stoneExitDown = load("stoneExitDown.png")
+    val stoneExitLeft = load("stoneExitLeft.png")
+    
+    // other entities
     
     val hero = load("hero.png")
-    val demon = load("demon.png")
+    val heroOutline = load("heroOutline.png")
+    val heroCorpse = load("heroCorpse.png")
+    val heroCorpseOutline = load("heroCorpseOutline.png")
+    
+    val bladeEnemy = load("bladeEnemy.png")
+    val bladeEnemyOutline = load("bladeEnemyOutline.png")
+    val bladeEnemyCorpse = load("bladeEnemyCorpse.png")
+    val bladeEnemyCorpseOutline = load("bladeEnemyCorpseOutline.png")
+    
+    val crossbowEnemy = load("crossbowEnemy.png")
+    val crossbowEnemyOutline = load("crossbowEnemyOutline.png")
+    val crossbowEnemyCorpse = load("crossbowEnemyCorpse.png")
+    val crossbowEnemyCorpseOutline = load("crossbowEnemyCorpseOutline.png")
+    
+    val stoneColumn = load("stoneColumn.png")
+    val stoneColumnOutline = load("stoneColumnOutline.png")
+    
+    val chest = load("chest.png")
+    val chestOutline = load("chestOutline.png")
+    
+    val explodingBarrel = load("explodingBarrel.png")
+    val explodingBarrelOutline = load("explodingBarrelOutline.png")
     
     fun load(name : String) : StaticTiledMapTile
     {

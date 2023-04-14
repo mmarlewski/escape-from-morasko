@@ -111,11 +111,11 @@ object GameScreen : BaseScreen(), InputProcessor
         {
             for (j in 0 until Map.mapWidthInTiles)
             {
-                Map.changeTile(MapLayer.base, j, i, Tiles.groundStone)
+                Map.changeTile(MapLayer.base, j, i, Tiles.stoneFloor)
             }
         }
         Map.changeTile(MapLayer.entity, 0, 0, Tiles.hero)
-        Map.changeTile(MapLayer.select, 0, 0, Tiles.select)
+        Map.changeTile(MapLayer.select, 0, 0, Tiles.selectYellow)
     }
     
     fun updateMouse(screenX : Int, screenY : Int)
@@ -163,7 +163,7 @@ object GameScreen : BaseScreen(), InputProcessor
             if (selectPosition.x.toInt() != prevSelectPosX || selectPosition.y.toInt() != prevSelectPosY)
             {
                 Map.clearLayer(MapLayer.select)
-                Map.changeTile(MapLayer.select, selectPosition.x.toInt(), selectPosition.y.toInt(), Tiles.select)
+                Map.changeTile(MapLayer.select, selectPosition.x.toInt(), selectPosition.y.toInt(), Tiles.selectYellow)
                 prevSelectPosX = selectPosition.x.toInt()
                 prevSelectPosY = selectPosition.y.toInt()
             }
@@ -220,10 +220,10 @@ object GameScreen : BaseScreen(), InputProcessor
                     {
                         for (j in 0 until Map.mapWidthInTiles)
                         {
-                            Map.changeTile(MapLayer.entity, j, i, Tiles.groundStone)
+                            Map.changeTile(MapLayer.entity, j, i, Tiles.stoneFloor)
                         }
                     }
-                    Map.changeTile(MapLayer.select, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.select)
+                    Map.changeTile(MapLayer.select, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.selectYellow)
                     Map.changeTile(MapLayer.entity, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
                 }
             }
