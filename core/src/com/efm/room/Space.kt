@@ -1,8 +1,9 @@
 package com.efm.room
 
 /**
- * Fragment of a Room's area.
- * @param exists True if the area is accessible for interactive objects.
- * @param base Contains surface texture of the area.
+ * Fragment of a Room's area, corresponds to Map's tile.
  */
-class Space(val exists : Boolean, val base : Base)
+class Space
+{
+    val base = Base.stone
+}

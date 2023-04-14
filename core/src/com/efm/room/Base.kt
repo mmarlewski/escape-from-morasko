@@ -1,14 +1,14 @@
 package com.efm.room
 
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.efm.assets.Tiles
 
 /**
  * Translates names of surfaces to textures representing them.
  */
-enum class Base(val texture : Texture)
-// {
-// GRASS(load("grassTexture.png"))
-// }
-//
-// val base1 : Base = Base.GRASS
-// val base1_texture : Texture = Base.GRASS.texture
+enum class Base(val tile : TiledMapTile)
+{
+    stone(Tiles.stoneFloor),
+    grass(Tiles.grassFloor),
+    lava(Tiles.lavaPool)
+}
