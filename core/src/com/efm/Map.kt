@@ -30,7 +30,7 @@ object Map
             {
                 for (j in 0 until mapWidthInTiles)
                 {
-                    layer.setCell(j, i, null)
+                    layer.setCell(j, i, TiledMapTileLayer.Cell())
                 }
             }
         }

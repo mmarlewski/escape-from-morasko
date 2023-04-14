@@ -5,9 +5,13 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
@@ -34,7 +38,6 @@ object GameScreen : BaseScreen(), InputProcessor
     
     private var touchStartTime = 0L
     private var isDragging = false
-    private var hasMovedHero = false
     var dragOrigin = Vector2()
     var dragDifference = Vector2()
     
@@ -49,6 +52,12 @@ object GameScreen : BaseScreen(), InputProcessor
     // other
     var tempVector2 = Vector2()
     
+    //movement
+    var prevHeroPosX = 0
+    var prevHeroPosY = 0
+    var prevSelectPosX = 0
+    var prevSelectPosY = 0
+    var isMovingMode = true
     init
     {
         // input processor
@@ -70,10 +79,26 @@ object GameScreen : BaseScreen(), InputProcessor
             playSoundOnce(Sounds.blop)
             changeScreen(MenuScreen)
         }
+        
+        val menuMovingModeButton = textButtonOf(
+                "moving",
+                Fonts.pixeloid20,
+                Color.FOREST,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                         )
+        {
+            playSoundOnce(Sounds.blop)
+            isMovingMode = !isMovingMode
+        }
         val table = Table()
         table.setFillParent(true)
         table.align(Align.topLeft)
         table.add(menuTextButton)
+        table.add(menuMovingModeButton)
         stage.addActor(table)
         
         // map
@@ -89,6 +114,8 @@ object GameScreen : BaseScreen(), InputProcessor
                 Map.changeTile(MapLayer.base, j, i, Tiles.groundStone)
             }
         }
+        Map.changeTile(MapLayer.entity, 0, 0, Tiles.hero)
+        Map.changeTile(MapLayer.select, 0, 0, Tiles.select)
     }
     
     fun updateMouse(screenX : Int, screenY : Int)
@@ -130,25 +157,26 @@ object GameScreen : BaseScreen(), InputProcessor
     fun moveHero()
     {
         updateMouse()
-        
         if (isMouseInMap)
         {
             selectPosition.set(mapMousePosition)
-            
-            for (i in 0 until Map.mapHeightInTiles)
+            if (selectPosition.x.toInt() != prevSelectPosX || selectPosition.y.toInt() != prevSelectPosY)
             {
-                for (j in 0 until Map.mapWidthInTiles)
-                {
-                    Map.changeTile(MapLayer.base, j, i, Tiles.groundStone)
-                    
-                }
+                Map.clearLayer(MapLayer.select)
+                Map.changeTile(MapLayer.select, selectPosition.x.toInt(), selectPosition.y.toInt(), Tiles.select)
+                prevSelectPosX = selectPosition.x.toInt()
+                prevSelectPosY = selectPosition.y.toInt()
+            }
+            else
+            {
+                Map.clearLayer(MapLayer.entity)
+                Map.changeTile(MapLayer.entity, selectPosition.x.toInt(), selectPosition.y.toInt(), Tiles.hero)
+                prevHeroPosX = selectPosition.x.toInt()
+                prevHeroPosY = selectPosition.y.toInt()
             }
             
-            Map.changeTile(MapLayer.select, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.select)
-            Map.changeTile(MapLayer.entity, mapMousePosition.x.toInt(), mapMousePosition.y.toInt(), Tiles.hero)
-            focusCamera(selectPosition)
-            isDragging = false
         }
+        isDragging = false
     }
     
     // overridden BaseScreen methods
@@ -227,18 +255,22 @@ object GameScreen : BaseScreen(), InputProcessor
     
     override fun touchUp(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
     {
-        if (!isDragging && (System.currentTimeMillis() - touchStartTime) < 400)
+        if (!isDragging && (System.currentTimeMillis() - touchStartTime) < 800)
         {
-            moveHero()
             touchDragged(screenX, screenY, pointer)
+            if (isMovingMode)
+            {
+                moveHero()
+            }
+            return true
         }
-        isDragging = false
         return true
     }
     
     override fun touchDragged(screenX : Int, screenY : Int, pointer : Int) : Boolean
     {
         updateMouse(screenX, screenY)
+        
         if (isDragging)
         {
             dragDifference.x = worldMousePosition.x - gameCamera.position.x
