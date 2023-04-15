@@ -1,7 +1,12 @@
 package com.efm.level
 
-/**
- * A sequence of Levels.
- * @param levels List of Levels in the World. First level in list is a starting level. Each level leads to a level next in list?
- */
-class World(val name : String, val levels : List<Level>)
+import com.efm.entities.Hero
+import com.efm.room.Room
+
+class World(
+        val levels : MutableList<Level>,
+        val startingLevel : Level,
+        var currentLevel : Level,
+        var currentRoom : Room,
+        var hero : Hero
+           )

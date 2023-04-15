@@ -2,10 +2,13 @@ package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
-import com.efm.entity.Entity
+import com.efm.entity.Character
 import com.efm.room.RoomCoordinates
 
-class Hero : Entity
+/**
+ * Hero has its own turn and is controlled by the player.
+ */
+class Hero : Character
 {
     override val roomCoordinates = RoomCoordinates(0, 0)
     
