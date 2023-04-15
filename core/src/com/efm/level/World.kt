@@ -1,12 +1,30 @@
 package com.efm.level
 
 import com.efm.entities.Hero
+import com.efm.passage.Passage
 import com.efm.room.Room
 
-class World(
-        val levels : MutableList<Level>,
-        val startingLevel : Level,
-        var currentLevel : Level,
-        var currentRoom : Room,
-        var hero : Hero
-           )
+object World
+{
+    private val levels = mutableListOf<Level>()
+    private val passages = mutableListOf<Passage>()
+    
+    val hero = Hero()
+    var currentLevel : Level? = null
+    var currentRoom : Room? = null
+    
+    fun addLevel(level : Level)
+    {
+        levels.add(level)
+    }
+    
+    fun changeCurrentLevel(newCurrentLevel : Level)
+    {
+        currentLevel = newCurrentLevel
+    }
+    
+    fun changeCurrentRoom(newCurrentRoom : Room)
+    {
+        currentRoom = newCurrentRoom
+    }
+}
