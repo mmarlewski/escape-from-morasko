@@ -1,8 +1,7 @@
 package com.efm.passage
 
 import com.efm.level.Level
-import com.efm.room.Room
-import com.efm.room.RoomCoordinates
+import com.efm.room.*
 
 /**
  * Possibility to end current Level and load next Level. Used to put Exits in Rooms.
@@ -13,7 +12,7 @@ import com.efm.room.RoomCoordinates
  */
 class LevelPassage(
         val originRoom : Room,
-        val originRoomCoordinates : RoomCoordinates,
+        val originPosition : RoomPosition,
         val targetLevel : Level,
         var isActive : Boolean
                   )

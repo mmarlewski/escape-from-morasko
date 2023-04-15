@@ -4,11 +4,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
-import com.efm.room.RoomCoordinates
+import com.efm.room.RoomPosition
 
 class BladeEnemy : Entity, Enemy
 {
-    override val roomCoordinates = RoomCoordinates(0, 0)
+    override val position = RoomPosition()
     
     override fun getTile() : TiledMapTile
     {

@@ -6,7 +6,7 @@ import com.efm.passage.Exit
 
 /**
  * Fragment of the area of a Room. Corresponds to a tile of the Map.
- * @param roomCoordinates Position within the Room.
+ * @param position Position within the Room.
  * @param isAccessibleForCharacters True if a Character can step in the Space.
  * @param base Contains surface texture of the area.
  * @param character Character present in the Space.
@@ -14,7 +14,7 @@ import com.efm.passage.Exit
  * @param exit Exit present in the Space used to leave the Room.
  */
 class Space(
-        val roomCoordinates : RoomCoordinates,
+        val position : RoomPosition,
         private var isAccessibleForCharacters : Boolean = true,
         var base : Base = Base.stone,
         character : Character? = null,

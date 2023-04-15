@@ -2,11 +2,12 @@ package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.entity.Entity
-import com.efm.room.RoomCoordinates
+import com.efm.room.RoomPosition
 
-// does not have texture?
-class Trap(override var roomCoordinates : RoomCoordinates) : Entity
+class Trap : Entity
 {
+    override val position = RoomPosition()
+    
     override fun getTile() : TiledMapTile?
     {
         return null
