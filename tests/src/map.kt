@@ -12,11 +12,7 @@ class `map`
 {
     @Before fun removeAllLayers()
     {
-        println(Map.tiledMap.layers.size())
-        Map.tiledMap.layers.forEach {
-            println(it.name)
-            Map.tiledMap.layers.remove(it) }
-        println(Map.tiledMap.layers.size())
+        Map.tiledMap.layers.forEach { Map.tiledMap.layers.remove(it) }
     }
     
     @Test fun `clearLayer clears all tiles of layer`()

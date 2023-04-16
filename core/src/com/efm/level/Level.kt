@@ -22,6 +22,11 @@ class Level(val name : String)
     private lateinit var startingRoom : Room
     private val startingPosition = RoomPosition()
     
+    fun getRooms() : List<Room>
+    {
+        return rooms
+    }
+    
     fun addRoom(room : Room)
     {
         rooms.add(room)

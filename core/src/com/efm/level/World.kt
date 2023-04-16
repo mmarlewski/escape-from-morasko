@@ -13,18 +13,34 @@ object World
     lateinit var currentLevel : Level
     lateinit var currentRoom : Room
     
+    fun getLevels() : List<Level>
+    {
+        return levels
+    }
+    
     fun addLevel(level : Level)
     {
         levels.add(level)
     }
     
+    fun clearLevels()
+    {
+        levels.clear()
+    }
+    
     fun changeCurrentLevel(newCurrentLevel : Level)
     {
-        currentLevel = newCurrentLevel
+        if (newCurrentLevel in levels)
+        {
+            currentLevel = newCurrentLevel
+        }
     }
     
     fun changeCurrentRoom(newCurrentRoom : Room)
     {
-        currentRoom = newCurrentRoom
+        if (newCurrentRoom in currentLevel.getRooms())
+        {
+            currentRoom = newCurrentRoom
+        }
     }
 }

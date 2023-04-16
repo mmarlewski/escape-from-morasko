@@ -106,6 +106,11 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         space?.changeBase(newBase)
     }
     
+    fun getEntities() : List<Entity>
+    {
+        return entities
+    }
+    
     fun addEntity(entity : Entity)
     {
         entities.add(entity)
