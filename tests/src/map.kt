@@ -12,7 +12,11 @@ class `map`
 {
     @Before fun removeAllLayers()
     {
-        Map.tiledMap.layers.forEach { Map.tiledMap.layers.remove(it) }
+        println(Map.tiledMap.layers.size())
+        Map.tiledMap.layers.forEach {
+            println(it.name)
+            Map.tiledMap.layers.remove(it) }
+        println(Map.tiledMap.layers.size())
     }
     
     @Test fun `clearLayer clears all tiles of layer`()
@@ -95,14 +99,17 @@ class `map`
     
     @Test fun `changeTile within bounds changes tile in existing layer`()
     {
+        val x = 2
+        val y = 3
+        
         Map.newLayer(MapLayer.entity)
-        Map.changeTile(MapLayer.entity, 2, 3, Tiles.hero)
+        Map.changeTile(MapLayer.entity, x, y, Tiles.hero)
         
         val layer = Map.tiledMap.layers.get(MapLayer.entity.name) as? TiledMapTileLayer
         
         if (layer != null)
         {
-            val cell = layer.getCell(2, 3)
+            val cell = layer.getCell(x, Map.mapHeightInTiles - y - 1)
             
             if (cell != null)
             {
@@ -127,9 +134,11 @@ class `map`
     
     @Test fun `changeTile with non-existing layer doesn't add new layer and does nothing`()
     {
-        Map.changeTile(MapLayer.entity, 2, 3, Tiles.hero)
+        val mapLayer = MapLayer.entity
         
-        val layer = Map.tiledMap.layers.get(MapLayer.entity.name) as? TiledMapTileLayer
+        Map.changeTile(mapLayer, 2, 3, Tiles.hero)
+        
+        val layer = Map.tiledMap.layers.get(mapLayer.name) as? TiledMapTileLayer
         
         assertNull(layer)
     }

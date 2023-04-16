@@ -18,13 +18,6 @@ object Map
     
     val tiledMap = TiledMap()
     
-    init
-    {
-        newLayer(MapLayer.base)
-        newLayer(MapLayer.select)
-        newLayer(MapLayer.entity)
-    }
-    
     fun clearLayer(mapLayer : MapLayer)
     {
         val layer = tiledMap.layers.get(mapLayer.name) as? TiledMapTileLayer

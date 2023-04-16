@@ -103,6 +103,10 @@ object GameScreen : BaseScreen(), InputProcessor
         
         // map
         
+        Map.newLayer(MapLayer.base)
+        Map.newLayer(MapLayer.select)
+        Map.newLayer(MapLayer.entity)
+        
         updateMapBase()
         updateMapSelect()
         updateMapEntity()
