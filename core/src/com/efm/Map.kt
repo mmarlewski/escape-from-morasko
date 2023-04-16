@@ -1,8 +1,6 @@
 package com.efm
 
-import com.badlogic.gdx.maps.tiled.TiledMap
-import com.badlogic.gdx.maps.tiled.TiledMapTile
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
+import com.badlogic.gdx.maps.tiled.*
 
 enum class MapLayer
 {
@@ -20,10 +18,17 @@ object Map
     
     val tiledMap = TiledMap()
     
+    init
+    {
+        newLayer(MapLayer.base)
+        newLayer(MapLayer.select)
+        newLayer(MapLayer.entity)
+    }
+    
     fun clearLayer(mapLayer : MapLayer)
     {
         val layer = tiledMap.layers.get(mapLayer.name) as? TiledMapTileLayer
-    
+        
         if (layer != null)
         {
             for (i in 0 until mapHeightInTiles)
@@ -38,7 +43,7 @@ object Map
     
     fun clearAllLayers()
     {
-        for(mapLayer in MapLayer.values())
+        for (mapLayer in MapLayer.values())
         {
             clearLayer(mapLayer)
         }
@@ -48,7 +53,7 @@ object Map
     {
         val newLayer = TiledMapTileLayer(mapWidthInTiles, mapHeightInTiles, tileLengthInPixels, tileLengthHalfInPixels)
         newLayer.name = mapLayer.name
-    
+        
         for (i in 0 until mapHeightInTiles)
         {
             for (j in 0 until mapWidthInTiles)
@@ -60,13 +65,13 @@ object Map
         tiledMap.layers.add(newLayer)
     }
     
-    fun changeTile(mapLayer : MapLayer, x : Int, y : Int, tile : TiledMapTile)
+    fun changeTile(mapLayer : MapLayer, x : Int, y : Int, tile : TiledMapTile?)
     {
         val layer = tiledMap.layers.get(mapLayer.name) as? TiledMapTileLayer
         
         if (layer != null)
         {
-            val cell = layer.getCell(x, y)
+            val cell = layer.getCell(x, mapHeightInTiles - y - 1)
             
             if (cell != null)
             {

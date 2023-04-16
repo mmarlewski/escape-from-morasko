@@ -10,8 +10,8 @@ object World
     private val passages = mutableListOf<Passage>()
     
     val hero = Hero()
-    var currentLevel : Level? = null
-    var currentRoom : Room? = null
+    lateinit var currentLevel : Level
+    lateinit var currentRoom : Room
     
     fun addLevel(level : Level)
     {

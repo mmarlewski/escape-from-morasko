@@ -1,7 +1,6 @@
 package com.efm
 
-import com.efm.entities.BladeEnemy
-import com.efm.entities.StoneWall
+import com.efm.entities.*
 import com.efm.level.Level
 import com.efm.level.World
 import com.efm.room.Base
@@ -17,7 +16,7 @@ fun World.createWorld()
     
     forge1.addEntityAt(StoneWall(false, false, false, false), 0, 0)
     forge1.addEntityAt(StoneWall(false, false, true, false), 1, 0)
-    forge1.addEntityAt(StoneWall(false, false, true, false), 2, 0)
+    forge1.addEntityAt(StoneExit(Direction.down), 2, 0)
     forge1.addEntityAt(StoneWall(false, false, true, false), 3, 0)
     forge1.addEntityAt(StoneWall(false, false, false, false), 4, 0)
     forge1.addEntityAt(StoneWall(false, false, false, true), 4, 1)
@@ -26,21 +25,24 @@ fun World.createWorld()
     forge1.addEntityAt(StoneWall(false, false, false, false), 4, 4)
     forge1.addEntityAt(StoneWall(true, false, false, false), 3, 4)
     forge1.addEntityAt(StoneWall(true, false, false, false), 2, 4)
-    forge1.addEntityAt(StoneWall(true, false, false, false), 1, 4)
+    forge1.addEntityAt(StoneExit(Direction.up), 1, 4)
     forge1.addEntityAt(StoneWall(false, false, false, false), 0, 4)
     forge1.addEntityAt(StoneWall(false, true, false, false), 0, 3)
     forge1.addEntityAt(StoneWall(false, true, false, false), 0, 2)
     forge1.addEntityAt(StoneWall(false, true, false, false), 0, 1)
     
     forge1.addEntityAt(BladeEnemy(), 1, 1)
+    forge1.addEntityAt(CrossbowEnemy(), 3, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
-            forge1.changeBaseAt(Base.stone, j, i)
+            forge1.changeBaseAt(Base.grass, j, i)
         }
     }
+    forge1.changeBaseAt(Base.grass, 2, 0)
+    forge1.changeBaseAt(Base.lava, 2, 3)
     
     val forge2 = Room("forge1", 5, 5)
     
@@ -63,9 +65,9 @@ fun World.createWorld()
     
     forge2.addEntityAt(BladeEnemy(), 1, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
             forge2.changeBaseAt(Base.stone, j, i)
         }
@@ -92,9 +94,9 @@ fun World.createWorld()
     
     forge3.addEntityAt(BladeEnemy(), 1, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
             forge3.changeBaseAt(Base.stone, j, i)
         }
@@ -140,9 +142,9 @@ fun World.createWorld()
     
     furnace1.addEntityAt(BladeEnemy(), 1, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
             furnace1.changeBaseAt(Base.stone, j, i)
         }
@@ -169,9 +171,9 @@ fun World.createWorld()
     
     furnace2.addEntityAt(BladeEnemy(), 1, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
             furnace2.changeBaseAt(Base.stone, j, i)
         }
@@ -198,9 +200,9 @@ fun World.createWorld()
     
     furnace3.addEntityAt(BladeEnemy(), 1, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
             furnace3.changeBaseAt(Base.stone, j, i)
         }
@@ -246,9 +248,9 @@ fun World.createWorld()
     
     mines1.addEntityAt(BladeEnemy(), 1, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
             mines1.changeBaseAt(Base.stone, j, i)
         }
@@ -275,9 +277,9 @@ fun World.createWorld()
     
     mines2.addEntityAt(BladeEnemy(), 1, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
             mines2.changeBaseAt(Base.stone, j, i)
         }
@@ -304,9 +306,9 @@ fun World.createWorld()
     
     mines3.addEntityAt(BladeEnemy(), 1, 1)
     
-    for (i in 1..4)
+    for (i in 1..3)
     {
-        for (j in 1..4)
+        for (j in 1..3)
         {
             mines3.changeBaseAt(Base.stone, j, i)
         }
@@ -334,6 +336,8 @@ fun World.createWorld()
     addLevel(mines)
     
     changeCurrentLevel(forge)
-    changeCurrentRoom(forge1)
+    changeCurrentRoom(forge.getStartingRoom())
+    
     forge1.addEntityAt(hero, forge.getStartingPosition())
+    forge1.updateSpacesEntities()
 }

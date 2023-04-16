@@ -19,7 +19,7 @@ class Level(val name : String)
     private val roomPassages = mutableListOf<RoomPassage>()
     private val levelPassages = mutableListOf<LevelPassage>()
     
-    private var startingRoom : Room? = null
+    private lateinit var startingRoom : Room
     private val startingPosition = RoomPosition()
     
     fun addRoom(room : Room)
@@ -27,7 +27,7 @@ class Level(val name : String)
         rooms.add(room)
     }
     
-    fun getStartingRoom() : Room?
+    fun getStartingRoom() : Room
     {
         return startingRoom
     }

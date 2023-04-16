@@ -14,10 +14,11 @@ class StoneWall(
 {
     override val position = RoomPosition()
     
-    override fun getTile() : TiledMapTile
+    override fun getTile() : TiledMapTile?
     {
         return when
         {
+            isVisibleUp && isVisibleRight && isVisibleDown && isVisibleLeft    -> Tiles.stoneWallUpRightDownLeft
             isVisibleUp && !isVisibleRight && !isVisibleDown && !isVisibleLeft -> Tiles.stoneWallUp
             !isVisibleUp && isVisibleRight && !isVisibleDown && !isVisibleLeft -> Tiles.stoneWallRight
             !isVisibleUp && !isVisibleRight && isVisibleDown && !isVisibleLeft -> Tiles.stoneWallDown
@@ -26,7 +27,7 @@ class StoneWall(
             !isVisibleUp && isVisibleRight && isVisibleDown && !isVisibleLeft  -> Tiles.stoneWallRightDown
             !isVisibleUp && !isVisibleRight && isVisibleDown && isVisibleLeft  -> Tiles.stoneWallDownLeft
             isVisibleUp && !isVisibleRight && !isVisibleDown && isVisibleLeft  -> Tiles.stoneWallLeftUp
-            else                                                               -> Tiles.stoneWallUpRightDownLeft
+            else                                                               -> null
         }
     }
     
