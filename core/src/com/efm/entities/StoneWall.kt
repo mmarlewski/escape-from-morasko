@@ -1,33 +1,34 @@
 package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.efm.Direction
 import com.efm.assets.Tiles
 import com.efm.entity.Entity
 import com.efm.room.RoomPosition
 
-class StoneWall(
-        val isVisibleUp : Boolean,
-        val isVisibleRight : Boolean,
-        val isVisibleDown : Boolean,
-        val isVisibleLeft : Boolean
-               ) : Entity
+class StoneWall(vararg val directions : Direction) : Entity
 {
     override val position = RoomPosition()
     
     override fun getTile() : TiledMapTile?
     {
+        val up = Direction.up in directions
+        val right = Direction.right in directions
+        val down = Direction.down in directions
+        val left = Direction.left in directions
+        
         return when
         {
-            isVisibleUp && isVisibleRight && isVisibleDown && isVisibleLeft    -> Tiles.stoneWallUpRightDownLeft
-            isVisibleUp && !isVisibleRight && !isVisibleDown && !isVisibleLeft -> Tiles.stoneWallUp
-            !isVisibleUp && isVisibleRight && !isVisibleDown && !isVisibleLeft -> Tiles.stoneWallRight
-            !isVisibleUp && !isVisibleRight && isVisibleDown && !isVisibleLeft -> Tiles.stoneWallDown
-            !isVisibleUp && !isVisibleRight && !isVisibleDown && isVisibleLeft -> Tiles.stoneWallLeft
-            isVisibleUp && isVisibleRight && !isVisibleDown && !isVisibleLeft  -> Tiles.stoneWallUpRight
-            !isVisibleUp && isVisibleRight && isVisibleDown && !isVisibleLeft  -> Tiles.stoneWallRightDown
-            !isVisibleUp && !isVisibleRight && isVisibleDown && isVisibleLeft  -> Tiles.stoneWallDownLeft
-            isVisibleUp && !isVisibleRight && !isVisibleDown && isVisibleLeft  -> Tiles.stoneWallLeftUp
-            else                                                               -> null
+            up && right && down && left    -> Tiles.stoneWallUpRightDownLeft
+            up && !right && !down && !left -> Tiles.stoneWallUp
+            !up && right && !down && !left -> Tiles.stoneWallRight
+            !up && !right && down && !left -> Tiles.stoneWallDown
+            !up && !right && !down && left -> Tiles.stoneWallLeft
+            up && right && !down && !left  -> Tiles.stoneWallUpRight
+            !up && right && down && !left  -> Tiles.stoneWallRightDown
+            !up && !right && down && left  -> Tiles.stoneWallDownLeft
+            up && !right && !down && left  -> Tiles.stoneWallLeftUp
+            else                           -> null
         }
     }
     

@@ -31,7 +31,7 @@ class Space(x : Int, y : Int)
         return base
     }
     
-    fun changeBase(newBase : Base)
+    fun changeBase(newBase : Base?)
     {
         base = newBase
     }

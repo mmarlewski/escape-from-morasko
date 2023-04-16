@@ -94,13 +94,13 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         return getSpace(position.x, position.y)
     }
     
-    fun changeBaseAt(newBase : Base, x : Int, y : Int)
+    fun changeBaseAt(newBase : Base?, x : Int, y : Int)
     {
         val space = getSpace(x, y)
         space?.changeBase(newBase)
     }
     
-    fun changeBaseAt(newBase : Base, position : RoomPosition)
+    fun changeBaseAt(newBase : Base?, position : RoomPosition)
     {
         val space = getSpace(position)
         space?.changeBase(newBase)

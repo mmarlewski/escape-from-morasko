@@ -9,6 +9,8 @@ import com.efm.assets.Tiles
 enum class Base(val tile : TiledMapTile)
 {
     stone(Tiles.stoneFloor),
+    metal(Tiles.metalFloor),
+    rock(Tiles.rockFloor),
     grass(Tiles.grassFloor),
     lava(Tiles.lavaPool)
 }

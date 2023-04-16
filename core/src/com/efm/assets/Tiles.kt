@@ -12,6 +12,8 @@ object Tiles
     // base
     
     val stoneFloor = load("stoneFloor.png")
+    val metalFloor = load("metalFloor.png")
+    val rockFloor = load("rockFloor.png")
     val grassFloor = load("grassFloor.png")
     val lavaPool = load("lavaPool.png")
     
@@ -39,6 +41,44 @@ object Tiles
     val stoneExitRight = load("stoneExitRight.png")
     val stoneExitDown = load("stoneExitDown.png")
     val stoneExitLeft = load("stoneExitLeft.png")
+    
+    // metalWall
+    
+    val metalWallUpRightDownLeft = load("metalWallUpRightDownLeft.png")
+    val metalWallUp = load("metalWallUp.png")
+    val metalWallRight = load("metalWallRight.png")
+    val metalWallDown = load("metalWallDown.png")
+    val metalWallLeft = load("metalWallLeft.png")
+//    val metalWallUpRight = load("metalWallUpRight.png")
+//    val metalWallRightDown = load("metalWallRightDown.png")
+//    val metalWallDownLeft = load("metalWallDownLeft.png")
+//    val metalWallLeftUp = load("metalWallLeftUp.png")
+    
+    // metalExit
+    
+    val metalExitUp = load("metalExitUp.png")
+    val metalExitRight = load("metalExitRight.png")
+    val metalExitDown = load("metalExitDown.png")
+    val metalExitLeft = load("metalExitLeft.png")
+    
+    // rockWall
+    
+    val rockWallUpRightDownLeft = load("rockWallUpRightDownLeft.png")
+    val rockWallUp = load("rockWallUp.png")
+    val rockWallRight = load("rockWallRight.png")
+    val rockWallDown = load("rockWallDown.png")
+    val rockWallLeft = load("rockWallLeft.png")
+//    val rockWallUpRight = load("rockWallUpRight.png")
+//    val rockWallRightDown = load("rockWallRightDown.png")
+//    val rockWallDownLeft = load("rockWallDownLeft.png")
+//    val rockWallLeftUp = load("rockWallLeftUp.png")
+    
+    // rockExit
+    
+    val rockExitUp = load("rockExitUp.png")
+    val rockExitRight = load("rockExitRight.png")
+    val rockExitDown = load("rockExitDown.png")
+    val rockExitLeft = load("rockExitLeft.png")
     
     // other entities
     

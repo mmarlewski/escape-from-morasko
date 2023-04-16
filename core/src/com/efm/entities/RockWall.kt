@@ -3,23 +3,23 @@ package com.efm.entities
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.Direction
 import com.efm.assets.Tiles
+import com.efm.entity.Entity
 import com.efm.passage.Exit
-import com.efm.passage.Passage
-import com.efm.room.Room
 import com.efm.room.RoomPosition
 
-class StoneExit(val direction : Direction, val passage : Passage, val room : Room) : Exit
+class RockWall(val direction : Direction?) : Entity
 {
     override val position = RoomPosition()
     
-    override fun getTile() : TiledMapTile
+    override fun getTile() : TiledMapTile?
     {
         return when (direction)
         {
-            Direction.up    -> Tiles.stoneExitUp
-            Direction.right -> Tiles.stoneExitRight
-            Direction.down  -> Tiles.stoneExitDown
-            Direction.left  -> Tiles.stoneExitLeft
+            Direction.up    -> Tiles.rockWallUp
+            Direction.right -> Tiles.rockWallRight
+            Direction.down  -> Tiles.rockWallDown
+            Direction.left  -> Tiles.rockWallLeft
+            null            -> null
         }
     }
     
