@@ -28,10 +28,11 @@ object GameScreen : BaseScreen(), InputProcessor
     val gameViewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, gameCamera)
     val stage = Stage(hudViewport, EscapeFromMorasko.spriteBatch)
     val inputMultiplexer = InputMultiplexer(stage, this)
+    var zoom = 4f
     
     // map
     
-    val mapRenderer = IsometricTiledMapRenderer(Map.tiledMap, 1f, EscapeFromMorasko.spriteBatch)
+    val mapRenderer = IsometricTiledMapRenderer(Map.tiledMap, zoom, EscapeFromMorasko.spriteBatch)
     
     // dragging
     
@@ -170,8 +171,8 @@ object GameScreen : BaseScreen(), InputProcessor
     {
         isoToOrtho(worldMousePosition, mapMousePosition)
         mapMousePosition.set(
-                floor(mapMousePosition.x / Map.tileLengthHalfInPixels),
-                floor(mapMousePosition.y / Map.tileLengthHalfInPixels)
+                floor((mapMousePosition.x / Map.tileLengthHalfInPixels) / zoom),
+                floor((mapMousePosition.y / Map.tileLengthHalfInPixels / zoom))
                             )
         mapMousePosition.y = Map.mapHeightInTiles - mapMousePosition.y - 1
         isMouseInMap = (
@@ -188,8 +189,8 @@ object GameScreen : BaseScreen(), InputProcessor
                 tempVector2
                   )
         gameCamera.position.set(
-                tempVector2.x,
-                tempVector2.y,
+                tempVector2.x + zoom * 275,
+                tempVector2.y + zoom * 80,
                 gameCamera.position.z
                                )
     }
