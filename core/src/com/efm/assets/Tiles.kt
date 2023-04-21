@@ -19,9 +19,12 @@ object Tiles
     
     // select
     
+    val selectRed = load("selectRed.png")
+    val selectOrange = load("selectOrange.png")
     val selectYellow = load("selectYellow.png")
     val selectGreen = load("selectGreen.png")
-    val selectRed = load("selectRed.png")
+    val selectTeal = load("selectTeal.png")
+    val selectBlue = load("selectBlue.png")
     
     // stoneWall
     
