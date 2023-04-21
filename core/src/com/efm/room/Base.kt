@@ -6,11 +6,11 @@ import com.efm.assets.Tiles
 /**
  * Translates names of surfaces to textures representing them.
  */
-enum class Base(val tile : TiledMapTile)
+enum class Base(val tile : TiledMapTile, val isTreadable : Boolean)
 {
-    stone(Tiles.stoneFloor),
-    metal(Tiles.metalFloor),
-    rock(Tiles.rockFloor),
-    grass(Tiles.grassFloor),
-    lava(Tiles.lavaPool)
+    stone(Tiles.stoneFloor, true),
+    metal(Tiles.metalFloor, true),
+    rock(Tiles.rockFloor, true),
+    grass(Tiles.grassFloor, true),
+    lava(Tiles.lavaPool, false)
 }

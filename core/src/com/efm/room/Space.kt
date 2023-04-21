@@ -7,7 +7,7 @@ import com.efm.entity.Entity
  */
 class Space(x : Int, y : Int)
 {
-    private val position = RoomPosition(x, y)
+    val position = RoomPosition(x, y)
     private var entity : Entity? = null
     private var base : Base? = null
     
@@ -34,5 +34,10 @@ class Space(x : Int, y : Int)
     fun changeBase(newBase : Base?)
     {
         base = newBase
+    }
+    
+    fun isTraversable() : Boolean
+    {
+        return base?.isTreadable == true && entity == null
     }
 }
