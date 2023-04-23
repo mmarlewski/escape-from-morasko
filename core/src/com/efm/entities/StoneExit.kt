@@ -11,6 +11,8 @@ import com.efm.room.RoomPosition
 class StoneExit(val direction : Direction, val passage : Passage, val room : Room) : Exit
 {
     override val position = RoomPosition()
+    override val exitPassage = passage
+    override val currentRoom = room
     
     override fun getTile() : TiledMapTile
     {

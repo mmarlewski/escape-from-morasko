@@ -12,7 +12,8 @@ import com.efm.room.RoomPosition
 class MetalExit(val direction : Direction, val passage : Passage, val room : Room) : Entity, Exit
 {
     override val position = RoomPosition()
-    
+    override val exitPassage = passage
+    override val currentRoom = room
     override fun getTile() : TiledMapTile
     {
         return when (direction)

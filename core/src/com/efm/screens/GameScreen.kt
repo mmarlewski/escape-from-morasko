@@ -15,9 +15,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
+import com.efm.level.Level
 import com.efm.level.World
-import com.efm.room.toRoomPosition
-import com.efm.room.toVector2
+import com.efm.passage.*
+import com.efm.room.*
 import kotlin.math.floor
 
 object GameScreen : BaseScreen(), InputProcessor
@@ -52,10 +53,8 @@ object GameScreen : BaseScreen(), InputProcessor
     var tempVector2 = Vector2()
     
     //movement
-    var prevHeroPosX = 0
-    var prevHeroPosY = 0
-    var prevSelectPosX = 0
-    var prevSelectPosY = 0
+    var prevHeroPos = Vector2(0.0F, 0.0F)
+    var prevSelectPos = Vector2(0.0F, 0.0F)
     var isMovingMode = true
     
     init
@@ -197,27 +196,74 @@ object GameScreen : BaseScreen(), InputProcessor
     
     fun moveHero()
     {
-        updateMouse()
         if (isMouseInMap)
         {
+            updateMouse()
+        
             selectPosition.set(mapMousePosition)
-            if (selectPosition.x.toInt() != prevSelectPosX || selectPosition.y.toInt() != prevSelectPosY)
+            
+            if (selectPosition != prevSelectPos)
             {
-                Map.clearLayer(MapLayer.select)
-                Map.changeTile(MapLayer.select, selectPosition.x.toInt(), selectPosition.y.toInt(), Tiles.selectYellow)
-                prevSelectPosX = selectPosition.x.toInt()
-                prevSelectPosY = selectPosition.y.toInt()
+                updateMapSelect()
+                prevSelectPos.set(selectPosition)
             }
             else
             {
-                Map.clearLayer(MapLayer.entity)
-                Map.changeTile(MapLayer.entity, selectPosition.x.toInt(), selectPosition.y.toInt(), Tiles.hero)
-                prevHeroPosX = selectPosition.x.toInt()
-                prevHeroPosY = selectPosition.y.toInt()
-            }
+                val space = World.currentRoom.getSpace(selectPosition.toRoomPosition())
+                val entity = space?.getEntity()
+    
+                if (entity is Exit)
+                {
+                    val passage = entity.exitPassage
+        
+                    var newPosition = World.hero.position
+                    var newRoom = World.currentRoom
+                    var newLevel = World.currentLevel
+        
+                    when (passage)
+                    {
+                        is RoomPassage  ->
+                        {
+                            newPosition = when (entity.currentRoom)
+                            {
+                                passage.roomA -> passage.positionB
+                                passage.roomB -> passage.positionA
+                                else          -> newPosition
+                            }
+                            newRoom = when (entity.currentRoom)
+                            {
+                                passage.roomA -> passage.roomB
+                                passage.roomB -> passage.roomA
+                                else          -> newRoom
+                            }
+                        }
             
+                        is LevelPassage ->
+                        {
+                            newPosition = passage.targetLevel.getStartingPosition()
+                            newRoom = passage.targetLevel.getStartingRoom()
+                            newLevel = passage.targetLevel
+                        }
+                    }
+        
+                    World.currentRoom.removeEntity(World.hero)
+        
+                    World.changeCurrentLevel(newLevel)
+                    World.changeCurrentRoom(newRoom)
+        
+                    World.currentRoom.addEntityAt(World.hero, newPosition)
+                    World.currentRoom.updateSpacesEntities()
+                }
+                else
+                {
+                    World.hero.changePosition(selectPosition.toRoomPosition())
+                    World.currentRoom.updateSpacesEntities()
+                }
+            }
+            focusCamera(World.hero.position.toVector2())
+            updateMapBase()
+            updateMapEntity()
         }
-        isDragging = false
     }
     
     // overridden BaseScreen methods
