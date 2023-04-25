@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.Actions.delay
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
@@ -204,65 +205,75 @@ object GameScreen : BaseScreen(), InputProcessor
             
             if (selectPosition != prevSelectPos)
             {
+                
                 updateMapSelect()
                 prevSelectPos.set(selectPosition)
             }
             else
             {
-                val space = World.currentRoom.getSpace(selectPosition.toRoomPosition())
-                val entity = space?.getEntity()
-    
-                if (entity is Exit)
+                val path = Pathfinding.findPathWithGivenRoom(World.hero.position, selectPosition.toRoomPosition(), World.currentRoom)
+                
+                if (path != null)
                 {
-                    val passage = entity.exitPassage
-        
-                    var newPosition = World.hero.position
-                    var newRoom = World.currentRoom
-                    var newLevel = World.currentLevel
-        
-                    when (passage)
+                    for (space in path)
                     {
-                        is RoomPassage  ->
+                        val entity = space.getEntity()
+                        if (entity is Exit)
                         {
-                            newPosition = when (entity.currentRoom)
+                            val passage = entity.exitPassage
+        
+                            var newPosition = World.hero.position
+                            var newRoom = World.currentRoom
+                            var newLevel = World.currentLevel
+        
+                            when (passage)
                             {
-                                passage.roomA -> passage.positionB
-                                passage.roomB -> passage.positionA
-                                else          -> newPosition
-                            }
-                            newRoom = when (entity.currentRoom)
-                            {
-                                passage.roomA -> passage.roomB
-                                passage.roomB -> passage.roomA
-                                else          -> newRoom
-                            }
-                        }
+                                is RoomPassage  ->
+                                {
+                                    newPosition = when (entity.currentRoom)
+                                    {
+                                        passage.roomA -> passage.positionB
+                                        passage.roomB -> passage.positionA
+                                        else          -> newPosition
+                                    }
+                                    newRoom = when (entity.currentRoom)
+                                    {
+                                        passage.roomA -> passage.roomB
+                                        passage.roomB -> passage.roomA
+                                        else          -> newRoom
+                                    }
+                                }
             
-                        is LevelPassage ->
-                        {
-                            newPosition = passage.targetLevel.getStartingPosition()
-                            newRoom = passage.targetLevel.getStartingRoom()
-                            newLevel = passage.targetLevel
+                                is LevelPassage ->
+                                {
+                                    newPosition = passage.targetLevel.getStartingPosition()
+                                    newRoom = passage.targetLevel.getStartingRoom()
+                                    newLevel = passage.targetLevel
+                                }
+                            }
+        
+                            World.currentRoom.removeEntity(World.hero)
+        
+                            World.changeCurrentLevel(newLevel)
+                            World.changeCurrentRoom(newRoom)
+        
+                            World.currentRoom.addEntityAt(World.hero, newPosition)
+                            World.currentRoom.updateSpacesEntities()
                         }
+                        else
+                        {
+                            Thread.sleep(250)
+                            World.hero.changePosition(space.position)
+                            World.currentRoom.updateSpacesEntities()
+                            
+                            updateMapBase()
+                            updateMapEntity()
+                            focusCamera(World.hero.position.toVector2())
+                        }
+
                     }
-        
-                    World.currentRoom.removeEntity(World.hero)
-        
-                    World.changeCurrentLevel(newLevel)
-                    World.changeCurrentRoom(newRoom)
-        
-                    World.currentRoom.addEntityAt(World.hero, newPosition)
-                    World.currentRoom.updateSpacesEntities()
-                }
-                else
-                {
-                    World.hero.changePosition(selectPosition.toRoomPosition())
-                    World.currentRoom.updateSpacesEntities()
                 }
             }
-            focusCamera(World.hero.position.toVector2())
-            updateMapBase()
-            updateMapEntity()
         }
     }
     
