@@ -1,14 +1,12 @@
 package com.efm.screens
 
+import com.badlogic.gdx.*
 import com.badlogic.gdx.Input.Keys
-import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.actions.Actions.delay
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
@@ -16,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
-import com.efm.level.Level
+import com.efm.entities.Hero
 import com.efm.level.World
 import com.efm.passage.*
 import com.efm.room.*
@@ -32,11 +30,18 @@ object GameScreen : BaseScreen(), InputProcessor
     val inputMultiplexer = InputMultiplexer(stage, this)
     
     // map
-    
     val mapRenderer = IsometricTiledMapRenderer(Map.tiledMap, 1f, EscapeFromMorasko.spriteBatch)
     
-    // dragging
+    // animation
+    var isAnimation = false
+    var animations = mutableListOf<Animation>()
+    var animation : Animation = wait(0f)
+    var nextAnimation : Animation? = wait(0f)
+    var isWait = false
+    var deltaTime = 0f
+    var waitTimeInSeconds = 0f
     
+    // dragging
     private var touchStartTime = 0L
     private var isDragging = false
     var dragOrigin = Vector2()
@@ -111,7 +116,7 @@ object GameScreen : BaseScreen(), InputProcessor
         updateMapSelect()
         updateMapEntity()
         
-        focusCamera(World.hero.position.toVector2())
+        focusCamera(World.hero.position)
     }
     
     fun updateMapBase()
@@ -180,12 +185,12 @@ object GameScreen : BaseScreen(), InputProcessor
                 )
     }
     
-    fun focusCamera(mapPosition : Vector2)
+    fun focusCamera(position : RoomPosition)
     {
         gameCamera.zoom = 0.25f
         orthoToIso(
-                mapPosition.x * Map.tileLengthHalfInPixels,
-                (Map.mapHeightInTiles - mapPosition.y - 1) * Map.tileLengthHalfInPixels,
+                (position.x * Map.tileLengthHalfInPixels).toFloat(),
+                ((Map.mapHeightInTiles - position.y - 1) * Map.tileLengthHalfInPixels).toFloat(),
                 tempVector2
                   )
         gameCamera.position.set(
@@ -200,78 +205,110 @@ object GameScreen : BaseScreen(), InputProcessor
         if (isMouseInMap)
         {
             updateMouse()
-        
+            
             selectPosition.set(mapMousePosition)
             
             if (selectPosition != prevSelectPos)
             {
-                
                 updateMapSelect()
                 prevSelectPos.set(selectPosition)
             }
             else
             {
-                val path = Pathfinding.findPathWithGivenRoom(World.hero.position, selectPosition.toRoomPosition(), World.currentRoom)
+                val startPosition = World.hero.position
+                val endPosition = selectPosition.toRoomPosition()
+                
+                val startSpace = World.currentRoom.getSpace(startPosition)
+                val endSpace = World.currentRoom.getSpace(endPosition)
+                
+                if (startSpace == endSpace) return
+                val path = Pathfinding.findPathWithGivenRoom(startPosition, endPosition, World.currentRoom)
                 
                 if (path != null)
                 {
+                    val action =
+                            {
+                                var newPosition = endPosition
+                                var newRoom = World.currentRoom
+                                var newLevel = World.currentLevel
+                                
+                                val endEntity = endSpace?.getEntity()
+                                
+                                when (endEntity)
+                                {
+                                    null, is Hero ->
+                                    {
+                                    }
+                                    
+                                    is Exit       ->
+                                    {
+                                        when (val passage = endEntity.exitPassage)
+                                        {
+                                            is RoomPassage  ->
+                                            {
+                                                newPosition = when (endEntity.currentRoom)
+                                                {
+                                                    passage.roomA -> passage.positionB
+                                                    passage.roomB -> passage.positionA
+                                                    else          -> newPosition
+                                                }
+                                                newRoom = when (endEntity.currentRoom)
+                                                {
+                                                    passage.roomA -> passage.roomB
+                                                    passage.roomB -> passage.roomA
+                                                    else          -> newRoom
+                                                }
+                                            }
+                                            
+                                            is LevelPassage ->
+                                            {
+                                                newPosition = passage.targetLevel.getStartingPosition()
+                                                newRoom = passage.targetLevel.getStartingRoom()
+                                                newLevel = passage.targetLevel
+                                            }
+                                        }
+                                    }
+                                    
+                                    else          ->
+                                    {
+                                        val lastSpace = path.lastOrNull()
+                                        newPosition = if (lastSpace != null)
+                                        {
+                                            lastSpace.position
+                                        }
+                                        else
+                                        {
+                                            startPosition
+                                        }
+                                    }
+                                }
+                                
+                                World.currentRoom.removeEntity(World.hero)
+                                
+                                World.changeCurrentRoom(newRoom)
+                                World.changeCurrentLevel(newLevel)
+                                
+                                World.currentRoom.addEntityAt(World.hero, newPosition)
+                                World.currentRoom.updateSpacesEntities()
+                                
+                                updateMapBase()
+                                updateMapEntity()
+                                updateMapSelect()
+                                
+                                focusCamera(World.hero.position)
+                            }
+                    
+                    val animations = mutableListOf<Animation>()
+                    animations += changeMapTile(MapLayer.entity, startPosition.x, startPosition.y, null)
                     for (space in path)
                     {
-                        val entity = space.getEntity()
-                        if (entity is Exit)
-                        {
-                            val passage = entity.exitPassage
-        
-                            var newPosition = World.hero.position
-                            var newRoom = World.currentRoom
-                            var newLevel = World.currentLevel
-        
-                            when (passage)
-                            {
-                                is RoomPassage  ->
-                                {
-                                    newPosition = when (entity.currentRoom)
-                                    {
-                                        passage.roomA -> passage.positionB
-                                        passage.roomB -> passage.positionA
-                                        else          -> newPosition
-                                    }
-                                    newRoom = when (entity.currentRoom)
-                                    {
-                                        passage.roomA -> passage.roomB
-                                        passage.roomB -> passage.roomA
-                                        else          -> newRoom
-                                    }
-                                }
-            
-                                is LevelPassage ->
-                                {
-                                    newPosition = passage.targetLevel.getStartingPosition()
-                                    newRoom = passage.targetLevel.getStartingRoom()
-                                    newLevel = passage.targetLevel
-                                }
-                            }
-        
-                            World.currentRoom.removeEntity(World.hero)
-        
-                            World.changeCurrentLevel(newLevel)
-                            World.changeCurrentRoom(newRoom)
-        
-                            World.currentRoom.addEntityAt(World.hero, newPosition)
-                            World.currentRoom.updateSpacesEntities()
-                        }
-                        else
-                        {
-                            Thread.sleep(250)
-                            World.hero.changePosition(space.position)
-                            World.currentRoom.updateSpacesEntities()
-                            
-                            updateMapBase()
-                            updateMapEntity()
-                            focusCamera(World.hero.position.toVector2())
-                        }
-
+                        animations += focusGameScreenCamera(space.position)
+                        animations += changeMapTile(MapLayer.entity, space.position.x, space.position.y, Tiles.hero)
+                        animations += wait(0.1f)
+                        animations += changeMapTile(MapLayer.entity, space.position.x, space.position.y, null)
                     }
+                    animations += action(action)
+                    executeAnimations(animations)
                 }
             }
         }
@@ -281,6 +318,34 @@ object GameScreen : BaseScreen(), InputProcessor
     
     override fun render(delta : Float)
     {
+        if (isAnimation)
+        {
+            if (isWait)
+            {
+                deltaTime += Gdx.graphics.deltaTime
+                if (deltaTime > (animation as wait).seconds)
+                {
+                    isWait = false
+                }
+            }
+            else
+            {
+                if (nextAnimation != null)
+                {
+                    animation = nextAnimation as Animation
+                }
+                else
+                {
+                    isAnimation = false
+                }
+                
+                animation.execute()
+                
+                val nextAnimationIndex = animations.indexOf(animation) + 1
+                nextAnimation = animations.getOrNull(nextAnimationIndex)
+            }
+        }
+        
         ScreenUtils.clear(Colors.black)
         hudCamera.update()
         gameCamera.update()
@@ -308,7 +373,7 @@ object GameScreen : BaseScreen(), InputProcessor
         {
             Keys.S ->
             {
-                if(isMouseInMap)
+                if (isMouseInMap)
                 {
                     updateMouse()
                     
@@ -323,7 +388,7 @@ object GameScreen : BaseScreen(), InputProcessor
             
             Keys.F ->
             {
-                focusCamera(selectPosition)
+                focusCamera(selectPosition.toRoomPosition())
             }
         }
         

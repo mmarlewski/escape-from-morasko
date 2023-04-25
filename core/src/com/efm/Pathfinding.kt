@@ -175,7 +175,6 @@ object Pathfinding
         {
             pathSpaces.add(node.space)
         }
-        World.currentRoom.getSpace(endPosition.x, endPosition.y)?.let { pathSpaces.add(it) }
         
         return pathSpaces
     }
