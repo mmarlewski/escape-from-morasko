@@ -16,6 +16,6 @@ class Chest : Entity
     
     override fun getOutlineTile() : TiledMapTile
     {
-        return Tiles.chestOutline
+        return Tiles.chestOutlineYellow
     }
 }

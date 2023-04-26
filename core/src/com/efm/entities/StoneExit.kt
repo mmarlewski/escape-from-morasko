@@ -3,8 +3,7 @@ package com.efm.entities
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.Direction
 import com.efm.assets.Tiles
-import com.efm.passage.Exit
-import com.efm.passage.Passage
+import com.efm.passage.*
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 
@@ -14,14 +13,27 @@ class StoneExit(val direction : Direction, val passage : Passage, val room : Roo
     override val exitPassage = passage
     override val currentRoom = room
     
-    override fun getTile() : TiledMapTile
+    override fun getTile() : TiledMapTile?
     {
-        return when (direction)
+        return when (passage)
         {
-            Direction.up    -> Tiles.stoneExitUp
-            Direction.right -> Tiles.stoneExitRight
-            Direction.down  -> Tiles.stoneExitDown
-            Direction.left  -> Tiles.stoneExitLeft
+            is RoomPassage  -> when (direction)
+            {
+                Direction.up    -> Tiles.stoneExitUp
+                Direction.right -> Tiles.stoneExitRight
+                Direction.down  -> Tiles.stoneExitDown
+                Direction.left  -> Tiles.stoneExitLeft
+            }
+            
+            is LevelPassage -> when (direction)
+            {
+                Direction.up    -> Tiles.stoneExitLevelUp
+                Direction.right -> Tiles.stoneExitLevelRight
+                Direction.down  -> Tiles.stoneExitLevelDown
+                Direction.left  -> Tiles.stoneExitLevelLeft
+            }
+            
+            else            -> null
         }
     }
     

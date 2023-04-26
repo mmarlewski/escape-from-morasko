@@ -17,6 +17,6 @@ class CrossbowEnemy : Entity, Enemy
     
     override fun getOutlineTile() : TiledMapTile
     {
-        return Tiles.crossbowEnemyOutline
+        return Tiles.crossbowEnemyOutlineYellow
     }
 }

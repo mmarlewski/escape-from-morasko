@@ -16,6 +16,6 @@ class ExplodingBarrel : Entity
     
     override fun getOutlineTile() : TiledMapTile
     {
-        return Tiles.explodingBarrelOutline
+        return Tiles.explodingBarrelOutlineYellow
     }
 }
