@@ -213,8 +213,24 @@ object GameScreen : BaseScreen(), InputProcessor
             if (selectPosition != prevSelectPos)
             {
                 updateMapSelect()
-                if (path != null) {
-                    for (space in path){
+                
+                if (!World.currentRoom.getSpace(selectPosition.toRoomPosition())?.isTraversable()!!)
+                {
+                    Map.changeTile(MapLayer.select, endPosition.x, endPosition.y, Tiles.selectRed)
+                }
+                val endSpace = World.currentRoom.getSpace(endPosition)
+                val endEntity = endSpace?.getEntity()
+                when (endEntity)
+                {
+                    is Exit ->
+                    {
+                        Map.changeTile(MapLayer.select, selectPosition.toRoomPosition().x, selectPosition.toRoomPosition().y, Tiles.selectGreen)
+                    }
+                }
+                if (path != null)
+                {
+                    for (space in path)
+                    {
                         Map.changeTile(MapLayer.select, space.position.x, space.position.y, Tiles.selectTeal)
                     }
                 }
@@ -249,6 +265,7 @@ object GameScreen : BaseScreen(), InputProcessor
                                         {
                                             is RoomPassage  ->
                                             {
+                                                Map.changeTile(MapLayer.select, endPosition.x, endPosition.y, Tiles.selectYellow)
                                                 newPosition = when (endEntity.currentRoom)
                                                 {
                                                     passage.roomA -> passage.positionB
