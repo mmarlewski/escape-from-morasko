@@ -59,7 +59,6 @@ object GameScreen : BaseScreen(), InputProcessor
     var tempVector2 = Vector2()
     
     //movement
-    var prevHeroPos = Vector2(0.0F, 0.0F)
     var prevSelectPos = Vector2(0.0F, 0.0F)
     var isMovingMode = true
     
@@ -208,21 +207,41 @@ object GameScreen : BaseScreen(), InputProcessor
             
             selectPosition.set(mapMousePosition)
             
+            val startPosition = World.hero.position
+            val endPosition = selectPosition.toRoomPosition()
+            val path = Pathfinding.findPathWithGivenRoom(startPosition, endPosition, World.currentRoom)
             if (selectPosition != prevSelectPos)
             {
                 updateMapSelect()
+                
+                if (!World.currentRoom.getSpace(selectPosition.toRoomPosition())?.isTraversable()!!)
+                {
+                    Map.changeTile(MapLayer.select, endPosition.x, endPosition.y, Tiles.selectRed)
+                }
+                val endSpace = World.currentRoom.getSpace(endPosition)
+                val endEntity = endSpace?.getEntity()
+                when (endEntity)
+                {
+                    is Exit ->
+                    {
+                        Map.changeTile(MapLayer.select, selectPosition.toRoomPosition().x, selectPosition.toRoomPosition().y, Tiles.selectGreen)
+                    }
+                }
+                if (path != null)
+                {
+                    for (space in path)
+                    {
+                        Map.changeTile(MapLayer.select, space.position.x, space.position.y, Tiles.selectTeal)
+                    }
+                }
                 prevSelectPos.set(selectPosition)
             }
             else
             {
-                val startPosition = World.hero.position
-                val endPosition = selectPosition.toRoomPosition()
-                
                 val startSpace = World.currentRoom.getSpace(startPosition)
                 val endSpace = World.currentRoom.getSpace(endPosition)
                 
                 if (startSpace == endSpace) return
-                val path = Pathfinding.findPathWithGivenRoom(startPosition, endPosition, World.currentRoom)
                 
                 if (path != null)
                 {
@@ -246,6 +265,7 @@ object GameScreen : BaseScreen(), InputProcessor
                                         {
                                             is RoomPassage  ->
                                             {
+                                                Map.changeTile(MapLayer.select, endPosition.x, endPosition.y, Tiles.selectYellow)
                                                 newPosition = when (endEntity.currentRoom)
                                                 {
                                                     passage.roomA -> passage.positionB
@@ -302,6 +322,7 @@ object GameScreen : BaseScreen(), InputProcessor
                     animations += changeMapTile(MapLayer.entity, startPosition.x, startPosition.y, null)
                     for (space in path)
                     {
+                        animations += changeMapTile(MapLayer.select, space.position.x, space.position.y, null)
                         animations += focusGameScreenCamera(space.position)
                         animations += changeMapTile(MapLayer.entity, space.position.x, space.position.y, Tiles.hero)
                         animations += wait(0.1f)
