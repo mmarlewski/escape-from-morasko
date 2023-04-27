@@ -1,5 +1,6 @@
 package com.efm
 
+import com.badlogic.gdx.Gdx
 import com.efm.entities.*
 import com.efm.level.Level
 import com.efm.level.World
@@ -350,4 +351,156 @@ fun World.createWorld()
     
     forge1.addEntityAt(hero, forge.getStartingPosition())
     forge1.updateSpacesEntities()
+    
+}
+
+fun World.addTestBigRoomsLevel()
+{
+    // rooms
+    // tbrl1
+    val tbrl1 = Room("1", 11, 11)
+    for (y in 1 until tbrl1.heightInSpaces)
+    {
+        for (x in 1 until tbrl1.widthInSpaces)
+        {
+            tbrl1.changeBaseAt(Base.values()[y % 4], x, y)
+        }
+    }
+    for (y in 4 until 6)
+    {
+        for (x in 4 until 6)
+        {
+            tbrl1.changeBaseAt(Base.lava, x, y)
+        }
+    }
+    for (y in 1 until tbrl1.heightInSpaces)
+    {
+        tbrl1.addEntityAt(StoneWall(Direction.right), 0, y)
+    }
+    for (x in 1 until tbrl1.widthInSpaces)
+    {
+        tbrl1.addEntityAt(StoneWall(Direction.down), x, 0)
+    }
+    // tbrl2
+    val tbrl2 = Room("2", 16, 16)
+    for (y in 1 until tbrl2.heightInSpaces)
+    {
+        for (x in 1 until tbrl2.widthInSpaces)
+        {
+            tbrl2.changeBaseAt(Base.values()[x % 4], x, y)
+        }
+    }
+    for (y in 5 until 6)
+    {
+        for (x in 2 until 10)
+        {
+            tbrl2.changeBaseAt(Base.lava, x, y)
+        }
+    }
+    for (y in 1 until tbrl2.heightInSpaces)
+    {
+        tbrl2.addEntityAt(StoneWall(Direction.right), 0, y)
+    }
+    for (x in 1 until tbrl2.widthInSpaces)
+    {
+        tbrl2.addEntityAt(StoneWall(Direction.down), x, 0)
+    }
+    // tbrl3
+    val tbrl3 = Room("3", 6, 21)
+    for (y in 1 until tbrl3.heightInSpaces)
+    {
+        for (x in 1 until tbrl3.widthInSpaces)
+        {
+            if (x % 2 == 0 && y % 2 == 0)
+                tbrl3.changeBaseAt(Base.values()[2], x, y)
+            else
+                tbrl3.changeBaseAt(Base.values()[0], x, y)
+        }
+    }
+    for (y in 1 until 2)
+    {
+        for (x in 1 until 20)
+        {
+            tbrl3.changeBaseAt(Base.lava, x, y)
+        }
+    }
+    for (y in 1 until tbrl3.heightInSpaces)
+    {
+        tbrl3.addEntityAt(StoneWall(Direction.right), 0, y)
+    }
+    for (x in 1 until tbrl3.widthInSpaces)
+    {
+        tbrl3.addEntityAt(StoneWall(Direction.down), x, 0)
+    }
+    // tbrl4
+    val tbrl4 = Room("4", 21, 6)
+    for (y in 1 until tbrl4.heightInSpaces)
+    {
+        for (x in 1 until tbrl4.widthInSpaces)
+        {
+            if (x % 2 == 0 && y % 2 == 0)
+                tbrl4.changeBaseAt(Base.values()[2], x, y)
+            else
+                tbrl4.changeBaseAt(Base.values()[0], x, y)
+        }
+    }
+    for (y in 1 until 20)
+    {
+        for (x in 1 until 2)
+        {
+            tbrl4.changeBaseAt(Base.lava, x, y)
+        }
+    }
+    for (y in 1 until tbrl4.heightInSpaces)
+    {
+        tbrl4.addEntityAt(StoneWall(Direction.right), 0, y)
+    }
+    for (x in 1 until tbrl4.widthInSpaces)
+    {
+        tbrl4.addEntityAt(StoneWall(Direction.down), x, 0)
+    }
+    // room list
+    val rooms = mutableListOf<Room>(tbrl1, tbrl2, tbrl3, tbrl4)
+    // room passages
+    val roomPassages = mutableListOf<RoomPassage>(
+            RoomPassage(tbrl1, RoomPosition(10, 3), tbrl2, RoomPosition(0, 6), true),
+            RoomPassage(tbrl2, RoomPosition(15, 4), tbrl3, RoomPosition(0, 4), true),
+            RoomPassage(tbrl2, RoomPosition(15, 9), tbrl4, RoomPosition(0, 4), true),
+            RoomPassage(tbrl3, RoomPosition(3, 5), tbrl4, RoomPosition(3, 0), true)
+                                                 )
+    // add room exits
+    for (passage in roomPassages)
+    {
+        Gdx.app.log("tag", passage.positionA.x.toString() + " " + passage.positionA.y.toString())
+        // add in roomA
+        var directionA = Direction.right
+        if (passage.positionA.x == 0)
+            directionA = Direction.right
+        else if (passage.positionA.x == passage.roomA.widthInSpaces - 1)
+            directionA = Direction.left
+        else if (passage.positionA.y == 0)
+            directionA = Direction.down
+        else if (passage.positionA.y == passage.roomA.heightInSpaces - 1)
+            directionA = Direction.up
+        passage.roomA.replaceEntityAt(StoneExit(directionA, passage, passage.roomA), passage.positionA)
+        // add in roomB
+        var directionB = Direction.right
+        if (passage.positionB.x == 0)
+            directionB = Direction.right
+        else if (passage.positionB.x == passage.roomB.widthInSpaces - 1)
+            directionB = Direction.left
+        else if (passage.positionB.y == 0)
+            directionB = Direction.down
+        else if (passage.positionB.y == passage.roomB.heightInSpaces - 1)
+            directionB = Direction.up
+        passage.roomB.replaceEntityAt(StoneExit(directionB, passage, passage.roomB), passage.positionB)
+    }
+    //level passages
+    
+    // level
+    val tbrl = Level("test_level", rooms, roomPassages)
+    tbrl.changeStartingRoom(tbrl2)
+    tbrl.changeStartingPosition(1, 1)
+    // add to World
+    addLevel(tbrl)
 }

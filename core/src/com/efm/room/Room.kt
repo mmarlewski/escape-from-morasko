@@ -29,14 +29,16 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         for (i in 0 until heightInSpaces)
         {
             var spaceRow = arrayOf<Space?>()
-            
+    
             for (j in 0 until widthInSpaces)
             {
                 spaceRow += Space(j, i)
             }
-            
+    
             spaceArray += spaceRow
         }
+        updateSpaceList()
+        updateSpacesEntities()
     }
     
     fun deleteSpaceAt(x : Int, y : Int)
@@ -113,7 +115,23 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     
     fun addEntity(entity : Entity)
     {
-        entities.add(entity)
+        val space = getSpace(entity.position)
+        if (space == null)
+            throw Exception("Position of Entity is outside the bounds of Room")
+        else
+        {
+            if (space.getEntity() != null)
+            //throw Exception("Trying to add Entity to a Space already occupied by another Entity")
+            else
+            {
+                entities.add(entity)
+                space.changeEntity(entity)
+                // adding a character
+                if (entity is Character)
+                    characters.add(entity)
+            }
+        }
+    
     }
     
     fun addEntityAt(entity : Entity, x : Int, y : Int)
@@ -128,8 +146,26 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         addEntity(entity)
     }
     
+    fun replaceEntityAt(entity : Entity, x : Int, y : Int)
+    {
+        replaceEntityAt(entity, RoomPosition(x, y))
+    }
+    
+    fun replaceEntityAt(entity : Entity, position : RoomPosition)
+    {
+        val space = getSpace(position)
+        if (space != null)
+        {
+            val currentEntity = space.getEntity()
+            if (currentEntity != null)
+                removeEntity(currentEntity)
+        }
+        addEntityAt(entity, position)
+    }
+    
     fun removeEntity(entity : Entity)
     {
         entities.remove(entity)
+        getSpace(entity.position)?.clearEntity()
     }
 }

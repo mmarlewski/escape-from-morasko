@@ -5,11 +5,10 @@ import com.efm.entity.Entity
 /**
  * Fragment of a Room's area, corresponds to Map's tile
  */
-class Space(x : Int, y : Int)
+class Space(x : Int, y : Int, private var base : Base? = null)
 {
     val position = RoomPosition(x, y)
     private var entity : Entity? = null
-    private var base : Base? = null
     
     fun getEntity() : Entity?
     {

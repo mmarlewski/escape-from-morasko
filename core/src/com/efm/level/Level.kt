@@ -13,12 +13,13 @@ import com.efm.room.RoomPosition
  * @property roomPassages RoomPassages between Rooms in the Level. Used to put Exits in Rooms.
  * @property levelPassages LevelPassages in Rooms that lead to another Levels. Used to put Exits in Rooms.
  */
-class Level(val name : String)
+class Level(
+        val name : String,
+        private val rooms : MutableList<Room> = mutableListOf(),
+        private val roomPassages : MutableList<RoomPassage> = mutableListOf(),
+        private val levelPassages : MutableList<LevelPassage> = mutableListOf()
+           )
 {
-    private val rooms = mutableListOf<Room>()
-    private val roomPassages = mutableListOf<RoomPassage>()
-    private val levelPassages = mutableListOf<LevelPassage>()
-    
     private lateinit var startingRoom : Room
     private val startingPosition = RoomPosition()
     

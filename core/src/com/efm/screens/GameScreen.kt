@@ -17,7 +17,8 @@ import com.efm.assets.*
 import com.efm.entities.Hero
 import com.efm.level.World
 import com.efm.passage.*
-import com.efm.room.*
+import com.efm.room.RoomPosition
+import com.efm.room.toRoomPosition
 import kotlin.math.floor
 
 object GameScreen : BaseScreen(), InputProcessor
@@ -250,13 +251,29 @@ object GameScreen : BaseScreen(), InputProcessor
                                 var newPosition = endPosition
                                 var newRoom = World.currentRoom
                                 var newLevel = World.currentLevel
-                                
+    
                                 val endEntity = endSpace?.getEntity()
-                                
+                                val endBase = endSpace?.getBase()
+    
                                 when (endEntity)
                                 {
-                                    null, is Hero ->
+                                    is Hero       ->
                                     {
+                                    }
+                                    null          ->
+                                    {
+                                        if (endBase == null || endBase.isTreadable == false)
+                                        {
+                                            val lastSpace = path.lastOrNull()
+                                            newPosition = if (lastSpace != null)
+                                            {
+                                                lastSpace.position
+                                            }
+                                            else
+                                            {
+                                                startPosition
+                                            }
+                                        }
                                     }
                                     
                                     is Exit       ->
