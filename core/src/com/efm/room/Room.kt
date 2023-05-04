@@ -1,5 +1,6 @@
 package com.efm.room
 
+import com.badlogic.gdx.Gdx
 import com.efm.entity.Character
 import com.efm.entity.Entity
 import com.efm.passage.Passage
@@ -75,7 +76,7 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         for (entity in entities)
         {
             val space = getSpace(entity.position)
-            space?.changeEntity(entity)
+            space?.setEntity(entity)
         }
     }
     
@@ -115,23 +116,18 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     
     fun addEntity(entity : Entity)
     {
+        // add to list
+        entities.add(entity)
+        if (entity is Character) characters.add(entity)
+        // add to space if space exists
         val space = getSpace(entity.position)
-        if (space == null)
-            throw Exception("Position of Entity is outside the bounds of Room")
-        else
+        if (space != null)
         {
-            if (space.getEntity() != null)
-            //throw Exception("Trying to add Entity to a Space already occupied by another Entity")
-            else
-            {
-                entities.add(entity)
-                space.changeEntity(entity)
-                // adding a character
-                if (entity is Character)
-                    characters.add(entity)
-            }
+            if (space.getEntity() == null) space.setEntity(entity)
+            else //throw Exception("Tried to add Entity to Space already occupied by another Entity")
+                Gdx.app.log("warning", "Added Entity to Space already occupied by another Entity")
         }
-    
+        else Gdx.app.log("warning", "No Space exists in the position of added Entity.")
     }
     
     fun addEntityAt(entity : Entity, x : Int, y : Int)
@@ -157,8 +153,7 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         if (space != null)
         {
             val currentEntity = space.getEntity()
-            if (currentEntity != null)
-                removeEntity(currentEntity)
+            if (currentEntity != null) removeEntity(currentEntity)
         }
         addEntityAt(entity, position)
     }

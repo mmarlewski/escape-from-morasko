@@ -15,7 +15,7 @@ class Space(x : Int, y : Int, private var base : Base? = null)
         return entity
     }
     
-    fun changeEntity(newEntity : Entity)
+    fun setEntity(newEntity : Entity)
     {
         entity = newEntity
     }
