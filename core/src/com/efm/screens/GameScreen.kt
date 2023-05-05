@@ -3,6 +3,8 @@ package com.efm.screens
 import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.input.GestureDetector
+import com.badlogic.gdx.input.GestureDetector.GestureListener
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
@@ -16,20 +18,24 @@ import com.efm.Map
 import com.efm.assets.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import kotlin.math.abs
 
-object GameScreen : BaseScreen(), InputProcessor
+object GameScreen : BaseScreen(), GestureListener
 {
     val hudCamera = OrthographicCamera()
     val gameCamera = OrthographicCamera()
     val hudViewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, hudCamera)
     val gameViewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, gameCamera)
     val stage = Stage(hudViewport, EscapeFromMorasko.spriteBatch)
-    val inputMultiplexer = InputMultiplexer(stage, this)
+    val inputMultiplexer = InputMultiplexer(stage, GestureDetector(this))
     val mapRenderer = IsometricTiledMapRenderer(Map.tiledMap, 1f, EscapeFromMorasko.spriteBatch)
     
     // dragging
     var isDragging = false
     val dragOriginPosition = Vector2()
+    
+    // zooming
+    var currZoom = 0.33f
     
     // touch
     var isTouchDown = false
@@ -97,7 +103,7 @@ object GameScreen : BaseScreen(), InputProcessor
         Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
         
         // camera
-        changeCameraZoom(0.25f)
+        changeCameraZoom(currZoom)
         focusCameraOnRoomPosition(World.hero.position)
     }
     
@@ -129,6 +135,11 @@ object GameScreen : BaseScreen(), InputProcessor
                 Map.changeTile(MapLayer.entity, j, i, tile)
             }
         }
+    }
+    
+    fun getCameraZoom() : Float
+    {
+        return gameCamera.zoom
     }
     
     fun changeCameraZoom(newZoom : Float)
@@ -185,53 +196,43 @@ object GameScreen : BaseScreen(), InputProcessor
         stage.dispose()
     }
     
-    // overridden InputProcessor methods
+    // overridden GestureListener methods
     
-    override fun keyDown(keycode : Int) : Boolean
+    override fun touchDown(x : Float, y : Float, pointer : Int, button : Int) : Boolean
     {
+        currZoom = getCameraZoom()
+        
         return true
     }
     
-    override fun keyUp(keycode : Int) : Boolean
+    override fun tap(x : Float, y : Float, count : Int, button : Int) : Boolean
     {
-        return true
-    }
-    
-    override fun keyTyped(character : Char) : Boolean
-    {
-        return true
-    }
-    
-    override fun touchDown(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
-    {
-        isTouchDown = true
-        val newScreenTouchPosition = Vector2(screenX.toFloat(), screenY.toFloat())
+        isTouched = true
+        
+        val newScreenTouchPosition = Vector2(x, y)
         updateScreenWorldMapTouchPositions(newScreenTouchPosition)
         
         return true
     }
     
-    override fun touchUp(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
+    override fun longPress(x : Float, y : Float) : Boolean
     {
-        if (isDragging)
-        {
-            isDragging = false
-        }
-        else
-        {
-            if (isTouchDown)
-            {
-                isTouchDown = false
-                isTouched = true
-            }
-        }
-        
         return true
     }
     
-    override fun touchDragged(screenX : Int, screenY : Int, pointer : Int) : Boolean
+    override fun fling(velocityX : Float, velocityY : Float, button : Int) : Boolean
     {
-        updateScreenWorldMapTouchPositions(Vector2(screenX.toFloat(), screenY.toFloat()))
+        return true
+    }
+    
+    override fun pan(x : Float, y : Float, deltaX : Float, deltaY : Float) : Boolean
+    {
+        if (Animating.isAnimating)
+        {
+            return true
+        }
+        
+        updateScreenWorldMapTouchPositions(Vector2(x, y))
         
         if (isDragging)
         {
@@ -251,16 +252,36 @@ object GameScreen : BaseScreen(), InputProcessor
             dragOriginPosition.set(worldTouchPosition)
             isDragging = true
         }
+        
         return true
     }
     
-    override fun mouseMoved(screenX : Int, screenY : Int) : Boolean
+    override fun panStop(x : Float, y : Float, pointer : Int, button : Int) : Boolean
+    {
+        isDragging = false
+        
+        return true
+    }
+    
+    override fun zoom(initialDistance : Float, distance : Float) : Boolean
+    {
+        val zoomChange = initialDistance / distance
+        changeCameraZoom(currZoom * zoomChange)
+        
+        return true
+    }
+    
+    override fun pinch(
+            initialPointer1 : Vector2?,
+            initialPointer2 : Vector2?,
+            pointer1 : Vector2?,
+            pointer2 : Vector2?
+                      ) : Boolean
     {
         return true
     }
     
-    override fun scrolled(amountX : Float, amountY : Float) : Boolean
+    override fun pinchStop()
     {
-        return true
     }
 }
