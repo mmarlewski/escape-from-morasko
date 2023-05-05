@@ -1,6 +1,8 @@
 package com.efm
 
 import com.badlogic.gdx.maps.tiled.*
+import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
+import com.efm.room.RoomPosition
 
 enum class MapLayer
 {
@@ -17,6 +19,14 @@ object Map
     val tileLengthQuarterInPixels = 16
     
     val tiledMap = TiledMap()
+    
+    init
+    {
+        for (mapLayer in MapLayer.values())
+        {
+            newLayer(mapLayer)
+        }
+    }
     
     fun clearLayer(mapLayer : MapLayer)
     {
@@ -56,6 +66,21 @@ object Map
         }
         
         tiledMap.layers.add(newLayer)
+    }
+    
+    fun changeTile(mapLayer : MapLayer, roomPosition : RoomPosition, tile : TiledMapTile?)
+    {
+        val layer = tiledMap.layers.get(mapLayer.name) as? TiledMapTileLayer
+        
+        if (layer != null)
+        {
+            val cell = layer.getCell(roomPosition.x, mapHeightInTiles - roomPosition.y - 1)
+            
+            if (cell != null)
+            {
+                cell.tile = tile
+            }
+        }
     }
     
     fun changeTile(mapLayer : MapLayer, x : Int, y : Int, tile : TiledMapTile?)

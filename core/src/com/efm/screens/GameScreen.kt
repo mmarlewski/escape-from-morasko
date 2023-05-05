@@ -1,11 +1,11 @@
 package com.efm.screens
 
 import com.badlogic.gdx.*
-import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
@@ -14,12 +14,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
-import com.efm.entities.Hero
 import com.efm.level.World
-import com.efm.passage.*
 import com.efm.room.RoomPosition
-import com.efm.room.toRoomPosition
-import kotlin.math.floor
 
 object GameScreen : BaseScreen(), InputProcessor
 {
@@ -29,39 +25,18 @@ object GameScreen : BaseScreen(), InputProcessor
     val gameViewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, gameCamera)
     val stage = Stage(hudViewport, EscapeFromMorasko.spriteBatch)
     val inputMultiplexer = InputMultiplexer(stage, this)
-    
-    // map
     val mapRenderer = IsometricTiledMapRenderer(Map.tiledMap, 1f, EscapeFromMorasko.spriteBatch)
     
-    // animation
-    var isAnimation = false
-    var animations = mutableListOf<Animation>()
-    var animation : Animation = wait(0f)
-    var nextAnimation : Animation? = wait(0f)
-    var isWait = false
-    var deltaTime = 0f
-    var waitTimeInSeconds = 0f
-    
     // dragging
-    private var touchStartTime = 0L
-    private var isDragging = false
-    var dragOrigin = Vector2()
-    var dragDifference = Vector2()
+    var isDragging = false
+    val dragOriginPosition = Vector2()
     
-    // mouse
-    
-    var screenMousePosition = Vector2()
-    var worldMousePosition = Vector2()
-    var isMouseInMap = false
-    var mapMousePosition = Vector2()
-    var selectPosition = Vector2()
-    
-    // other
-    var tempVector2 = Vector2()
-    
-    //movement
-    var prevSelectPos = Vector2(0.0F, 0.0F)
-    var isMovingMode = true
+    // touch
+    var isTouchDown = false
+    var isTouched = false
+    val screenTouchPosition = Vector2()
+    var worldTouchPosition = Vector2()
+    val roomTouchPosition = RoomPosition()
     
     init
     {
@@ -69,7 +44,6 @@ object GameScreen : BaseScreen(), InputProcessor
         super.inputProcessor = inputMultiplexer
         
         // hud
-        
         val menuTextButton = textButtonOf(
                 "back to menu",
                 Fonts.pixeloid20,
@@ -84,7 +58,6 @@ object GameScreen : BaseScreen(), InputProcessor
             playSoundOnce(Sounds.blop)
             changeScreen(MenuScreen)
         }
-        
         val menuMovingModeButton = textButtonOf(
                 "moving",
                 Fonts.pixeloid20,
@@ -97,7 +70,19 @@ object GameScreen : BaseScreen(), InputProcessor
                                                )
         {
             playSoundOnce(Sounds.blop)
-            isMovingMode = !isMovingMode
+            when (currState)
+            {
+                noPositionSelected ->
+                {
+                    noPositionSelected.isMovingMode = !noPositionSelected.isMovingMode
+                }
+                else               ->
+                {
+                    Map.clearLayer(MapLayer.select)
+                    currState = noPositionSelected
+                    noPositionSelected.isMovingMode = false
+                }
+            }
         }
         val table = Table()
         table.setFillParent(true)
@@ -107,19 +92,16 @@ object GameScreen : BaseScreen(), InputProcessor
         stage.addActor(table)
         
         // map
+        updateMapBaseLayer()
+        updateMapEntityLayer()
+        Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
         
-        Map.newLayer(MapLayer.base)
-        Map.newLayer(MapLayer.select)
-        Map.newLayer(MapLayer.entity)
-        
-        updateMapBase()
-        updateMapSelect()
-        updateMapEntity()
-        
-        focusCamera(World.hero.position)
+        // camera
+        changeCameraZoom(0.25f)
+        focusCameraOnRoomPosition(World.hero.position)
     }
     
-    fun updateMapBase()
+    fun updateMapBaseLayer()
     {
         for (i in 0 until Map.mapHeightInTiles)
         {
@@ -134,20 +116,7 @@ object GameScreen : BaseScreen(), InputProcessor
         }
     }
     
-    fun updateMapSelect()
-    {
-        for (i in 0 until Map.mapHeightInTiles)
-        {
-            for (j in 0 until Map.mapWidthInTiles)
-            {
-                val tile = if (selectPosition.x.toInt() == j && selectPosition.y.toInt() == i) Tiles.selectYellow else null
-                
-                Map.changeTile(MapLayer.select, j, i, tile)
-            }
-        }
-    }
-    
-    fun updateMapEntity()
+    fun updateMapEntityLayer()
     {
         for (i in 0 until Map.mapHeightInTiles)
         {
@@ -162,228 +131,41 @@ object GameScreen : BaseScreen(), InputProcessor
         }
     }
     
-    fun updateMouse(screenX : Int, screenY : Int)
+    fun changeCameraZoom(newZoom : Float)
     {
-        screenMousePosition.set(screenX.toFloat(), screenY.toFloat())
-        worldMousePosition.set(screenMousePosition)
-        gameViewport.unproject(worldMousePosition)
+        gameCamera.zoom = newZoom
+    }
+    
+    fun focusCameraOnRoomPosition(roomPosition : RoomPosition)
+    {
+        val orthoPosition = roomToOrtho(roomPosition)
+        val isoPosition = orthoToIso(orthoPosition)
+        gameCamera.position.set(isoPosition, 0f)
+    }
+    
+    fun updateScreenWorldMapTouchPositions(newScreenTouchPosition : Vector2)
+    {
+        val newIsoWorldTouchPosition = gameViewport.unproject(newScreenTouchPosition)
+        val newOrthoWorldTouchPosition = isoToOrtho(newIsoWorldTouchPosition)
+        val newRoomTouchPosition = orthoToRoom(newOrthoWorldTouchPosition)
         
-        updateMouse()
-    }
-    
-    fun updateMouse()
-    {
-        isoToOrtho(worldMousePosition, mapMousePosition)
-        mapMousePosition.set(
-                floor(mapMousePosition.x / Map.tileLengthHalfInPixels),
-                floor(mapMousePosition.y / Map.tileLengthHalfInPixels)
-                            )
-        mapMousePosition.y = Map.mapHeightInTiles - mapMousePosition.y - 1
-        isMouseInMap = (
-                mapMousePosition.x.toInt() in 0 until Map.mapWidthInTiles &&
-                        mapMousePosition.y.toInt() in 0 until Map.mapHeightInTiles
-                )
-    }
-    
-    fun focusCamera(position : RoomPosition)
-    {
-        gameCamera.zoom = 0.25f
-        orthoToIso(
-                (position.x * Map.tileLengthHalfInPixels).toFloat(),
-                ((Map.mapHeightInTiles - position.y - 1) * Map.tileLengthHalfInPixels).toFloat(),
-                tempVector2
-                  )
-        gameCamera.position.set(
-                tempVector2.x,
-                tempVector2.y,
-                gameCamera.position.z
-                               )
-    }
-    
-    fun moveHero()
-    {
-        if (isMouseInMap)
-        {
-            updateMouse()
-            
-            selectPosition.set(mapMousePosition)
-            
-            val startPosition = World.hero.position
-            val endPosition = selectPosition.toRoomPosition()
-            val path = Pathfinding.findPathWithGivenRoom(startPosition, endPosition, World.currentRoom)
-            if (selectPosition != prevSelectPos)
-            {
-                updateMapSelect()
-                
-                if (!World.currentRoom.getSpace(selectPosition.toRoomPosition())?.isTraversable()!!)
-                {
-                    Map.changeTile(MapLayer.select, endPosition.x, endPosition.y, Tiles.selectRed)
-                }
-                val endSpace = World.currentRoom.getSpace(endPosition)
-                val endEntity = endSpace?.getEntity()
-                when (endEntity)
-                {
-                    is Exit ->
-                    {
-                        Map.changeTile(MapLayer.select, selectPosition.toRoomPosition().x, selectPosition.toRoomPosition().y, Tiles.selectGreen)
-                    }
-                }
-                if (path != null)
-                {
-                    for (space in path)
-                    {
-                        Map.changeTile(MapLayer.select, space.position.x, space.position.y, Tiles.selectTeal)
-                    }
-                }
-                prevSelectPos.set(selectPosition)
-            }
-            else
-            {
-                val startSpace = World.currentRoom.getSpace(startPosition)
-                val endSpace = World.currentRoom.getSpace(endPosition)
-                
-                if (startSpace == endSpace) return
-                
-                if (path != null)
-                {
-                    val action =
-                            {
-                                var newPosition = endPosition
-                                var newRoom = World.currentRoom
-                                var newLevel = World.currentLevel
-    
-                                val endEntity = endSpace?.getEntity()
-                                val endBase = endSpace?.getBase()
-    
-                                when (endEntity)
-                                {
-                                    is Hero       ->
-                                    {
-                                    }
-                                    null          ->
-                                    {
-                                        if (endBase == null || endBase.isTreadable == false)
-                                        {
-                                            val lastSpace = path.lastOrNull()
-                                            newPosition = if (lastSpace != null)
-                                            {
-                                                lastSpace.position
-                                            }
-                                            else
-                                            {
-                                                startPosition
-                                            }
-                                        }
-                                    }
-                                    
-                                    is Exit       ->
-                                    {
-                                        when (val passage = endEntity.exitPassage)
-                                        {
-                                            is RoomPassage  ->
-                                            {
-                                                Map.changeTile(MapLayer.select, endPosition.x, endPosition.y, Tiles.selectYellow)
-                                                newPosition = when (endEntity.currentRoom)
-                                                {
-                                                    passage.roomA -> passage.positionB
-                                                    passage.roomB -> passage.positionA
-                                                    else          -> newPosition
-                                                }
-                                                newRoom = when (endEntity.currentRoom)
-                                                {
-                                                    passage.roomA -> passage.roomB
-                                                    passage.roomB -> passage.roomA
-                                                    else          -> newRoom
-                                                }
-                                            }
-                                            
-                                            is LevelPassage ->
-                                            {
-                                                newPosition = passage.targetLevel.getStartingPosition()
-                                                newRoom = passage.targetLevel.getStartingRoom()
-                                                newLevel = passage.targetLevel
-                                            }
-                                        }
-                                    }
-                                    
-                                    else          ->
-                                    {
-                                        val lastSpace = path.lastOrNull()
-                                        newPosition = if (lastSpace != null)
-                                        {
-                                            lastSpace.position
-                                        }
-                                        else
-                                        {
-                                            startPosition
-                                        }
-                                    }
-                                }
-                                
-                                World.currentRoom.removeEntity(World.hero)
-                                
-                                World.changeCurrentRoom(newRoom)
-                                World.changeCurrentLevel(newLevel)
-                                
-                                World.currentRoom.addEntityAt(World.hero, newPosition)
-                                World.currentRoom.updateSpacesEntities()
-                                
-                                updateMapBase()
-                                updateMapEntity()
-                                updateMapSelect()
-                                
-                                focusCamera(World.hero.position)
-                            }
-                    
-                    val animations = mutableListOf<Animation>()
-                    animations += changeMapTile(MapLayer.entity, startPosition.x, startPosition.y, null)
-                    for (space in path)
-                    {
-                        animations += changeMapTile(MapLayer.select, space.position.x, space.position.y, null)
-                        animations += focusGameScreenCamera(space.position)
-                        animations += changeMapTile(MapLayer.entity, space.position.x, space.position.y, Tiles.hero)
-                        animations += wait(0.1f)
-                        animations += changeMapTile(MapLayer.entity, space.position.x, space.position.y, null)
-                    }
-                    animations += action(action)
-                    executeAnimations(animations)
-                }
-            }
-        }
+        screenTouchPosition.set(newScreenTouchPosition)
+        worldTouchPosition.set(newIsoWorldTouchPosition)
+        roomTouchPosition.set(newRoomTouchPosition)
     }
     
     // overridden BaseScreen methods
     
     override fun render(delta : Float)
     {
-        if (isAnimation)
-        {
-            if (isWait)
-            {
-                deltaTime += Gdx.graphics.deltaTime
-                if (deltaTime > (animation as wait).seconds)
-                {
-                    isWait = false
-                }
-            }
-            else
-            {
-                if (nextAnimation != null)
-                {
-                    animation = nextAnimation as Animation
-                }
-                else
-                {
-                    isAnimation = false
-                }
-                
-                animation.execute()
-                
-                val nextAnimationIndex = animations.indexOf(animation) + 1
-                nextAnimation = animations.getOrNull(nextAnimationIndex)
-            }
-        }
+        // update
+        updateState()
+        isTouched = false
         
+        // animation
+        Animating.updateAnimations()
+        
+        // render
         ScreenUtils.clear(Colors.black)
         hudCamera.update()
         gameCamera.update()
@@ -407,29 +189,6 @@ object GameScreen : BaseScreen(), InputProcessor
     
     override fun keyDown(keycode : Int) : Boolean
     {
-        when (keycode)
-        {
-            Keys.S ->
-            {
-                if (isMouseInMap)
-                {
-                    updateMouse()
-                    
-                    selectPosition.set(mapMousePosition)
-                    updateMapSelect()
-                    
-                    World.hero.changePosition(selectPosition.toRoomPosition())
-                    World.currentRoom.updateSpacesEntities()
-                    updateMapEntity()
-                }
-            }
-            
-            Keys.F ->
-            {
-                focusCamera(selectPosition.toRoomPosition())
-            }
-        }
-        
         return true
     }
     
@@ -445,39 +204,51 @@ object GameScreen : BaseScreen(), InputProcessor
     
     override fun touchDown(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
     {
-        touchStartTime = System.currentTimeMillis()
-        isDragging = false
+        isTouchDown = true
+        val newScreenTouchPosition = Vector2(screenX.toFloat(), screenY.toFloat())
+        updateScreenWorldMapTouchPositions(newScreenTouchPosition)
+        
         return true
     }
     
     override fun touchUp(screenX : Int, screenY : Int, pointer : Int, button : Int) : Boolean
     {
-        if (!isDragging && (System.currentTimeMillis() - touchStartTime) < 800)
+        if (isDragging)
         {
-            touchDragged(screenX, screenY, pointer)
-            if (isMovingMode)
-            {
-                moveHero()
-            }
-            return true
+            isDragging = false
         }
+        else
+        {
+            if (isTouchDown)
+            {
+                isTouchDown = false
+                isTouched = true
+            }
+        }
+        
         return true
     }
     
     override fun touchDragged(screenX : Int, screenY : Int, pointer : Int) : Boolean
     {
-        updateMouse(screenX, screenY)
+        updateScreenWorldMapTouchPositions(Vector2(screenX.toFloat(), screenY.toFloat()))
         
         if (isDragging)
         {
-            dragDifference.x = worldMousePosition.x - gameCamera.position.x
-            dragDifference.y = worldMousePosition.y - gameCamera.position.y
-            gameCamera.position.x = dragOrigin.x - dragDifference.x
-            gameCamera.position.y = dragOrigin.y - dragDifference.y
+            val dragDifference = Vector2(
+                    worldTouchPosition.x - gameCamera.position.x,
+                    worldTouchPosition.y - gameCamera.position.y
+                                        )
+            val newCameraPosition = Vector3(
+                    dragOriginPosition.x - dragDifference.x,
+                    dragOriginPosition.y - dragDifference.y,
+                    0f
+                                           )
+            gameCamera.position.set(newCameraPosition)
         }
         else
         {
-            dragOrigin.set(worldMousePosition)
+            dragOriginPosition.set(worldTouchPosition)
             isDragging = true
         }
         return true
@@ -485,8 +256,6 @@ object GameScreen : BaseScreen(), InputProcessor
     
     override fun mouseMoved(screenX : Int, screenY : Int) : Boolean
     {
-        updateMouse(screenX, screenY)
-        
         return true
     }
     

@@ -12,7 +12,11 @@ class `map`
 {
     @Before fun removeAllLayers()
     {
-        Map.tiledMap.layers.forEach { Map.tiledMap.layers.remove(it) }
+        for (mapLayer in MapLayer.values())
+        {
+            val layer = Map.tiledMap.layers[mapLayer.name]
+            Map.tiledMap.layers.remove(layer)
+        }
     }
     
     @Test fun `clearLayer clears all tiles of layer`()
@@ -72,17 +76,20 @@ class `map`
     
     @Test fun `newLayer adds new layer with new cells`()
     {
+        val nonExistingLayer = Map.tiledMap.layers.get(MapLayer.base.name) as? TiledMapTileLayer
+        assertNull(nonExistingLayer)
+        
         Map.newLayer(MapLayer.base)
+        val existingLayer = Map.tiledMap.layers.get(MapLayer.base.name) as? TiledMapTileLayer
+        assertNotNull(existingLayer)
         
-        val layer = Map.tiledMap.layers.get(MapLayer.base.name) as? TiledMapTileLayer
-        
-        if (layer != null)
+        if (existingLayer != null)
         {
             for (i in 0 until Map.mapHeightInTiles)
             {
                 for (j in 0 until Map.mapWidthInTiles)
                 {
-                    val cell = layer.getCell(j, i)
+                    val cell = existingLayer.getCell(j, i)
                     
                     if (cell == null)
                     {
