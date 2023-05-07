@@ -102,14 +102,11 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
                 World.currentRoom.addEntityAt(World.hero, newPosition)
                 World.currentRoom.updateSpacesEntities()
                 
-                Map.clearLayer(MapLayer.select)
-                Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-                
                 GameScreen.focusCameraOnRoomPosition(World.hero.position)
-                
                 GameScreen.updateMapBaseLayer()
                 GameScreen.updateMapEntityLayer()
-                
+                Map.clearLayer(MapLayer.select)
+                Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
             }
     
     val animations = mutableListOf<Animation>()

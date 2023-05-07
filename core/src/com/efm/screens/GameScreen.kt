@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
@@ -38,11 +39,14 @@ object GameScreen : BaseScreen(), GestureListener
     var currZoom = 0.33f
     
     // touch
-    var isTouchDown = false
     var isTouched = false
     val screenTouchPosition = Vector2()
     var worldTouchPosition = Vector2()
     val roomTouchPosition = RoomPosition()
+    
+    // hud
+    lateinit var menuTextButton : TextButton
+    lateinit var xButton : TextButton
     
     init
     {
@@ -50,7 +54,7 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
-        val menuTextButton = textButtonOf(
+        menuTextButton = textButtonOf(
                 "back to menu",
                 Fonts.pixeloid20,
                 Color.FOREST,
@@ -59,13 +63,13 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                         )
+                                     )
         {
             playSoundOnce(Sounds.blop)
             changeScreen(MenuScreen)
         }
-        val menuMovingModeButton = textButtonOf(
-                "moving",
+        xButton = textButtonOf(
+                "X",
                 Fonts.pixeloid20,
                 Color.FOREST,
                 Textures.upNinePatch,
@@ -73,38 +77,33 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                               )
+                              )
         {
             playSoundOnce(Sounds.blop)
-            when (currState)
-            {
-                noPositionSelected ->
-                {
-                    noPositionSelected.isMovingMode = !noPositionSelected.isMovingMode
-                }
-                else               ->
-                {
-                    Map.clearLayer(MapLayer.select)
-                    currState = noPositionSelected
-                    noPositionSelected.isMovingMode = false
-                }
-            }
+            xButton.isVisible = false
+            Map.clearLayer(MapLayer.select)
+            changeState(State.free.noSelection)
         }
         val table = Table()
         table.setFillParent(true)
         table.align(Align.topLeft)
         table.add(menuTextButton)
-        table.add(menuMovingModeButton)
+        table.add(xButton)
         stage.addActor(table)
         
         // map
         updateMapBaseLayer()
         updateMapEntityLayer()
-        Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
         
         // camera
         changeCameraZoom(currZoom)
         focusCameraOnRoomPosition(World.hero.position)
+        
+        // hud
+        xButton.isVisible = false
+        
+        // state
+        changeState(State.free.noSelection)
     }
     
     fun updateMapBaseLayer()
