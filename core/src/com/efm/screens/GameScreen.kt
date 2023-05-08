@@ -102,9 +102,10 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.knobBeforeNinePatch,
                 Textures.knobHealthbarAfterNinePatch
                                      )
-        val healthBarValue = "0"
+        val healthBarValueCurrent = "100"
+        val healthBarValueMax = "100"
         val healthBarLabel = labelOf(
-                healthBarValue,
+                healthBarValueCurrent + "/" + healthBarValueMax,
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.knobHealthbarAfterNinePatch
@@ -119,14 +120,32 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.knobAbilitybarAfterNinePatch
                                       )
     
-        val abilityBarValue = "0"
+        val abilityBarValueCurrent = "10"
+        val abilityBarValueMax = "10"
         val abilityBarLabel = labelOf(
-                abilityBarValue,
+                abilityBarValueCurrent + "/" + abilityBarValueMax,
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.knobAbilitybarAfterNinePatch
                                     )
     
+        //item buttons
+        
+        val multiUseAmount = 5
+        val multiUseMapItemButton = textButtonOf(
+                "Multi Use Left: " + multiUseAmount,
+                Fonts.pixeloid20,
+                Colors.black,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                          )
+        {
+            playSoundOnce(Sounds.blop)
+        }
+        
         // hud top right - states
         val stateIndicatorFreeToMoveIcon = imageOf(
                 Textures.freeToMove,
@@ -172,13 +191,12 @@ object GameScreen : BaseScreen(), GestureListener
         tableTopLeft.add(backButton).top().left().expand()
         tableTopLeft.add(healthBar).top().left().expandX().padTop(25f)
         tableTopLeft.add(healthBarLabel).top().left().padLeft(-425f).padTop(15f)
-//        tableTopLeft.add().height(10.0f)
         tableTopLeft.add(abilityBar).top().left().expandX().padTop(25f)
         tableTopLeft.add(abilityBarLabel).top().left().padLeft(-425f).padTop(15f)
     
         tableTopRight.add(endTurnButton).expand().top().right()
 
-        tableBottomLeft.add(xButton).expand().bottom().left()
+        tableBottomLeft.add(multiUseMapItemButton).expand().bottom().left()
     
         tableBottomRight.add(xButton).expand().bottom().right()
         
