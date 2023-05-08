@@ -11,8 +11,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.ScreenUtils
+import com.badlogic.gdx.utils.*
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
@@ -54,42 +53,84 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
-        menuTextButton = textButtonOf(
-                "back to menu",
-                Fonts.pixeloid20,
-                Color.FOREST,
+        val xButton = imageButtonOf(
+                Textures.close,
                 Textures.upNinePatch,
                 Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                     )
-        {
-            playSoundOnce(Sounds.blop)
-            changeScreen(MenuScreen)
-        }
-        xButton = textButtonOf(
-                "X",
-                Fonts.pixeloid20,
-                Color.FOREST,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                              )
+                                   )
         {
             playSoundOnce(Sounds.blop)
             xButton.isVisible = false
             Map.clearLayer(MapLayer.select)
             changeState(State.free.noSelection)
         }
-        val table = Table()
-        table.setFillParent(true)
-        table.align(Align.topLeft)
-        table.add(menuTextButton)
-        table.add(xButton)
-        stage.addActor(table)
+    
+        // hud top left
+        val returnToMenuButton = imageButtonOf(
+                Textures.menuList,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                              )
+        {
+            playSoundOnce(Sounds.blop)
+            changeScreen(MenuScreen)
+        }
+    
+        // hud top right - states
+        val stateIndicatorFreeToMoveIcon = imageOf(
+                Textures.freeToMove,
+                Scaling.none
+                                                  )
+        val stateIndicatorWaitingForPlayerTurnIcon = imageOf(
+                Textures.waitingForPlayerTurn,
+                Scaling.none
+                                                            )
+    
+        val endTurnButton = imageButtonOf(
+                Textures.nextTurn,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                         )
+        {
+            playSoundOnce(Sounds.blop)
+        }
+    
+        val tableTopLeft = Table()
+        tableTopLeft.setFillParent(true)
+        stage.addActor(tableTopLeft)
+        tableTopLeft.pad(15f)
+    
+        val tableTopRight = Table()
+        tableTopRight.setFillParent(true)
+        stage.addActor(tableTopRight)
+        tableTopRight.pad(15f)
+    
+        val tableBottomLeft = Table()
+        tableBottomLeft.setFillParent(true)
+        stage.addActor(tableBottomLeft)
+        tableBottomLeft.pad(15f)
+    
+        val tableBottomRight = Table()
+        tableBottomRight.setFillParent(true)
+        stage.addActor(tableBottomRight)
+        tableBottomRight.pad(15f)
+    
+        tableTopLeft.add(returnToMenuButton).expand().top().left()
+    
+        tableTopRight.add(endTurnButton).expand().top().right()
+
+            tableBottomLeft.add(stateIndicatorWaitingForPlayerTurnIcon).expand().bottom().left()
+    
+        tableBottomRight.add(endTurnButton).expand().bottom().right()
         
         // map
         updateMapBaseLayer()
