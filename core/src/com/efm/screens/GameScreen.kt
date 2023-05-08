@@ -1,7 +1,6 @@
 package com.efm.screens
 
 import com.badlogic.gdx.*
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.input.GestureDetector.GestureListener
@@ -18,7 +17,6 @@ import com.efm.Map
 import com.efm.assets.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import kotlin.math.abs
 
 object GameScreen : BaseScreen(), GestureListener
 {
@@ -104,6 +102,13 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.knobBeforeNinePatch,
                 Textures.knobHealthbarAfterNinePatch
                                      )
+        val healthBarValue = "0"
+        val healthBarLabel = labelOf(
+                healthBarValue,
+                Fonts.pixeloid20,
+                Colors.black,
+                Textures.knobHealthbarAfterNinePatch
+                                    )
         
         val abilityBar = progressBarOf(
                 0.0f,
@@ -113,6 +118,14 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.knobBeforeNinePatch,
                 Textures.knobAbilitybarAfterNinePatch
                                       )
+    
+        val abilityBarValue = "0"
+        val abilityBarLabel = labelOf(
+                abilityBarValue,
+                Fonts.pixeloid20,
+                Colors.black,
+                Textures.knobAbilitybarAfterNinePatch
+                                    )
     
         // hud top right - states
         val stateIndicatorFreeToMoveIcon = imageOf(
@@ -141,8 +154,6 @@ object GameScreen : BaseScreen(), GestureListener
         stage.addActor(tableTopLeft)
         tableTopLeft.pad(15f)
     
-
-    
         val tableTopRight = Table()
         tableTopRight.setFillParent(true)
         stage.addActor(tableTopRight)
@@ -158,10 +169,12 @@ object GameScreen : BaseScreen(), GestureListener
         stage.addActor(tableBottomRight)
         tableBottomRight.pad(15f)
     
-        tableTopLeft.add(backButton).expand().top().left()
-        tableTopLeft.add(healthBar).expand().top().left().padTop(25f)
-        tableTopLeft.add().height(10.0f)
-        tableTopLeft.add(abilityBar).expand().top().left().padTop(25f)
+        tableTopLeft.add(backButton).top().left().expand()
+        tableTopLeft.add(healthBar).top().left().expandX().padTop(25f)
+        tableTopLeft.add(healthBarLabel).top().left().padLeft(-425f).padTop(15f)
+//        tableTopLeft.add().height(10.0f)
+        tableTopLeft.add(abilityBar).top().left().expandX().padTop(25f)
+        tableTopLeft.add(abilityBarLabel).top().left().padLeft(-425f).padTop(15f)
     
         tableTopRight.add(endTurnButton).expand().top().right()
 
