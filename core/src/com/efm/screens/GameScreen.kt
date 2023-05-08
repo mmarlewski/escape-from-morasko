@@ -133,7 +133,7 @@ object GameScreen : BaseScreen(), GestureListener
         
         val multiUseAmount = 5
         val multiUseMapItemButton = textButtonOf(
-                "Multi Use Left: " + multiUseAmount,
+                "Multi use left: " + multiUseAmount,
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.upNinePatch,
@@ -142,6 +142,21 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                           )
+        {
+            playSoundOnce(Sounds.blop)
+        }
+        
+        val stacksAmount = 5
+        val stackableMapItemButton = textButtonOf(
+                "On map stacks left: " + stacksAmount,
+                Fonts.pixeloid20,
+                Colors.black,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                                 )
         {
             playSoundOnce(Sounds.blop)
         }
@@ -197,6 +212,8 @@ object GameScreen : BaseScreen(), GestureListener
         tableTopRight.add(endTurnButton).expand().top().right()
 
         tableBottomLeft.add(multiUseMapItemButton).expand().bottom().left()
+        tableBottomLeft.add(stackableMapItemButton).expandX().bottom().left().padLeft(-500f)
+//        tableBottomLeft.add().expandX().bottom().left().padLeft(0f)
     
         tableBottomRight.add(xButton).expand().bottom().right()
         
