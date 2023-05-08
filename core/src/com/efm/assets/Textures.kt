@@ -55,6 +55,10 @@ object Textures
     val settings = load("settings.png")
     val exit = load("exit.png")
     val info = load("info.png")
+    val menuList = load("menuList.png")
+    val freeToMove = load("freeToMove.png")
+    val waitingForPlayerTurn = load("waitingForPlayerTurn.png")
+    val nextTurn = load("nextTurn.png")
     
     private fun load(name : String) : Texture
     {
