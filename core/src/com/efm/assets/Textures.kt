@@ -59,6 +59,7 @@ object Textures
     val freeToMove = load("freeToMove.png")
     val waitingForPlayerTurn = load("waitingForPlayerTurn.png")
     val nextTurn = load("nextTurn.png")
+    val close = load("close.png")
     
     private fun load(name : String) : Texture
     {
