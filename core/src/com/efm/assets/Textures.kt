@@ -25,10 +25,15 @@ object Textures
     val knobBefore = load("knobBefore.png")
     val knobAfter = load("knobAfter.png")
     val knob = load("knob.png")
+    val knobHealthbarAfter = load("healthbarForeground.png")
+    val knobAbilitybarAfter = load("abilityBarForeground.png")
     val knobBackgroundNinePatch = NinePatch(knobBackground, 3, 3, 3, 3)
     val knobBeforeNinePatch = NinePatch(knobBefore, 5, 5, 5, 5)
     val knobAfterNinePatch = NinePatch(knobAfter, 5, 5, 5, 5)
     val knobNinePatch = NinePatch(knob, 5, 5, 5, 5)
+    val knobHealthbarAfterNinePatch = NinePatch(knobHealthbarAfter, 5, 5, 5, 5)
+    val knobAbilitybarAfterNinePatch = NinePatch(knobAbilitybarAfter, 5, 5, 5, 5)
+    
     
     val cursor = load("cursor.png")
     val selection = load("selection.png")
@@ -60,6 +65,7 @@ object Textures
     val waitingForPlayerTurn = load("waitingForPlayerTurn.png")
     val nextTurn = load("nextTurn.png")
     val close = load("close.png")
+    val back = load("goBack.png")
     
     private fun load(name : String) : Texture
     {

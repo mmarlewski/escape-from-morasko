@@ -81,6 +81,38 @@ object GameScreen : BaseScreen(), GestureListener
             playSoundOnce(Sounds.blop)
             changeScreen(MenuScreen)
         }
+        
+        val backButton = imageButtonOf(
+                Textures.back,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                      )
+        {
+            playSoundOnce(Sounds.blop)
+        }
+        
+        //bars
+        
+        val healthBar = progressBarOf(
+                0.0f,
+                100.0f,
+                1.0f,
+                Textures.knobBackgroundNinePatch,
+                Textures.knobBeforeNinePatch,
+                Textures.knobHealthbarAfterNinePatch
+                                     )
+        
+        val abilityBar = progressBarOf(
+                0.0f,
+                10.0f,
+                1.0f,
+                Textures.knobBackgroundNinePatch,
+                Textures.knobBeforeNinePatch,
+                Textures.knobAbilitybarAfterNinePatch
+                                      )
     
         // hud top right - states
         val stateIndicatorFreeToMoveIcon = imageOf(
@@ -109,6 +141,8 @@ object GameScreen : BaseScreen(), GestureListener
         stage.addActor(tableTopLeft)
         tableTopLeft.pad(15f)
     
+
+    
         val tableTopRight = Table()
         tableTopRight.setFillParent(true)
         stage.addActor(tableTopRight)
@@ -124,11 +158,14 @@ object GameScreen : BaseScreen(), GestureListener
         stage.addActor(tableBottomRight)
         tableBottomRight.pad(15f)
     
-        tableTopLeft.add(returnToMenuButton).expand().top().left()
+        tableTopLeft.add(backButton).expand().top().left()
+        tableTopLeft.add(healthBar).expand().top().left().padTop(25f)
+        tableTopLeft.add().height(10.0f)
+        tableTopLeft.add(abilityBar).expand().top().left().padTop(25f)
     
         tableTopRight.add(endTurnButton).expand().top().right()
 
-//            tableBottomLeft.add(stateIndicatorWaitingForPlayerTurnIcon).expand().bottom().left()
+        tableBottomLeft.add(xButton).expand().bottom().left()
     
         tableBottomRight.add(xButton).expand().bottom().right()
         
