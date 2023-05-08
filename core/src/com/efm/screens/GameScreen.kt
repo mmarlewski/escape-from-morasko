@@ -128,9 +128,9 @@ object GameScreen : BaseScreen(), GestureListener
     
         tableTopRight.add(endTurnButton).expand().top().right()
 
-            tableBottomLeft.add(stateIndicatorWaitingForPlayerTurnIcon).expand().bottom().left()
+//            tableBottomLeft.add(stateIndicatorWaitingForPlayerTurnIcon).expand().bottom().left()
     
-        tableBottomRight.add(endTurnButton).expand().bottom().right()
+        tableBottomRight.add(xButton).expand().bottom().right()
         
         // map
         updateMapBaseLayer()
