@@ -80,7 +80,6 @@ object GameScreen : BaseScreen(), GestureListener
                                               )
         {
             playSoundOnce(Sounds.blop)
-            changeScreen(MenuScreen)
         }
         
         val backToMenuButton = imageButtonOf(
@@ -93,6 +92,7 @@ object GameScreen : BaseScreen(), GestureListener
                                       )
         {
             playSoundOnce(Sounds.blop)
+            changeScreen(MenuScreen)
         }
         
         //bars
@@ -239,7 +239,7 @@ object GameScreen : BaseScreen(), GestureListener
         tableBottomRight.setFillParent(true)
         stage.addActor(tableBottomRight)
         tableBottomRight.pad(15f)
-    
+        
         tableTopLeft.add(backToMenuButton).top().left().expand()
         tableTopLeft.add(healthBar).top().left().expandX().padTop(25f)
         tableTopLeft.add(healthBarLabel).top().left().padLeft(-425f).padTop(15f)
