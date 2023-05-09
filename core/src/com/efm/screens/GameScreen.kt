@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.*
@@ -69,7 +70,7 @@ object GameScreen : BaseScreen(), GestureListener
         }
     
         // hud top left
-        val returnToMenuButton = imageButtonOf(
+        val menuButton = imageButtonOf(
                 Textures.menuList,
                 Textures.upNinePatch,
                 Textures.downNinePatch,
@@ -82,7 +83,7 @@ object GameScreen : BaseScreen(), GestureListener
             changeScreen(MenuScreen)
         }
         
-        val backButton = imageButtonOf(
+        val backToMenuButton = imageButtonOf(
                 Textures.back,
                 Textures.upNinePatch,
                 Textures.downNinePatch,
@@ -199,6 +200,11 @@ object GameScreen : BaseScreen(), GestureListener
         {
             playSoundOnce(Sounds.blop)
         }
+        
+        val chosenEntityIcon = imageOf(
+                Textures.heroIcon,
+                Scaling.none
+                              )
     
         val tableTopLeft = Table()
         tableTopLeft.setFillParent(true)
@@ -220,7 +226,7 @@ object GameScreen : BaseScreen(), GestureListener
         stage.addActor(tableBottomRight)
         tableBottomRight.pad(15f)
     
-        tableTopLeft.add(backButton).top().left().expand()
+        tableTopLeft.add(backToMenuButton).top().left().expand()
         tableTopLeft.add(healthBar).top().left().expandX().padTop(25f)
         tableTopLeft.add(healthBarLabel).top().left().padLeft(-425f).padTop(15f)
         tableTopLeft.add(abilityBar).top().left().expandX().padTop(25f)

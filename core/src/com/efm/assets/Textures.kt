@@ -66,6 +66,8 @@ object Textures
     val nextTurn = load("nextTurn.png")
     val close = load("close.png")
     val back = load("goBack.png")
+    val arrowLeft = load("arrowLeft.png")
+    val heroIcon = load("heroIcon.png")
     
     private fun load(name : String) : Texture
     {
