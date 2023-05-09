@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
+import com.efm.assets.Sounds
+import com.efm.assets.Textures
 
 fun columnOf(vararg actors : Actor) : VerticalGroup
 {
@@ -304,4 +306,54 @@ fun textAreaOf(
     textArea.setPrefRows(rows.toFloat())
     textArea.pack()
     return textArea
+}
+
+fun windowAreaOf(
+        title: String,
+        rows: Int,
+        fontType: BitmapFont,
+        fontColor: Color,
+        messageColor: Color,
+        disabledColor: Color,
+        background: NinePatch,
+        disabledBackground: NinePatch,
+        focusedBackground: NinePatch,
+        cursor: NinePatch,
+        selection: NinePatch
+                    ): Window {
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = fontType
+    windowStyle.titleFontColor = fontColor
+    windowStyle.background = NinePatchDrawable(background)
+    
+    val window = Window(title, windowStyle)
+    
+    val yesButton = imageButtonOf(
+            Textures.check,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                 )
+    {
+        playSoundOnce(Sounds.blop)
+    }
+    
+    val noButton = imageButtonOf(
+            Textures.close,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                 )
+    {
+        playSoundOnce(Sounds.blop)
+    }
+    
+    window.add(yesButton).padTop(50f).padBottom(50f)
+    window.add(noButton).padTop(50f).padBottom(50f)
+    
+    return window
 }
