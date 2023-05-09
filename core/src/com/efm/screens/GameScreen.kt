@@ -51,8 +51,10 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
-        val xButton = imageButtonOf(
-                Textures.close,
+        xButton = textButtonOf(
+                "X",
+                Fonts.pixeloid20,
+                Colors.black,
                 Textures.upNinePatch,
                 Textures.downNinePatch,
                 Textures.overNinePatch,
