@@ -68,6 +68,7 @@ object Textures
     val back = load("goBack.png")
     val arrowLeft = load("arrowLeft.png")
     val heroIcon = load("heroIcon.png")
+    val check = load("check.png")
     
     private fun load(name : String) : Texture
     {

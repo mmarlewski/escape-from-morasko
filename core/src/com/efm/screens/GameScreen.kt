@@ -205,6 +205,20 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.heroIcon,
                 Scaling.none
                               )
+        
+        val popUp = windowAreaOf(
+                "Are you sure?",
+                1,
+                Fonts.pixeloid20,
+                Colors.black,
+                Colors.black,
+                Colors.gray,
+                Textures.upNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch,
+                Textures.overNinePatch,
+                Textures.downNinePatch
+                                )
     
         val tableTopLeft = Table()
         tableTopLeft.setFillParent(true)
