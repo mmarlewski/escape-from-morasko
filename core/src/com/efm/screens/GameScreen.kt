@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.*
@@ -45,6 +46,7 @@ object GameScreen : BaseScreen(), GestureListener
     // hud
     lateinit var menuTextButton : TextButton
     lateinit var xButton : TextButton
+    lateinit var healthBar : ProgressBar
     
     init
     {
@@ -93,8 +95,9 @@ object GameScreen : BaseScreen(), GestureListener
         }
         
         //bars
-        
-        val healthBar = progressBarOf(
+        val healthBarValueCurrent = World.hero.healthPoints //"100"
+        val healthBarValueMax = World.hero.maxHealthPoints //"100"
+        healthBar = progressBarOf(
                 0.0f,
                 healthBarValueMax.toFloat(),
                 1.0f,
