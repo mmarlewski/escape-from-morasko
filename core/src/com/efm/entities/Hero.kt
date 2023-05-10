@@ -8,12 +8,13 @@ import com.efm.room.RoomPosition
 /**
  * Hero has its own turn and is controlled by the player.
  */
-class Hero : Character
+class Hero(
+        override var maxHealthPoints : Int = 100,
+        override var healthPoints : Int = 100,
+        override var alive : Boolean = true
+          ) : Character
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 100
-    override var healthPoints = 100
-    override var alive = true
     
     override fun getTile() : TiledMapTile
     {

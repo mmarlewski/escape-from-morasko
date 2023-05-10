@@ -35,17 +35,17 @@ fun World.createWorld()
     
     // passages
     
-    val betweenForge1AndForge2 = RoomPassage(forge1, RoomPosition(2, 3), forge2, RoomPosition(2, 1), true)
-    val betweenForge1AndForge3 = RoomPassage(forge1, RoomPosition(2, 1), forge3, RoomPosition(2, 3), true)
+    val betweenForge1AndForge2 = RoomPassage(forge1, RoomPosition(2, 3), Direction.down, forge2, RoomPosition(2, 1))
+    val betweenForge1AndForge3 = RoomPassage(forge1, RoomPosition(2, 1), Direction.up, forge3, RoomPosition(2, 3))
     
-    val betweenFurnace1AndFurnace2 = RoomPassage(furnace1, RoomPosition(3, 2), furnace2, RoomPosition(1, 2), true)
-    val betweenFurnace1AndFurnace3 = RoomPassage(furnace1, RoomPosition(1, 2), furnace3, RoomPosition(3, 2), true)
+    val betweenFurnace1AndFurnace2 = RoomPassage(furnace1, RoomPosition(3, 2), Direction.left, furnace2, RoomPosition(1, 2))
+    val betweenFurnace1AndFurnace3 = RoomPassage(furnace1, RoomPosition(1, 2), Direction.right, furnace3, RoomPosition(3, 2))
     
-    val betweenMines1AndMines2 = RoomPassage(mines1, RoomPosition(2, 3), mines2, RoomPosition(2, 1), true)
-    val betweenMines2AndMines3 = RoomPassage(mines2, RoomPosition(2, 3), mines3, RoomPosition(2, 1), true)
+    val betweenMines1AndMines2 = RoomPassage(mines1, RoomPosition(2, 3), Direction.up, mines2, RoomPosition(2, 1))
+    val betweenMines2AndMines3 = RoomPassage(mines2, RoomPosition(2, 3), Direction.up, mines3, RoomPosition(2, 1))
     
-    val fromForge3ToFurnace = LevelPassage(forge3, furnace, true)
-    val fromFurnace3ToMines = LevelPassage(furnace3, mines, true)
+    val fromForge3ToFurnace = LevelPassage(forge3, Direction.up, furnace)
+    val fromFurnace3ToMines = LevelPassage(furnace3, Direction.right, mines, true)
     
     // forge
     
@@ -411,10 +411,8 @@ fun World.addTestBigRoomsLevel()
     {
         for (x in 1 until tbrl3.widthInSpaces)
         {
-            if (x % 2 == 0 && y % 2 == 0)
-                tbrl3.changeBaseAt(Base.values()[2], x, y)
-            else
-                tbrl3.changeBaseAt(Base.values()[0], x, y)
+            if (x % 2 == 0 && y % 2 == 0) tbrl3.changeBaseAt(Base.values()[2], x, y)
+            else tbrl3.changeBaseAt(Base.values()[0], x, y)
         }
     }
     for (y in 1 until 2)
@@ -438,15 +436,13 @@ fun World.addTestBigRoomsLevel()
     {
         for (x in 1 until tbrl4.widthInSpaces)
         {
-            if (x % 2 == 0 && y % 2 == 0)
-                tbrl4.changeBaseAt(Base.values()[2], x, y)
-            else
-                tbrl4.changeBaseAt(Base.values()[0], x, y)
+            if (x % 2 == 0 && y % 2 == 0) tbrl4.changeBaseAt(Base.values()[2], x, y)
+            else tbrl4.changeBaseAt(Base.values()[0], x, y)
         }
     }
     for (y in 1 until 20)
     {
-        for (x in 1 until 2)
+        for (x in 2 until 3)
         {
             tbrl4.changeBaseAt(Base.lava, x, y)
         }
@@ -463,37 +459,18 @@ fun World.addTestBigRoomsLevel()
     val rooms = mutableListOf<Room>(tbrl1, tbrl2, tbrl3, tbrl4)
     // room passages
     val roomPassages = mutableListOf<RoomPassage>(
-            RoomPassage(tbrl1, RoomPosition(10, 3), tbrl2, RoomPosition(0, 6), true),
-            RoomPassage(tbrl2, RoomPosition(15, 4), tbrl3, RoomPosition(0, 4), true),
-            RoomPassage(tbrl2, RoomPosition(15, 9), tbrl4, RoomPosition(0, 4), true),
-            RoomPassage(tbrl3, RoomPosition(3, 5), tbrl4, RoomPosition(3, 0), true)
+            RoomPassage(tbrl1, RoomPosition(10, 3), Direction.left, tbrl2, RoomPosition(0, 6)),
+            RoomPassage(tbrl2, RoomPosition(15, 4), Direction.left, tbrl3, RoomPosition(0, 4)),
+            RoomPassage(tbrl2, RoomPosition(15, 9), Direction.left, tbrl4, RoomPosition(0, 4)),
+            RoomPassage(tbrl3, RoomPosition(3, 5), Direction.up, tbrl4, RoomPosition(3, 0), isActive = false)
                                                  )
     // add room exits
     for (passage in roomPassages)
     {
-        Gdx.app.log("tag", passage.positionA.x.toString() + " " + passage.positionA.y.toString())
         // add in roomA
-        var directionA = Direction.right
-        if (passage.positionA.x == 0)
-            directionA = Direction.right
-        else if (passage.positionA.x == passage.roomA.widthInSpaces - 1)
-            directionA = Direction.left
-        else if (passage.positionA.y == 0)
-            directionA = Direction.down
-        else if (passage.positionA.y == passage.roomA.heightInSpaces - 1)
-            directionA = Direction.up
-        passage.roomA.replaceEntityAt(StoneExit(directionA, passage, passage.roomA), passage.positionA)
+        passage.roomA.replaceEntityAt(StoneExit(passage.directionA, passage, passage.roomA), passage.positionA)
         // add in roomB
-        var directionB = Direction.right
-        if (passage.positionB.x == 0)
-            directionB = Direction.right
-        else if (passage.positionB.x == passage.roomB.widthInSpaces - 1)
-            directionB = Direction.left
-        else if (passage.positionB.y == 0)
-            directionB = Direction.down
-        else if (passage.positionB.y == passage.roomB.heightInSpaces - 1)
-            directionB = Direction.up
-        passage.roomB.replaceEntityAt(StoneExit(directionB, passage, passage.roomB), passage.positionB)
+        passage.roomB.replaceEntityAt(StoneExit(passage.directionB, passage, passage.roomB), passage.positionB)
     }
     //level passages
     
