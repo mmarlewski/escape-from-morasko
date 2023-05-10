@@ -9,6 +9,9 @@ import com.efm.room.RoomPosition
 class CrossbowEnemy : Entity, Enemy
 {
     override val position = RoomPosition()
+    override var maxHealthPoints = 50
+    override var healthPoints = 50
+    override var alive = true
     
     override fun getTile() : TiledMapTile
     {

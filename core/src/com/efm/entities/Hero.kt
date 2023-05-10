@@ -11,6 +11,9 @@ import com.efm.room.RoomPosition
 class Hero : Character
 {
     override val position = RoomPosition()
+    override var maxHealthPoints = 100
+    override var healthPoints = 100
+    override var alive = true
     
     override fun getTile() : TiledMapTile
     {
