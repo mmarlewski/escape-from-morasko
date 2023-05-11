@@ -206,14 +206,19 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.downNinePatch
                                 )
         
+        
+        //top left icons
         val columnTopLeft = columnOf(
                 rowOf(backToMenuButton)
                                     ).align(Align.topLeft)
-        
+    
+    
+        //top right icons
         val columnTopRight = columnOf(
                 rowOf(endTurnButton)
                                      ).align(Align.topRight)
     
+        //bars setup
         val healthStack = Stack()
         healthStack.add(healthBar)
         healthStack.add(healthBarLabel)
@@ -222,36 +227,44 @@ object GameScreen : BaseScreen(), GestureListener
         abilityStack.add(abilityBar)
         abilityStack.add(abilityBarLabel)
     
+        //bars
         val columnTop = columnOf(
                 rowOf(healthStack, abilityStack)
                                 ).align(Align.top)
-        
+    
+        //bottom left icons
         val columnBottomLeft = columnOf(
                 rowOf(multiUseMapItemButton, stackableMapItemButton, stackableSelfItemButton)
                                        ).align(Align.bottomLeft)
-        
+        //bottom right icons
         val columnBottomRight = columnOf(
                 rowOf(xButton)
                                         ).align(Align.bottomRight)
     
-    
+        
+        //padding so it looks nice
         columnTopLeft.pad(15f)
         columnTopRight.pad(15f)
         columnTop.pad(15f)
         columnBottomLeft.pad(15f)
         columnBottomRight.pad(15f)
-
+        
+        //set the size to fill the phone screen
         columnTopLeft.setFillParent(true)
         columnTopRight.setFillParent(true)
         columnTop.setFillParent(true)
         columnBottomLeft.setFillParent(true)
         columnBottomRight.setFillParent(true)
         
+        //display
         GameScreen.stage.addActor(columnTopLeft)
         GameScreen.stage.addActor(columnTopRight)
         GameScreen.stage.addActor(columnTop)
         GameScreen.stage.addActor(columnBottomLeft)
         GameScreen.stage.addActor(columnBottomRight)
+    
+        // xButton is visible only after pressing on hero
+        xButton.isVisible = false
         
         // map
         updateMapBaseLayer()
@@ -260,9 +273,6 @@ object GameScreen : BaseScreen(), GestureListener
         // camera
         changeCameraZoom(currZoom)
         focusCameraOnRoomPosition(World.hero.position)
-        
-        // hud
-        xButton.isVisible = false
         
         // state
         changeState(State.free.noSelection)
