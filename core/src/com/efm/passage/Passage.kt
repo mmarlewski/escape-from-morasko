@@ -1,5 +1,6 @@
 package com.efm.passage
 
+import com.efm.Direction
 import com.efm.level.Level
 import com.efm.room.Room
 import com.efm.room.RoomPosition
@@ -15,8 +16,9 @@ interface Passage
  */
 class LevelPassage(
         val originRoom : Room,
+        val originDirection : Direction,
         val targetLevel : Level,
-        var isActive : Boolean
+        var isActive : Boolean = true
                   ) : Passage
 
 /**
@@ -30,7 +32,9 @@ class LevelPassage(
 class RoomPassage(
         val roomA : Room,
         val positionA : RoomPosition,
+        val directionA : Direction,
         val roomB : Room,
         val positionB : RoomPosition,
-        var isActive : Boolean
+        val directionB : Direction = directionA.opposite(),
+        var isActive : Boolean = true,
                  ) : Passage

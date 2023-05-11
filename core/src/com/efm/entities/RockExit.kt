@@ -8,7 +8,7 @@ import com.efm.passage.*
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 
-class RockExit(val direction : Direction, val passage : Passage, val room : Room) : Entity, Exit
+class RockExit(override val direction : Direction, val passage : Passage, val room : Room) : Entity, Exit
 {
     override val position = RoomPosition()
     override val exitPassage = passage

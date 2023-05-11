@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.*
@@ -45,6 +46,7 @@ object GameScreen : BaseScreen(), GestureListener
     // hud
     lateinit var menuTextButton : TextButton
     lateinit var xButton : TextButton
+    lateinit var healthBar : ProgressBar
     
     init
     {
@@ -61,14 +63,13 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                   )
-        {
+                              ) {
             playSoundOnce(Sounds.blop)
             xButton.isVisible = false
             Map.clearLayer(MapLayer.select)
             changeState(State.free.noSelection)
         }
-    
+        
         // hud top left
         val menuButton = imageButtonOf(
                 Textures.menuList,
@@ -77,8 +78,7 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                              )
-        {
+                                      ) {
             playSoundOnce(Sounds.blop)
         }
         
@@ -89,51 +89,47 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                      )
-        {
+                                            ) {
             playSoundOnce(Sounds.blop)
             changeScreen(MenuScreen)
         }
         
         //bars
-        
-        val healthBar = progressBarOf(
+        val healthBarValueCurrent = World.hero.healthPoints //"100"
+        val healthBarValueMax = World.hero.maxHealthPoints //"100"
+        healthBar = progressBarOf(
                 0.0f,
-                100.0f,
+                healthBarValueMax.toFloat(),
                 1.0f,
                 Textures.knobBackgroundNinePatch,
                 Textures.knobBeforeNinePatch,
                 Textures.knobHealthbarAfterNinePatch
-                                     )
-        val healthBarValueCurrent = "100"
-        val healthBarValueMax = "100"
+                                 )
         val healthBarLabel = labelOf(
-                healthBarValueCurrent + "/" + healthBarValueMax,
+                "$healthBarValueCurrent / $healthBarValueMax",
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.knobHealthbarAfterNinePatch
                                     )
         
+        val abilityBarValueCurrent = 10
+        val abilityBarValueMax = 10
         val abilityBar = progressBarOf(
                 0.0f,
-                10.0f,
+                abilityBarValueMax.toFloat(),
                 1.0f,
                 Textures.knobBackgroundNinePatch,
                 Textures.knobBeforeNinePatch,
                 Textures.knobAbilitybarAfterNinePatch
                                       )
-    
-        val abilityBarValueCurrent = "10"
-        val abilityBarValueMax = "10"
         val abilityBarLabel = labelOf(
-                abilityBarValueCurrent + "/" + abilityBarValueMax,
+                "$abilityBarValueCurrent / $abilityBarValueMax",
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.knobAbilitybarAfterNinePatch
-                                    )
-    
-        //item buttons
+                                     )
         
+        //item buttons
         val multiUseAmount = 5
         val multiUseMapItemButton = textButtonOf(
                 "Multi use left: " + multiUseAmount,
@@ -144,8 +140,7 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                          )
-        {
+                                                ) {
             playSoundOnce(Sounds.blop)
         }
         
@@ -159,11 +154,10 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                                 )
-        {
+                                                 ) {
             playSoundOnce(Sounds.blop)
         }
-    
+        
         val stacksSelfAmount = 5
         val stackableSelfItemButton = textButtonOf(
                 "On self stacks left: " + stacksSelfAmount,
@@ -174,21 +168,18 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                                 )
-        {
+                                                  ) {
             playSoundOnce(Sounds.blop)
         }
         
         // hud top right - states
         val stateIndicatorFreeToMoveIcon = imageOf(
-                Textures.freeToMove,
-                Scaling.none
+                Textures.freeToMove, Scaling.none
                                                   )
         val stateIndicatorWaitingForPlayerTurnIcon = imageOf(
-                Textures.waitingForPlayerTurn,
-                Scaling.none
+                Textures.waitingForPlayerTurn, Scaling.none
                                                             )
-    
+        
         val endTurnButton = imageButtonOf(
                 Textures.nextTurn,
                 Textures.upNinePatch,
@@ -196,15 +187,13 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                         )
-        {
+                                         ) {
             playSoundOnce(Sounds.blop)
         }
         
         val chosenEntityIcon = imageOf(
-                Textures.heroIcon,
-                Scaling.none
-                              )
+                Textures.heroIcon, Scaling.none
+                                      )
         
         val popUp = windowAreaOf(
                 "Are you sure?",
@@ -219,22 +208,22 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.downNinePatch
                                 )
-    
+        
         val tableTopLeft = Table()
         tableTopLeft.setFillParent(true)
         stage.addActor(tableTopLeft)
         tableTopLeft.pad(15f)
-    
+        
         val tableTopRight = Table()
         tableTopRight.setFillParent(true)
         stage.addActor(tableTopRight)
         tableTopRight.pad(15f)
-    
+        
         val tableBottomLeft = Table()
         tableBottomLeft.setFillParent(true)
         stage.addActor(tableBottomLeft)
         tableBottomLeft.pad(15f)
-    
+        
         val tableBottomRight = Table()
         tableBottomRight.setFillParent(true)
         stage.addActor(tableBottomRight)
@@ -245,13 +234,13 @@ object GameScreen : BaseScreen(), GestureListener
         tableTopLeft.add(healthBarLabel).top().left().padLeft(-425f).padTop(15f)
         tableTopLeft.add(abilityBar).top().left().expandX().padTop(25f)
         tableTopLeft.add(abilityBarLabel).top().left().padLeft(-425f).padTop(15f)
-    
+        
         tableTopRight.add(endTurnButton).expand().top().right()
-
+        
         tableBottomLeft.add(multiUseMapItemButton).expand().bottom().left()
         tableBottomLeft.add(stackableMapItemButton).expandX().bottom().left().padLeft(-500f)
         tableBottomLeft.add(stackableSelfItemButton).bottom().left().padLeft(-750f)
-    
+        
         tableBottomRight.add(xButton).expand().bottom().right()
         
         // map
@@ -399,13 +388,10 @@ object GameScreen : BaseScreen(), GestureListener
         if (isDragging)
         {
             val dragDifference = Vector2(
-                    worldTouchPosition.x - gameCamera.position.x,
-                    worldTouchPosition.y - gameCamera.position.y
+                    worldTouchPosition.x - gameCamera.position.x, worldTouchPosition.y - gameCamera.position.y
                                         )
             val newCameraPosition = Vector3(
-                    dragOriginPosition.x - dragDifference.x,
-                    dragOriginPosition.y - dragDifference.y,
-                    0f
+                    dragOriginPosition.x - dragDifference.x, dragOriginPosition.y - dragDifference.y, 0f
                                            )
             gameCamera.position.set(newCameraPosition)
         }
@@ -434,10 +420,7 @@ object GameScreen : BaseScreen(), GestureListener
     }
     
     override fun pinch(
-            initialPointer1 : Vector2?,
-            initialPointer2 : Vector2?,
-            pointer1 : Vector2?,
-            pointer2 : Vector2?
+            initialPointer1 : Vector2?, initialPointer2 : Vector2?, pointer1 : Vector2?, pointer2 : Vector2?
                       ) : Boolean
     {
         return true

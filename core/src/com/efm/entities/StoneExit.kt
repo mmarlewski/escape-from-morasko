@@ -7,7 +7,7 @@ import com.efm.passage.*
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 
-class StoneExit(val direction : Direction, val passage : Passage, val room : Room) : Exit
+class StoneExit(override val direction : Direction, val passage : Passage, val room : Room) : Exit
 {
     override val position = RoomPosition()
     override val exitPassage = passage

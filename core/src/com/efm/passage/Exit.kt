@@ -1,5 +1,6 @@
 package com.efm.passage
 
+import com.efm.Direction
 import com.efm.entity.Entity
 import com.efm.room.Room
 
@@ -10,4 +11,5 @@ interface Exit : Entity
 {
     val exitPassage : Passage
     val currentRoom : Room
+    val direction : Direction
 }
