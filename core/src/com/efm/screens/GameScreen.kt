@@ -8,10 +8,7 @@ import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.*
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
@@ -109,7 +106,7 @@ object GameScreen : BaseScreen(), GestureListener
                 "$healthBarValueCurrent / $healthBarValueMax",
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.knobHealthbarAfterNinePatch
+                Textures.translucentNinePatch
                                     )
         
         val abilityBarValueCurrent = 10
@@ -126,7 +123,7 @@ object GameScreen : BaseScreen(), GestureListener
                 "$abilityBarValueCurrent / $abilityBarValueMax",
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.knobAbilitybarAfterNinePatch
+                Textures.translucentNinePatch
                                      )
         
         //item buttons
@@ -209,39 +206,52 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.downNinePatch
                                 )
         
-        val tableTopLeft = Table()
-        tableTopLeft.setFillParent(true)
-        stage.addActor(tableTopLeft)
-        tableTopLeft.pad(15f)
+        val columnTopLeft = columnOf(
+                rowOf(backToMenuButton)
+                                    ).align(Align.topLeft)
         
-        val tableTopRight = Table()
-        tableTopRight.setFillParent(true)
-        stage.addActor(tableTopRight)
-        tableTopRight.pad(15f)
+        val columnTopRight = columnOf(
+                rowOf(endTurnButton)
+                                     ).align(Align.topRight)
+    
+        val healthStack = Stack()
+        healthStack.add(healthBar)
+        healthStack.add(healthBarLabel)
+    
+        val abilityStack = Stack()
+        abilityStack.add(abilityBar)
+        abilityStack.add(abilityBarLabel)
+    
+        val columnTop = columnOf(
+                rowOf(healthStack, abilityStack)
+                                ).align(Align.top)
         
-        val tableBottomLeft = Table()
-        tableBottomLeft.setFillParent(true)
-        stage.addActor(tableBottomLeft)
-        tableBottomLeft.pad(15f)
+        val columnBottomLeft = columnOf(
+                rowOf(multiUseMapItemButton, stackableMapItemButton, stackableSelfItemButton)
+                                       ).align(Align.bottomLeft)
         
-        val tableBottomRight = Table()
-        tableBottomRight.setFillParent(true)
-        stage.addActor(tableBottomRight)
-        tableBottomRight.pad(15f)
+        val columnBottomRight = columnOf(
+                rowOf(xButton)
+                                        ).align(Align.bottomRight)
+    
+    
+        columnTopLeft.pad(15f)
+        columnTopRight.pad(15f)
+        columnTop.pad(15f)
+        columnBottomLeft.pad(15f)
+        columnBottomRight.pad(15f)
+
+        columnTopLeft.setFillParent(true)
+        columnTopRight.setFillParent(true)
+        columnTop.setFillParent(true)
+        columnBottomLeft.setFillParent(true)
+        columnBottomRight.setFillParent(true)
         
-        tableTopLeft.add(backToMenuButton).top().left().expand()
-        tableTopLeft.add(healthBar).top().left().expandX().padTop(25f)
-        tableTopLeft.add(healthBarLabel).top().left().padLeft(-425f).padTop(15f)
-        tableTopLeft.add(abilityBar).top().left().expandX().padTop(25f)
-        tableTopLeft.add(abilityBarLabel).top().left().padLeft(-425f).padTop(15f)
-        
-        tableTopRight.add(endTurnButton).expand().top().right()
-        
-        tableBottomLeft.add(multiUseMapItemButton).expand().bottom().left()
-        tableBottomLeft.add(stackableMapItemButton).expandX().bottom().left().padLeft(-500f)
-        tableBottomLeft.add(stackableSelfItemButton).bottom().left().padLeft(-750f)
-        
-        tableBottomRight.add(xButton).expand().bottom().right()
+        GameScreen.stage.addActor(columnTopLeft)
+        GameScreen.stage.addActor(columnTopRight)
+        GameScreen.stage.addActor(columnTop)
+        GameScreen.stage.addActor(columnBottomLeft)
+        GameScreen.stage.addActor(columnBottomRight)
         
         // map
         updateMapBaseLayer()
