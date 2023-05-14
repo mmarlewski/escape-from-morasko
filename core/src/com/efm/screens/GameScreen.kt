@@ -4,7 +4,6 @@ import com.badlogic.gdx.*
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.input.GestureDetector.GestureListener
-import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -25,7 +24,7 @@ object GameScreen : BaseScreen(), GestureListener
     val gameViewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, gameCamera)
     val stage = Stage(hudViewport, EscapeFromMorasko.spriteBatch)
     val inputMultiplexer = InputMultiplexer(stage, GestureDetector(this))
-    val mapRenderer = IsometricTiledMapRenderer(Map.tiledMap, 1f, EscapeFromMorasko.spriteBatch)
+    val mapRenderer = CustomIsometricTiledMapRenderer(Map.tiledMap, 1f, EscapeFromMorasko.spriteBatch)
     
     // dragging
     var isDragging = false
@@ -318,9 +317,16 @@ object GameScreen : BaseScreen(), GestureListener
         gameCamera.zoom = newZoom
     }
     
+    fun focusCameraOnVector2(position : Vector2)
+    {
+        val orthoPosition = positionToOrtho(position)
+        val isoPosition = orthoToIso(orthoPosition)
+        gameCamera.position.set(isoPosition, 0f)
+    }
+    
     fun focusCameraOnRoomPosition(roomPosition : RoomPosition)
     {
-        val orthoPosition = roomToOrtho(roomPosition)
+        val orthoPosition = roomPositionToOrtho(roomPosition)
         val isoPosition = orthoToIso(orthoPosition)
         gameCamera.position.set(isoPosition, 0f)
     }
@@ -329,7 +335,7 @@ object GameScreen : BaseScreen(), GestureListener
     {
         val newIsoWorldTouchPosition = gameViewport.unproject(newScreenTouchPosition)
         val newOrthoWorldTouchPosition = isoToOrtho(newIsoWorldTouchPosition)
-        val newRoomTouchPosition = orthoToRoom(newOrthoWorldTouchPosition)
+        val newRoomTouchPosition = orthoToRoomPosition(newOrthoWorldTouchPosition)
         
         screenTouchPosition.set(newScreenTouchPosition)
         worldTouchPosition.set(newIsoWorldTouchPosition)
@@ -345,7 +351,7 @@ object GameScreen : BaseScreen(), GestureListener
         isTouched = false
         
         // animation
-        Animating.updateAnimations()
+        Animating.update()
         
         // render
         ScreenUtils.clear(Colors.black)
@@ -398,7 +404,7 @@ object GameScreen : BaseScreen(), GestureListener
     
     override fun pan(x : Float, y : Float, deltaX : Float, deltaY : Float) : Boolean
     {
-        if (Animating.isAnimating)
+        if (Animating.isAnimating())
         {
             return true
         }

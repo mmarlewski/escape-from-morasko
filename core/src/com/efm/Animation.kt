@@ -1,44 +1,194 @@
 package com.efm
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.badlogic.gdx.math.Vector2
 import com.efm.room.RoomPosition
+import com.efm.room.toVector2
 import com.efm.screens.GameScreen
 
-interface Animation
+sealed class Animation
 {
-    fun execute()
-}
-
-class wait(val seconds : Float) : Animation
-{
-    override fun execute()
+    abstract fun start()
+    
+    abstract fun update()
+    
+    abstract fun isFinished() : Boolean
+    
+    object none : Animation()
     {
-        Animating.deltaTime = 0f
-        Animating.isWaiting = true
-        Animating.waitTimeInSeconds = seconds
+        override fun start()
+        {
+        }
+        
+        override fun update()
+        {
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return true
+        }
     }
-}
-
-class changeMapTile(val mapLayer : MapLayer, val x : Int, val y : Int, val tile : TiledMapTile?) : Animation
-{
-    override fun execute()
+    
+    class simultaneous(val animations : MutableList<Animation>) : Animation()
     {
-        Map.changeTile(mapLayer, x, y, tile)
+        override fun start()
+        {
+            for (animation in animations)
+            {
+                animation.start()
+            }
+        }
+        
+        override fun update()
+        {
+            val finishedAnimations = mutableListOf<Animation>()
+            for (animation in animations)
+            {
+                animation.update()
+                if (animation.isFinished())
+                {
+                    finishedAnimations.add(animation)
+                }
+            }
+            animations.removeAll(finishedAnimations)
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return animations.isEmpty()
+        }
     }
-}
-
-class focusGameScreenCamera(val position : RoomPosition) : Animation
-{
-    override fun execute()
+    
+    class wait(val seconds : Float) : Animation()
     {
-        GameScreen.focusCameraOnRoomPosition(position)
+        override fun start()
+        {
+        }
+        
+        override fun update()
+        {
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (Animating.getDeltaTime() > seconds)
+        }
     }
-}
-
-class action(val action : () -> Unit) : Animation
-{
-    override fun execute()
+    
+    open class moveTile(
+            val tile : TiledMapTile,
+            val from : RoomPosition,
+            val to : RoomPosition,
+            val seconds : Float
+                       ) : Animation()
     {
-        action()
+        val moveTilePosition = Vector2()
+        
+        override fun start()
+        {
+            moveTilePosition.set(from.toVector2())
+        }
+        
+        override fun update()
+        {
+            val timeRatio = Animating.getDeltaTime() / seconds
+            val tileDistanceX = to.x - from.x
+            val tileDistanceY = to.y - from.y
+            moveTilePosition.x = from.x + tileDistanceX * timeRatio
+            moveTilePosition.y = from.y + tileDistanceY * timeRatio
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (Animating.getDeltaTime() > seconds)
+        }
+    }
+    
+    class moveTileWithCameraFocus(
+            tile : TiledMapTile,
+            from : RoomPosition,
+            to : RoomPosition,
+            seconds : Float
+                                 ) : moveTile(tile, from, to, seconds)
+    {
+        override fun start()
+        {
+            super.start()
+        }
+        
+        override fun update()
+        {
+            super.update()
+            
+            GameScreen.focusCameraOnVector2(moveTilePosition)
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return super.isFinished()
+        }
+    }
+    
+    open class showTile(
+            val tile : TiledMapTile,
+            val where : RoomPosition,
+            val seconds : Float
+                       ) : Animation()
+    {
+        
+        override fun start()
+        {
+        }
+        
+        override fun update()
+        {
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (Animating.getDeltaTime() > seconds)
+        }
+    }
+    
+    class showTileWithCameraFocus(
+            tile : TiledMapTile,
+            where : RoomPosition,
+            seconds : Float
+                                 ) : showTile(tile, where, seconds)
+    {
+        override fun start()
+        {
+            super.start()
+            
+            GameScreen.focusCameraOnRoomPosition(where)
+        }
+        
+        override fun update()
+        {
+            super.update()
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return super.isFinished()
+        }
+    }
+    
+    class action(val action : () -> Unit) : Animation()
+    {
+        override fun start()
+        {
+            action()
+        }
+        
+        override fun update()
+        {
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return true
+        }
     }
 }

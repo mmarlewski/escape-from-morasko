@@ -18,7 +18,7 @@ fun updateState()
         is State.free.moveSelectedTwiceToLevelExit.waiting   -> updateFreeMoveSelectedTwiceToLevelExitWaiting(currState)
         is State.free.moveSelectedTwiceToLevelExit.confirmed -> updateFreeMoveSelectedTwiceToLevelExitConfirmed(currState)
         is State.free.moveSelectedTwiceToLevelExit.cancelled -> updateFreeMoveSelectedTwiceToLevelExitCancelled(currState)
-        else                                                 -> State.over
+        else                                                 -> currState
     }
     changeState(newState)
 }
@@ -277,7 +277,7 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
 
 fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : State
 {
-    if (!Animating.isAnimating)
+    if (!Animating.isAnimating())
     {
         GameScreen.roomTouchPosition.set(World.hero.position)
         return State.free.heroSelected

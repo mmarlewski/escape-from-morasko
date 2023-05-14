@@ -4,49 +4,47 @@ import com.badlogic.gdx.Gdx
 
 object Animating
 {
-    var isAnimating = false
-    var animations = mutableListOf<Animation>()
-    var curranimation : Animation = wait(0f)
-    var nextAnimation : Animation? = wait(0f)
-    var isWaiting = false
-    var deltaTime = 0f
-    var waitTimeInSeconds = 0f
+    private var deltaTime = 0f
+    private var animations = mutableListOf<Animation>()
+    private var animationsIterator = animations.iterator()
+    private var currAnimation : Animation = Animation.wait(0f)
+    private var nextAnimation : Animation? = Animation.wait(0f)
+    
+    fun getDeltaTime() : Float
+    {
+        return deltaTime
+    }
+    
+    fun getCurrentAnimation() : Animation
+    {
+        return currAnimation
+    }
+    
+    fun isAnimating() : Boolean
+    {
+        return (currAnimation !is Animation.none)
+    }
     
     fun executeAnimations(animationList : MutableList<Animation>)
     {
-        isAnimating = true
         animations = animationList
-        nextAnimation = animations.firstOrNull()
+        animationsIterator = animations.iterator()
+        nextAnimation = if (animationsIterator.hasNext()) animationsIterator.next() else null
     }
     
-    fun updateAnimations()
+    fun update()
     {
-        if (isAnimating)
+        deltaTime += Gdx.graphics.deltaTime
+        currAnimation.update()
+        
+        if (currAnimation.isFinished())
         {
-            if (isWaiting)
-            {
-                deltaTime += Gdx.graphics.deltaTime
-                if (deltaTime > (curranimation as wait).seconds)
-                {
-                    isWaiting = false
-                }
-            }
-            else
-            {
-                if (nextAnimation != null)
-                {
-                    curranimation = nextAnimation as Animation
-                }
-                else
-                {
-                    isAnimating = false
-                }
-                
-                curranimation.execute()
-                
-                val nextAnimationIndex = animations.indexOf(curranimation) + 1
-                nextAnimation = animations.getOrNull(nextAnimationIndex)
-            }
+            currAnimation = if (nextAnimation != null) nextAnimation as Animation else Animation.none
+            
+            deltaTime = 0f
+            currAnimation.start()
+            
+            nextAnimation = if (animationsIterator.hasNext()) animationsIterator.next() else null
         }
     }
 }

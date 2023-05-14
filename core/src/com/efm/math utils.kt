@@ -2,10 +2,26 @@ package com.efm
 
 import com.badlogic.gdx.math.Vector2
 import com.efm.room.RoomPosition
-import com.efm.screens.GameScreen
 import kotlin.math.floor
 
-fun roomToOrtho(roomPosition : RoomPosition) : Vector2
+fun positionToOrtho(position : Vector2) : Vector2
+{
+    val orthoPosition = Vector2()
+    orthoPosition.x = position.x * Map.tileLengthHalfInPixels
+    orthoPosition.y = (Map.mapHeightInTiles - position.y - 1) * Map.tileLengthHalfInPixels
+    return orthoPosition
+}
+
+fun orthoToPosition(orthoPosition : Vector2) : Vector2
+{
+    val roomPosition = Vector2()
+    roomPosition.x = floor(orthoPosition.x / Map.tileLengthHalfInPixels)
+    roomPosition.y = floor(orthoPosition.y / Map.tileLengthHalfInPixels)
+    roomPosition.y = Map.mapHeightInTiles - roomPosition.y - 1
+    return roomPosition
+}
+
+fun roomPositionToOrtho(roomPosition : RoomPosition) : Vector2
 {
     val orthoPosition = Vector2()
     orthoPosition.x = (roomPosition.x * Map.tileLengthHalfInPixels).toFloat()
@@ -13,7 +29,7 @@ fun roomToOrtho(roomPosition : RoomPosition) : Vector2
     return orthoPosition
 }
 
-fun orthoToRoom(orthoPosition : Vector2) : RoomPosition
+fun orthoToRoomPosition(orthoPosition : Vector2) : RoomPosition
 {
     val roomPosition = RoomPosition()
     roomPosition.x = floor(orthoPosition.x / Map.tileLengthHalfInPixels).toInt()

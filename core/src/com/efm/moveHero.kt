@@ -107,15 +107,15 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
     }
     
     val animations = mutableListOf<Animation>()
-    animations += changeMapTile(MapLayer.entity, startPosition.x, startPosition.y, null)
+    animations += Animation.action { Map.changeTile(MapLayer.entity, World.hero.position, null) }
+    val prevMovePosition = startPosition.copy()
     for (space in path)
     {
-        animations += changeMapTile(MapLayer.select, space.position.x, space.position.y, null)
-        animations += focusGameScreenCamera(space.position)
-        animations += changeMapTile(MapLayer.entity, space.position.x, space.position.y, Tiles.hero)
-        animations += wait(0.1f)
-        animations += changeMapTile(MapLayer.entity, space.position.x, space.position.y, null)
+        animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition.copy(), space.position.copy(), 0.1f)
+        animations += Animation.showTileWithCameraFocus(Tiles.hero, space.position.copy(), 0.01f)
+        prevMovePosition.set(space.position)
     }
-    animations += action(action)
+    animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition, endPosition, 0.1f)
+    animations += Animation.action(action)
     Animating.executeAnimations(animations)
 }
