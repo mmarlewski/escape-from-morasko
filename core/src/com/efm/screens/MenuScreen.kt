@@ -1,5 +1,6 @@
 package com.efm.screens
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.*
@@ -31,7 +32,7 @@ object MenuScreen : BaseScreen()
                 Fonts.inconsolata30,
                 Colors.black,
                 Textures.upLongNinePatch,
-                Textures.downNinePatch,
+                Textures.downLongNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
@@ -46,7 +47,7 @@ object MenuScreen : BaseScreen()
                 Fonts.inconsolata30,
                 Colors.black,
                 Textures.upLongNinePatch,
-                Textures.downNinePatch,
+                Textures.downLongNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
@@ -60,7 +61,7 @@ object MenuScreen : BaseScreen()
                 Fonts.inconsolata30,
                 Colors.black,
                 Textures.upLongNinePatch,
-                Textures.downNinePatch,
+                Textures.downLongNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
@@ -144,7 +145,12 @@ object MenuScreen : BaseScreen()
     
     override fun render(delta : Float)
     {
-        ScreenUtils.clear(Colors.black)
+        ScreenUtils.clear(Color.CLEAR)
+    
+        // Draw the background texture region
+        EscapeFromMorasko.spriteBatch.begin()
+        EscapeFromMorasko.spriteBatch.draw(Textures.mainMenuBackground, 0f, 0f, viewport.worldWidth, viewport.worldHeight)
+        EscapeFromMorasko.spriteBatch.end()
         camera.update()
         stage.draw()
     }
