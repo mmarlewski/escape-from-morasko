@@ -436,6 +436,7 @@ fun menuPopup(
     {
         Sounds.blop.playOnce()
         changeScreen(MenuScreen)
+        window.isVisible = false
     }
     
     window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)
