@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
-import com.efm.assets.Sounds
-import com.efm.assets.Textures
+import com.efm.assets.*
+import com.efm.screens.MenuScreen
 
 fun columnOf(vararg actors : Actor) : VerticalGroup
 {
@@ -354,6 +354,91 @@ fun windowAreaOf(
     
     window.add(yesButton).padTop(50f).padBottom(50f)
     window.add(noButton).padTop(50f).padBottom(50f)
+    
+    return window
+}
+
+fun menuPopup(
+        title: String,
+        fontType: BitmapFont,
+        fontColor: Color,
+        background: NinePatch
+                ): Window {
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = fontType
+    windowStyle.titleFontColor = fontColor
+    windowStyle.background = NinePatchDrawable(background)
+    
+    val window = Window(title, windowStyle)
+    
+    // Get the title label from the window's title table
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    
+    // Set the alignment of the title label to center
+    titleLabel.setAlignment(Align.center)
+    
+    // Set the width of the title label to fill the title table
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(50f)
+
+    
+    val resumeButton = textButtonOf(
+            "resume",
+            Fonts.inconsolata30,
+            Colors.darkGray,
+            Textures.upLongNinePatch,
+            Textures.downLongNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                        )
+    {
+        window.isVisible = false
+        Sounds.blop.playOnce()
+    }
+    
+    val equipmentButton = textButtonOf(
+            "equipment",
+            Fonts.inconsolata30,
+            Colors.darkGray,
+            Textures.upLongNinePatch,
+            Textures.downLongNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                      ){
+        Sounds.blop.playOnce()
+    }
+    
+    val settingsButton = textButtonOf(
+            "settings",
+            Fonts.inconsolata30,
+            Colors.darkGray,
+            Textures.upLongNinePatch,
+            Textures.downLongNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                   )
+    {
+        Sounds.blop.playOnce()
+    }
+    
+    val backToMenuButton = textButtonOf(
+            "back to menu",
+            Fonts.inconsolata30,
+            Colors.darkGray,
+            Textures.upLongNinePatch,
+            Textures.downLongNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                   )
+    {
+        Sounds.blop.playOnce()
+        changeScreen(MenuScreen)
+    }
+    
+    window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)
     
     return window
 }
