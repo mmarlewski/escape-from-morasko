@@ -144,8 +144,8 @@ object GameScreen : BaseScreen(), GestureListener
                 "Multi use left: " + multiUseAmount,
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
+                Textures.upLongNinePatch,
+                Textures.downLongNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
@@ -158,8 +158,8 @@ object GameScreen : BaseScreen(), GestureListener
                 "On map stacks left: " + stacksMapAmount,
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
+                Textures.upLongNinePatch,
+                Textures.downLongNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
@@ -172,8 +172,8 @@ object GameScreen : BaseScreen(), GestureListener
                 "On self stacks left: " + stacksSelfAmount,
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
+                Textures.upLongNinePatch,
+                Textures.downLongNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
