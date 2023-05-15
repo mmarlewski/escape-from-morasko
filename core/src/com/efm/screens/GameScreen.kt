@@ -50,6 +50,29 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
+    
+        val popUp = windowAreaOf(
+                "Are you sure?",
+                1,
+                Fonts.pixeloid20,
+                Colors.black,
+                Colors.black,
+                Colors.gray,
+                Textures.upNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch,
+                Textures.overNinePatch,
+                Textures.downNinePatch
+                                )
+    
+        val menuPause = menuPopup(
+                "PAUSE",
+                Fonts.pixeloid30,
+                Colors.darkGray,
+                Textures.translucentThreeQuartersNinePatch,
+                                 )
+        menuPause.isVisible = false
+        
         xButton = textButtonOf(
                 "X",
                 Fonts.pixeloid20,
@@ -75,19 +98,9 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                       ) {
+            if (menuPause.isVisible == true)   menuPause.isVisible = false else menuPause.isVisible = true
             playSoundOnce(Sounds.blop)
-        }
-        
-        val backToMenuButton = imageButtonOf(
-                Textures.back,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                            ) {
-            playSoundOnce(Sounds.blop)
-            changeScreen(MenuScreen)
+            
         }
         
         //bars
@@ -191,24 +204,10 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.heroIcon, Scaling.none
                                       )
         
-        val popUp = windowAreaOf(
-                "Are you sure?",
-                1,
-                Fonts.pixeloid20,
-                Colors.black,
-                Colors.black,
-                Colors.gray,
-                Textures.upNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch,
-                Textures.overNinePatch,
-                Textures.downNinePatch
-                                )
-        
         
         //top left icons
         val columnTopLeft = columnOf(
-                rowOf(backToMenuButton)
+                rowOf(menuButton)
                                     ).align(Align.topLeft)
     
     
@@ -239,6 +238,8 @@ object GameScreen : BaseScreen(), GestureListener
         val columnBottomRight = columnOf(
                 rowOf(xButton)
                                         ).align(Align.bottomRight)
+        
+        val columnMiddle = columnOf(rowOf(menuPause)).align(Align.center)
     
         
         //padding so it looks nice
@@ -254,6 +255,7 @@ object GameScreen : BaseScreen(), GestureListener
         columnTop.setFillParent(true)
         columnBottomLeft.setFillParent(true)
         columnBottomRight.setFillParent(true)
+        columnMiddle.setFillParent(true)
         
         //display
         GameScreen.stage.addActor(columnTopLeft)
@@ -261,6 +263,7 @@ object GameScreen : BaseScreen(), GestureListener
         GameScreen.stage.addActor(columnTop)
         GameScreen.stage.addActor(columnBottomLeft)
         GameScreen.stage.addActor(columnBottomRight)
+        GameScreen.stage.addActor(columnMiddle)
     
         // xButton is visible only after pressing on hero
         xButton.isVisible = false
