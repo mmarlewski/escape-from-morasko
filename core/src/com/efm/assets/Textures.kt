@@ -8,6 +8,8 @@ object Textures
 {
     val assetManager = AssetManager()
     
+    val mainMenuBackground = load("/backgrounds/mainMenuBackground.png")
+    
     val up = load("/backgrounds/up.png")
     val upLong = load("/backgrounds/upLong.png")
     val down = load("/backgrounds/down.png")
