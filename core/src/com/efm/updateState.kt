@@ -1,5 +1,6 @@
 package com.efm
 
+import com.badlogic.gdx.Gdx
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.level.World

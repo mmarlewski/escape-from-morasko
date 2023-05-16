@@ -26,18 +26,21 @@ class Hero(
         super.damageCharacter(dmgAmount)
         
         GameScreen.healthBar.value-=dmgAmount
+        GameScreen.healthBarLabel.setText(healthPoints)
     }
     
     fun spendAP(apCost : Int)
     {
         this.abilityPoints-=apCost
         GameScreen.abilityBar.value-=apCost
+        GameScreen.abilityBarLabel.setText(abilityPoints)
     }
     
     fun regainAP()
     {
         this.abilityPoints = maxAbilityPoints
         GameScreen.abilityBar.value=maxAbilityPoints.toFloat()
+        GameScreen.abilityBarLabel.setText(maxAbilityPoints)
     }
     
     override fun getTile() : TiledMapTile

@@ -192,6 +192,7 @@ fun progressBarOf(
         min : Float,
         max : Float,
         step : Float,
+        startVal : Float,
         knobBackground : NinePatch,
         knobBefore : NinePatch,
         knobAfter : NinePatch
@@ -202,7 +203,7 @@ fun progressBarOf(
     progressBarStyle.knobBefore = NinePatchDrawable(knobBefore)
     progressBarStyle.knobAfter = NinePatchDrawable(knobAfter)
     val progressBar = ProgressBar(min, max, step, false, progressBarStyle)
-    progressBar.value = 0.3f
+    progressBar.value = startVal
     progressBar.pack()
     return progressBar
 }

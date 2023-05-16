@@ -43,7 +43,9 @@ object GameScreen : BaseScreen(), GestureListener
     lateinit var menuTextButton : TextButton
     lateinit var xButton : TextButton
     lateinit var healthBar : ProgressBar
+    lateinit var healthBarLabel : Label
     lateinit var abilityBar : ProgressBar
+    lateinit var abilityBarLabel : Label
     
     init
     {
@@ -111,6 +113,7 @@ object GameScreen : BaseScreen(), GestureListener
                 0.0f,
                 healthBarValueMax.toFloat(),
                 1.0f,
+                World.hero.healthPoints.toFloat(),
                 Textures.knobBackgroundNinePatch,
                 Textures.knobBeforeNinePatch,
                 Textures.knobHealthbarAfterNinePatch
@@ -128,6 +131,7 @@ object GameScreen : BaseScreen(), GestureListener
                 0.0f,
                 abilityBarValueMax.toFloat(),
                 1.0f,
+                World.hero.abilityPoints.toFloat(),
                 Textures.knobBackgroundNinePatch,
                 Textures.knobBeforeNinePatch,
                 Textures.knobAbilitybarAfterNinePatch
