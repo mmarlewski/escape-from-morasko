@@ -85,6 +85,10 @@ object Textures
     val freeToMove = load("/images/freeToMove.png")
     val waitingForPlayerTurn = load("/images/waitingForPlayerTurn.png")
     
+    //items
+    
+    val potion = load("items/potion1.png")
+    
     private fun load(name : String) : Texture
     {
         val filePath = "textures/$name"

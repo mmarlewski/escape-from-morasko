@@ -1,6 +1,6 @@
 package com.efm.screens
 
-import com.badlogic.gdx.*
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.input.GestureDetector.GestureListener
@@ -42,10 +42,11 @@ object GameScreen : BaseScreen(), GestureListener
     // hud
     lateinit var menuTextButton : TextButton
     lateinit var xButton : TextButton
-    lateinit var healthBar : ProgressBar
-    lateinit var healthBarLabel : Label
-    lateinit var abilityBar : ProgressBar
-    lateinit var abilityBarLabel : Label
+    var healthBar : ProgressBar
+    var healthBarLabel : Label
+    var abilityBar : ProgressBar
+    var abilityBarLabel : Label
+    var potionButton : ImageButton
     
     init
     {
@@ -53,7 +54,7 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
-    
+        
         val popUp = windowAreaOf(
                 "Are you sure?",
                 1,
@@ -115,33 +116,33 @@ object GameScreen : BaseScreen(), GestureListener
                 1.0f,
                 World.hero.healthPoints.toFloat(),
                 Textures.knobBackgroundNinePatch,
-                Textures.knobBeforeNinePatch,
-                Textures.knobHealthbarAfterNinePatch
+                Textures.knobHealthbarAfterNinePatch,
+                Textures.knobBeforeNinePatch
                                  )
-        val healthBarLabel = labelOf(
+        healthBarLabel = labelOf(
                 "$healthBarValueCurrent / $healthBarValueMax",
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.translucentNinePatch
-                                    )
+                                )
         
         val abilityBarValueCurrent = World.hero.abilityPoints
         val abilityBarValueMax = World.hero.maxAbilityPoints
-        val abilityBar = progressBarOf(
+        abilityBar = progressBarOf(
                 0.0f,
                 abilityBarValueMax.toFloat(),
                 1.0f,
                 World.hero.abilityPoints.toFloat(),
                 Textures.knobBackgroundNinePatch,
-                Textures.knobBeforeNinePatch,
-                Textures.knobAbilitybarAfterNinePatch
-                                      )
-        val abilityBarLabel = labelOf(
+                Textures.knobAbilitybarAfterNinePatch,
+                Textures.knobBeforeNinePatch
+                                  )
+        abilityBarLabel = labelOf(
                 "$abilityBarValueCurrent / $abilityBarValueMax",
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.translucentNinePatch
-                                     )
+                                 )
         
         //item buttons
         val multiUseAmount = 5
@@ -184,6 +185,18 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.focusedNinePatch
                                                   ) {
             playSoundOnce(Sounds.blop)
+        }
+        
+        potionButton = imageButtonOf(
+                Textures.potion,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                    ) {
+            playSoundOnce(Sounds.blop)
+            World.hero.healCharacter(10)
         }
         
         // hud top right - states
@@ -237,7 +250,7 @@ object GameScreen : BaseScreen(), GestureListener
     
         //bottom left icons
         val columnBottomLeft = columnOf(
-                rowOf(multiUseMapItemButton, stackableMapItemButton, stackableSelfItemButton)
+                rowOf(multiUseMapItemButton, stackableMapItemButton, stackableSelfItemButton, potionButton)
                                        ).align(Align.bottomLeft)
         //bottom right icons
         val columnBottomRight = columnOf(
@@ -393,10 +406,9 @@ object GameScreen : BaseScreen(), GestureListener
     override fun tap(x : Float, y : Float, count : Int, button : Int) : Boolean
     {
         isTouched = true
-        
+        World.hero.damageCharacter(2)
         val newScreenTouchPosition = Vector2(x, y)
         updateScreenWorldMapTouchPositions(newScreenTouchPosition)
-        
         return true
     }
     

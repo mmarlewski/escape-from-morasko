@@ -12,85 +12,74 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
 {
     val startSpace = World.currentRoom.getSpace(startPosition)
     val endSpace = World.currentRoom.getSpace(endPosition)
+    var animateToEndSpace = true
     
     if (startSpace == endSpace) return
     
-    val action = {
-        var newPosition = endPosition
-        var newRoom = World.currentRoom
-        var newLevel = World.currentLevel
-        
-        val endEntity = endSpace?.getEntity()
-        val endBase = endSpace?.getBase()
-        
-        when (endEntity)
+    var newPosition = endPosition
+    var newRoom = World.currentRoom
+    var newLevel = World.currentLevel
+    
+    val endEntity = endSpace?.getEntity()
+    val endBase = endSpace?.getBase()
+    
+    when (endEntity)
+    {
+        is Hero ->
         {
-            is Hero ->
-            {
-            }
-            
-            null    ->
-            {
-                if (endBase == null || !endBase.isTreadable)
-                {
-                    val lastSpace = path.lastOrNull()
-                    newPosition = if (lastSpace != null)
-                    {
-                        lastSpace.position
-                    }
-                    else
-                    {
-                        startPosition
-                    }
-                }
-            }
-            
-            is Exit ->
-            {
-                when (val passage = endEntity.exitPassage)
-                {
-                    is RoomPassage  ->
-                    {
-                        Map.changeTile(
-                                MapLayer.select, endPosition.x, endPosition.y, Tiles.selectYellow
-                                      )
-                        newPosition = when (endEntity.currentRoom)
-                        {
-                            passage.roomA -> passage.positionB.adjacentPosition(passage.directionB)
-                            passage.roomB -> passage.positionA.adjacentPosition(passage.directionA)
-                            else          -> newPosition
-                        }
-                        newRoom = when (endEntity.currentRoom)
-                        {
-                            passage.roomA -> passage.roomB
-                            passage.roomB -> passage.roomA
-                            else          -> newRoom
-                        }
-                    }
-                    
-                    is LevelPassage ->
-                    {
-                        newPosition = passage.targetLevel.getStartingPosition()
-                        newRoom = passage.targetLevel.getStartingRoom()
-                        newLevel = passage.targetLevel
-                    }
-                }
-            }
-            
-            else    ->
+        }
+        
+        null    ->
+        {
+            if (endBase == null || !endBase.isTreadable)
             {
                 val lastSpace = path.lastOrNull()
-                newPosition = if (lastSpace != null)
+                newPosition = lastSpace?.position ?: startPosition
+            }
+            animateToEndSpace = false
+        }
+        
+        is Exit ->
+        {
+            when (val passage = endEntity.exitPassage)
+            {
+                is RoomPassage  ->
                 {
-                    lastSpace.position
+                    Map.changeTile(
+                            MapLayer.select, endPosition.x, endPosition.y, Tiles.selectYellow
+                                  )
+                    newPosition = when (endEntity.currentRoom)
+                    {
+                        passage.roomA -> passage.positionB.adjacentPosition(passage.directionB)
+                        passage.roomB -> passage.positionA.adjacentPosition(passage.directionA)
+                        else          -> newPosition
+                    }
+                    newRoom = when (endEntity.currentRoom)
+                    {
+                        passage.roomA -> passage.roomB
+                        passage.roomB -> passage.roomA
+                        else          -> newRoom
+                    }
                 }
-                else
+                
+                is LevelPassage ->
                 {
-                    startPosition
+                    newPosition = passage.targetLevel.getStartingPosition()
+                    newRoom = passage.targetLevel.getStartingRoom()
+                    newLevel = passage.targetLevel
                 }
             }
         }
         
+        else    ->
+        {
+            val lastSpace = path.lastOrNull()
+            newPosition = lastSpace?.position ?: startPosition
+            animateToEndSpace = false
+        }
+    }
+    
+    val action = {
         World.currentRoom.removeEntity(World.hero)
         
         World.changeCurrentRoom(newRoom)
@@ -115,7 +104,8 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         animations += Animation.showTileWithCameraFocus(Tiles.hero, space.position.copy(), 0.01f)
         prevMovePosition.set(space.position)
     }
-    animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition, endPosition, 0.1f)
+    if (animateToEndSpace)
+        animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
     Animating.executeAnimations(animations)
 }

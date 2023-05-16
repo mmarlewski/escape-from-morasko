@@ -1,9 +1,9 @@
 package com.efm.entities
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Character
+import com.efm.getState
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 
@@ -18,29 +18,56 @@ class Hero(
 {
     override val position = RoomPosition()
     
-    var maxAbilityPoints : Int = 20
+    var maxAbilityPoints : Int = 10
     var abilityPoints : Int = 10
     
     override fun damageCharacter(dmgAmount : Int)
     {
         super.damageCharacter(dmgAmount)
         
-        GameScreen.healthBar.value-=dmgAmount
-        GameScreen.healthBarLabel.setText(healthPoints)
+        GameScreen.healthBar.value -= dmgAmount
+        GameScreen.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
+    }
+    
+    override fun healCharacter(healAmount : Int)
+    {
+        if (this.healthPoints + healAmount > this.maxHealthPoints)
+        {
+            this.healthPoints = this.maxHealthPoints
+        }
+        else
+        {
+            this.healthPoints += healAmount
+        }
+        GameScreen.healthBar.value = this.healthPoints.toFloat()
+        GameScreen.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
     }
     
     fun spendAP(apCost : Int)
     {
-        this.abilityPoints-=apCost
-        GameScreen.abilityBar.value-=apCost
+        if ((this.abilityPoints - apCost) < 0)
+        {
+            this.abilityPoints = 0
+        }
+        else
+        {
+            this.abilityPoints -= apCost
+        }
+        GameScreen.abilityBar.value -= apCost
         GameScreen.abilityBarLabel.setText(abilityPoints)
     }
     
     fun regainAP()
     {
         this.abilityPoints = maxAbilityPoints
-        GameScreen.abilityBar.value=maxAbilityPoints.toFloat()
+        GameScreen.abilityBar.value = maxAbilityPoints.toFloat()
         GameScreen.abilityBarLabel.setText(maxAbilityPoints)
+    }
+    
+    override fun killCharacter()
+    {
+        super.killCharacter()
+        getState().isHeroAlive = false
     }
     
     override fun getTile() : TiledMapTile

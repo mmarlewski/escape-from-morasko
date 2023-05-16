@@ -18,9 +18,9 @@ interface Character : Entity
         }
     }
     
-    fun healCharacter(dmgAmount : Int)
+    fun healCharacter(healAmount : Int)
     {
-        this.healthPoints += dmgAmount
+        this.healthPoints += healAmount
         if (this.healthPoints > this.maxHealthPoints)
         {
             this.healthPoints = this.maxHealthPoints
