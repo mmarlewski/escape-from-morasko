@@ -43,6 +43,7 @@ object GameScreen : BaseScreen(), GestureListener
     lateinit var menuTextButton : TextButton
     lateinit var xButton : TextButton
     lateinit var healthBar : ProgressBar
+    lateinit var abilityBar : ProgressBar
     
     init
     {
@@ -121,8 +122,8 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.translucentNinePatch
                                     )
         
-        val abilityBarValueCurrent = 10
-        val abilityBarValueMax = 10
+        val abilityBarValueCurrent = World.hero.abilityPoints
+        val abilityBarValueMax = World.hero.maxAbilityPoints
         val abilityBar = progressBarOf(
                 0.0f,
                 abilityBarValueMax.toFloat(),

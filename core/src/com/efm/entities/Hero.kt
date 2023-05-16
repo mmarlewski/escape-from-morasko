@@ -1,5 +1,6 @@
 package com.efm.entities
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Character
@@ -17,11 +18,26 @@ class Hero(
 {
     override val position = RoomPosition()
     
+    var maxAbilityPoints : Int = 20
+    var abilityPoints : Int = 10
+    
     override fun damageCharacter(dmgAmount : Int)
     {
         super.damageCharacter(dmgAmount)
         
         GameScreen.healthBar.value-=dmgAmount
+    }
+    
+    fun spendAP(apCost : Int)
+    {
+        this.abilityPoints-=apCost
+        GameScreen.abilityBar.value-=apCost
+    }
+    
+    fun regainAP()
+    {
+        this.abilityPoints = maxAbilityPoints
+        GameScreen.abilityBar.value=maxAbilityPoints.toFloat()
     }
     
     override fun getTile() : TiledMapTile
