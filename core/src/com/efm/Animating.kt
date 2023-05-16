@@ -41,7 +41,6 @@ object Animating
         {
             currAnimation = if (nextAnimation != null) nextAnimation as Animation else Animation.none
             
-            deltaTime = 0f
             currAnimation.start()
             
             nextAnimation = if (animationsIterator.hasNext()) animationsIterator.next() else null

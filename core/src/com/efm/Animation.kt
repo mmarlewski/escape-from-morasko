@@ -8,25 +8,54 @@ import com.efm.screens.GameScreen
 
 sealed class Animation
 {
+    var startDeltaTime = 0f
+    
+    fun resetDeltaTime()
+    {
+        startDeltaTime = Animating.getDeltaTime()
+    }
+    
+    fun deltaTimeDifference() : Float
+    {
+        return Animating.getDeltaTime() - startDeltaTime
+    }
+    
     abstract fun start()
     
     abstract fun update()
     
     abstract fun isFinished() : Boolean
     
-    object none : Animation()
+    class sequence(val animations : MutableList<Animation>) : Animation()
     {
+        val animationIterator = animations.iterator()
+        var currAnimation : Animation? = null
+        
         override fun start()
         {
+            currAnimation = if (animationIterator.hasNext()) animationIterator.next() else null
+            currAnimation?.start()
         }
         
         override fun update()
         {
+            val animation = currAnimation
+            
+            if (animation != null)
+            {
+                animation.update()
+                
+                if (animation.isFinished())
+                {
+                    currAnimation = if (animationIterator.hasNext()) animationIterator.next() else null
+                    currAnimation?.start()
+                }
+            }
         }
         
         override fun isFinished() : Boolean
         {
-            return true
+            return (currAnimation == null)
         }
     }
     
@@ -60,7 +89,7 @@ sealed class Animation
         }
     }
     
-    class wait(val seconds : Float) : Animation()
+    object none : Animation()
     {
         override fun start()
         {
@@ -72,7 +101,24 @@ sealed class Animation
         
         override fun isFinished() : Boolean
         {
-            return (Animating.getDeltaTime() > seconds)
+            return true
+        }
+    }
+    
+    class wait(val seconds : Float) : Animation()
+    {
+        override fun start()
+        {
+            resetDeltaTime()
+        }
+        
+        override fun update()
+        {
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (deltaTimeDifference() > seconds)
         }
     }
     
@@ -87,12 +133,13 @@ sealed class Animation
         
         override fun start()
         {
+            resetDeltaTime()
             moveTilePosition.set(from.toVector2())
         }
         
         override fun update()
         {
-            val timeRatio = Animating.getDeltaTime() / seconds
+            val timeRatio = deltaTimeDifference() / seconds
             val tileDistanceX = to.x - from.x
             val tileDistanceY = to.y - from.y
             moveTilePosition.x = from.x + tileDistanceX * timeRatio
@@ -101,7 +148,7 @@ sealed class Animation
         
         override fun isFinished() : Boolean
         {
-            return (Animating.getDeltaTime() > seconds)
+            return (deltaTimeDifference() > seconds)
         }
     }
     
@@ -139,6 +186,7 @@ sealed class Animation
         
         override fun start()
         {
+            resetDeltaTime()
         }
         
         override fun update()
@@ -147,7 +195,7 @@ sealed class Animation
         
         override fun isFinished() : Boolean
         {
-            return (Animating.getDeltaTime() > seconds)
+            return (deltaTimeDifference() > seconds)
         }
     }
     

@@ -132,6 +132,22 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
     {
         when (animation)
         {
+            is Animation.sequence     ->
+            {
+                val anim = animation.currAnimation
+                
+                if (anim != null)
+                {
+                    drawAnimation(
+                            anim,
+                            row,
+                            col,
+                            color,
+                            halfTileWidth,
+                            halfTileHeight
+                                 )
+                }
+            }
             is Animation.simultaneous ->
             {
                 for (anim in animation.animations)
@@ -146,7 +162,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                                  )
                 }
             }
-            is Animation.moveTile ->
+            is Animation.moveTile     ->
             {
                 val animationPosition = Vector2()
                 animationPosition.x = animation.moveTilePosition.x
@@ -173,7 +189,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                             )
                 }
             }
-            is Animation.showTile ->
+            is Animation.showTile     ->
             {
                 val animationPosition = Vector2()
                 animationPosition.x = animation.where.x.toFloat()
@@ -200,7 +216,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                             )
                 }
             }
-            else                  ->
+            else                      ->
             {
             }
         }

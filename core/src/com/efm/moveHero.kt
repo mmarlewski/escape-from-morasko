@@ -35,8 +35,8 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
             {
                 val lastSpace = path.lastOrNull()
                 newPosition = lastSpace?.position ?: startPosition
+                animateToEndSpace = false
             }
-            animateToEndSpace = false
         }
         
         is Exit ->
