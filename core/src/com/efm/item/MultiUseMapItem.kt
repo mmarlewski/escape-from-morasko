@@ -1,5 +1,7 @@
 package com.efm.item
 
-class MultiUseMapItem
+interface MultiUseMapItem : Item
 {
+    var durability : Int
+    val durabilityUseCost : Int
 }
