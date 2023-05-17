@@ -478,6 +478,7 @@ fun World.addTestBigRoomsLevel()
     val tbrl = Level("test_level", rooms, roomPassages)
     tbrl.changeStartingRoom(tbrl2)
     tbrl.changeStartingPosition(1, 1)
+    tbrl2.addEntityAt(BladeEnemy(), 3, 3)
     // add to World
     addLevel(tbrl)
 }

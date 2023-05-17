@@ -2,6 +2,7 @@ package com.efm
 
 import com.badlogic.gdx.Gdx
 import com.efm.assets.Tiles
+import com.efm.entities.BladeEnemy
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
 import com.efm.level.World
@@ -174,6 +175,10 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
             is Enemy ->
             {
                 Map.clearLayer(MapLayer.select)
+                for (pos in selectedEntity.detectedSpaces())
+                {
+                    Map.changeTile(MapLayer.select, pos, Tiles.selectPurple)
+                }
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectRed)
                 Map.changeTile(MapLayer.outline, selectedPosition, Tiles.bladeEnemyOutlineRed)
                 val newState = State.free.entitySelected
