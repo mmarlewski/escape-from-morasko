@@ -6,7 +6,7 @@ import com.efm.room.RoomPosition
 
 enum class MapLayer
 {
-    base, select, entity
+    base, select, entity, outline
 }
 
 object Map
