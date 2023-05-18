@@ -12,7 +12,7 @@ class CrossbowEnemy : Entity, Enemy
     override var maxHealthPoints = 50
     override var healthPoints = 50
     override var alive = true
-    override val detectionRange = 5
+    override val detectionRange = 3
     override fun getTile() : TiledMapTile
     {
         return Tiles.crossbowEnemy
@@ -20,6 +20,6 @@ class CrossbowEnemy : Entity, Enemy
     
     override fun getOutlineTile() : TiledMapTile
     {
-        return Tiles.crossbowEnemyOutlineYellow
+        return Tiles.crossbowEnemyOutlineRed
     }
 }

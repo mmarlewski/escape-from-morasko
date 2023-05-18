@@ -17,14 +17,9 @@ interface Enemy : Character
         return Tiles.bladeEnemy
     }
     
-    override fun getOutlineTile() : TiledMapTile
-    {
-        return Tiles.bladeEnemyOutlineRed
-    }
-    
     fun detectedSpaces() : MutableList<RoomPosition>
     {
-        var detectedSpaces = mutableListOf<RoomPosition>()
+        val detectedSpaces = mutableListOf<RoomPosition>()
         for (i in -detectionRange..detectionRange)
         {
             for (j in -detectionRange .. detectionRange)

@@ -479,6 +479,11 @@ fun World.addTestBigRoomsLevel()
     tbrl.changeStartingRoom(tbrl2)
     tbrl.changeStartingPosition(1, 1)
     tbrl2.addEntityAt(BladeEnemy(), 3, 3)
+    tbrl2.addEntityAt(Chest(), 5, 5)
+    tbrl2.addEntityAt(ExplodingBarrel(), 8, 3)
+    tbrl2.addEntityAt(CrossbowEnemy(), 4, 6)
+    tbrl2.addEntityAt(BladeEnemyCorpse(), 2, 2)
+    tbrl2.addEntityAt(CrossbowEnemyCorpse(), 10, 3)
     // add to World
     addLevel(tbrl)
 }

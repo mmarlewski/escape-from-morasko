@@ -77,6 +77,6 @@ class Hero(
     
     override fun getOutlineTile() : TiledMapTile
     {
-        return Tiles.heroOutlineYellow
+        return Tiles.heroOutlineGreen
     }
 }

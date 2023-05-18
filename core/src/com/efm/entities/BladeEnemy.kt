@@ -22,20 +22,6 @@ class BladeEnemy : Entity, Enemy
     
     override fun getOutlineTile() : TiledMapTile
     {
-        return Tiles.bladeEnemyOutlineYellow
-    }
-    
-    override fun detectedSpaces() : MutableList<RoomPosition>
-    {
-        val detectedSpaces = mutableListOf<RoomPosition>()
-        for (i in -this.detectionRange..this.detectionRange)
-        {
-            for (j in -this.detectionRange .. this.detectionRange)
-            {
-                detectedSpaces.add((this.position.positionOffsetBy(i, Direction.up)).positionOffsetBy(j, Direction.left))
-            }
-        }
-        
-        return detectedSpaces
+        return Tiles.bladeEnemyOutlineRed
     }
 }
