@@ -195,18 +195,38 @@ fun progressBarOf(
         startVal : Float,
         knobBackground : NinePatch,
         knobBefore : NinePatch,
-        knobAfter : NinePatch
+        knobAfter : NinePatch,
+        width : Float,
+        height : Float
                  ) : ProgressBar
 {
     val progressBarStyle = ProgressBar.ProgressBarStyle()
-    progressBarStyle.background = NinePatchDrawable(knobBackground)
-    progressBarStyle.knobBefore = NinePatchDrawable(knobBefore)
-    progressBarStyle.knobAfter = NinePatchDrawable(knobAfter)
+    
+    // Create a custom background drawable with the desired width and height
+    val backgroundDrawable = NinePatchDrawable(knobBackground)
+    backgroundDrawable.minWidth = width
+    backgroundDrawable.minHeight = height
+    
+    // Create a custom knobBefore drawable with the desired width and height
+    val knobBeforeDrawable = NinePatchDrawable(knobBefore)
+    knobBeforeDrawable.minWidth = width
+    knobBeforeDrawable.minHeight = height
+    
+    // Create a custom knobAfter drawable with the desired width and height
+    val knobAfterDrawable = NinePatchDrawable(knobAfter)
+    knobAfterDrawable.minWidth = width
+    knobAfterDrawable.minHeight = height
+    
+    progressBarStyle.background = backgroundDrawable
+    progressBarStyle.knobBefore = knobBeforeDrawable
+    progressBarStyle.knobAfter = knobAfterDrawable
+    
     val progressBar = ProgressBar(min, max, step, false, progressBarStyle)
     progressBar.value = startVal
-    progressBar.pack()
+    
     return progressBar
 }
+
 
 fun sliderOf(
         min : Float,
@@ -485,8 +505,11 @@ fun itemButtonWithHealthbar(
             currentHealth,
             Textures.knobBackgroundNinePatch,
             Textures.knobHealthbarAfterNinePatch,
-            Textures.knobBeforeNinePatch
+            Textures.knobBeforeNinePatch,
+            16f,
+            4f
                                  )
+    healthBar.setSize(64f, 8f)
     
     imageButton.add(columnOf(healthBar))
     

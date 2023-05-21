@@ -115,6 +115,8 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.knobBackgroundNinePatch,
                 Textures.knobHealthbarAfterNinePatch,
                 Textures.knobBeforeNinePatch,
+                128f,
+                16f
                                  )
         healthBarLabel = labelOf(
                 "$healthBarValueCurrent / $healthBarValueMax",
@@ -132,7 +134,9 @@ object GameScreen : BaseScreen(), GestureListener
                 World.hero.abilityPoints.toFloat(),
                 Textures.knobBackgroundNinePatch,
                 Textures.knobAbilitybarAfterNinePatch,
-                Textures.knobBeforeNinePatch
+                Textures.knobBeforeNinePatch,
+                128f,
+                16f
                                   )
         abilityBarLabel = labelOf(
                 "$abilityBarValueCurrent / $abilityBarValueMax",
