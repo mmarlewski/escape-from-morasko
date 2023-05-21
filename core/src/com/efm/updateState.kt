@@ -1,12 +1,11 @@
 package com.efm
 
-import com.badlogic.gdx.Gdx
 import com.efm.assets.Tiles
-import com.efm.entities.BladeEnemy
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
+import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.level.World
-import com.efm.screens.*
+import com.efm.screens.GameScreen
 
 fun updateState()
 {
@@ -24,6 +23,40 @@ fun updateState()
         else                                                 -> currState
     }
     changeState(newState)
+}
+
+fun updateState(itemSlot : InventoryTabSlot)
+{
+    /*
+    if (slot.selected)
+        zmiana stanu na itemChosen(slot.item)
+        slot.selected = true
+        slot.highlight()
+        slot.item.selected()
+    else
+        if (free)
+            if (nie ma innych przeciwwskazan)
+                slot.item.confirmed()
+                slot.item.use()
+                slot.undoHighlight()
+                slot.selected = false
+            else
+                slot.undoHighlight()
+                slot.selected = false
+        else
+            if (wystarczy AP)
+                slot.item.confirmed()
+                slot.item.use()
+                slot.undoHighlight()
+                slot.selected = false
+                odejmijAP(slot.item) // na podstawie slot.item.baseAP i innych rzeczy
+            else
+                slot.undoHighlight()
+                slot.selected = false
+                slot.item.notSelected() // ?
+                
+                
+     */
 }
 
 // free
@@ -103,12 +136,12 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
     Map.clearLayer(MapLayer.outline)
     when (selectedEntity)
     {
-        null    ->
+        null     ->
         {
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
         }
-        is Hero ->
+        is Hero  ->
         {
             GameScreen.xButton.isVisible = true
             Map.clearLayer(MapLayer.select)
@@ -125,7 +158,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
             newState.selectedEntity = selectedEntity
             return newState
         }
-        else    ->
+        else     ->
         {
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
@@ -163,7 +196,7 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
         Map.clearLayer(MapLayer.outline)
         when (selectedEntity)
         {
-            null    ->
+            null     ->
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
