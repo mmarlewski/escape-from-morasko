@@ -72,8 +72,8 @@ object GameScreen : BaseScreen(), GestureListener
         val menuPause = menuPopup(
                 "PAUSE",
                 Fonts.pixeloid30,
-                Colors.darkGray,
-                Textures.translucentThreeQuartersNinePatch,
+                Colors.black,
+                Textures.pauseBackgroundNinePatch,
                                  )
         menuPause.isVisible = false
         
