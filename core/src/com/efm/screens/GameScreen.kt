@@ -6,9 +6,11 @@ import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.input.GestureDetector.GestureListener
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.utils.*
+import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
@@ -52,22 +54,15 @@ object GameScreen : BaseScreen(), GestureListener
     {
         // input processor
         super.inputProcessor = inputMultiplexer
-        
+    
         // hud
-        
-        val popUp = windowAreaOf(
-                "Are you sure?",
-                1,
-                Fonts.pixeloid20,
-                Colors.black,
-                Colors.black,
-                Colors.gray,
-                Textures.upNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch,
-                Textures.overNinePatch,
-                Textures.downNinePatch
-                                )
+        //special empty space function
+        fun emptySpace(width : Float) : Actor
+        {
+            return Actor().apply {
+                this.width = width
+            }
+        }
     
         val menuPause = menuPopup(
                 "PAUSE",
@@ -143,50 +138,82 @@ object GameScreen : BaseScreen(), GestureListener
                 Colors.black,
                 Textures.translucentNinePatch
                                  )
-        
+    
         //item buttons
-        val multiUseAmount = 5
-        val multiUseMapItemButton = textButtonOf(
-                "Multi use left: " + multiUseAmount,
-                Fonts.pixeloid20,
-                Colors.black,
-                Textures.upLongNinePatch,
-                Textures.downLongNinePatch,
+    
+        val weaponItemsButton = imageButtonOf(
+                Textures.itemWeapon,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                                ) {
+                                             ) {
             playSoundOnce(Sounds.blop)
         }
-        
-        val stacksMapAmount = 5
-        val stackableMapItemButton = textButtonOf(
-                "On map stacks left: " + stacksMapAmount,
-                Fonts.pixeloid20,
-                Colors.black,
-                Textures.upLongNinePatch,
-                Textures.downLongNinePatch,
+        weaponItemsButton.isVisible = false
+    
+        val healingItemsButton = imageButtonOf(
+                Textures.itemHealing,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                                 ) {
+                                              ) {
             playSoundOnce(Sounds.blop)
         }
-        
-        val stacksSelfAmount = 5
-        val stackableSelfItemButton = textButtonOf(
-                "On self stacks left: " + stacksSelfAmount,
-                Fonts.pixeloid20,
-                Colors.black,
-                Textures.upLongNinePatch,
-                Textures.downLongNinePatch,
+        healingItemsButton.isVisible = false
+    
+        val skillsItemsButton = imageButtonOf(
+                Textures.itemSkill,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                                  ) {
+                                             ) {
             playSoundOnce(Sounds.blop)
         }
-        
+        skillsItemsButton.isVisible = false
+    
+        val usableItemsButton = imageButtonOf(
+                Textures.itemUsable,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                             ) {
+            playSoundOnce(Sounds.blop)
+        }
+        usableItemsButton.isVisible = false
+    
+        val equipmentButton = imageButtonOf(
+                Textures.backpack,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                           ) {
+            playSoundOnce(Sounds.blop)
+            if (weaponItemsButton.isVisible == true)
+            {
+                weaponItemsButton.isVisible = false
+                healingItemsButton.isVisible = false
+                usableItemsButton.isVisible = false
+                skillsItemsButton.isVisible = false
+            }
+            else
+            {
+                weaponItemsButton.isVisible = true
+                healingItemsButton.isVisible = true
+                usableItemsButton.isVisible = true
+                skillsItemsButton.isVisible = true
+            }
+        }
+    
         potionButton = imageButtonOf(
                 Textures.potion,
                 Textures.upNinePatch,
@@ -200,12 +227,6 @@ object GameScreen : BaseScreen(), GestureListener
         }
         
         // hud top right - states
-        val stateIndicatorFreeToMoveIcon = imageOf(
-                Textures.freeToMove, Scaling.none
-                                                  )
-        val stateIndicatorWaitingForPlayerTurnIcon = imageOf(
-                Textures.waitingForPlayerTurn, Scaling.none
-                                                            )
         
         val endTurnButton = imageButtonOf(
                 Textures.nextTurn,
@@ -217,10 +238,6 @@ object GameScreen : BaseScreen(), GestureListener
                                          ) {
             playSoundOnce(Sounds.blop)
         }
-        
-        val chosenEntityIcon = imageOf(
-                Textures.heroIcon, Scaling.none
-                                      )
         
         
         //top left icons
@@ -250,23 +267,33 @@ object GameScreen : BaseScreen(), GestureListener
     
         //bottom left icons
         val columnBottomLeft = columnOf(
-                rowOf(multiUseMapItemButton, stackableMapItemButton, stackableSelfItemButton, potionButton)
+                rowOf(equipmentButton, potionButton)
                                        ).align(Align.bottomLeft)
+    
+        val columnLeft = columnOf(
+            
+                usableItemsButton,
+                skillsItemsButton,
+                healingItemsButton,
+                weaponItemsButton,
+                                 ).align(Align.left)
+    
         //bottom right icons
         val columnBottomRight = columnOf(
                 rowOf(xButton)
                                         ).align(Align.bottomRight)
-        
+    
         val columnMiddle = columnOf(rowOf(menuPause)).align(Align.center)
     
-        
         //padding so it looks nice
-        columnTopLeft.pad(15f)
-        columnTopRight.pad(15f)
-        columnTop.pad(15f)
-        columnBottomLeft.pad(15f)
-        columnBottomRight.pad(15f)
-        
+        columnTopLeft.pad(16f)
+        columnTopRight.pad(16f)
+        columnTop.pad(16f)
+        columnBottomLeft.pad(16f)
+        columnBottomRight.pad(16f)
+        columnLeft.padTop(128f)
+        columnLeft.padLeft(16f)
+    
         //set the size to fill the phone screen
         columnTopLeft.setFillParent(true)
         columnTopRight.setFillParent(true)
@@ -274,6 +301,7 @@ object GameScreen : BaseScreen(), GestureListener
         columnBottomLeft.setFillParent(true)
         columnBottomRight.setFillParent(true)
         columnMiddle.setFillParent(true)
+        columnLeft.setFillParent(true)
         
         //display
         GameScreen.stage.addActor(columnTopLeft)
@@ -282,6 +310,7 @@ object GameScreen : BaseScreen(), GestureListener
         GameScreen.stage.addActor(columnBottomLeft)
         GameScreen.stage.addActor(columnBottomRight)
         GameScreen.stage.addActor(columnMiddle)
+        GameScreen.stage.addActor(columnLeft)
     
         // xButton is visible only after pressing on hero
         xButton.isVisible = false

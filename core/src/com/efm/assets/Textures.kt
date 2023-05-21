@@ -10,6 +10,7 @@ object Textures
     
     val mainMenuBackground = load("/backgrounds/mainMenuBackground.png")
     
+    //buttons and backgrounds
     val up = load("/backgrounds/up.png")
     val upLong = load("/backgrounds/upLong.png")
     val down = load("/backgrounds/down.png")
@@ -35,6 +36,7 @@ object Textures
     val translucentThreeQuartersNinePatch = NinePatch(translucentThreeQuarters, 5, 5, 5, 5)
     val pauseBackgroundNinePatch = NinePatch(pauseBackground, 5, 5, 5, 5)
     
+    //knobs
     val knobBackground = load("/bars/knobBackground.png")
     val knobBefore = load("/bars/knobBefore.png")
     val knobAfter = load("/bars/knobAfter.png")
@@ -48,12 +50,13 @@ object Textures
     val knobHealthbarAfterNinePatch = NinePatch(knobHealthbarAfter, 5, 5, 5, 5)
     val knobAbilitybarAfterNinePatch = NinePatch(knobAbilitybarAfter, 5, 5, 5, 5)
     
-    
+    //other
     val cursor = load("/other/cursor.png")
     val selection = load("/other/selection.png")
     val cursorNinePatch = NinePatch(cursor, 1, 1, 1, 1)
     val selectionNinePatch = NinePatch(selection, 1, 1, 1, 1)
     
+    //checkboxes
     val checkBoxOn = load("/checkboxes/checkBoxOn.png")
     val checkBoxOff = load("/checkboxes/checkBoxOff.png")
     val checkBoxOnOver = load("/checkboxes/checkBoxOnOver.png")
@@ -61,6 +64,7 @@ object Textures
     val checkBoxOnDisabled = load("/checkboxes/checkBoxOnDisabled.png")
     val checkBoxOffDisabled = load("/checkboxes/checkBoxOffDisabled.png")
     
+    //radio buttons
     val radioButtonOn = load("/radioButtons/radioButtonOn.png")
     val radioButtonOff = load("/radioButtons/radioButtonOff.png")
     val radioButtonOnOver = load("/radioButtons/radioButtonOnOver.png")
@@ -68,9 +72,8 @@ object Textures
     val radioButtonOnDisabled = load("/radioButtons/radioButtonOnDisabled.png")
     val radioButtonOffDisabled = load("/radioButtons/radioButtonOffDisabled.png")
     
+    //icons
     val coin = load("/icons/coin.png")
-    
-    
     val settings = load("/icons/settings.png")
     val exit = load("/icons/exit.png")
     val info = load("/icons/info.png")
@@ -80,14 +83,19 @@ object Textures
     val back = load("/icons/goBack.png")
     val arrowLeft = load("/icons/arrowLeft.png")
     val check = load("/icons/check.png")
+    val backpack = load("/icons/backpack.png")
+    val itemHealing = load("/icons/itemHealing.png")
+    val itemSkill = load("/icons/itemSkill.png")
+    val itemUsable = load("/icons/itemUsable.png")
+    val itemWeapon = load("/icons/itemWeapon.png")
     
+    //images
     val title = load("/images/title.png")
     val heroIcon = load("/images/heroIcon.png")
     val freeToMove = load("/images/freeToMove.png")
     val waitingForPlayerTurn = load("/images/waitingForPlayerTurn.png")
     
     //items
-    
     val potion = load("items/potion1.png")
     
     private fun load(name : String) : Texture
