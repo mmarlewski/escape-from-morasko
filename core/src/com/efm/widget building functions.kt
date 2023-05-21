@@ -444,3 +444,95 @@ fun menuPopup(
     
     return window
 }
+
+fun itemButtonWithHealthbar(
+        image : Texture,
+        maxHealth : Float,
+        currentHealth : Float,
+        up : NinePatch,
+        down : NinePatch,
+        over : NinePatch,
+        disabled : NinePatch,
+        focused : NinePatch,
+        onClicked : () -> Unit
+                           ) : ImageButton
+{
+    val imageButtonStyle = ImageButton.ImageButtonStyle()
+    imageButtonStyle.imageUp = TextureRegionDrawable(image)
+    imageButtonStyle.imageDown = TextureRegionDrawable(image)
+    imageButtonStyle.imageOver = TextureRegionDrawable(image)
+    imageButtonStyle.imageDisabled = TextureRegionDrawable(image)
+    imageButtonStyle.up = NinePatchDrawable(up)
+    imageButtonStyle.down = NinePatchDrawable(down)
+    imageButtonStyle.over = NinePatchDrawable(over)
+    imageButtonStyle.disabled = NinePatchDrawable(disabled)
+    imageButtonStyle.focused = NinePatchDrawable(focused)
+    val imageButton = ImageButton(imageButtonStyle)
+    imageButton.addListener(object : ClickListener()
+                            {
+                                override fun clicked(event : InputEvent?, x : Float, y : Float)
+                                {
+                                    onClicked()
+                                }
+                            })
+    imageButton.pad(10f)
+    imageButton.pack()
+    
+    var healthBar = progressBarOf(
+            0.0f,
+            maxHealth,
+            1.0f,
+            currentHealth,
+            Textures.knobBackgroundNinePatch,
+            Textures.knobHealthbarAfterNinePatch,
+            Textures.knobBeforeNinePatch
+                                 )
+    
+    imageButton.add(columnOf(healthBar))
+    
+    return imageButton
+}
+
+fun itemButtonWithLabel(
+        image : Texture,
+        text : String,
+        up : NinePatch,
+        down : NinePatch,
+        over : NinePatch,
+        disabled : NinePatch,
+        focused : NinePatch,
+        onClicked : () -> Unit
+                       ) : ImageButton
+{
+    val imageButtonStyle = ImageButton.ImageButtonStyle()
+    imageButtonStyle.imageUp = TextureRegionDrawable(image)
+    imageButtonStyle.imageDown = TextureRegionDrawable(image)
+    imageButtonStyle.imageOver = TextureRegionDrawable(image)
+    imageButtonStyle.imageDisabled = TextureRegionDrawable(image)
+    imageButtonStyle.up = NinePatchDrawable(up)
+    imageButtonStyle.down = NinePatchDrawable(down)
+    imageButtonStyle.over = NinePatchDrawable(over)
+    imageButtonStyle.disabled = NinePatchDrawable(disabled)
+    imageButtonStyle.focused = NinePatchDrawable(focused)
+    val imageButton = ImageButton(imageButtonStyle)
+    imageButton.addListener(object : ClickListener()
+                            {
+                                override fun clicked(event : InputEvent?, x : Float, y : Float)
+                                {
+                                    onClicked()
+                                }
+                            })
+    imageButton.pad(10f)
+    imageButton.pack()
+    
+    var label = labelOf(
+            text,
+            Fonts.pixeloid20,
+            Color.BLACK,
+            Textures.translucentNinePatch
+                       )
+    
+    imageButton.add(columnOf(label))
+    
+    return imageButton
+}

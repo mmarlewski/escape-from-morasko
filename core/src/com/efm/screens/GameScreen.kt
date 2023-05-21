@@ -49,12 +49,14 @@ object GameScreen : BaseScreen(), GestureListener
     var abilityBar : ProgressBar
     var abilityBarLabel : Label
     var potionButton : ImageButton
+    var swordButton : ImageButton
+    var bombButton : ImageButton
     
     init
     {
         // input processor
         super.inputProcessor = inputMultiplexer
-    
+        
         // hud
         //special empty space function
         fun emptySpace(width : Float) : Actor
@@ -112,7 +114,7 @@ object GameScreen : BaseScreen(), GestureListener
                 World.hero.healthPoints.toFloat(),
                 Textures.knobBackgroundNinePatch,
                 Textures.knobHealthbarAfterNinePatch,
-                Textures.knobBeforeNinePatch
+                Textures.knobBeforeNinePatch,
                                  )
         healthBarLabel = labelOf(
                 "$healthBarValueCurrent / $healthBarValueMax",
@@ -213,17 +215,45 @@ object GameScreen : BaseScreen(), GestureListener
                 skillsItemsButton.isVisible = true
             }
         }
-    
-        potionButton = imageButtonOf(
-                Textures.potion,
+        
+        swordButton = itemButtonWithHealthbar(
+                Textures.sword,
+                100f,
+                50f,
                 Textures.upNinePatch,
                 Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                    ) {
+                                             ) {
+            playSoundOnce(Sounds.blop)
+        }
+        
+        val amountOfUsesPotion = 5
+        potionButton = itemButtonWithLabel(
+                Textures.potion,
+                "$amountOfUsesPotion",
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                          ) {
             playSoundOnce(Sounds.blop)
             World.hero.healCharacter(10)
+        }
+        
+        val amountOfUsesBomb = 10
+        bombButton = itemButtonWithLabel(
+                Textures.bomb,
+                "$amountOfUsesBomb",
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                        ) {
+            playSoundOnce(Sounds.blop)
         }
         
         // hud top right - states
@@ -267,7 +297,7 @@ object GameScreen : BaseScreen(), GestureListener
     
         //bottom left icons
         val columnBottomLeft = columnOf(
-                rowOf(equipmentButton, potionButton)
+                rowOf(equipmentButton, potionButton, swordButton, bombButton)
                                        ).align(Align.bottomLeft)
     
         val columnLeft = columnOf(
