@@ -1,5 +1,9 @@
 package com.efm.item
 
-class StackableMapItem
+
+/**
+ * Bombs etc
+ */
+interface StackableMapItem
 {
 }

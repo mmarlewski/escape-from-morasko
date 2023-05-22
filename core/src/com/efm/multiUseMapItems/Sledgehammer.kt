@@ -1,15 +1,16 @@
 package com.efm.multiUseMapItems
 
-import com.efm.Direction
+import com.badlogic.gdx.math.Vector2
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
-import com.efm.room.RoomPosition
+import com.efm.room.*
+import kotlin.math.abs
 
-class WoodenSword : MultiUseMapItem
+class Sledgehammer : MultiUseMapItem
 {
-    override val name : String = "Wooden Sword"
-    override var baseAPUseCost : Int = 2
-    override var durability : Int = 20
+    override val name : String = "Sledgehammer"
+    override var baseAPUseCost : Int = 6
+    override var durability : Int = 50
     override val durabilityUseCost : Int = 1
     
     override fun selected()
@@ -36,14 +37,18 @@ class WoodenSword : MultiUseMapItem
     {
         val affectedSpaces = mutableListOf<RoomPosition>()
         val heroPos = World.hero.position
-        for (i in -1..1)
+        for (posX in 0..World.currentRoom.heightInSpaces)
         {
-            for (j in -1..1)
+            for (posY in 0..World.currentRoom.widthInSpaces)
             {
-                affectedSpaces.add((heroPos.positionOffsetBy(i, Direction.up)).positionOffsetBy(j, Direction.left))
+                val distance = abs(heroPos.x - posX).coerceAtLeast(abs(heroPos.y - posY))
+                if (distance in 1..3)
+                {
+                    affectedSpaces.add(Vector2(posX.toFloat(), posY.toFloat()).toRoomPosition())
+                }
             }
         }
-        
+        print(affectedSpaces)
         return affectedSpaces
     }
 }
