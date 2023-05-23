@@ -177,6 +177,16 @@ object Tiles
     val explodingBarrel = load("explodingBarrel.png")
     val explodingBarrelOutlineYellow = load("explodingBarrelOutlineYellow.png")
     
+    // wooden sword
+    
+    val woodenSword = load("woodenSword.png")
+    
+    // bomb
+    
+    val bomb = load("bomb.png")
+    val fire = load("fire.png")
+    val smoke = load("smoke.png")
+    
     fun load(name : String) : StaticTiledMapTile
     {
         val filePath = "tiles/$name"

@@ -1,8 +1,8 @@
-package com.efm
+package com.efm.state
 
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
-import com.efm.level.World
+import com.efm.item.*
 import com.efm.passage.Exit
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -29,7 +29,7 @@ sealed class State
         
         // select
         
-        object noSelection:free()
+        object noSelection: free()
         
         object nothingSelected : free()
         {
@@ -70,13 +70,15 @@ sealed class State
         object multiUseMapItemChosen : free()
         {
             var chosenMultiUseItem : MultiUseMapItem? = null
-            var targetSpaces : List<Space>? = null
+            var targetPositions : List<RoomPosition>? = null
         }
         
         object multiUseMapItemTargetSelectedOnce : free()
         {
-            val selectedPosition = RoomPosition()
-            var effectSpaces : List<Space>? = null
+            var chosenMultiUseItem : MultiUseMapItem? = null
+            var targetPositions : List<RoomPosition>? = null
+            var selectedPosition = RoomPosition()
+            var effectPositions : List<RoomPosition>? = null
         }
         
         object multiUseMapItemTargetSelectedTwice : free()
@@ -87,14 +89,16 @@ sealed class State
         
         object stackableMapItemChosen : free()
         {
-            val chosenStackableMapItem : StackableMapItem? = null
-            var targetSpaces : List<Space>? = null
+            var chosenStackableMapItem : StackableMapItem? = null
+            var targetPositions : List<RoomPosition>? = null
         }
         
         object stackableMapItemTargetSelectedOnce : free()
         {
-            val selectedPosition = RoomPosition()
-            var effectSpaces : List<Space>? = null
+            var chosenStackableMapItem : StackableMapItem? = null
+            var targetPositions : List<RoomPosition>? = null
+            var selectedPosition = RoomPosition()
+            var effectPositions : List<RoomPosition>? = null
         }
         
         object stackableMapItemTargetSelectedTwice : free()
@@ -105,7 +109,7 @@ sealed class State
         
         object stackableSelfItemChosen : free()
         {
-            val chosenStackableSelfItem : StackableSelfItem? = null
+            var chosenStackableSelfItem : StackableSelfItem? = null
         }
     }
     

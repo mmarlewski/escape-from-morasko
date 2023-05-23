@@ -2,6 +2,7 @@ package com.efm.multiUseMapItems
 
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
+import com.efm.room.Room
 import com.efm.room.RoomPosition
 
 
@@ -22,17 +23,24 @@ class BasicWhip : MultiUseMapItem
     
     override fun confirmed()
     {
-        use()
+        //use()
     }
     
-    override fun use()
+    override fun use(room: Room, targetPosition : RoomPosition)
     {
         //odejmij ap -= baseAPUseCost
         //odejmij durability -= durabilityCost
         //zadaj obrażenia przeciwnikom w zasięgu
     }
     
-    override fun affectedSpaces() : MutableList<RoomPosition>
+    override fun getTargetPositions(source:RoomPosition) : List<RoomPosition>
+    {
+        val possiblePositions = mutableListOf<RoomPosition>()
+        
+        return possiblePositions.toList()
+    }
+    
+    override fun getAffectedPositions(targetPosition:RoomPosition) : List<RoomPosition>
     {
         val affectedSpaces = mutableListOf<RoomPosition>()
         val heroPos = World.hero.position

@@ -1,65 +1,12 @@
-package com.efm
+package com.efm.state
 
+import com.efm.*
+import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
-import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.level.World
 import com.efm.screens.GameScreen
-
-fun updateState()
-{
-    val newState = when (val currState = getState())
-    {
-        is State.free.noSelection                            -> updateFreeNoSelection(currState)
-        is State.free.nothingSelected                        -> updateFreeNothingSelected(currState)
-        is State.free.entitySelected                         -> updateFreeEntitySelected(currState)
-        is State.free.heroSelected                           -> updateFreeHeroSelected(currState)
-        is State.free.moveSelectedOnce                       -> updateFreeMoveSelectedOnce(currState)
-        is State.free.moveSelectedTwice                      -> updateFreeMoveSelectedTwice(currState)
-        is State.free.moveSelectedTwiceToLevelExit.waiting   -> updateFreeMoveSelectedTwiceToLevelExitWaiting(currState)
-        is State.free.moveSelectedTwiceToLevelExit.confirmed -> updateFreeMoveSelectedTwiceToLevelExitConfirmed(currState)
-        is State.free.moveSelectedTwiceToLevelExit.cancelled -> updateFreeMoveSelectedTwiceToLevelExitCancelled(currState)
-        else                                                 -> currState
-    }
-    changeState(newState)
-}
-
-fun updateState(itemSlot : InventoryTabSlot)
-{
-    /*
-    if (slot.selected)
-        zmiana stanu na itemChosen(slot.item)
-        slot.selected = true
-        slot.highlight()
-        slot.item.selected()
-    else
-        if (free)
-            if (nie ma innych przeciwwskazan)
-                slot.item.confirmed()
-                slot.item.use()
-                slot.undoHighlight()
-                slot.selected = false
-            else
-                slot.undoHighlight()
-                slot.selected = false
-        else
-            if (wystarczy AP)
-                slot.item.confirmed()
-                slot.item.use()
-                slot.undoHighlight()
-                slot.selected = false
-                odejmijAP(slot.item) // na podstawie slot.item.baseAP i innych rzeczy
-            else
-                slot.undoHighlight()
-                slot.selected = false
-                slot.item.notSelected() // ?
-                
-                
-     */
-}
-
-// free
 
 fun updateFreeNoSelection(currState : State.free.noSelection) : State
 {
@@ -365,6 +312,207 @@ fun updateFreeMoveSelectedTwiceToLevelExitConfirmed(currState : State.free.moveS
 }
 
 fun updateFreeMoveSelectedTwiceToLevelExitCancelled(currState : State.free.moveSelectedTwiceToLevelExit.cancelled) : State
+{
+    return currState
+}
+
+fun updateFreeMultiUseMapItemChosen(currState : State.free.multiUseMapItemChosen) : State
+{
+    val multiUseMapItem = currState.chosenMultiUseItem
+    
+    if (multiUseMapItem == null)
+    {
+        return currState
+    }
+    
+    if (GameScreen.isTouched)
+    {
+        val selectedPosition = GameScreen.roomTouchPosition
+        val targetPositions = currState.targetPositions ?: emptyList()
+        if (selectedPosition in targetPositions)
+        {
+            val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+            val newState = State.free.multiUseMapItemTargetSelectedOnce
+            newState.chosenMultiUseItem = multiUseMapItem
+            newState.targetPositions = targetPositions
+            newState.selectedPosition.set(selectedPosition)
+            newState.effectPositions = affectedPositions
+            
+            for (position in affectedPositions)
+            {
+                Map.changeTile(MapLayer.select, position, Tiles.selectOrange)
+            }
+            Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+            
+            return newState
+        }
+    }
+    
+    return currState
+}
+
+fun updateFreeMultiUseMapItemTargetSelectedOnce(currState : State.free.multiUseMapItemTargetSelectedOnce) : State
+{
+    val multiUseMapItem = currState.chosenMultiUseItem
+    
+    if (multiUseMapItem == null)
+    {
+        return currState
+    }
+    
+    if (GameScreen.isTouched)
+    {
+        val selectedPosition = GameScreen.roomTouchPosition
+        Map.clearLayer(MapLayer.select)
+        
+        if (selectedPosition == currState.selectedPosition)
+        {
+            World.hero.spendAP(multiUseMapItem.baseAPUseCost)
+            multiUseMapItem.durability -= multiUseMapItem.durabilityUseCost
+            multiUseMapItem.use(World.currentRoom, selectedPosition)
+            return State.free.multiUseMapItemTargetSelectedTwice
+        }
+        else
+        {
+            currState.selectedPosition.set(selectedPosition)
+            val targetPositions = currState.targetPositions ?: emptyList()
+            
+            for (position in targetPositions)
+            {
+                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
+            }
+            
+            if (selectedPosition in targetPositions)
+            {
+                val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+                
+                for (position in affectedPositions)
+                {
+                    Map.changeTile(MapLayer.select, position, Tiles.selectOrange)
+                }
+            }
+            else
+            {
+                val newState = State.free.multiUseMapItemChosen
+                return newState
+            }
+        }
+        
+        Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+    }
+    
+    return currState
+}
+
+fun updateFreeMultiUseMapItemTargetSelectedTwice(currState : State.free.multiUseMapItemTargetSelectedTwice) : State
+{
+    if (!Animating.isAnimating())
+    {
+        return State.free.multiUseMapItemChosen
+    }
+    
+    return currState
+}
+
+fun updateFreeStackableMapItemChosen(currState : State.free.stackableMapItemChosen) : State
+{
+    val stackableMapItem = currState.chosenStackableMapItem
+    
+    if (stackableMapItem == null)
+    {
+        return currState
+    }
+    
+    if (GameScreen.isTouched)
+    {
+        val selectedPosition = GameScreen.roomTouchPosition
+        val targetPositions = currState.targetPositions ?: emptyList()
+        if (selectedPosition in targetPositions)
+        {
+            val affectedPositions = stackableMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+            val newState = State.free.stackableMapItemTargetSelectedOnce
+            newState.chosenStackableMapItem = stackableMapItem
+            newState.targetPositions = targetPositions
+            newState.selectedPosition.set(selectedPosition)
+            newState.effectPositions = affectedPositions
+            
+            for (position in affectedPositions)
+            {
+                Map.changeTile(MapLayer.select, position, Tiles.selectOrange)
+            }
+            Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+            
+            return newState
+        }
+    }
+    
+    return currState
+}
+
+fun updateFreeStackableMapItemTargetSelectedOnce(currState : State.free.stackableMapItemTargetSelectedOnce) : State
+{
+    val stackableMapItem = currState.chosenStackableMapItem
+    
+    if (stackableMapItem == null)
+    {
+        return currState
+    }
+    
+    if (GameScreen.isTouched)
+    {
+        val selectedPosition = GameScreen.roomTouchPosition
+        Map.clearLayer(MapLayer.select)
+        
+        if (selectedPosition == currState.selectedPosition)
+        {
+            World.hero.spendAP(stackableMapItem.baseAPUseCost)
+            stackableMapItem.amount -= 1
+            stackableMapItem.use(World.currentRoom, selectedPosition)
+            return State.free.stackableMapItemTargetSelectedTwice
+        }
+        else
+        {
+            currState.selectedPosition.set(selectedPosition)
+            val targetPositions = currState.targetPositions ?: emptyList()
+            
+            for (position in targetPositions)
+            {
+                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
+            }
+            
+            if (selectedPosition in targetPositions)
+            {
+                val affectedPositions = stackableMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+                
+                for (position in affectedPositions)
+                {
+                    Map.changeTile(MapLayer.select, position, Tiles.selectOrange)
+                }
+            }
+            else
+            {
+                val newState = State.free.stackableMapItemChosen
+                return newState
+            }
+        }
+        
+        Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+    }
+    
+    return currState
+}
+
+fun updateFreeStackableMapItemTargetSelectedTwice(currState : State.free.stackableMapItemTargetSelectedTwice) : State
+{
+    if (!Animating.isAnimating())
+    {
+        return State.free.stackableMapItemChosen
+    }
+    
+    return currState
+}
+
+fun updateStackableSelfItemChosen(currState : State.free.stackableSelfItemChosen) : State
 {
     return currState
 }

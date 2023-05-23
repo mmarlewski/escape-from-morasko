@@ -1,5 +1,8 @@
 package com.efm.item
 
+import com.efm.room.Room
+import com.efm.room.RoomPosition
+
 interface Item
 {
     val name : String
@@ -9,6 +12,4 @@ interface Item
     fun selected()
     /** Graphical effects occurring after the use of Item has been confirmed */
     fun confirmed()
-    /** Logic executed after the use of Item has been confirmed */
-    fun use()
 }

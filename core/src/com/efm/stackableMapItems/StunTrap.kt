@@ -3,6 +3,7 @@ package com.efm.stackableMapItems
 import com.efm.Direction
 import com.efm.item.StackableMapItem
 import com.efm.level.World
+import com.efm.room.Room
 import com.efm.room.RoomPosition
 
 class StunTrap(
@@ -20,7 +21,7 @@ class StunTrap(
     {
     }
     
-    override fun use()
+    override fun use(room: Room, targetPosition : RoomPosition)
     {
         //stop enemies from moving when they step on it
     }
@@ -40,4 +41,17 @@ class StunTrap(
         return possibleSpaces
     }
     
+    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
+    {
+        val positions = mutableListOf<RoomPosition>()
+        
+        return positions.toList()
+    }
+    
+    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
+    {
+        val positions = mutableListOf<RoomPosition>()
+        
+        return positions.toList()
+    }
 }

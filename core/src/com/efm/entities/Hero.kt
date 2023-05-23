@@ -3,7 +3,7 @@ package com.efm.entities
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Character
-import com.efm.getState
+import com.efm.state.getState
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 

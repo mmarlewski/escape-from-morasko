@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.item.StackableSelfItem
+import com.efm.state.updateState
 
 /** ItemSlot in an InventoryTab for StackableSelfItem. Consists of an Item and a button.
  * @property item Item in the ItemSlot.

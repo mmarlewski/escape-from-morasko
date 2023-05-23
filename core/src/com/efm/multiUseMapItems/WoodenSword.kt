@@ -1,9 +1,12 @@
 package com.efm.multiUseMapItems
 
-import com.efm.Direction
+import com.efm.*
+import com.efm.assets.Sounds
+import com.efm.assets.Tiles
+import com.efm.entity.Character
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
-import com.efm.room.RoomPosition
+import com.efm.room.*
 
 class WoodenSword : MultiUseMapItem
 {
@@ -11,6 +14,7 @@ class WoodenSword : MultiUseMapItem
     override var baseAPUseCost : Int = 2
     override var durability : Int = 20
     override val durabilityUseCost : Int = 1
+    val damage : Int = 2
     
     override fun selected()
     {
@@ -22,28 +26,49 @@ class WoodenSword : MultiUseMapItem
     
     override fun confirmed()
     {
-        use()
+        //use()
     }
     
-    override fun use()
+    override fun use(room : Room, targetPosition : RoomPosition)
     {
-        //odejmij ap -= baseAPUseCost
-        //odejmij durability -= durabilityCost
-        //zadaj obrażenia przeciwnikom w zasięgu
-    }
-    
-    override fun affectedSpaces() : MutableList<RoomPosition>
-    {
-        val affectedSpaces = mutableListOf<RoomPosition>()
-        val heroPos = World.hero.position
-        for (i in -1..1)
-        {
-            for (j in -1..1)
+        val animations = mutableListOf<Animation>()
+        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
+        animations += Animation.showTile(Tiles.woodenSword, targetPosition.copy(), 0.5f)
+        animations += Animation.action {
+            
+            val hero = World.hero
+            hero.spendAP(baseAPUseCost)
+            durability -= durabilityUseCost
+            
+            val attackedPosition = targetPosition.copy()
+            val attackedSpace = room.getSpace(attackedPosition)
+            val attackedEntity = attackedSpace?.getEntity()
+            when (attackedEntity)
             {
-                affectedSpaces.add((heroPos.positionOffsetBy(i, Direction.up)).positionOffsetBy(j, Direction.left))
+                is Character ->
+                {
+                    attackedEntity.damageCharacter(this.damage)
+                }
             }
         }
+        Animating.executeAnimations(animations)
+    }
+    
+    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
+    {
+        val possiblePositions = mutableListOf<RoomPosition>()
         
-        return affectedSpaces
+        possiblePositions.addAll(getSquareAreaPositions(World.hero.position, 2))
+        
+        return possiblePositions.toList()
+    }
+    
+    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
+    {
+        val affectedPositions = mutableListOf<RoomPosition>()
+        
+        affectedPositions.add(targetPosition)
+        
+        return affectedPositions.toList()
     }
 }

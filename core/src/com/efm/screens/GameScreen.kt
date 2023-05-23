@@ -16,7 +16,10 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
 import com.efm.level.World
+import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.RoomPosition
+import com.efm.stackableMapItems.Bomb
+import com.efm.state.*
 
 object GameScreen : BaseScreen(), GestureListener
 {
@@ -65,7 +68,7 @@ object GameScreen : BaseScreen(), GestureListener
                 this.width = width
             }
         }
-    
+        
         val menuPause = menuPopup(
                 "PAUSE",
                 Fonts.pixeloid30,
@@ -99,7 +102,7 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                       ) {
-            if (menuPause.isVisible == true)   menuPause.isVisible = false else menuPause.isVisible = true
+            if (menuPause.isVisible == true) menuPause.isVisible = false else menuPause.isVisible = true
             playSoundOnce(Sounds.blop)
             
         }
@@ -144,9 +147,9 @@ object GameScreen : BaseScreen(), GestureListener
                 Colors.black,
                 Textures.translucentNinePatch
                                  )
-    
+        
         //item buttons
-    
+        
         val weaponItemsButton = imageButtonOf(
                 Textures.itemWeapon,
                 Textures.upNinePatch,
@@ -158,7 +161,7 @@ object GameScreen : BaseScreen(), GestureListener
             playSoundOnce(Sounds.blop)
         }
         weaponItemsButton.isVisible = false
-    
+        
         val healingItemsButton = imageButtonOf(
                 Textures.itemHealing,
                 Textures.upNinePatch,
@@ -170,7 +173,7 @@ object GameScreen : BaseScreen(), GestureListener
             playSoundOnce(Sounds.blop)
         }
         healingItemsButton.isVisible = false
-    
+        
         val skillsItemsButton = imageButtonOf(
                 Textures.itemSkill,
                 Textures.upNinePatch,
@@ -182,7 +185,7 @@ object GameScreen : BaseScreen(), GestureListener
             playSoundOnce(Sounds.blop)
         }
         skillsItemsButton.isVisible = false
-    
+        
         val usableItemsButton = imageButtonOf(
                 Textures.itemUsable,
                 Textures.upNinePatch,
@@ -194,7 +197,7 @@ object GameScreen : BaseScreen(), GestureListener
             playSoundOnce(Sounds.blop)
         }
         usableItemsButton.isVisible = false
-    
+        
         val equipmentButton = imageButtonOf(
                 Textures.backpack,
                 Textures.upNinePatch,
@@ -231,6 +234,18 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.focusedNinePatch
                                              ) {
             playSoundOnce(Sounds.blop)
+            
+            val woodenSword = WoodenSword()
+            val newState = State.free.multiUseMapItemChosen
+            newState.chosenMultiUseItem = woodenSword
+            val targetPositions = woodenSword.getTargetPositions(World.hero.position)
+            newState.targetPositions = targetPositions
+            changeState(newState)
+            Map.clearLayer(MapLayer.select)
+            for (position in targetPositions)
+            {
+                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
+            }
         }
         
         val amountOfUsesPotion = 5
@@ -257,7 +272,17 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                         ) {
-            playSoundOnce(Sounds.blop)
+            val bomb = Bomb()
+            val newState = State.free.stackableMapItemChosen
+            newState.chosenStackableMapItem = bomb
+            val targetPositions = bomb.getTargetPositions(World.hero.position)
+            newState.targetPositions = targetPositions
+            changeState(newState)
+            Map.clearLayer(MapLayer.select)
+            for (position in targetPositions)
+            {
+                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
+            }
         }
         
         // hud top right - states
@@ -273,52 +298,50 @@ object GameScreen : BaseScreen(), GestureListener
             playSoundOnce(Sounds.blop)
         }
         
-        
         //top left icons
         val columnTopLeft = columnOf(
                 rowOf(menuButton)
                                     ).align(Align.topLeft)
-    
-    
+        
         //top right icons
         val columnTopRight = columnOf(
                 rowOf(endTurnButton)
                                      ).align(Align.topRight)
-    
+        
         //bars setup
         val healthStack = Stack()
         healthStack.add(healthBar)
         healthStack.add(healthBarLabel)
-    
+        
         val abilityStack = Stack()
         abilityStack.add(abilityBar)
         abilityStack.add(abilityBarLabel)
-    
+        
         //bars
         val columnTop = columnOf(
                 rowOf(healthStack, abilityStack)
                                 ).align(Align.top)
-    
+        
         //bottom left icons
         val columnBottomLeft = columnOf(
                 rowOf(equipmentButton, potionButton, swordButton, bombButton)
                                        ).align(Align.bottomLeft)
-    
+        
         val columnLeft = columnOf(
-            
+                
                 usableItemsButton,
                 skillsItemsButton,
                 healingItemsButton,
                 weaponItemsButton,
                                  ).align(Align.left)
-    
+        
         //bottom right icons
         val columnBottomRight = columnOf(
                 rowOf(xButton)
                                         ).align(Align.bottomRight)
-    
+        
         val columnMiddle = columnOf(rowOf(menuPause)).align(Align.center)
-    
+        
         //padding so it looks nice
         columnTopLeft.pad(16f)
         columnTopRight.pad(16f)
@@ -327,7 +350,7 @@ object GameScreen : BaseScreen(), GestureListener
         columnBottomRight.pad(16f)
         columnLeft.padTop(128f)
         columnLeft.padLeft(16f)
-    
+        
         //set the size to fill the phone screen
         columnTopLeft.setFillParent(true)
         columnTopRight.setFillParent(true)
@@ -345,7 +368,7 @@ object GameScreen : BaseScreen(), GestureListener
         GameScreen.stage.addActor(columnBottomRight)
         GameScreen.stage.addActor(columnMiddle)
         GameScreen.stage.addActor(columnLeft)
-    
+        
         // xButton is visible only after pressing on hero
         xButton.isVisible = false
         

@@ -1,6 +1,8 @@
 package com.efm.stackableMapItems
 
 import com.efm.item.StackableMapItem
+import com.efm.room.Room
+import com.efm.room.RoomPosition
 
 class TeleportationTool(
         override var amount : Int = 1
@@ -17,9 +19,22 @@ class TeleportationTool(
     {
     }
     
-    override fun use()
+    override fun use(room: Room, targetPosition : RoomPosition)
     {
         //teleport to chosen space within the room
     }
     
+    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
+    {
+        val positions = mutableListOf<RoomPosition>()
+        
+        return positions.toList()
+    }
+    
+    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
+    {
+        val positions = mutableListOf<RoomPosition>()
+        
+        return positions.toList()
+    }
 }
