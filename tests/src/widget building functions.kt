@@ -173,10 +173,10 @@ class `widget building functions`
     @Test fun `progressBarOf initializes all members of ProgressBar`()
     {
         val progressBar = progressBarOf(
-                0f, 1f, 0.1f,
+                0f, 1f, 0.1f, 0f,
                 Textures.knobBackgroundNinePatch,
                 Textures.knobBeforeNinePatch,
-                Textures.knobAfterNinePatch
+                Textures.knobAfterNinePatch, 10f, 10f
                                        )
         
         progressBar.color
