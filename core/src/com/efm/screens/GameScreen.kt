@@ -86,11 +86,30 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                              ) {
+                              )
+        {
             playSoundOnce(Sounds.blop)
             xButton.isVisible = false
+            
             Map.clearLayer(MapLayer.select)
-            changeState(State.free.noSelection)
+            Map.clearLayer(MapLayer.outline)
+            
+            val newState = when (val currState = getState())
+            {
+                is State.free        -> State.free.noSelection.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                }
+                is State.constrained -> State.constrained.noSelection.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                }
+                is State.combat.hero -> State.combat.hero.noSelection
+                else                 -> currState
+            }
+            setState(newState)
         }
         
         // hud top left
@@ -235,17 +254,34 @@ object GameScreen : BaseScreen(), GestureListener
                                              ) {
             playSoundOnce(Sounds.blop)
             
-            val woodenSword = WoodenSword()
-            val newState = State.free.multiUseMapItemChosen
-            newState.chosenMultiUseItem = woodenSword
-            val targetPositions = woodenSword.getTargetPositions(World.hero.position)
-            newState.targetPositions = targetPositions
-            changeState(newState)
+            val sword = WoodenSword()
+            val targetPositions = sword.getTargetPositions(World.hero.position)
+            
             Map.clearLayer(MapLayer.select)
             for (position in targetPositions)
             {
                 Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
             }
+            
+            val newState = when (val currState = getState())
+            {
+                is State.free        -> State.free.multiUseMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.chosenMultiUseItem = sword
+                    this.targetPositions = targetPositions
+                }
+                is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenMultiUseItem = sword
+                    this.targetPositions = targetPositions
+                }
+                else                 -> currState
+            }
+            setState(newState)
         }
         
         val amountOfUsesPotion = 5
@@ -273,16 +309,33 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.focusedNinePatch
                                         ) {
             val bomb = Bomb()
-            val newState = State.free.stackableMapItemChosen
-            newState.chosenStackableMapItem = bomb
             val targetPositions = bomb.getTargetPositions(World.hero.position)
-            newState.targetPositions = targetPositions
-            changeState(newState)
+            
             Map.clearLayer(MapLayer.select)
             for (position in targetPositions)
             {
                 Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
             }
+            
+            val newState = when (val currState = getState())
+            {
+                is State.free        -> State.free.stackableMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.chosenStackableMapItem = bomb
+                    this.targetPositions = targetPositions
+                }
+                is State.constrained -> State.constrained.stackableMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenStackableMapItem = bomb
+                    this.targetPositions = targetPositions
+                }
+                else                 -> currState
+            }
+            setState(newState)
         }
         
         // hud top right - states
@@ -381,7 +434,14 @@ object GameScreen : BaseScreen(), GestureListener
         focusCameraOnRoomPosition(World.hero.position)
         
         // state
-        changeState(State.free.noSelection)
+        val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
+        val initState = when (areEnemiesInRoom)
+        {
+            true  -> State.constrained.noSelection
+            false -> State.free.noSelection
+        }
+        initState.areEnemiesInRoom = areEnemiesInRoom
+        setState(initState)
     }
     
     fun updateMapBaseLayer()

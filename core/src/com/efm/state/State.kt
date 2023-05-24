@@ -7,6 +7,7 @@ import com.efm.passage.Exit
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 
+private var prevState : State = State.free.noSelection
 private var currState : State = State.free.noSelection
 
 fun getState() : State
@@ -14,22 +15,27 @@ fun getState() : State
     return currState
 }
 
-fun changeState(newState : State)
+fun setState(newState : State)
 {
+    prevState = currState
     currState = newState
+    
+    if (prevState != newState)
+    {
+        println(currState)
+    }
 }
 
 sealed class State
 {
     var isHeroAlive = true
+    var areEnemiesInRoom = false
     
     sealed class free : State()
     {
-        var isEnemyInRoom = false
-        
         // select
         
-        object noSelection: free()
+        object noSelection : free()
         
         object nothingSelected : free()
         {
@@ -120,7 +126,11 @@ sealed class State
         
         // select
         
+        object noSelection : constrained()
+        
         object nothingSelected : constrained()
+        {
+        }
         
         object entitySelected : constrained()
         {
@@ -139,14 +149,14 @@ sealed class State
         object moveSelectedOnce : constrained()
         {
             val selectedPosition = RoomPosition()
-            var pathSpaces : List<Space>? = null
+            var pathSpaces : List<Space> = emptyList()
         }
         
         object moveSelectedTwice : constrained()
         {
-            val selectedPosition = RoomPosition()
             var entityOnPosition : Entity? = null
-            var pathSpaces : List<Space>? = null
+            var pathSpaces : List<Space> = emptyList()
+            var isHeroMovingThroughDetectionPosition = false
         }
         
         sealed class moveSelectedTwiceToLevelExit : constrained()
@@ -163,44 +173,46 @@ sealed class State
         object multiUseMapItemChosen : constrained()
         {
             var chosenMultiUseItem : MultiUseMapItem? = null
-            var targetSpaces : List<Space>? = null
+            var targetPositions : List<RoomPosition>? = null
         }
         
         object multiUseMapItemTargetSelectedOnce : constrained()
         {
-            val selectedPosition = RoomPosition()
-            var effectSpaces : List<Space>? = null
+            var chosenMultiUseItem : MultiUseMapItem? = null
+            var targetPositions : List<RoomPosition>? = null
+            var selectedPosition = RoomPosition()
+            var effectPositions : List<RoomPosition>? = null
         }
         
         object multiUseMapItemTargetSelectedTwice : constrained()
         {
-            val selectedPosition = RoomPosition()
         }
         
         // StackableMapItem
         
         object stackableMapItemChosen : constrained()
         {
-            val chosenStackableMapItem : StackableMapItem? = null
-            var targetSpaces : List<Space>? = null
+            var chosenStackableMapItem : StackableMapItem? = null
+            var targetPositions : List<RoomPosition>? = null
         }
         
         object stackableMapItemTargetSelectedOnce : constrained()
         {
-            val selectedPosition = RoomPosition()
-            var effectSpaces : List<Space>? = null
+            var chosenStackableMapItem : StackableMapItem? = null
+            var targetPositions : List<RoomPosition>? = null
+            var selectedPosition = RoomPosition()
+            var effectPositions : List<RoomPosition>? = null
         }
         
         object stackableMapItemTargetSelectedTwice : constrained()
         {
-            val selectedPosition = RoomPosition()
         }
         
         // StackableSelfItem
         
         object stackableSelfItemChosen : constrained()
         {
-            val chosenStackableSelfItem : StackableSelfItem? = null
+            var chosenStackableSelfItem : StackableSelfItem? = null
         }
         
         // turn
@@ -219,21 +231,19 @@ sealed class State
     {
         sealed class hero : combat()
         {
-            var areAnyEnemiesLeft = false
             var areAnyActionPointsLeft = false
             
             // select
             
+            object noSelection : hero()
+            
             object nothingSelected : hero()
+            {
+            }
             
             object entitySelected : hero()
             {
                 var selectedEntity : Entity? = null
-            }
-            
-            object enemySelected : hero()
-            {
-                var selectedEnemy : Enemy? = null
             }
             
             object heroSelected : hero()
@@ -243,14 +253,13 @@ sealed class State
             object moveSelectedOnce : hero()
             {
                 val selectedPosition = RoomPosition()
-                var pathSpaces : List<Space>? = null
+                var pathSpaces : List<Space> = emptyList()
             }
             
             object moveSelectedTwice : hero()
             {
-                val selectedPosition = RoomPosition()
                 var entityOnPosition : Entity? = null
-                var pathSpaces : List<Space>? = null
+                var pathSpaces : List<Space> = emptyList()
             }
             
             sealed class moveSelectedTwiceToLevelExit : hero()
@@ -267,44 +276,46 @@ sealed class State
             object multiUseMapItemChosen : hero()
             {
                 var chosenMultiUseItem : MultiUseMapItem? = null
-                var targetSpaces : List<Space>? = null
+                var targetPositions : List<RoomPosition>? = null
             }
             
             object multiUseMapItemTargetSelectedOnce : hero()
             {
-                val selectedPosition = RoomPosition()
-                var effectSpaces : List<Space>? = null
+                var chosenMultiUseItem : MultiUseMapItem? = null
+                var targetPositions : List<RoomPosition>? = null
+                var selectedPosition = RoomPosition()
+                var effectPositions : List<RoomPosition>? = null
             }
             
             object multiUseMapItemTargetSelectedTwice : hero()
             {
-                val selectedPosition = RoomPosition()
             }
             
             // StackableMapItem
             
             object stackableMapItemChosen : hero()
             {
-                val chosenStackableMapItem : StackableMapItem? = null
-                var targetSpaces : List<Space>? = null
+                var chosenStackableMapItem : StackableMapItem? = null
+                var targetPositions : List<RoomPosition>? = null
             }
             
             object stackableMapItemTargetSelectedOnce : hero()
             {
-                val selectedPosition = RoomPosition()
-                var effectSpaces : List<Space>? = null
+                var chosenStackableMapItem : StackableMapItem? = null
+                var targetPositions : List<RoomPosition>? = null
+                var selectedPosition = RoomPosition()
+                var effectPositions : List<RoomPosition>? = null
             }
             
             object stackableMapItemTargetSelectedTwice : hero()
             {
-                val selectedPosition = RoomPosition()
             }
             
             // StackableSelfItem
             
             object stackableSelfItemChosen : hero()
             {
-                val chosenStackableSelfItem : StackableSelfItem? = null
+                var chosenStackableSelfItem : StackableSelfItem? = null
             }
             
             // turn

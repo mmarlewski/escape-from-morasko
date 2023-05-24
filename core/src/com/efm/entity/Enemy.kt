@@ -12,22 +12,23 @@ interface Enemy : Character
 {
     override val position : RoomPosition
     val detectionRange : Int
+    
     override fun getTile() : TiledMapTile
     {
         return Tiles.bladeEnemy
     }
     
-    fun detectedSpaces() : MutableList<RoomPosition>
+    fun getDetectionPositions() : MutableList<RoomPosition>
     {
-        val detectedSpaces = mutableListOf<RoomPosition>()
+        val detectionPositions = mutableListOf<RoomPosition>()
         for (i in -detectionRange..detectionRange)
         {
             for (j in -detectionRange .. detectionRange)
             {
-                detectedSpaces.add((position.positionOffsetBy(i, Direction.up)).positionOffsetBy(j, Direction.left))
+                detectionPositions.add((position.positionOffsetBy(i, Direction.up)).positionOffsetBy(j, Direction.left))
             }
         }
     
-        return detectedSpaces
+        return detectionPositions
     }
 }

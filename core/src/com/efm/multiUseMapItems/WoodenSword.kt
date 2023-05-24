@@ -58,7 +58,8 @@ class WoodenSword : MultiUseMapItem
     {
         val possiblePositions = mutableListOf<RoomPosition>()
         
-        possiblePositions.addAll(getSquareAreaPositions(World.hero.position, 2))
+        possiblePositions.addAll(getSquarePerimeterPositions(World.hero.position, 1))
+        possiblePositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
         
         return possiblePositions.toList()
     }

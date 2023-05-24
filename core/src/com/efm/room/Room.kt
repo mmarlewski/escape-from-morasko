@@ -1,8 +1,7 @@
 package com.efm.room
 
 import com.badlogic.gdx.Gdx
-import com.efm.entity.Character
-import com.efm.entity.Entity
+import com.efm.entity.*
 import com.efm.passage.Passage
 
 /**
@@ -23,6 +22,7 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     
     private val entities = mutableListOf<Entity>()
     private val characters = mutableListOf<Character>()
+    private val enemies = mutableListOf<Enemy>()
     private val passages = mutableListOf<Passage>()
     
     init
@@ -30,12 +30,12 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         for (i in 0 until heightInSpaces)
         {
             var spaceRow = arrayOf<Space?>()
-    
+            
             for (j in 0 until widthInSpaces)
             {
                 spaceRow += Space(j, i)
             }
-    
+            
             spaceArray += spaceRow
         }
         updateSpaceList()
@@ -114,11 +114,22 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         return entities
     }
     
+    fun getCharacters() : List<Character>
+    {
+        return characters
+    }
+    
+    fun getEnemies() : List<Enemy>
+    {
+        return enemies
+    }
+    
     fun addEntity(entity : Entity)
     {
         // add to list
         entities.add(entity)
         if (entity is Character) characters.add(entity)
+        if (entity is Enemy) enemies.add(entity)
         // add to space if space exists
         val space = getSpace(entity.position)
         if (space != null)
@@ -162,5 +173,11 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     {
         entities.remove(entity)
         getSpace(entity.position)?.clearEntity()
+    }
+    
+    fun areEnemiesInRoom() : Boolean
+    {
+        enemies.forEach { if (it is Enemy) return true }
+        return false
     }
 }
