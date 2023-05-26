@@ -38,8 +38,6 @@ sealed class State
         object noSelection : free()
         
         object nothingSelected : free()
-        {
-        }
         
         object entitySelected : free()
         {
@@ -88,8 +86,6 @@ sealed class State
         }
         
         object multiUseMapItemTargetSelectedTwice : free()
-        {
-        }
         
         // StackableMapItem
         
@@ -108,8 +104,6 @@ sealed class State
         }
         
         object stackableMapItemTargetSelectedTwice : free()
-        {
-        }
         
         // StackableSelfItem
         
@@ -129,8 +123,6 @@ sealed class State
         object noSelection : constrained()
         
         object nothingSelected : constrained()
-        {
-        }
         
         object entitySelected : constrained()
         {
@@ -185,8 +177,6 @@ sealed class State
         }
         
         object multiUseMapItemTargetSelectedTwice : constrained()
-        {
-        }
         
         // StackableMapItem
         
@@ -205,8 +195,6 @@ sealed class State
         }
         
         object stackableMapItemTargetSelectedTwice : constrained()
-        {
-        }
         
         // StackableSelfItem
         
@@ -238,8 +226,6 @@ sealed class State
             object noSelection : hero()
             
             object nothingSelected : hero()
-            {
-            }
             
             object entitySelected : hero()
             {
@@ -288,8 +274,6 @@ sealed class State
             }
             
             object multiUseMapItemTargetSelectedTwice : hero()
-            {
-            }
             
             // StackableMapItem
             
@@ -308,8 +292,6 @@ sealed class State
             }
             
             object stackableMapItemTargetSelectedTwice : hero()
-            {
-            }
             
             // StackableSelfItem
             

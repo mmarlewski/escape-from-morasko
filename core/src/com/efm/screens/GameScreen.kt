@@ -86,14 +86,13 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                              )
-        {
+                              ) {
             playSoundOnce(Sounds.blop)
             xButton.isVisible = false
-            
+    
             Map.clearLayer(MapLayer.select)
             Map.clearLayer(MapLayer.outline)
-            
+    
             val newState = when (val currState = getState())
             {
                 is State.free        -> State.free.noSelection.apply {
@@ -121,7 +120,7 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                       ) {
-            if (menuPause.isVisible == true) menuPause.isVisible = false else menuPause.isVisible = true
+            menuPause.isVisible = menuPause.isVisible != true
             playSoundOnce(Sounds.blop)
             
         }
@@ -141,10 +140,7 @@ object GameScreen : BaseScreen(), GestureListener
                 16f
                                  )
         healthBarLabel = labelOf(
-                "$healthBarValueCurrent / $healthBarValueMax",
-                Fonts.pixeloid20,
-                Colors.black,
-                Textures.translucentNinePatch
+                "$healthBarValueCurrent / $healthBarValueMax", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch
                                 )
         
         val abilityBarValueCurrent = World.hero.abilityPoints

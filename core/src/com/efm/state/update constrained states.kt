@@ -597,7 +597,7 @@ fun updateConstrainedMultiUseMapItemChosen(currState : State.constrained.multiUs
         val targetPositions = currState.targetPositions ?: emptyList()
         if (selectedPosition in targetPositions)
         {
-            val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+            val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition)
             
             for (position in affectedPositions)
             {
@@ -660,7 +660,7 @@ fun updateConstrainedMultiUseMapItemTargetSelectedOnce(currState : State.constra
             
             if (selectedPosition in targetPositions)
             {
-                val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+                val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition)
                 
                 for (position in affectedPositions)
                 {

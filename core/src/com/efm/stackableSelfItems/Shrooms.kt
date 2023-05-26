@@ -3,14 +3,14 @@ package com.efm.stackableSelfItems
 import com.efm.item.StackableSelfItem
 import com.efm.level.World
 
-class Medkit(
+class Shrooms(
         override var amount : Int = 1
-            ) : StackableSelfItem
+             ) : StackableSelfItem
 {
-    override val name : String = "Medkit"
+    override val name : String = "Shrooms"
     override val maxAmount : Int = 64
-    override val baseAPUseCost : Int = 4
-    val healAmount : Int = 10
+    override val baseAPUseCost : Int = 1
+    val healAmount : Int = 2
     
     override fun selected()
     {

@@ -37,9 +37,9 @@ fun updateState()
             is State.constrained.noSelection                             -> updateConstrainedNoSelection(currState)
             is State.constrained.nothingSelected                         -> updateConstrainedNothingSelected(currState)
             is State.constrained.entitySelected                          -> updateConstrainedEntitySelected(currState)
-            is State.constrained.enemySelected                          -> updateConstrainedEnemySelected(currState)
+            is State.constrained.enemySelected                           -> updateConstrainedEnemySelected(currState)
             is State.constrained.heroSelected                            -> updateConstrainedHeroSelected(currState)
-            
+    
             is State.constrained.moveSelectedOnce                        -> updateConstrainedMoveSelectedOnce(currState)
             is State.constrained.moveSelectedTwice                       -> updateConstrainedMoveSelectedTwice(currState)
             is State.constrained.moveSelectedTwiceToLevelExit.waiting    -> updateConstrainedMoveSelectedTwiceToLevelExitWaiting(
@@ -51,7 +51,7 @@ fun updateState()
             is State.constrained.moveSelectedTwiceToLevelExit.cancelled  -> updateConstrainedMoveSelectedTwiceToLevelExitCancelled(
                     currState
                                                                                                                                   )
-            
+    
             is State.constrained.multiUseMapItemChosen                   -> updateConstrainedMultiUseMapItemChosen(currState)
             is State.constrained.multiUseMapItemTargetSelectedOnce       -> updateConstrainedMultiUseMapItemTargetSelectedOnce(
                     currState

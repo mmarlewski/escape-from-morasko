@@ -19,7 +19,7 @@ class TeleportationTool(
     {
     }
     
-    override fun use(room: Room, targetPosition : RoomPosition)
+    override fun use(room : Room, targetPosition : RoomPosition)
     {
         //teleport to chosen space within the room
     }

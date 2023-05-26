@@ -11,7 +11,7 @@ import com.efm.room.RoomPosition
 
 class Bomb(
         override var amount : Int = 1
-                  ) : StackableMapItem
+          ) : StackableMapItem
 {
     override val name : String = "Smoke Grenade"
     override val maxAmount : Int = 4

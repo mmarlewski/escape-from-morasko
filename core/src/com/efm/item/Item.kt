@@ -1,8 +1,5 @@
 package com.efm.item
 
-import com.efm.room.Room
-import com.efm.room.RoomPosition
-
 interface Item
 {
     val name : String

@@ -443,7 +443,7 @@ fun updateFreeMultiUseMapItemTargetSelectedOnce(currState : State.free.multiUseM
             
             if (selectedPosition in targetPositions)
             {
-                val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+                val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition)
                 
                 for (position in affectedPositions)
                 {
@@ -501,7 +501,7 @@ fun updateFreeStackableMapItemChosen(currState : State.free.stackableMapItemChos
         val targetPositions = currState.targetPositions ?: emptyList()
         if (selectedPosition in targetPositions)
         {
-            val affectedPositions = stackableMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+            val affectedPositions = stackableMapItem.getAffectedPositions(selectedPosition)
             
             for (position in affectedPositions)
             {
@@ -560,7 +560,7 @@ fun updateFreeStackableMapItemTargetSelectedOnce(currState : State.free.stackabl
             
             if (selectedPosition in targetPositions)
             {
-                val affectedPositions = stackableMapItem.getAffectedPositions(selectedPosition) ?: emptyList()
+                val affectedPositions = stackableMapItem.getAffectedPositions(selectedPosition)
                 
                 for (position in affectedPositions)
                 {

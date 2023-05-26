@@ -3,14 +3,14 @@ package com.efm.stackableSelfItems
 import com.efm.item.StackableSelfItem
 import com.efm.level.World
 
-class Medkit(
+class APPotion(
         override var amount : Int = 1
-            ) : StackableSelfItem
+              ) : StackableSelfItem
 {
-    override val name : String = "Medkit"
-    override val maxAmount : Int = 64
-    override val baseAPUseCost : Int = 4
-    val healAmount : Int = 10
+    override val name : String = "Potion of Stamina"
+    override val maxAmount : Int = 16
+    override val baseAPUseCost : Int = 0
+    val APRestoreAmount : Int = 4
     
     override fun selected()
     {
@@ -22,6 +22,6 @@ class Medkit(
     
     override fun use()
     {
-        World.hero.healCharacter(healAmount)
+        World.hero.spendAP(-APRestoreAmount)
     }
 }

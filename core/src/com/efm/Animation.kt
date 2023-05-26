@@ -159,22 +159,14 @@ sealed class Animation
             seconds : Float
                                  ) : moveTile(tile, from, to, seconds)
     {
-        override fun start()
-        {
-            super.start()
-        }
-        
+    
         override fun update()
         {
             super.update()
             
             GameScreen.focusCameraOnVector2(moveTilePosition)
         }
-        
-        override fun isFinished() : Boolean
-        {
-            return super.isFinished()
-        }
+    
     }
     
     open class showTile(
@@ -211,16 +203,7 @@ sealed class Animation
             
             GameScreen.focusCameraOnRoomPosition(where)
         }
-        
-        override fun update()
-        {
-            super.update()
-        }
-        
-        override fun isFinished() : Boolean
-        {
-            return super.isFinished()
-        }
+    
     }
     
     class action(val action : () -> Unit) : Animation()

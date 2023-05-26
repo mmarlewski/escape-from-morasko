@@ -21,7 +21,7 @@ class StunTrap(
     {
     }
     
-    override fun use(room: Room, targetPosition : RoomPosition)
+    override fun use(room : Room, targetPosition : RoomPosition)
     {
         //stop enemies from moving when they step on it
     }
