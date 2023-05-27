@@ -10,15 +10,15 @@ interface Entity
 {
     val position : RoomPosition
     
-    fun changePosition(x : Int, y : Int)
+    fun setPosition(x : Int, y : Int)
     {
         position.x = x
         position.y = y
     }
     
-    fun changePosition(position : RoomPosition)
+    fun setPosition(position : RoomPosition)
     {
-        changePosition(position.x, position.y)
+        setPosition(position.x, position.y)
     }
     
     fun getTile() : TiledMapTile?

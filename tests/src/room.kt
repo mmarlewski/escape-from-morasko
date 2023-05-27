@@ -39,7 +39,7 @@ import org.junit.runner.RunWith
     @Test fun `addEntity adds Entity to list in Room and to Space in Room when Space exists in position of Entity`()
     {
         val entity = StoneColumn()
-        entity.changePosition(1, 1)
+        entity.setPosition(1, 1)
         
         room.addEntity(entity)
         assertTrue(room.getEntities().contains(entity))
@@ -49,7 +49,7 @@ import org.junit.runner.RunWith
     @Test fun `addEntity adds Entity to list in Room and logs warning when no Space exists in position of Entity`()
     {
         val entity = StoneColumn()
-        entity.changePosition(1, 1)
+        entity.setPosition(1, 1)
         room.deleteSpaceAt(1, 1)
         
         room.addEntity(entity)

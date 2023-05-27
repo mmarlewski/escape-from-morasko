@@ -5,14 +5,12 @@ import com.efm.Direction
 import com.efm.assets.Tiles
 import com.efm.entity.Entity
 import com.efm.passage.*
-import com.efm.room.Room
 import com.efm.room.RoomPosition
 
-class MetalExit(override val direction : Direction, val passage : Passage, val room : Room) : Entity, Exit
+class MetalExit(override val direction : Direction, val passage : Passage) : Entity, Exit
 {
     override val position = RoomPosition()
     override val exitPassage = passage
-    override val currentRoom = room
     
     override fun getTile() : TiledMapTile?
     {
@@ -40,6 +38,25 @@ class MetalExit(override val direction : Direction, val passage : Passage, val r
     
     override fun getOutlineTile() : TiledMapTile?
     {
-        return null
+        return when (passage)
+        {
+            is RoomPassage  -> when (direction)
+            {
+                Direction.up    -> Tiles.metalExitUpOutlineTeal
+                Direction.right -> Tiles.metalExitRightOutlineTeal
+                Direction.down  -> Tiles.metalExitDownOutlineTeal
+                Direction.left  -> Tiles.metalExitLeftOutlineTeal
+            }
+        
+            is LevelPassage -> when (direction)
+            {
+                Direction.up    -> Tiles.metalExitLevelUpOutlineTeal
+                Direction.right -> Tiles.metalExitLevelRightOutlineTeal
+                Direction.down  -> Tiles.metalExitLevelDownOutlineTeal
+                Direction.left  -> Tiles.metalExitLevelLeftOutlineTeal
+            }
+        
+            else            -> null
+        }
     }
 }

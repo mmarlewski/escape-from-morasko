@@ -3,7 +3,6 @@ package com.efm
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.level.World
-import com.efm.passage.*
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.screens.GameScreen
@@ -17,8 +16,6 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
     if (startSpace == endSpace) return
     
     var newPosition = endPosition
-    var newRoom = World.currentRoom
-    var newLevel = World.currentLevel
     
     val endEntity = endSpace?.getEntity()
     val endBase = endSpace?.getBase()
@@ -39,38 +36,6 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
             }
         }
         
-        is Exit ->
-        {
-            when (val passage = endEntity.exitPassage)
-            {
-                is RoomPassage  ->
-                {
-                    Map.changeTile(
-                            MapLayer.select, endPosition.x, endPosition.y, Tiles.selectYellow
-                                  )
-                    newPosition = when (endEntity.currentRoom)
-                    {
-                        passage.roomA -> passage.positionB.adjacentPosition(passage.directionB)
-                        passage.roomB -> passage.positionA.adjacentPosition(passage.directionA)
-                        else          -> newPosition
-                    }
-                    newRoom = when (endEntity.currentRoom)
-                    {
-                        passage.roomA -> passage.roomB
-                        passage.roomB -> passage.roomA
-                        else          -> newRoom
-                    }
-                }
-                
-                is LevelPassage ->
-                {
-                    newPosition = passage.targetLevel.getStartingPosition()
-                    newRoom = passage.targetLevel.getStartingRoom()
-                    newLevel = passage.targetLevel
-                }
-            }
-        }
-        
         else    ->
         {
             val lastSpace = path.lastOrNull()
@@ -81,18 +46,9 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
     
     val action = {
         World.currentRoom.removeEntity(World.hero)
-        
-        World.changeCurrentRoom(newRoom)
-        World.changeCurrentLevel(newLevel)
-        
         World.currentRoom.addEntityAt(World.hero, newPosition)
-        World.currentRoom.updateSpacesEntities()
-        
-        GameScreen.focusCameraOnRoomPosition(World.hero.position)
-        GameScreen.updateMapBaseLayer()
-        GameScreen.updateMapEntityLayer()
-        Map.clearLayer(MapLayer.select)
-        Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+        adjustCameraAfterMoving()
+        adjustMapLayersAfterMoving()
     }
     
     val animations = mutableListOf<Animation>()
@@ -104,8 +60,21 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         animations += Animation.showTileWithCameraFocus(Tiles.hero, space.position.copy(), 0.01f)
         prevMovePosition.set(space.position)
     }
-    if (animateToEndSpace)
-        animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition, endPosition, 0.1f)
+    if (animateToEndSpace) animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
     Animating.executeAnimations(animations)
+    
+}
+
+fun adjustMapLayersAfterMoving()
+{
+    GameScreen.updateMapBaseLayer()
+    GameScreen.updateMapEntityLayer()
+    Map.clearLayer(MapLayer.select)
+    Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+}
+
+fun adjustCameraAfterMoving()
+{
+    GameScreen.focusCameraOnRoomPosition(World.hero.position)
 }

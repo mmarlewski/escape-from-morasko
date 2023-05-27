@@ -5,6 +5,7 @@ import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
+import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
@@ -531,6 +532,10 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
 {
     if (!Animating.isAnimating())
     {
+        // interact with Interactive Entity if it was selected in ConstrainedMoveSelectedOnce
+        val entityOnPositionHeroWalkedTowards = currState.entityOnPosition
+        if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
+    
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
         return when (areEnemiesInRoom)
         {

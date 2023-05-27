@@ -143,13 +143,13 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     
     fun addEntityAt(entity : Entity, x : Int, y : Int)
     {
-        entity.changePosition(x, y)
+        entity.setPosition(x, y)
         addEntity(entity)
     }
     
     fun addEntityAt(entity : Entity, position : RoomPosition)
     {
-        entity.changePosition(position)
+        entity.setPosition(position)
         addEntity(entity)
     }
     

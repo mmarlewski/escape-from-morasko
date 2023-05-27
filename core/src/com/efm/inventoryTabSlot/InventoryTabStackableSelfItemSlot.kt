@@ -3,9 +3,10 @@ package com.efm.inventoryTabSlot
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.item.StackableSelfItem
+import com.efm.itemButtonWithLabel
+import com.efm.playSoundOnce
 import com.efm.state.updateState
 
 /** ItemSlot in an InventoryTab for StackableSelfItem. Consists of an Item and a button.
@@ -24,9 +25,9 @@ class InventoryTabStackableSelfItemSlot(
                                        ) : InventoryTabSlot
 {
     override var selected = false
-    override var itemButton : ImageButton = imageButtonOf(
-            image, up, down, over, disabled, focused
-                                                         ) {
+    override var itemButton : ImageButton = itemButtonWithLabel(
+            image, item.amount.toString(), up, down, over, disabled, focused
+                                                               ) {
         playSoundOnce(Sounds.blop)
         updateState(this)
     }

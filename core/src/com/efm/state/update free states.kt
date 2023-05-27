@@ -5,6 +5,7 @@ import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
+import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.screens.GameScreen
 
@@ -331,9 +332,13 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
 {
     if (!Animating.isAnimating())
     {
+        // interact with Interactive Entity if it was selected in FreeMoveSelectedOnce
+        val entityOnPositionHeroWalkedTowards = currState.entityOnPosition
+        if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
+    
         GameScreen.roomTouchPosition.set(World.hero.position)
         Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineTile())
-        
+    
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
         return when (areEnemiesInRoom)
         {
