@@ -54,6 +54,8 @@ object GameScreen : BaseScreen(), GestureListener
     var potionButton : ImageButton
     var swordButton : ImageButton
     var bombButton : ImageButton
+    var settingsPopUp : Window
+    var menuPause : Window
     
     init
     {
@@ -68,15 +70,7 @@ object GameScreen : BaseScreen(), GestureListener
                 this.width = width
             }
         }
-    
-        val menuPause = menuPopup(
-                "PAUSE",
-                Fonts.pixeloid30,
-                Colors.black,
-                Textures.pauseBackgroundNinePatch,
-                                 )
-        menuPause.isVisible = false
-    
+        
         val endTurnPopUp = windowAreaOf(
                 "end turn?\n\n you still have some AP left",
                 Fonts.pixeloid20,
@@ -84,7 +78,18 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.pauseBackgroundNinePatch
                                        )
         endTurnPopUp.isVisible = false
-    
+        
+        settingsPopUp = settingsPause("SETTINGS", Fonts.pixeloid30, Colors.black, Textures.pauseBackgroundNinePatch)
+        settingsPopUp.isVisible = false
+        
+        menuPause = menuPopup(
+                "PAUSE",
+                Fonts.pixeloid30,
+                Colors.black,
+                Textures.pauseBackgroundNinePatch
+                             )
+        menuPause.isVisible = false
+        
         xButton = textButtonOf(
                 "X",
                 Fonts.pixeloid20,
@@ -400,6 +405,7 @@ object GameScreen : BaseScreen(), GestureListener
     
         val columnMiddlePause = columnOf(rowOf(menuPause)).align(Align.center)
         val columnMiddlePopUp = columnOf(rowOf(endTurnPopUp)).align(Align.center)
+        val columnMiddleSettings = columnOf(rowOf(settingsPopUp)).align(Align.center)
     
         //padding so it looks nice
         columnTopLeft.pad(16f)
@@ -418,6 +424,7 @@ object GameScreen : BaseScreen(), GestureListener
         columnBottomRight.setFillParent(true)
         columnMiddlePause.setFillParent(true)
         columnMiddlePopUp.setFillParent(true)
+        columnMiddleSettings.setFillParent(true)
         columnLeft.setFillParent(true)
     
         //display
@@ -428,6 +435,7 @@ object GameScreen : BaseScreen(), GestureListener
         GameScreen.stage.addActor(columnBottomRight)
         GameScreen.stage.addActor(columnMiddlePause)
         GameScreen.stage.addActor(columnMiddlePopUp)
+        GameScreen.stage.addActor(columnMiddleSettings)
         GameScreen.stage.addActor(columnLeft)
     
         // xButton is visible only after pressing on hero

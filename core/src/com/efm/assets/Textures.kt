@@ -43,12 +43,19 @@ object Textures
     val knob = load("/bars/knob.png")
     val knobHealthbarAfter = load("/bars/healthbarForegroundRounded.png")
     val knobAbilitybarAfter = load("/bars/abilityBarForegroundRounded.png")
+    val materialKnob = load("bars/materialKnob.png")
+    val materialKnobAfter = load("bars/materialKnobAfter.png")
+    val materialKnobBefore = load("bars/materialKnobBefore.png")
+    
     val knobBackgroundNinePatch = NinePatch(knobBackground, 3, 3, 3, 3)
     val knobBeforeNinePatch = NinePatch(knobBefore, 5, 5, 5, 5)
     val knobAfterNinePatch = NinePatch(knobAfter, 5, 5, 5, 5)
     val knobNinePatch = NinePatch(knob, 5, 5, 5, 5)
     val knobHealthbarAfterNinePatch = NinePatch(knobHealthbarAfter, 5, 5, 5, 5)
     val knobAbilitybarAfterNinePatch = NinePatch(knobAbilitybarAfter, 5, 5, 5, 5)
+    val materialKnobNinePatch = NinePatch(materialKnob, 5, 5, 5, 5)
+    val materialKnobNinePatchBefore = NinePatch(materialKnobBefore, 5, 5, 5, 5)
+    val materialKnobNinePatchAfter = NinePatch(materialKnobAfter, 5, 5, 5, 5)
     
     //other
     val cursor = load("/other/cursor.png")
@@ -63,6 +70,8 @@ object Textures
     val checkBoxOffOver = load("/checkboxes/checkBoxOffOver.png")
     val checkBoxOnDisabled = load("/checkboxes/checkBoxOnDisabled.png")
     val checkBoxOffDisabled = load("/checkboxes/checkBoxOffDisabled.png")
+    val materialCheckboxOn = load("/checkboxes/materialCheckboxOn.png")
+    val materialCheckboxOff = load("/checkboxes/materialCheckboxOff.png")
     
     //radio buttons
     val radioButtonOn = load("/radioButtons/radioButtonOn.png")

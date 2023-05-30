@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
+import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 
 fun columnOf(vararg actors : Actor) : VerticalGroup
@@ -386,11 +387,118 @@ fun windowAreaOf(
     return window
 }
 
+fun settingsPause(
+        title : String,
+        fontType : BitmapFont,
+        fontColor : Color,
+        background : NinePatch,
+                 ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = fontType
+    windowStyle.titleFontColor = fontColor
+    windowStyle.background = NinePatchDrawable(background)
+    
+    val window = Window(title, windowStyle)
+    
+    // Get the title label from the window's title table
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    
+    // Set the alignment of the title label to center
+    titleLabel.setAlignment(Align.center)
+    
+    // Set the width of the title label to fill the title table
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
+    
+    val musicLabel = labelOf("music", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
+    val soundEffectsLabel = labelOf("sound effects", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
+    
+    val musicRadioButton = checkBoxOf(
+            "", Fonts.pixeloid10, Colors.black,
+            Textures.materialCheckboxOn,
+            Textures.materialCheckboxOff,
+            Textures.materialCheckboxOn,
+            Textures.materialCheckboxOff,
+            Textures.materialCheckboxOn,
+            Textures.materialCheckboxOff
+                                     )
+    val musicSlider = sliderOf(
+            0.0f,
+            1.0f,
+            0.1f,
+            Textures.materialKnobNinePatchAfter,
+            Textures.materialKnobNinePatchBefore,
+            Textures.materialKnobNinePatchAfter,
+            Textures.materialKnobNinePatch
+                              )
+    
+    val soundEffectsRadioButton = checkBoxOf(
+            "", Fonts.pixeloid10, Colors.black,
+            Textures.materialCheckboxOn,
+            Textures.materialCheckboxOff,
+            Textures.materialCheckboxOn,
+            Textures.materialCheckboxOff,
+            Textures.materialCheckboxOn,
+            Textures.materialCheckboxOff
+                                            )
+    val soundEffectsmusicSlider = sliderOf(
+            0.0f,
+            1.0f,
+            0.1f,
+            Textures.materialKnobNinePatchAfter,
+            Textures.materialKnobNinePatchBefore,
+            Textures.materialKnobNinePatchAfter,
+            Textures.materialKnobNinePatch
+                                          )
+    
+    val backButton = textButtonOf(
+            "back",
+            Fonts.inconsolata30,
+            Colors.black,
+            Textures.upLongNinePatch,
+            Textures.downLongNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                 )
+    {
+        window.isVisible = false
+        Sounds.blop.playOnce()
+        GameScreen.menuPause.isVisible = true
+    }
+    
+    val buttonTable = Table()
+    buttonTable.add(
+            columnOf(
+                    rowOf(
+                            musicLabel,
+                            columnOf(),
+                            columnOf(),
+                            columnOf(),
+                            columnOf(),
+                            columnOf(),
+                            columnOf(),
+                            columnOf(),
+                            columnOf(),
+                            columnOf(),
+                            musicRadioButton,
+                            musicSlider
+                         ),
+                    rowOf(soundEffectsLabel, soundEffectsRadioButton, soundEffectsmusicSlider),
+                    rowOf(backButton)
+                    )
+                   )
+    
+    window.add(buttonTable).padTop(100f).padLeft(100f).padRight(100f).padBottom(50f)
+    
+    return window
+}
+
 fun menuPopup(
-        title: String,
-        fontType: BitmapFont,
-        fontColor: Color,
-        background: NinePatch
+        title : String,
+        fontType : BitmapFont,
+        fontColor : Color,
+        background : NinePatch
                 ): Window {
     val windowStyle = Window.WindowStyle()
     windowStyle.titleFont = fontType
@@ -449,6 +557,8 @@ fun menuPopup(
                                    )
     {
         Sounds.blop.playOnce()
+        window.isVisible = false
+        GameScreen.settingsPopUp.isVisible = true
     }
     
     val backToMenuButton = textButtonOf(
