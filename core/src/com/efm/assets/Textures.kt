@@ -103,6 +103,7 @@ object Textures
     val heroIcon = load("/images/heroIcon.png")
     val freeToMove = load("/images/freeToMove.png")
     val waitingForPlayerTurn = load("/images/waitingForPlayerTurn.png")
+    val translucent1px = load("images/translucent1px.png")
     
     //items
     val potion = load("items/potion1.png")

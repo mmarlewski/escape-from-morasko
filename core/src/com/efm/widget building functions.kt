@@ -644,35 +644,23 @@ fun itemButtonWithLabel(
         onClicked : () -> Unit
                        ) : ImageButton
 {
-    val imageButtonStyle = ImageButton.ImageButtonStyle()
-    imageButtonStyle.imageUp = TextureRegionDrawable(image)
-    imageButtonStyle.imageDown = TextureRegionDrawable(image)
-    imageButtonStyle.imageOver = TextureRegionDrawable(image)
-    imageButtonStyle.imageDisabled = TextureRegionDrawable(image)
-    imageButtonStyle.up = NinePatchDrawable(up)
-    imageButtonStyle.down = NinePatchDrawable(down)
-    imageButtonStyle.over = NinePatchDrawable(over)
-    imageButtonStyle.disabled = NinePatchDrawable(disabled)
-    imageButtonStyle.focused = NinePatchDrawable(focused)
-    val imageButton = ImageButton(imageButtonStyle)
-    imageButton.addListener(object : ClickListener()
-                            {
-                                override fun clicked(event : InputEvent?, x : Float, y : Float)
-                                {
-                                    onClicked()
-                                }
-                            })
-    imageButton.pad(10f)
-    imageButton.pack()
+    val imageButtonTmp = imageButtonOf(Textures.translucent1px, up, down, over, disabled, focused, onClicked)
+    
+    var image = imageOf(image, Scaling.none)
     
     var label = labelOf(
             text,
-            Fonts.pixeloid20,
+            Fonts.pixeloid10,
             Color.BLACK,
             Textures.translucentNinePatch
                        )
     
-    imageButton.add(columnOf(label))
+    val stack = Stack()
+    stack.add(image)
+    stack.add(label)
+    
+    val imageButton = ImageButton(imageButtonTmp.style)
+    imageButton.add(stack)
     
     return imageButton
 }
