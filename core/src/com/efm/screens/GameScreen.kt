@@ -68,7 +68,7 @@ object GameScreen : BaseScreen(), GestureListener
                 this.width = width
             }
         }
-        
+    
         val menuPause = menuPopup(
                 "PAUSE",
                 Fonts.pixeloid30,
@@ -76,7 +76,15 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.pauseBackgroundNinePatch,
                                  )
         menuPause.isVisible = false
-        
+    
+        val endTurnPopUp = windowAreaOf(
+                "end turn?\n\n you still have some AP left",
+                Fonts.pixeloid20,
+                Colors.black,
+                Textures.pauseBackgroundNinePatch
+                                       )
+        endTurnPopUp.isVisible = false
+    
         xButton = textButtonOf(
                 "X",
                 Fonts.pixeloid20,
@@ -344,6 +352,7 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                          ) {
+            endTurnPopUp.isVisible = endTurnPopUp.isVisible != true
             playSoundOnce(Sounds.blop)
         }
         
@@ -377,20 +386,21 @@ object GameScreen : BaseScreen(), GestureListener
                                        ).align(Align.bottomLeft)
         
         val columnLeft = columnOf(
-                
+        
                 usableItemsButton,
                 skillsItemsButton,
                 healingItemsButton,
                 weaponItemsButton,
                                  ).align(Align.left)
-        
+    
         //bottom right icons
         val columnBottomRight = columnOf(
                 rowOf(xButton)
                                         ).align(Align.bottomRight)
-        
-        val columnMiddle = columnOf(rowOf(menuPause)).align(Align.center)
-        
+    
+        val columnMiddlePause = columnOf(rowOf(menuPause)).align(Align.center)
+        val columnMiddlePopUp = columnOf(rowOf(endTurnPopUp)).align(Align.center)
+    
         //padding so it looks nice
         columnTopLeft.pad(16f)
         columnTopRight.pad(16f)
@@ -399,32 +409,34 @@ object GameScreen : BaseScreen(), GestureListener
         columnBottomRight.pad(16f)
         columnLeft.padTop(128f)
         columnLeft.padLeft(16f)
-        
+    
         //set the size to fill the phone screen
         columnTopLeft.setFillParent(true)
         columnTopRight.setFillParent(true)
         columnTop.setFillParent(true)
         columnBottomLeft.setFillParent(true)
         columnBottomRight.setFillParent(true)
-        columnMiddle.setFillParent(true)
+        columnMiddlePause.setFillParent(true)
+        columnMiddlePopUp.setFillParent(true)
         columnLeft.setFillParent(true)
-        
+    
         //display
         GameScreen.stage.addActor(columnTopLeft)
         GameScreen.stage.addActor(columnTopRight)
         GameScreen.stage.addActor(columnTop)
         GameScreen.stage.addActor(columnBottomLeft)
         GameScreen.stage.addActor(columnBottomRight)
-        GameScreen.stage.addActor(columnMiddle)
+        GameScreen.stage.addActor(columnMiddlePause)
+        GameScreen.stage.addActor(columnMiddlePopUp)
         GameScreen.stage.addActor(columnLeft)
-        
+    
         // xButton is visible only after pressing on hero
         xButton.isVisible = false
-        
+    
         // map
         updateMapBaseLayer()
         updateMapEntityLayer()
-        
+    
         // camera
         changeCameraZoom(currZoom)
         focusCameraOnRoomPosition(World.hero.position)

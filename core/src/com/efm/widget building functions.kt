@@ -331,16 +331,9 @@ fun textAreaOf(
 
 fun windowAreaOf(
         title: String,
-        rows: Int,
         fontType: BitmapFont,
         fontColor: Color,
-        messageColor: Color,
-        disabledColor: Color,
         background: NinePatch,
-        disabledBackground: NinePatch,
-        focusedBackground: NinePatch,
-        cursor: NinePatch,
-        selection: NinePatch
                     ): Window {
     val windowStyle = Window.WindowStyle()
     windowStyle.titleFont = fontType
@@ -348,6 +341,15 @@ fun windowAreaOf(
     windowStyle.background = NinePatchDrawable(background)
     
     val window = Window(title, windowStyle)
+    
+    // Get the title label from the window's title table
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    
+    // Set the alignment of the title label to center
+    titleLabel.setAlignment(Align.center)
+    
+    // Set the width of the title label to fill the title table
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
     
     val yesButton = imageButtonOf(
             Textures.check,
@@ -358,7 +360,7 @@ fun windowAreaOf(
             Textures.focusedNinePatch
                                  )
     {
-        playSoundOnce(Sounds.blop)
+        Sounds.blop.playOnce()
     }
     
     val noButton = imageButtonOf(
@@ -368,13 +370,18 @@ fun windowAreaOf(
             Textures.overNinePatch,
             Textures.disabledNinePatch,
             Textures.focusedNinePatch
-                                 )
+                                )
     {
-        playSoundOnce(Sounds.blop)
+        window.isVisible = false
+        Sounds.blop.playOnce()
     }
     
-    window.add(yesButton).padTop(50f).padBottom(50f)
-    window.add(noButton).padTop(50f).padBottom(50f)
+    val buttonTable = Table()
+    buttonTable.add(yesButton)
+    buttonTable.add().width(64f) // Add an empty cell with a preferred width
+    buttonTable.add(noButton)
+    
+    window.add(buttonTable).padTop(100f).padLeft(100f).padRight(100f).padBottom(50f)
     
     return window
 }
