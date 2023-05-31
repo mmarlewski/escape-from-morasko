@@ -24,8 +24,7 @@ class Hero(
     override fun damageCharacter(dmgAmount : Int)
     {
         super.damageCharacter(dmgAmount)
-        
-        GameScreen.healthBar.value -= dmgAmount
+        GameScreen.healthBar.value = this.healthPoints.toFloat()
         GameScreen.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
     }
     
