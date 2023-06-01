@@ -14,7 +14,7 @@ class StoneColumn : Entity
         return Tiles.stoneColumn
     }
     
-    override fun getOutlineTile() : TiledMapTile
+    override fun getOutlineYellowTile() : TiledMapTile
     {
         return Tiles.stoneColumnOutlineYellow
     }

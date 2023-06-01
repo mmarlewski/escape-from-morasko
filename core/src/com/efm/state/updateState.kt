@@ -3,6 +3,7 @@ package com.efm.state
 import com.efm.Animating
 import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.inventoryTabSlot.InventoryTabStackableSelfItemSlot
+import com.efm.level.World
 
 fun updateState()
 {

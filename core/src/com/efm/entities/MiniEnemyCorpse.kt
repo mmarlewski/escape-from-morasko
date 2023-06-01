@@ -14,7 +14,7 @@ class MiniEnemyCorpse : Entity
         return Tiles.miniEnemyCorpse
     }
     
-    override fun getOutlineTile() : TiledMapTile
+    override fun getOutlineYellowTile() : TiledMapTile
     {
         return Tiles.miniEnemyCorpseOutlineYellow
     }

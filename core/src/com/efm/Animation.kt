@@ -123,7 +123,7 @@ sealed class Animation
     }
     
     open class moveTile(
-            val tile : TiledMapTile,
+            val tile : TiledMapTile?,
             val from : RoomPosition,
             val to : RoomPosition,
             val seconds : Float
@@ -153,24 +153,24 @@ sealed class Animation
     }
     
     class moveTileWithCameraFocus(
-            tile : TiledMapTile,
+            tile : TiledMapTile?,
             from : RoomPosition,
             to : RoomPosition,
             seconds : Float
                                  ) : moveTile(tile, from, to, seconds)
     {
-    
+        
         override fun update()
         {
             super.update()
             
             GameScreen.focusCameraOnVector2(moveTilePosition)
         }
-    
+        
     }
     
     open class showTile(
-            val tile : TiledMapTile,
+            val tile : TiledMapTile?,
             val where : RoomPosition,
             val seconds : Float
                        ) : Animation()
@@ -192,7 +192,7 @@ sealed class Animation
     }
     
     class showTileWithCameraFocus(
-            tile : TiledMapTile,
+            tile : TiledMapTile?,
             where : RoomPosition,
             seconds : Float
                                  ) : showTile(tile, where, seconds)
@@ -203,7 +203,7 @@ sealed class Animation
             
             GameScreen.focusCameraOnRoomPosition(where)
         }
-    
+        
     }
     
     class action(val action : () -> Unit) : Animation()

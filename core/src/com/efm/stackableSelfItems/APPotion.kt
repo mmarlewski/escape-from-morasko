@@ -22,6 +22,5 @@ class APPotion(
     
     override fun use()
     {
-        World.hero.spendAP(-APRestoreAmount)
     }
 }

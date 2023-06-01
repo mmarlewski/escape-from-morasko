@@ -72,4 +72,8 @@ interface Exit : Entity, Interactive
         }
     }
     
+    fun isPassageToAnotherLevel() : Boolean
+    {
+        return exitPassage is LevelPassage
+    }
 }

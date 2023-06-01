@@ -7,6 +7,7 @@ import com.efm.entities.Hero
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.level.World
+import com.efm.passage.Exit
 import com.efm.screens.GameScreen
 
 fun updateFreeNoSelection(currState : State.free.noSelection) : State
@@ -18,6 +19,10 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
     
     if (currState.areEnemiesInRoom)
     {
+        World.hero.regainAP()
+        GameScreen.abilityBar.isVisible = true
+        GameScreen.abilityBarLabel.isVisible = true
+        
         return State.constrained.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -51,7 +56,7 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
                 GameScreen.xButton.isVisible = true
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
-                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTile())
+                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
                 
                 return State.free.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
@@ -62,7 +67,7 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTile())
+                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
                 
                 return State.free.entitySelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
@@ -85,6 +90,10 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
     
     if (currState.areEnemiesInRoom)
     {
+        World.hero.regainAP()
+        GameScreen.abilityBar.isVisible = true
+        GameScreen.abilityBarLabel.isVisible = true
+    
         return State.constrained.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -111,7 +120,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
             GameScreen.xButton.isVisible = true
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
-            Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTile())
+            Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
             
             return State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -122,7 +131,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
         {
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectRed)
-            Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTile())
+            Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
             
             return State.free.entitySelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -134,7 +143,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
         {
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-            Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTile())
+            Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
             
             return State.free.entitySelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -156,6 +165,10 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
     
     if (currState.areEnemiesInRoom)
     {
+        World.hero.regainAP()
+        GameScreen.abilityBar.isVisible = true
+        GameScreen.abilityBarLabel.isVisible = true
+    
         return State.constrained.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -182,7 +195,7 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
                 GameScreen.xButton.isVisible = true
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
-                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTile())
+                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
                 
                 return State.free.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
@@ -193,7 +206,7 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTile())
+                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
                 
                 return State.free.entitySelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
@@ -216,6 +229,10 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
     
     if (currState.areEnemiesInRoom)
     {
+        World.hero.regainAP()
+        GameScreen.abilityBar.isVisible = true
+        GameScreen.abilityBarLabel.isVisible = true
+    
         return State.constrained.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -236,7 +253,7 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
         {
             is Hero ->
             {
-                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTile())
+                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
             }
             else    ->
             {
@@ -250,12 +267,25 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
                         Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
                     }
                     Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
+                    if (selectedEntity is Interactive)
+                    {
+                        Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
+                    }
+                    
+                    val isMoveToAnotherRoom = (selectedEntity is Exit)
+                    val isMoveToAnotherLevel = when (selectedEntity)
+                    {
+                        is Exit -> selectedEntity.isPassageToAnotherLevel()
+                        else    -> false
+                    }
                     
                     return State.free.moveSelectedOnce.apply {
                         this.isHeroAlive = currState.isHeroAlive
                         this.areEnemiesInRoom = currState.areEnemiesInRoom
                         this.selectedPosition.set(selectedPosition)
                         this.pathSpaces = pathSpaces
+                        this.isMoveToAnotherRoom = isMoveToAnotherRoom
+                        this.isMoveToAnotherLevel = isMoveToAnotherLevel
                     }
                 }
             }
@@ -274,6 +304,10 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
     
     if (currState.areEnemiesInRoom)
     {
+        World.hero.regainAP()
+        GameScreen.abilityBar.isVisible = true
+        GameScreen.abilityBarLabel.isVisible = true
+    
         return State.constrained.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -299,7 +333,9 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
                 this.entityOnPosition = selectedEntity
-                this.pathSpaces = pathSpaces
+                this.pathSpaces = currState.pathSpaces
+                this.isMoveToAnotherRoom = currState.isMoveToAnotherRoom
+                this.isMoveToAnotherLevel = currState.isMoveToAnotherLevel
             }
         }
         else if (selectedPosition != World.hero.position)
@@ -314,12 +350,25 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
                     Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
                 }
                 Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
+                if (selectedEntity is Interactive)
+                {
+                    Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
+                }
+    
+                val isMoveToAnotherRoom = (selectedEntity is Exit)
+                val isMoveToAnotherLevel = when (selectedEntity)
+                {
+                    is Exit -> selectedEntity.isPassageToAnotherLevel()
+                    else    -> false
+                }
                 
                 return State.free.moveSelectedOnce.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.selectedPosition.set(selectedPosition)
                     this.pathSpaces = pathSpaces
+                    this.isMoveToAnotherRoom = isMoveToAnotherRoom
+                    this.isMoveToAnotherLevel = isMoveToAnotherLevel
                 }
             }
         }
@@ -335,11 +384,32 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         // interact with Interactive Entity if it was selected in FreeMoveSelectedOnce
         val entityOnPositionHeroWalkedTowards = currState.entityOnPosition
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
-    
+        
         GameScreen.roomTouchPosition.set(World.hero.position)
-        Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineTile())
-    
+        Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
+        
+        val isMoveToAnotherRoom = currState.isMoveToAnotherRoom
+        val isMoveToAnotherLevel = currState.isMoveToAnotherLevel
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
+        
+        if (isMoveToAnotherRoom)
+        {
+            when (areEnemiesInRoom)
+            {
+                true  ->
+                {
+                    World.hero.regainAP()
+                    GameScreen.abilityBar.isVisible = true
+                    GameScreen.abilityBarLabel.isVisible = true
+                }
+                false ->
+                {
+                    GameScreen.abilityBar.isVisible = false
+                    GameScreen.abilityBarLabel.isVisible = false
+                }
+            }
+        }
+        
         return when (areEnemiesInRoom)
         {
             true  -> State.constrained.heroSelected.apply {
@@ -426,8 +496,6 @@ fun updateFreeMultiUseMapItemTargetSelectedOnce(currState : State.free.multiUseM
         
         if (selectedPosition == currState.selectedPosition)
         {
-            World.hero.spendAP(multiUseMapItem.baseAPUseCost)
-            multiUseMapItem.durability -= multiUseMapItem.durabilityUseCost
             multiUseMapItem.use(World.currentRoom, selectedPosition)
             
             return State.free.multiUseMapItemTargetSelectedTwice.apply {
@@ -544,8 +612,6 @@ fun updateFreeStackableMapItemTargetSelectedOnce(currState : State.free.stackabl
         
         if (selectedPosition == currState.selectedPosition)
         {
-            World.hero.spendAP(stackableMapItem.baseAPUseCost)
-            stackableMapItem.amount -= 1
             stackableMapItem.use(World.currentRoom, selectedPosition)
             
             return State.free.stackableMapItemTargetSelectedTwice.apply {

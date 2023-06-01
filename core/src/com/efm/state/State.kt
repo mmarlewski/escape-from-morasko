@@ -52,12 +52,16 @@ sealed class State
         {
             val selectedPosition = RoomPosition()
             var pathSpaces : List<Space> = emptyList()
+            var isMoveToAnotherRoom = false
+            var isMoveToAnotherLevel = false
         }
         
         object moveSelectedTwice : free()
         {
             var entityOnPosition : Entity? = null
             var pathSpaces : List<Space> = emptyList()
+            var isMoveToAnotherRoom = false
+            var isMoveToAnotherLevel = false
         }
         
         sealed class moveSelectedTwiceToLevelExit : free()
@@ -142,6 +146,8 @@ sealed class State
         {
             val selectedPosition = RoomPosition()
             var pathSpaces : List<Space> = emptyList()
+            var isMoveToAnotherRoom = false
+            var isMoveToAnotherLevel = false
         }
         
         object moveSelectedTwice : constrained()
@@ -149,6 +155,8 @@ sealed class State
             var entityOnPosition : Entity? = null
             var pathSpaces : List<Space> = emptyList()
             var isHeroMovingThroughDetectionPosition = false
+            var isMoveToAnotherRoom = false
+            var isMoveToAnotherLevel = false
         }
         
         sealed class moveSelectedTwiceToLevelExit : constrained()
@@ -177,6 +185,9 @@ sealed class State
         }
         
         object multiUseMapItemTargetSelectedTwice : constrained()
+        {
+            var chosenMultiUseItem : MultiUseMapItem? = null
+        }
         
         // StackableMapItem
         
@@ -195,6 +206,9 @@ sealed class State
         }
         
         object stackableMapItemTargetSelectedTwice : constrained()
+        {
+            var chosenStackableMapItem : StackableMapItem? = null
+        }
         
         // StackableSelfItem
         
@@ -318,8 +332,9 @@ sealed class State
             var enemyIterator : Iterator<Enemy>? = null
             var currEnemy : Enemy? = null
             
-            object enemyMove : enemy()
-            object enemyAttack : enemy()
+            object enemyUnselected : enemy()
+            object enemySelected : enemy()
+            object enemyAction : enemy()
         }
     }
     

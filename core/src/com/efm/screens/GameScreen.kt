@@ -575,7 +575,6 @@ object GameScreen : BaseScreen(), GestureListener
     override fun tap(x : Float, y : Float, count : Int, button : Int) : Boolean
     {
         isTouched = true
-        World.hero.damageCharacter(2)
         val newScreenTouchPosition = Vector2(x, y)
         updateScreenWorldMapTouchPositions(newScreenTouchPosition)
         return true

@@ -36,7 +36,12 @@ class RockExit(override val direction : Direction, val passage : Passage) : Enti
         }
     }
     
-    override fun getOutlineTile() : TiledMapTile?
+    override fun getOutlineYellowTile() : TiledMapTile?
+    {
+        return null
+    }
+
+    override fun getOutlineTealTile() : TiledMapTile?
     {
         return when (passage)
         {
@@ -47,7 +52,7 @@ class RockExit(override val direction : Direction, val passage : Passage) : Enti
                 Direction.down  -> Tiles.rockExitDownOutlineTeal
                 Direction.left  -> Tiles.rockExitLeftOutlineTeal
             }
-        
+
             is LevelPassage -> when (direction)
             {
                 Direction.up    -> Tiles.rockExitLevelUpOutlineTeal
@@ -55,7 +60,7 @@ class RockExit(override val direction : Direction, val passage : Passage) : Enti
                 Direction.down  -> Tiles.rockExitLevelDownOutlineTeal
                 Direction.left  -> Tiles.rockExitLevelLeftOutlineTeal
             }
-        
+
             else            -> null
         }
     }

@@ -17,12 +17,18 @@ class MiniEnemy : Entity, Enemy
     override val detectionRange = 3
     override val attackRange = 1
     override val stepsInOneTurn = 3
+    
     override fun getTile() : TiledMapTile
     {
         return Tiles.miniEnemy
     }
     
-    override fun getOutlineTile() : TiledMapTile
+    override fun getOutlineYellowTile() : TiledMapTile
+    {
+        return Tiles.miniEnemyOutlineYellow
+    }
+    
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.miniEnemyOutlineRed
     }

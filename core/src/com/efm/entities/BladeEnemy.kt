@@ -17,12 +17,18 @@ class BladeEnemy : Entity, Enemy
     override val detectionRange = 1
     override val attackRange = 1
     override val stepsInOneTurn = 2
+    
     override fun getTile() : TiledMapTile
     {
         return Tiles.bladeEnemy
     }
     
-    override fun getOutlineTile() : TiledMapTile
+    override fun getOutlineYellowTile() : TiledMapTile
+    {
+        return Tiles.bladeEnemyOutlineYellow
+    }
+    
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.bladeEnemyOutlineRed
     }

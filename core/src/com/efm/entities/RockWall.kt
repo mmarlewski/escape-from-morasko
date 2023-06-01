@@ -40,7 +40,7 @@ class RockWall(vararg val directions : Direction) : Entity
         }
     }
     
-    override fun getOutlineTile() : TiledMapTile?
+    override fun getOutlineYellowTile() : TiledMapTile?
     {
         return null
     }

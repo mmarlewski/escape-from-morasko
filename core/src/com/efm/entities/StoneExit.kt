@@ -34,8 +34,13 @@ class StoneExit(override val direction : Direction, val passage : Passage) : Exi
             else            -> null
         }
     }
+
+    override fun getOutlineYellowTile() : TiledMapTile?
+    {
+        return null
+    }
     
-    override fun getOutlineTile() : TiledMapTile?
+    override fun getOutlineTealTile() : TiledMapTile?
     {
         return when (passage)
         {

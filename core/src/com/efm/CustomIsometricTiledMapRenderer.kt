@@ -223,7 +223,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
     }
     
     fun drawTile(
-            tile : TiledMapTile,
+            tile : TiledMapTile?,
             flipX : Boolean,
             flipY : Boolean,
             rotations : Int,
@@ -234,6 +234,11 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
             y : Float
                 )
     {
+        if (tile == null)
+        {
+            return
+        }
+        
         val region = tile.textureRegion
         val x1 = x + tile.offsetX * unitScale + layerOffsetX
         val y1 = y + tile.offsetY * unitScale + layerOffsetY

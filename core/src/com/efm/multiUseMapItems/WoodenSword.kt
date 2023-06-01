@@ -36,10 +36,6 @@ class WoodenSword : MultiUseMapItem
         animations += Animation.showTile(Tiles.woodenSword, targetPosition.copy(), 0.5f)
         animations += Animation.action {
             
-            val hero = World.hero
-            hero.spendAP(baseAPUseCost)
-            durability -= durabilityUseCost
-            
             val attackedPosition = targetPosition.copy()
             val attackedSpace = room.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()

@@ -18,10 +18,7 @@ interface Enemy : Character
     val attackRange : Int
     val stepsInOneTurn : Int
     
-    override fun getTile() : TiledMapTile
-    {
-        return Tiles.bladeEnemy
-    }
+    fun getOutlineRedTile() : TiledMapTile?
     
     fun performTurn()
     {
@@ -52,8 +49,13 @@ interface Enemy : Character
             1 ->
             {
                 val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
-                if (stepsSpaces != null) {
-                    val stepsIndex = if (stepsSpaces.size == pathSpaces.size) {stepsSpaces.size - 1} else stepsSpaces.size
+                if (stepsSpaces != null)
+                {
+                    val stepsIndex = if (stepsSpaces.size == pathSpaces.size)
+                    {
+                        stepsSpaces.size - 1
+                    }
+                    else stepsSpaces.size
                     moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
                 }
             }
@@ -62,20 +64,18 @@ interface Enemy : Character
     }
     
     fun enemyAttack()
-    {
-    }
     
     fun getDetectionPositions() : MutableList<RoomPosition>
     {
         val detectionPositions = mutableListOf<RoomPosition>()
         for (i in -detectionRange..detectionRange)
         {
-            for (j in -detectionRange .. detectionRange)
+            for (j in -detectionRange..detectionRange)
             {
                 detectionPositions.add((position.positionOffsetBy(i, Direction.up)).positionOffsetBy(j, Direction.left))
             }
         }
-    
+        
         return detectionPositions
     }
 }

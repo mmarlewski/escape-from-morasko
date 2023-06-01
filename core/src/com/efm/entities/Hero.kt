@@ -21,6 +21,21 @@ class Hero(
     var maxAbilityPoints : Int = 10
     var abilityPoints : Int = 10
     
+    override fun getTile() : TiledMapTile
+    {
+        return Tiles.hero
+    }
+    
+    override fun getOutlineYellowTile() : TiledMapTile
+    {
+        return Tiles.heroOutlineYellow
+    }
+    
+    fun getOutlineGreenTile() : TiledMapTile
+    {
+        return Tiles.heroOutlineGreen
+    }
+    
     override fun damageCharacter(dmgAmount : Int)
     {
         super.damageCharacter(dmgAmount)
@@ -53,7 +68,7 @@ class Hero(
             this.abilityPoints -= apCost
         }
         GameScreen.abilityBar.value -= apCost
-        GameScreen.abilityBarLabel.setText(abilityPoints)
+        GameScreen.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
     }
     
     fun regainAP()
@@ -67,15 +82,5 @@ class Hero(
     {
         super.killCharacter()
         getState().isHeroAlive = false
-    }
-    
-    override fun getTile() : TiledMapTile
-    {
-        return Tiles.hero
-    }
-    
-    override fun getOutlineTile() : TiledMapTile
-    {
-        return Tiles.heroOutlineGreen
     }
 }

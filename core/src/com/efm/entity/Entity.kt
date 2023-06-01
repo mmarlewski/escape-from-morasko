@@ -8,6 +8,10 @@ import com.efm.room.RoomPosition
  */
 interface Entity
 {
+    fun getTile() : TiledMapTile?
+    
+    fun getOutlineYellowTile() : TiledMapTile?
+    
     val position : RoomPosition
     
     fun setPosition(x : Int, y : Int)
@@ -20,7 +24,4 @@ interface Entity
     {
         setPosition(position.x, position.y)
     }
-    
-    fun getTile() : TiledMapTile?
-    fun getOutlineTile() : TiledMapTile?
 }

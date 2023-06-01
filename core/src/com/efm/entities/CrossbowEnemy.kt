@@ -16,12 +16,18 @@ class CrossbowEnemy : Entity, Enemy
     override val detectionRange = 2
     override val attackRange = 2
     override val stepsInOneTurn = 1
+
     override fun getTile() : TiledMapTile
     {
         return Tiles.crossbowEnemy
     }
-    
-    override fun getOutlineTile() : TiledMapTile
+
+    override fun getOutlineYellowTile() : TiledMapTile
+    {
+        return Tiles.crossbowEnemyOutlineYellow
+    }
+
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.crossbowEnemyOutlineRed
     }

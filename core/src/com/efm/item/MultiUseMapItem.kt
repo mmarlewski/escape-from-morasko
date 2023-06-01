@@ -11,6 +11,15 @@ interface MultiUseMapItem : Item
     var durability : Int
     val durabilityUseCost : Int
     
+    fun lowerDurability()
+    {
+        durability -= durabilityUseCost
+        if (durability <= 0)
+        {
+            durability = 0
+        }
+    }
+    
     fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
     /** Logic executed after the use of Item has been confirmed */
