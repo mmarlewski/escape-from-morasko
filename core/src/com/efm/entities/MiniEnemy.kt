@@ -1,8 +1,10 @@
 package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
-import com.efm.Direction
+import com.efm.*
+import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entity.Character
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.level.World
@@ -35,7 +37,22 @@ class MiniEnemy : Entity, Enemy
     
     override fun enemyAttack()
     {
-        World.hero.damageCharacter(1)
-        //animate sword
+        val animations = mutableListOf<Animation>()
+        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
+        animations += Animation.showTile(Tiles.woodenSword, World.hero.position, 0.5f)
+        animations += Animation.action {
+        
+            val attackedPosition = World.hero.position
+            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedEntity = attackedSpace?.getEntity()
+            when (attackedEntity)
+            {
+                is Character ->
+                {
+                    attackedEntity.damageCharacter(2)
+                }
+            }
+        }
+        Animating.executeAnimations(animations)
     }
 }

@@ -187,6 +187,10 @@ object Tiles
     val fire = load("fire.png")
     val smoke = load("smoke.png")
     
+    // arrow
+    
+    val arrow = load("arrow.png")
+
     fun load(name : String) : StaticTiledMapTile
     {
         val filePath = "tiles/$name"
