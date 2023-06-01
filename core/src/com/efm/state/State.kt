@@ -246,6 +246,11 @@ sealed class State
                 var selectedEntity : Entity? = null
             }
             
+            object enemySelected : hero()
+            {
+                var selectedEnemy : Enemy? = null
+            }
+            
             object heroSelected : hero()
             
             // move
@@ -254,12 +259,16 @@ sealed class State
             {
                 val selectedPosition = RoomPosition()
                 var pathSpaces : List<Space> = emptyList()
+                var isMoveToAnotherRoom = false
+                var isMoveToAnotherLevel = false
             }
             
             object moveSelectedTwice : hero()
             {
                 var entityOnPosition : Entity? = null
                 var pathSpaces : List<Space> = emptyList()
+                var isMoveToAnotherRoom = false
+                var isMoveToAnotherLevel = false
             }
             
             sealed class moveSelectedTwiceToLevelExit : hero()
@@ -288,6 +297,9 @@ sealed class State
             }
             
             object multiUseMapItemTargetSelectedTwice : hero()
+            {
+                var chosenMultiUseItem : MultiUseMapItem? = null
+            }
             
             // StackableMapItem
             
@@ -306,6 +318,9 @@ sealed class State
             }
             
             object stackableMapItemTargetSelectedTwice : hero()
+            {
+                var chosenStackableMapItem : StackableMapItem? = null
+            }
             
             // StackableSelfItem
             
@@ -326,15 +341,15 @@ sealed class State
             }
         }
         
-        sealed class enemy : combat()
+        sealed class enemies : combat()
         {
             var enemies : List<Enemy>? = null
             var enemyIterator : Iterator<Enemy>? = null
             var currEnemy : Enemy? = null
             
-            object enemyUnselected : enemy()
-            object enemySelected : enemy()
-            object enemyAction : enemy()
+            object enemyUnselected : enemies()
+            object enemySelected : enemies()
+            object enemyAction : enemies()
         }
     }
     

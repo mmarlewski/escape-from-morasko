@@ -18,8 +18,8 @@ class Hero(
 {
     override val position = RoomPosition()
     
-    var maxAbilityPoints : Int = 10
-    var abilityPoints : Int = 10
+    var maxAbilityPoints : Int = 15
+    var abilityPoints : Int = 15
     
     override fun getTile() : TiledMapTile
     {
@@ -75,7 +75,7 @@ class Hero(
     {
         this.abilityPoints = maxAbilityPoints
         GameScreen.abilityBar.value = maxAbilityPoints.toFloat()
-        GameScreen.abilityBarLabel.setText(maxAbilityPoints)
+        GameScreen.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
     }
     
     override fun killCharacter()

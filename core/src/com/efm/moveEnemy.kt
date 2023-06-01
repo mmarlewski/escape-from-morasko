@@ -13,8 +13,8 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
     val action = {
         enemy.position.set(endPosition)
         World.currentRoom.updateSpacesEntities()
-        adjustCameraAfterMoving()
-        adjustMapLayersAfterMoving()
+        GameScreen.updateMapBaseLayer()
+        GameScreen.updateMapEntityLayer()
     }
     val animations = mutableListOf<Animation>()
     animations += Animation.action { Map.changeTile(MapLayer.entity, enemy.position, null) }

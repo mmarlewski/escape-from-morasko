@@ -3,13 +3,12 @@ package com.efm.state
 import com.efm.Animating
 import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.inventoryTabSlot.InventoryTabStackableSelfItemSlot
-import com.efm.level.World
 
 fun updateState()
 {
     val newState = when (val currState = getState())
     {
-        is State.free        -> when (currState)
+        is State.free           -> when (currState)
         {
             is State.free.noSelection                            -> updateFreeNoSelection(currState)
             is State.free.nothingSelected                        -> updateFreeNothingSelected(currState)
@@ -33,14 +32,14 @@ fun updateState()
             is State.free.stackableSelfItemChosen                -> updateFreeStackableSelfItemChosen(currState)
         }
         
-        is State.constrained -> when (currState)
+        is State.constrained    -> when (currState)
         {
             is State.constrained.noSelection                             -> updateConstrainedNoSelection(currState)
             is State.constrained.nothingSelected                         -> updateConstrainedNothingSelected(currState)
             is State.constrained.entitySelected                          -> updateConstrainedEntitySelected(currState)
             is State.constrained.enemySelected                           -> updateConstrainedEnemySelected(currState)
             is State.constrained.heroSelected                            -> updateConstrainedHeroSelected(currState)
-    
+            
             is State.constrained.moveSelectedOnce                        -> updateConstrainedMoveSelectedOnce(currState)
             is State.constrained.moveSelectedTwice                       -> updateConstrainedMoveSelectedTwice(currState)
             is State.constrained.moveSelectedTwiceToLevelExit.waiting    -> updateConstrainedMoveSelectedTwiceToLevelExitWaiting(
@@ -52,7 +51,7 @@ fun updateState()
             is State.constrained.moveSelectedTwiceToLevelExit.cancelled  -> updateConstrainedMoveSelectedTwiceToLevelExitCancelled(
                     currState
                                                                                                                                   )
-    
+            
             is State.constrained.multiUseMapItemChosen                   -> updateConstrainedMultiUseMapItemChosen(currState)
             is State.constrained.multiUseMapItemTargetSelectedOnce       -> updateConstrainedMultiUseMapItemTargetSelectedOnce(
                     currState
@@ -84,7 +83,67 @@ fun updateState()
                     currState
                                                                                                                                    )
         }
-        else                 -> currState
+        
+        is State.combat.hero    -> when (currState)
+        {
+            is State.combat.hero.noSelection                             -> updateCombatHeroNoSelection(currState)
+            is State.combat.hero.nothingSelected                         -> updateCombatHeroNothingSelected(currState)
+            is State.combat.hero.entitySelected                          -> updateCombatHeroEntitySelected(currState)
+            is State.combat.hero.enemySelected                           -> updateCombatHeroEnemySelected(currState)
+            is State.combat.hero.heroSelected                            -> updateCombatHeroHeroSelected(currState)
+            
+            is State.combat.hero.moveSelectedOnce                        -> updateCombatHeroMoveSelectedOnce(currState)
+            is State.combat.hero.moveSelectedTwice                       -> updateCombatHeroMoveSelectedTwice(currState)
+            is State.combat.hero.moveSelectedTwiceToLevelExit.waiting    -> updateCombatHeroMoveSelectedTwiceToLevelExitWaiting(
+                    currState
+                                                                                                                               )
+            is State.combat.hero.moveSelectedTwiceToLevelExit.confirmed  -> updateCombatHeroMoveSelectedTwiceToLevelExitConfirmed(
+                    currState
+                                                                                                                                 )
+            is State.combat.hero.moveSelectedTwiceToLevelExit.cancelled  -> updateCombatHeroMoveSelectedTwiceToLevelExitCancelled(
+                    currState
+                                                                                                                                 )
+            
+            is State.combat.hero.multiUseMapItemChosen                   -> updateCombatHeroMultiUseMapItemChosen(currState)
+            is State.combat.hero.multiUseMapItemTargetSelectedOnce       -> updateCombatHeroMultiUseMapItemTargetSelectedOnce(
+                    currState
+                                                                                                                             )
+            is State.combat.hero.multiUseMapItemTargetSelectedTwice      -> updateCombatHeroMultiUseMapItemTargetSelectedTwice(
+                    currState
+                                                                                                                              )
+            
+            is State.combat.hero.stackableMapItemChosen                  -> updateCombatHeroStackableMapItemChosen(currState)
+            is State.combat.hero.stackableMapItemTargetSelectedOnce      -> updateCombatHeroStackableMapItemTargetSelectedOnce(
+                    currState
+                                                                                                                              )
+            is State.combat.hero.stackableMapItemTargetSelectedTwice     -> updateCombatHeroStackableMapItemTargetSelectedTwice(
+                    currState
+                                                                                                                               )
+            
+            is State.combat.hero.stackableSelfItemChosen                 -> updateCombatHeroStackableSelfItemChosen(
+                    currState
+                                                                                                                   )
+            
+            is State.combat.hero.turnEnded                               -> updateCombatHeroTurnEnded(currState)
+            is State.combat.hero.turnEndedWithActionPointsLeft.waiting   -> updateCombatHeroTurnEndedWithActionPointsLeftWaiting(
+                    currState
+                                                                                                                                )
+            is State.combat.hero.turnEndedWithActionPointsLeft.confirmed -> updateCombatHeroTurnEndedWithActionPointsLeftConfirmed(
+                    currState
+                                                                                                                                  )
+            is State.combat.hero.turnEndedWithActionPointsLeft.cancelled -> updateCombatHeroTurnEndedWithActionPointsLeftCancelled(
+                    currState
+                                                                                                                                  )
+        }
+        
+        is State.combat.enemies -> when (currState)
+        {
+            is State.combat.enemies.enemyUnselected -> updateCombatEnemiesEnemyUnselected(currState)
+            is State.combat.enemies.enemySelected   -> updateCombatEnemiesEnemySelected(currState)
+            is State.combat.enemies.enemyAction     -> updateCombatEnemiesEnemyAction(currState)
+        }
+        
+        else                    -> currState
     }
     setState(newState)
 }

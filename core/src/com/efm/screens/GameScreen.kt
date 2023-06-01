@@ -102,10 +102,10 @@ object GameScreen : BaseScreen(), GestureListener
                               ) {
             playSoundOnce(Sounds.blop)
             xButton.isVisible = false
-    
+            
             Map.clearLayer(MapLayer.select)
             Map.clearLayer(MapLayer.outline)
-    
+            
             val newState = when (val currState = getState())
             {
                 is State.free        -> State.free.noSelection.apply {
@@ -118,7 +118,11 @@ object GameScreen : BaseScreen(), GestureListener
                     this.isHeroDetected = currState.isHeroDetected
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
-                is State.combat.hero -> State.combat.hero.noSelection
+                is State.combat.hero -> State.combat.hero.noSelection.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                }
                 else                 -> currState
             }
             setState(newState)
@@ -135,7 +139,6 @@ object GameScreen : BaseScreen(), GestureListener
                                       ) {
             //menuPause.isVisible = menuPause.isVisible != true
             
-           
             playSoundOnce(Sounds.blop)
             //Warning! loop for testing
             for (enemy in World.currentRoom.getEnemies())
@@ -295,6 +298,13 @@ object GameScreen : BaseScreen(), GestureListener
                     this.chosenMultiUseItem = sword
                     this.targetPositions = targetPositions
                 }
+                is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenMultiUseItem = sword
+                    this.targetPositions = targetPositions
+                }
                 else                 -> currState
             }
             setState(newState)
@@ -398,22 +408,22 @@ object GameScreen : BaseScreen(), GestureListener
                                        ).align(Align.bottomLeft)
         
         val columnLeft = columnOf(
-        
+                
                 usableItemsButton,
                 skillsItemsButton,
                 healingItemsButton,
                 weaponItemsButton,
                                  ).align(Align.left)
-    
+        
         //bottom right icons
         val columnBottomRight = columnOf(
                 rowOf(xButton)
                                         ).align(Align.bottomRight)
-    
+        
         val columnMiddlePause = columnOf(rowOf(menuPause)).align(Align.center)
         val columnMiddlePopUp = columnOf(rowOf(endTurnPopUp)).align(Align.center)
         val columnMiddleSettings = columnOf(rowOf(settingsPopUp)).align(Align.center)
-    
+        
         //padding so it looks nice
         columnTopLeft.pad(16f)
         columnTopRight.pad(16f)
@@ -422,7 +432,7 @@ object GameScreen : BaseScreen(), GestureListener
         columnBottomRight.pad(16f)
         columnLeft.padTop(128f)
         columnLeft.padLeft(16f)
-    
+        
         //set the size to fill the phone screen
         columnTopLeft.setFillParent(true)
         columnTopRight.setFillParent(true)
@@ -433,7 +443,7 @@ object GameScreen : BaseScreen(), GestureListener
         columnMiddlePopUp.setFillParent(true)
         columnMiddleSettings.setFillParent(true)
         columnLeft.setFillParent(true)
-    
+        
         //display
         GameScreen.stage.addActor(columnTopLeft)
         GameScreen.stage.addActor(columnTopRight)
@@ -444,14 +454,14 @@ object GameScreen : BaseScreen(), GestureListener
         GameScreen.stage.addActor(columnMiddlePopUp)
         GameScreen.stage.addActor(columnMiddleSettings)
         GameScreen.stage.addActor(columnLeft)
-    
+        
         // xButton is visible only after pressing on hero
         xButton.isVisible = false
-    
+        
         // map
         updateMapBaseLayer()
         updateMapEntityLayer()
-    
+        
         // camera
         changeCameraZoom(currZoom)
         focusCameraOnRoomPosition(World.hero.position)
