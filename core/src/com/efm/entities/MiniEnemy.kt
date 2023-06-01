@@ -11,8 +11,8 @@ import com.efm.room.RoomPosition
 class MiniEnemy : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 25
-    override var healthPoints = 25
+    override var maxHealthPoints = 5
+    override var healthPoints = 5
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 1

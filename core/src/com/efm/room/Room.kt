@@ -80,6 +80,22 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         }
     }
     
+    fun removeKilledCharacters()
+    {
+        val killedCharacters = mutableListOf<Character>()
+        for (character in characters)
+        {
+            if (!character.alive)
+            {
+                println(character)
+                killedCharacters.add(character)
+            }
+        }
+        enemies.removeAll(killedCharacters)
+        characters.removeAll(killedCharacters)
+        entities.removeAll(killedCharacters)
+    }
+    
     fun getSpace(x : Int, y : Int) : Space?
     {
         return if (isPositionWithinBounds(x, y))
