@@ -274,40 +274,56 @@ object GameScreen : BaseScreen(), GestureListener
             playSoundOnce(Sounds.blop)
             
             val sword = WoodenSword()
-            val targetPositions = sword.getTargetPositions(World.hero.position)
             
-            Map.clearLayer(MapLayer.select)
-            for (position in targetPositions)
+            val currState = getState()
+            
+            val canBeUsed = when (currState)
             {
-                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
+                is State.free                              -> true
+                is State.constrained, is State.combat.hero ->
+                {
+                    World.hero.abilityPoints >= sword.baseAPUseCost
+                }
+                else                                       -> false
             }
             
-            val newState = when (val currState = getState())
+            if (canBeUsed)
             {
-                is State.free        -> State.free.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.chosenMultiUseItem = sword
-                    this.targetPositions = targetPositions
+                val targetPositions = sword.getTargetPositions(World.hero.position)
+                
+                Map.clearLayer(MapLayer.select)
+                for (position in targetPositions)
+                {
+                    Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
                 }
-                is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.isHeroDetected = currState.isHeroDetected
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenMultiUseItem = sword
-                    this.targetPositions = targetPositions
+                
+                val newState = when (currState)
+                {
+                    is State.free        -> State.free.multiUseMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.chosenMultiUseItem = sword
+                        this.targetPositions = targetPositions
+                    }
+                    is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.isHeroDetected = currState.isHeroDetected
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenMultiUseItem = sword
+                        this.targetPositions = targetPositions
+                    }
+                    is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenMultiUseItem = sword
+                        this.targetPositions = targetPositions
+                    }
+                    else                 -> currState
                 }
-                is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenMultiUseItem = sword
-                    this.targetPositions = targetPositions
-                }
-                else                 -> currState
+                setState(newState)
             }
-            setState(newState)
         }
         
         val amountOfUsesPotion = 5

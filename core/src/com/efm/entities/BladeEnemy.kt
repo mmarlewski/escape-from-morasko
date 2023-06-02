@@ -13,8 +13,8 @@ import com.efm.room.RoomPosition
 class BladeEnemy : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 50
-    override var healthPoints = 50
+    override var maxHealthPoints = 10
+    override var healthPoints = 10
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
