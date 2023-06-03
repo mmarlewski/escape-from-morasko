@@ -181,6 +181,14 @@ object Tiles
     
     val woodenSword = load("woodenSword.png")
     
+    //hammer
+    
+    val sledgehammer = load("hammer.png")
+    
+    //axe
+    
+    val axe = load("axe.png")
+    
     // bomb
     
     val bomb = load("bomb.png")

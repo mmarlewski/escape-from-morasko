@@ -1,24 +1,22 @@
 package com.efm.multiUseMapItems
 
-import com.badlogic.gdx.math.Vector2
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.Character
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
-import com.efm.room.*
-import kotlin.math.abs
-import kotlin.math.sqrt
+import com.efm.room.Room
+import com.efm.room.RoomPosition
 
-class Sledgehammer : MultiUseMapItem
+
+class SmallAxe : MultiUseMapItem
 {
-    override val name : String = "Sledgehammer"
-    override var baseAPUseCost : Int = 6
-    override var durability : Int = 50
+    override val name : String = "Small Axe"
+    override var baseAPUseCost : Int = 4
+    override var durability : Int = 15
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
-    
     override fun selected()
     {
         //podświetl zasięg ataku
@@ -36,12 +34,13 @@ class Sledgehammer : MultiUseMapItem
     {
         val animations = mutableListOf<Animation>()
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.showTile(Tiles.sledgehammer, targetPosition.copy(), 0.5f)
+        animations += Animation.showTile(Tiles.axe, targetPosition.copy(), 0.5f)
         for (pos in this.getAffectedPositions(targetPosition))
         {
-            animations += Animation.showTile(Tiles.sledgehammer, pos.copy(), 0.5f)
+            animations += Animation.showTile(Tiles.axe, pos.copy(), 0.5f)
+        
             animations += Animation.action {
-    
+        
                 val attackedPosition = pos.copy()
                 val attackedSpace = room.getSpace(attackedPosition)
                 val attackedEntity = attackedSpace?.getEntity()
@@ -60,29 +59,13 @@ class Sledgehammer : MultiUseMapItem
     override fun getTargetPositions(source:RoomPosition) : List<RoomPosition>
     {
         val possiblePositions = mutableListOf<RoomPosition>()
-        possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.up))
-        possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.down))
-        possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.left))
-        possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.right))
-    
+        possiblePositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
+        possiblePositions.addAll(getSquarePerimeterPositions(World.hero.position, 3))
         return possiblePositions.toList()
     }
     
     override fun getAffectedPositions(targetPosition:RoomPosition) : List<RoomPosition>
     {
-        val affectedSpaces = mutableListOf<RoomPosition>()
-        for (posX in 0..World.currentRoom.heightInSpaces)
-        {
-            for (posY in 0..World.currentRoom.widthInSpaces)
-            {
-                val distance = sqrt(((targetPosition.x - posX)*(targetPosition.x - posX) + (targetPosition.y - posY) * (targetPosition.y - posY)).toDouble())
-                if (distance in 1.5..2.5)
-                {
-                    affectedSpaces.add(Vector2(posX.toFloat(), posY.toFloat()).toRoomPosition())
-                }
-            }
-        }
-        print(affectedSpaces)
-        return affectedSpaces
+        return getSquarePerimeterPositions(World.hero.position, 1)
     }
 }
