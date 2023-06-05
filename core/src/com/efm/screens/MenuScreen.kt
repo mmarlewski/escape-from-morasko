@@ -123,9 +123,9 @@ object MenuScreen : BaseScreen()
                      ),
                 
                 rowOf(
-                        settingsButton,
-                        infoButton,
-                        exitButton
+                        columnOf(settingsButton),
+                        columnOf(infoButton).padLeft(20f).padRight(20f),
+                        columnOf(exitButton)
                      )
                              )
         column.setFillParent(true)
