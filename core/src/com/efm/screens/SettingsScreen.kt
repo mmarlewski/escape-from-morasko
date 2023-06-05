@@ -68,7 +68,7 @@ object SettingsScreen : BaseScreen()
                 Textures.materialKnobNinePatch
                                               )
         
-        val playTextButton = textButtonOf(
+        val backButton = textButtonOf(
                 "back",
                 Fonts.inconsolata30,
                 Colors.black,
@@ -77,7 +77,7 @@ object SettingsScreen : BaseScreen()
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                         )
+                                     )
         {
             Sounds.blop.playOnce()
             MenuScreen.setScreen()
@@ -87,7 +87,7 @@ object SettingsScreen : BaseScreen()
                 rowOf(settingsTitle),
                 rowOf(musicLabel, musicRadioButton, musicSlider),
                 rowOf(soundEffectsLabel, soundEffectsRadioButton, soundEffectsmusicSlider, columnOf().padLeft(120f)),
-                rowOf(playTextButton)
+                rowOf(backButton)
                              )
         column.setFillParent(true)
         stage.addActor(column)

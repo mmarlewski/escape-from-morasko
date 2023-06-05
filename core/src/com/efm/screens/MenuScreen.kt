@@ -105,6 +105,7 @@ object MenuScreen : BaseScreen()
                                       )
         {
             Sounds.blop.playOnce()
+            AppInfoScreen.setScreen()
         }
 
         val column = columnOf(
