@@ -75,7 +75,7 @@ object GameScreen : BaseScreen(), GestureListener
                 "end turn?\n\n you still have some AP left",
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.pauseBackgroundNinePatch
+                Textures.pauseBackgroundNinePatch,
                                        )
         endTurnPopUp.isVisible = false
         

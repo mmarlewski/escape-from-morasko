@@ -335,6 +335,7 @@ fun windowAreaOf(
         fontType: BitmapFont,
         fontColor: Color,
         background: NinePatch,
+//        onYes: () -> Unit
                     ): Window {
     val windowStyle = Window.WindowStyle()
     windowStyle.titleFont = fontType
@@ -362,6 +363,8 @@ fun windowAreaOf(
                                  )
     {
         Sounds.blop.playOnce()
+//        window.isVisible = false
+//        onYes()
     }
     
     val noButton = imageButtonOf(
