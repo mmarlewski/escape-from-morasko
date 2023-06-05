@@ -18,8 +18,8 @@ fun columnOf(vararg actors : Actor) : VerticalGroup
     val column = VerticalGroup()
     actors.forEach { column.addActor(it) }
     column.align(Align.center)
+    column.pad(10.0f)
     column.space(10.0f)
-    column.pack()
     return column
 }
 
@@ -28,8 +28,8 @@ fun rowOf(vararg actors : Actor) : HorizontalGroup
     val row = HorizontalGroup()
     actors.forEach { row.addActor(it) }
     row.align(Align.center)
+    row.pad(10.0f)
     row.space(10.0f)
-    row.pack()
     return row
 }
 
@@ -45,7 +45,6 @@ fun labelOf(
     labelStyle.fontColor = fontColor
     labelStyle.background = NinePatchDrawable(background)
     val label = Label(text, labelStyle)
-    label.pack()
     return label
 }
 
@@ -70,7 +69,6 @@ fun textButtonOf(
     textButtonStyle.disabled = NinePatchDrawable(disabled)
     textButtonStyle.focused = NinePatchDrawable(focused)
     val textButton = TextButton(text, textButtonStyle)
-    textButton.pack()
     textButton.addListener(object : ClickListener()
                            {
                                override fun clicked(event : InputEvent?, x : Float, y : Float)
@@ -111,7 +109,6 @@ fun imageButtonOf(
                                 }
                             })
     imageButton.pad(10f)
-    imageButton.pack()
     return imageButton
 }
 
@@ -149,7 +146,6 @@ fun imageTextButtonOf(
                                     }
                                 })
     imageTextButton.pad(10f)
-    imageTextButton.pack()
     return imageTextButton
 }
 
@@ -159,7 +155,6 @@ fun imageOf(
            ) : Image
 {
     val image = Image(TextureRegionDrawable(texture), scaling, Align.center)
-    image.pack()
     return image
 }
 
@@ -185,7 +180,6 @@ fun checkBoxOf(
     checkBoxStyle.checkboxOnDisabled = TextureRegionDrawable(onDisabled)
     checkBoxStyle.checkboxOffDisabled = TextureRegionDrawable(offDisabled)
     val checkBox = CheckBox(text, checkBoxStyle)
-    checkBox.pack()
     return checkBox
 }
 
@@ -253,7 +247,6 @@ fun sliderOf(
                                //
                            }
                        })
-    slider.pack()
     return slider
 }
 
@@ -326,7 +319,6 @@ fun textAreaOf(
                              }
                          })
     textArea.setPrefRows(rows.toFloat())
-    textArea.pack()
     return textArea
 }
 
@@ -613,7 +605,6 @@ fun itemButtonWithHealthbar(
                                 }
                             })
     imageButton.pad(10f)
-    imageButton.pack()
     
     var healthBar = progressBarOf(
             0.0f,

@@ -110,28 +110,16 @@ object MenuScreen : BaseScreen()
                 rowOf(
                         gameTitle
                      ),
-                rowOf(),
-                rowOf(),
-                rowOf(),
                 rowOf(
                         playTextButton
                      ),
-                rowOf(),
-                rowOf(),
-                rowOf(),
                 
                 rowOf(
                         startAgainTextButton
                      ),
-                rowOf(),
-                rowOf(),
-                rowOf(),
                 rowOf(
                         creditsTextButton
                      ),
-                rowOf(),
-                rowOf(),
-                rowOf(),
                 
                 rowOf(
                         settingsButton,
