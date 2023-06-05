@@ -3,13 +3,12 @@ package com.efm.screens
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.Scaling
-import com.badlogic.gdx.utils.ScreenUtils
+import com.badlogic.gdx.utils.*
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.*
 
-object AppInfoScreen : BaseScreen()
+object CreditsScreen : BaseScreen()
 {
     val camera = OrthographicCamera()
     val viewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, camera)
@@ -22,13 +21,18 @@ object AppInfoScreen : BaseScreen()
         
         // hud
         
-        val appInfoTitle = imageOf(
-                Textures.appInfo,
+        val creditsTitle = imageOf(
+                Textures.creditsTitle,
                 Scaling.none
                                   )
-    
-        val versionLabel =
-                labelOf("current version: 0.1 (alpha)", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+        
+        val creditsLabel =
+                labelOf(
+                        "authors:\n\nMarcin Marlewski\n\nWiktor Leszczynski\n\nDominik Jagosz\n\nJerzy Tomaszewski",
+                        Fonts.pixeloid30,
+                        Colors.white,
+                        Textures.translucentNinePatch
+                       )
         
         val backButton = textButtonOf(
                 "back",
@@ -45,9 +49,11 @@ object AppInfoScreen : BaseScreen()
             MenuScreen.setScreen()
         }
         
+        creditsLabel.setAlignment(Align.center)
+        
         val column = columnOf(
-                rowOf(appInfoTitle),
-                rowOf(versionLabel),
+                rowOf(creditsTitle),
+                rowOf(creditsLabel),
                 rowOf(backButton)
                              )
         column.setFillParent(true)

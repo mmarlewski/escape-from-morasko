@@ -68,6 +68,7 @@ object MenuScreen : BaseScreen()
                                             )
         {
             Sounds.blop.playOnce()
+            CreditsScreen.setScreen()
         }
         
         val exitButton = imageButtonOf(
