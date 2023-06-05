@@ -108,6 +108,8 @@ object Textures
     //items
     val potion = load("items/potion1.png")
     val sword = load("items/sword1.png")
+    val hammer = load("items/hammer1.png")
+    val axe = load("items/axe1.png")
     val bomb = load("items/bomb1.png")
     
     private fun load(name : String) : Texture
