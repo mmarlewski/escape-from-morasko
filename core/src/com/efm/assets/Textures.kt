@@ -45,7 +45,8 @@ object Textures
     val knobAbilitybarAfter = load("/bars/abilityBarForegroundRounded.png")
     val materialKnob = load("bars/materialKnob.png")
     val materialKnobAfter = load("bars/materialKnobAfter.png")
-    val materialKnobBefore = load("bars/materialKnobBefore.png")
+    val materialKnobBeforeBlack = load("bars/materialKnobBeforeBlack.png")
+    val materialKnobBeforeWhite = load("bars/materialKnobBeforeWhite.png")
     
     val knobBackgroundNinePatch = NinePatch(knobBackground, 3, 3, 3, 3)
     val knobBeforeNinePatch = NinePatch(knobBefore, 5, 5, 5, 5)
@@ -54,7 +55,8 @@ object Textures
     val knobHealthbarAfterNinePatch = NinePatch(knobHealthbarAfter, 5, 5, 5, 5)
     val knobAbilitybarAfterNinePatch = NinePatch(knobAbilitybarAfter, 5, 5, 5, 5)
     val materialKnobNinePatch = NinePatch(materialKnob, 5, 5, 5, 5)
-    val materialKnobNinePatchBefore = NinePatch(materialKnobBefore, 5, 5, 5, 5)
+    val materialKnobNinePatchBeforeBlack = NinePatch(materialKnobBeforeBlack, 5, 5, 5, 5)
+    val materialKnobNinePatchBeforeWhite = NinePatch(materialKnobBeforeWhite, 5, 5, 5, 5)
     val materialKnobNinePatchAfter = NinePatch(materialKnobAfter, 5, 5, 5, 5)
     
     //other
@@ -104,6 +106,9 @@ object Textures
     val freeToMove = load("/images/freeToMove.png")
     val waitingForPlayerTurn = load("/images/waitingForPlayerTurn.png")
     val translucent1px = load("images/translucent1px.png")
+    val settingsTitle = load("images/settings.png")
+    val appInfo = load("images/appInfo.png")
+    val creditsTitle = load("images/credits.png")
     
     //items
     val potion = load("items/potion1.png")

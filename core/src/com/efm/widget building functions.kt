@@ -421,9 +421,9 @@ fun settingsPause(
             0.0f,
             1.0f,
             0.1f,
+            Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatchAfter,
-            Textures.materialKnobNinePatchBefore,
-            Textures.materialKnobNinePatchAfter,
+            Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatch
                               )
     
@@ -440,9 +440,9 @@ fun settingsPause(
             0.0f,
             1.0f,
             0.1f,
+            Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatchAfter,
-            Textures.materialKnobNinePatchBefore,
-            Textures.materialKnobNinePatchAfter,
+            Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatch
                                           )
     
