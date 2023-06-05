@@ -1,13 +1,13 @@
 package com.efm.screens
 
-import com.badlogic.gdx.Game
-import com.badlogic.gdx.graphics.*
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.*
+import com.badlogic.gdx.utils.Scaling
+import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.*
-import com.efm.assets.Colors
 
 object MenuScreen : BaseScreen()
 {
@@ -24,7 +24,7 @@ object MenuScreen : BaseScreen()
         
         val gameTitle = imageOf(
                 Textures.title,
-                Scaling.contain
+                Scaling.none
                                )
         
         val playTextButton = textButtonOf(
@@ -92,6 +92,7 @@ object MenuScreen : BaseScreen()
                                           )
         {
             Sounds.blop.playOnce()
+            SettingsScreen.setScreen()
         }
         
         val infoButton = imageButtonOf(
