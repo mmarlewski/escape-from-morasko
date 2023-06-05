@@ -162,7 +162,7 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.knobHealthbarAfterNinePatch,
                 Textures.knobBeforeNinePatch,
                 128f,
-                16f
+                24f
                                  )
         healthBarLabel = labelOf(
                 "$healthBarValueCurrent / $healthBarValueMax", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch
@@ -179,7 +179,7 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.knobAbilitybarAfterNinePatch,
                 Textures.knobBeforeNinePatch,
                 128f,
-                16f
+                24f
                                   )
         abilityBarLabel = labelOf(
                 "$abilityBarValueCurrent / $abilityBarValueMax",
