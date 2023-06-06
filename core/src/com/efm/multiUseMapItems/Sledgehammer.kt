@@ -37,19 +37,27 @@ class Sledgehammer : MultiUseMapItem
         val animations = mutableListOf<Animation>()
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
         animations += Animation.showTile(Tiles.sledgehammer, targetPosition.copy(), 0.5f)
+    
+    
+        val showAreaOfHammerAnimation = mutableListOf<Animation>()
         for (pos in this.getAffectedPositions(targetPosition))
         {
-            animations += Animation.showTile(Tiles.sledgehammer, pos.copy(), 0.5f)
-            animations += Animation.action {
+            showAreaOfHammerAnimation += Animation.showTile(Tiles.sledgehammer, pos, 0.5f)
+        }
+        val showAreaOfHammer = Animation.simultaneous(showAreaOfHammerAnimation)
+        animations += showAreaOfHammer
     
-                val attackedPosition = pos.copy()
-                val attackedSpace = room.getSpace(attackedPosition)
-                val attackedEntity = attackedSpace?.getEntity()
-                when (attackedEntity)
+        animations += Animation.action {
+        
+            for (pos in this.getAffectedPositions(targetPosition))
+            {
+                val hitSpace = room.getSpace(pos)
+                val hitEntity = hitSpace?.getEntity()
+                when (hitEntity)
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(this.damage)
+                        hitEntity.damageCharacter(damage)
                     }
                 }
             }

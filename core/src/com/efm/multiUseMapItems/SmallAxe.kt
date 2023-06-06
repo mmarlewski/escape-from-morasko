@@ -35,20 +35,25 @@ class SmallAxe : MultiUseMapItem
         val animations = mutableListOf<Animation>()
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
         animations += Animation.showTile(Tiles.axe, targetPosition.copy(), 0.5f)
+        val showAreaOfAxeAnimation = mutableListOf<Animation>()
         for (pos in this.getAffectedPositions(targetPosition))
         {
-            animations += Animation.showTile(Tiles.axe, pos.copy(), 0.5f)
+            showAreaOfAxeAnimation += Animation.showTile(Tiles.sledgehammer, pos, 0.5f)
+        }
+        val showAreaOfAxe = Animation.simultaneous(showAreaOfAxeAnimation)
+        animations += showAreaOfAxe
+    
+        animations += Animation.action {
         
-            animations += Animation.action {
-        
-                val attackedPosition = pos.copy()
-                val attackedSpace = room.getSpace(attackedPosition)
-                val attackedEntity = attackedSpace?.getEntity()
-                when (attackedEntity)
+            for (pos in this.getAffectedPositions(targetPosition))
+            {
+                val hitSpace = room.getSpace(pos)
+                val hitEntity = hitSpace?.getEntity()
+                when (hitEntity)
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(this.damage)
+                        hitEntity.damageCharacter(damage)
                     }
                 }
             }
