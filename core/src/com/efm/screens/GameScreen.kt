@@ -535,16 +535,20 @@ object GameScreen : BaseScreen(), GestureListener
         val columnTopRight = columnOf(
                 rowOf(endTurnButton)
                                      ).align(Align.topRight)
-        
         //bars setup
+        val healthBarWidth = 300F
         val healthStack = Stack()
-        healthStack.add(healthBar)
+        val healthBarContainer : Container<ProgressBar> = Container(healthBar)
+        healthBarContainer.width(healthBarWidth)
+        healthStack.add(healthBarContainer)
         healthStack.add(healthBarLabel)
-        
+    
+        val abilityBarWidth = 300F
         val abilityStack = Stack()
-        abilityStack.add(abilityBar)
+        val abilityBarContainer : Container<ProgressBar> = Container(abilityBar)
+        abilityBarContainer.width(abilityBarWidth)
+        abilityStack.add(abilityBarContainer)
         abilityStack.add(abilityBarLabel)
-        
         //bars
         val columnTop = columnOf(
                 rowOf(healthStack, abilityStack)
