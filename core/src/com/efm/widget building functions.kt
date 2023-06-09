@@ -654,6 +654,13 @@ fun itemButtonWithLabel(
     stack.add(label)
     
     val imageButton = ImageButton(imageButtonTmp.style)
+    imageButton.addListener(object : ClickListener()
+                            {
+                                override fun clicked(event : InputEvent?, x : Float, y : Float)
+                                {
+                                    onClicked()
+                                }
+                            })
     imageButton.add(stack)
     
     return imageButton
