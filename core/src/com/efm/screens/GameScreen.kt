@@ -139,15 +139,8 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                       ) {
-            //menuPause.isVisible = menuPause.isVisible != true
-            
+            menuPause.isVisible = menuPause.isVisible != true
             playSoundOnce(Sounds.blop)
-            //Warning! loop for testing
-            for (enemy in World.currentRoom.getEnemies())
-            {
-                enemy.performTurn()
-            }
-            
         }
         
         //bars

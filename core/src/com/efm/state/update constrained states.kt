@@ -9,6 +9,7 @@ import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.passage.Exit
 import com.efm.room.RoomPosition
+import com.efm.room.Space
 import com.efm.screens.GameScreen
 
 fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : State
@@ -510,11 +511,14 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
             moveHero(World.hero.position, currState.selectedPosition, currState.pathSpaces)
             
             var isHeroMovingThroughDetectionPosition = false
+            val pathsSpacesPlusSelectedSpace = mutableListOf<Space>()
+            pathsSpacesPlusSelectedSpace.addAll(currState.pathSpaces)
+            if (selectedSpace != null) pathsSpacesPlusSelectedSpace.add(selectedSpace)
             enemyFor@ for (enemy in World.currentRoom.getEnemies())
             {
                 for (detectionPosition in enemy.getDetectionPositions())
                 {
-                    for (pathSpace in currState.pathSpaces)
+                    for (pathSpace in pathsSpacesPlusSelectedSpace)
                     {
                         if (detectionPosition == pathSpace.position)
                         {
@@ -792,8 +796,30 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
         World.currentRoom.removeKilledCharacters()
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
-    
-        currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
+        
+        val areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
+        
+        var wasEnemyAttacked = false
+        
+        if (areEnemiesInRoom)
+        {
+            enemyFor@ for (enemy in World.currentRoom.getEnemies())
+            {
+                val affectedPositions = State.constrained.multiUseMapItemTargetSelectedOnce.effectPositions
+                
+                if (affectedPositions != null)
+                {
+                    for (position in affectedPositions)
+                    {
+                        if (enemy.position == position)
+                        {
+                            wasEnemyAttacked = true
+                            break@enemyFor
+                        }
+                    }
+                }
+            }
+        }
         
         val canBeUsedAgain = when (val chosenItem = currState.chosenMultiUseItem)
         {
@@ -809,11 +835,26 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
                 Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
             }
             
-            return State.constrained.multiUseMapItemChosen.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.isHeroDetected = currState.isHeroDetected
-                this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+            return if (wasEnemyAttacked)
+            {
+                State.combat.hero.multiUseMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenMultiUseItem = currState.chosenMultiUseItem
+                    this.targetPositions = targetPositions
+                }
+            }
+            else
+            {
+                State.constrained.multiUseMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenMultiUseItem = currState.chosenMultiUseItem
+                    this.targetPositions = targetPositions
+                }
             }
         }
         else
@@ -821,11 +862,22 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
             Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
             Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
             
-            return State.constrained.heroSelected.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.isHeroDetected = currState.isHeroDetected
-                this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+            return if (wasEnemyAttacked)
+            {
+                State.combat.hero.heroSelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                }
+            }
+            else
+            {
+                State.constrained.heroSelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                }
             }
         }
     }
@@ -946,8 +998,30 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
         World.currentRoom.removeKilledCharacters()
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
-    
-        currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
+        
+        val areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
+        
+        var wasEnemyAttacked = false
+        
+        if (areEnemiesInRoom)
+        {
+            enemyFor@ for (enemy in World.currentRoom.getEnemies())
+            {
+                val affectedPositions = State.constrained.stackableMapItemTargetSelectedOnce.effectPositions
+                
+                if (affectedPositions != null)
+                {
+                    for (position in affectedPositions)
+                    {
+                        if (enemy.position == position)
+                        {
+                            wasEnemyAttacked = true
+                            break@enemyFor
+                        }
+                    }
+                }
+            }
+        }
         
         val canBeUsedAgain = when (val chosenItem = currState.chosenStackableMapItem)
         {
@@ -963,11 +1037,26 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
                 Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
             }
             
-            return State.constrained.stackableMapItemChosen.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.isHeroDetected = currState.isHeroDetected
-                this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+            return if (wasEnemyAttacked)
+            {
+                State.combat.hero.stackableMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenStackableMapItem = currState.chosenStackableMapItem
+                    this.targetPositions = targetPositions
+                }
+            }
+            else
+            {
+                State.constrained.stackableMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenStackableMapItem = currState.chosenStackableMapItem
+                    this.targetPositions = targetPositions
+                }
             }
         }
         else
@@ -975,11 +1064,22 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
             Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
             Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
             
-            return State.constrained.heroSelected.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.isHeroDetected = currState.isHeroDetected
-                this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+            return if (wasEnemyAttacked)
+            {
+                State.combat.hero.heroSelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                }
+            }
+            else
+            {
+                State.constrained.heroSelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                }
             }
         }
     }

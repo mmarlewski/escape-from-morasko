@@ -222,7 +222,6 @@ fun progressBarOf(
     return progressBar
 }
 
-
 fun sliderOf(
         min : Float,
         max : Float,
@@ -323,12 +322,13 @@ fun textAreaOf(
 }
 
 fun windowAreaOf(
-        title: String,
-        fontType: BitmapFont,
-        fontColor: Color,
-        background: NinePatch,
+        title : String,
+        fontType : BitmapFont,
+        fontColor : Color,
+        background : NinePatch,
 //        onYes: () -> Unit
-                    ): Window {
+                ) : Window
+{
     val windowStyle = Window.WindowStyle()
     windowStyle.titleFont = fontType
     windowStyle.titleFontColor = fontColor
@@ -494,7 +494,8 @@ fun menuPopup(
         fontType : BitmapFont,
         fontColor : Color,
         background : NinePatch
-                ): Window {
+             ) : Window
+{
     val windowStyle = Window.WindowStyle()
     windowStyle.titleFont = fontType
     windowStyle.titleFontColor = fontColor
@@ -510,7 +511,6 @@ fun menuPopup(
     
     // Set the width of the title label to fill the title table
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(50f)
-
     
     val resumeButton = textButtonOf(
             "resume",
@@ -521,7 +521,7 @@ fun menuPopup(
             Textures.overNinePatch,
             Textures.disabledNinePatch,
             Textures.focusedNinePatch
-                                        )
+                                   )
     {
         window.isVisible = false
         Sounds.blop.playOnce()
@@ -536,7 +536,7 @@ fun menuPopup(
             Textures.overNinePatch,
             Textures.disabledNinePatch,
             Textures.focusedNinePatch
-                                      ){
+                                      ) {
         Sounds.blop.playOnce()
     }
     
@@ -549,7 +549,7 @@ fun menuPopup(
             Textures.overNinePatch,
             Textures.disabledNinePatch,
             Textures.focusedNinePatch
-                                   )
+                                     )
     {
         Sounds.blop.playOnce()
         window.isVisible = false
@@ -565,7 +565,7 @@ fun menuPopup(
             Textures.overNinePatch,
             Textures.disabledNinePatch,
             Textures.focusedNinePatch
-                                   )
+                                       )
     {
         Sounds.blop.playOnce()
         changeScreen(MenuScreen)
@@ -655,6 +655,14 @@ fun itemButtonWithLabel(
     
     val imageButton = ImageButton(imageButtonTmp.style)
     imageButton.add(stack)
+    
+    imageButton.addListener(object : ClickListener()
+                            {
+                                override fun clicked(event : InputEvent?, x : Float, y : Float)
+                                {
+                                    onClicked()
+                                }
+                            })
     
     return imageButton
 }
