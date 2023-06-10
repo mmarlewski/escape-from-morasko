@@ -110,12 +110,24 @@ object Textures
     val appInfo = load("images/appInfo.png")
     val creditsTitle = load("images/credits.png")
     
-    //items
-    val potion = load("items/potion1.png")
+    // multiUseMapItems
     val sword = load("items/sword1.png")
     val hammer = load("items/hammer1.png")
     val axe = load("items/axe1.png")
+    val staff = load("items/staff1.png")
+    val bow = load("items/bow1.png")
+    
+    // stackableMapItems
     val bomb = load("items/bomb1.png")
+    val explosive = load("items/explosive1.png")
+    val shuriken = load("items/shuriken1.png")
+    
+    // stackableSelfItems
+    val apple = load("items/apple.png")
+    val fish = load("items/fish1.png")
+    val mushroom = load("items/mushroom2.png")
+    val potionSmall = load("items/potion1.png")
+    val potionBig = load("items/potion1.png")
     
     private fun load(name : String) : Texture
     {

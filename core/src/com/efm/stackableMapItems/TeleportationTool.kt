@@ -1,5 +1,7 @@
 package com.efm.stackableMapItems
 
+import com.badlogic.gdx.graphics.Texture
+import com.efm.assets.Textures
 import com.efm.item.StackableMapItem
 import com.efm.room.Room
 import com.efm.room.RoomPosition
@@ -11,6 +13,12 @@ class TeleportationTool(
     override val name : String = "Teleportation Tool"
     override val maxAmount : Int = 1
     override val baseAPUseCost : Int = 0
+    
+    override fun getTexture() : Texture?
+    {
+        return null
+    }
+    
     override fun selected()
     {
     }

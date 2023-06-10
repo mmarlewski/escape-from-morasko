@@ -71,7 +71,21 @@ class Hero(
         GameScreen.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
     }
     
-    fun regainAP()
+    fun gainAP(by : Int)
+    {
+        if (this.abilityPoints + by > this.maxAbilityPoints)
+        {
+            this.abilityPoints = this.maxAbilityPoints
+        }
+        else
+        {
+            this.abilityPoints += by
+        }
+        GameScreen.abilityBar.value = this.abilityPoints.toFloat()
+        GameScreen.abilityBarLabel.setText("${this.abilityPoints} / ${this.maxAbilityPoints}")
+    }
+    
+    fun regainAllAP()
     {
         this.abilityPoints = maxAbilityPoints
         GameScreen.abilityBar.value = maxAbilityPoints.toFloat()

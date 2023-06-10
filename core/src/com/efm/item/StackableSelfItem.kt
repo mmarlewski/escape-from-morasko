@@ -5,6 +5,9 @@ interface StackableSelfItem : Item
     val maxAmount : Int
     var amount : Int
     
+    val hpBoost : Int?
+    val apBoost : Int?
+    
     fun lowerAmountByOne()
     {
         amount -= 1

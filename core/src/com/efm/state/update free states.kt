@@ -19,7 +19,7 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
     
     if (currState.areEnemiesInRoom)
     {
-        World.hero.regainAP()
+        World.hero.regainAllAP()
         GameScreen.abilityBar.isVisible = true
         GameScreen.abilityBarLabel.isVisible = true
         
@@ -90,7 +90,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
     
     if (currState.areEnemiesInRoom)
     {
-        World.hero.regainAP()
+        World.hero.regainAllAP()
         GameScreen.abilityBar.isVisible = true
         GameScreen.abilityBarLabel.isVisible = true
     
@@ -165,7 +165,7 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
     
     if (currState.areEnemiesInRoom)
     {
-        World.hero.regainAP()
+        World.hero.regainAllAP()
         GameScreen.abilityBar.isVisible = true
         GameScreen.abilityBarLabel.isVisible = true
     
@@ -229,7 +229,7 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
     
     if (currState.areEnemiesInRoom)
     {
-        World.hero.regainAP()
+        World.hero.regainAllAP()
         GameScreen.abilityBar.isVisible = true
         GameScreen.abilityBarLabel.isVisible = true
     
@@ -304,7 +304,7 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
     
     if (currState.areEnemiesInRoom)
     {
-        World.hero.regainAP()
+        World.hero.regainAllAP()
         GameScreen.abilityBar.isVisible = true
         GameScreen.abilityBarLabel.isVisible = true
     
@@ -398,7 +398,7 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
             {
                 true  ->
                 {
-                    World.hero.regainAP()
+                    World.hero.regainAllAP()
                     GameScreen.abilityBar.isVisible = true
                     GameScreen.abilityBarLabel.isVisible = true
                 }

@@ -1,9 +1,9 @@
 package com.efm.multiUseMapItems
 
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Vector2
 import com.efm.*
-import com.efm.assets.Sounds
-import com.efm.assets.Tiles
+import com.efm.assets.*
 import com.efm.entity.Character
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
@@ -19,6 +19,11 @@ class Sledgehammer : MultiUseMapItem
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
     
+    override fun getTexture() : Texture
+    {
+        return Textures.hammer
+    }
+    
     override fun selected()
     {
         //podświetl zasięg ataku
@@ -32,13 +37,12 @@ class Sledgehammer : MultiUseMapItem
         //use()
     }
     
-    override fun use(room: Room, targetPosition : RoomPosition)
+    override fun use(room : Room, targetPosition : RoomPosition)
     {
         val animations = mutableListOf<Animation>()
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
         animations += Animation.showTile(Tiles.sledgehammer, targetPosition.copy(), 0.5f)
-    
-    
+        
         val showAreaOfHammerAnimation = mutableListOf<Animation>()
         for (pos in this.getAffectedPositions(targetPosition))
         {
@@ -46,9 +50,9 @@ class Sledgehammer : MultiUseMapItem
         }
         val showAreaOfHammer = Animation.simultaneous(showAreaOfHammerAnimation)
         animations += showAreaOfHammer
-    
-        animations += Animation.action {
         
+        animations += Animation.action {
+            
             for (pos in this.getAffectedPositions(targetPosition))
             {
                 val hitSpace = room.getSpace(pos)
@@ -65,25 +69,26 @@ class Sledgehammer : MultiUseMapItem
         Animating.executeAnimations(animations)
     }
     
-    override fun getTargetPositions(source:RoomPosition) : List<RoomPosition>
+    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
         val possiblePositions = mutableListOf<RoomPosition>()
         possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.up))
         possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.down))
         possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.left))
         possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.right))
-    
+        
         return possiblePositions.toList()
     }
     
-    override fun getAffectedPositions(targetPosition:RoomPosition) : List<RoomPosition>
+    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
     {
         val affectedSpaces = mutableListOf<RoomPosition>()
         for (posX in 0..World.currentRoom.heightInSpaces)
         {
             for (posY in 0..World.currentRoom.widthInSpaces)
             {
-                val distance = sqrt(((targetPosition.x - posX)*(targetPosition.x - posX) + (targetPosition.y - posY) * (targetPosition.y - posY)).toDouble())
+                val distance =
+                        sqrt(((targetPosition.x - posX) * (targetPosition.x - posX) + (targetPosition.y - posY) * (targetPosition.y - posY)).toDouble())
                 if (distance in 1.5..2.5)
                 {
                     affectedSpaces.add(Vector2(posX.toFloat(), posY.toFloat()).toRoomPosition())

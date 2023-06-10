@@ -453,7 +453,7 @@ object GameScreen : BaseScreen(), GestureListener
         
         val amountOfUsesPotion = 5
         potionButton = itemButtonWithLabel(
-                Textures.potion,
+                Textures.fish,
                 "$amountOfUsesPotion",
                 Textures.upNinePatch,
                 Textures.downNinePatch,

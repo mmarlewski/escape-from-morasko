@@ -1,8 +1,8 @@
 package com.efm.multiUseMapItems
 
+import com.badlogic.gdx.graphics.Texture
 import com.efm.*
-import com.efm.assets.Sounds
-import com.efm.assets.Tiles
+import com.efm.assets.*
 import com.efm.entity.Character
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
@@ -15,6 +15,11 @@ class WoodenSword : MultiUseMapItem
     override var durability : Int = 20
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
+    
+    override fun getTexture() : Texture
+    {
+        return Textures.sword
+    }
     
     override fun selected()
     {

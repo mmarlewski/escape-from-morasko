@@ -548,7 +548,7 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
             {
                 true  ->
                 {
-                    World.hero.regainAP()
+                    World.hero.regainAllAP()
                     GameScreen.abilityBar.isVisible = true
                     GameScreen.abilityBarLabel.isVisible = true
                 }

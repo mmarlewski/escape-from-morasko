@@ -1,6 +1,8 @@
 package com.efm.stackableMapItems
 
+import com.badlogic.gdx.graphics.Texture
 import com.efm.Direction
+import com.efm.assets.Textures
 import com.efm.item.StackableMapItem
 import com.efm.level.World
 import com.efm.room.Room
@@ -13,6 +15,12 @@ class StunTrap(
     override val name : String = "Stun Trap"
     override val maxAmount : Int = 10
     override val baseAPUseCost : Int = 5
+    
+    override fun getTexture() : Texture?
+    {
+        return null
+    }
+    
     override fun selected()
     {
     }

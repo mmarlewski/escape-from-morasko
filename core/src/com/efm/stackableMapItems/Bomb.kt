@@ -1,8 +1,8 @@
 package com.efm.stackableMapItems
 
+import com.badlogic.gdx.graphics.Texture
 import com.efm.*
-import com.efm.assets.Sounds
-import com.efm.assets.Tiles
+import com.efm.assets.*
 import com.efm.entity.Character
 import com.efm.item.StackableMapItem
 import com.efm.level.World
@@ -17,6 +17,11 @@ class Bomb(
     override val maxAmount : Int = 4
     override val baseAPUseCost : Int = 6
     val damage : Int = 10
+    
+    override fun getTexture() : Texture
+    {
+        return Textures.bomb
+    }
     
     override fun selected()
     {

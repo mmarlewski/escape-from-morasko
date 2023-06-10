@@ -1,8 +1,8 @@
 package com.efm.multiUseMapItems
 
+import com.badlogic.gdx.graphics.Texture
 import com.efm.*
-import com.efm.assets.Sounds
-import com.efm.assets.Tiles
+import com.efm.assets.*
 import com.efm.entity.Character
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
@@ -17,6 +17,12 @@ class SmallAxe : MultiUseMapItem
     override var durability : Int = 15
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
+    
+    override fun getTexture() : Texture
+    {
+        return Textures.axe
+    }
+    
     override fun selected()
     {
         //podświetl zasięg ataku

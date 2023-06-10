@@ -1,9 +1,13 @@
 package com.efm.item
 
+import com.badlogic.gdx.graphics.Texture
+
 interface Item
 {
     val name : String
     val baseAPUseCost : Int
+    
+    fun getTexture() : Texture?
     
     /** Effects (graphical) occurring when Item is selected  */
     fun selected()

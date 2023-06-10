@@ -621,7 +621,7 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
             {
                 true  ->
                 {
-                    World.hero.regainAP()
+                    World.hero.regainAllAP()
                     GameScreen.abilityBar.isVisible = true
                     GameScreen.abilityBarLabel.isVisible = true
                 }

@@ -78,7 +78,7 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
         {
             null ->
             {
-                World.hero.regainAP()
+                World.hero.regainAllAP()
                 GameScreen.focusCameraOnRoomPosition(World.hero.position)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
