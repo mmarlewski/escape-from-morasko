@@ -38,7 +38,8 @@ class WoodenSword : MultiUseMapItem
     {
         val animations = mutableListOf<Animation>()
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.descendTile(Tiles.woodenSword, targetPosition.copy(), 0.5f)
+        animations += Animation.descendTile(Tiles.woodenSword, targetPosition.copy(), 0.2f,0.25f)
+        animations += Animation.cameraShake()
         animations += Animation.action {
             
             val attackedPosition = targetPosition.copy()

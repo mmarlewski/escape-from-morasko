@@ -2,8 +2,7 @@ package com.efm
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.math.Vector2
-import com.efm.room.RoomPosition
-import com.efm.room.toVector2
+import com.efm.room.*
 import com.efm.screens.GameScreen
 
 sealed class Animation
@@ -26,7 +25,7 @@ sealed class Animation
     
     abstract fun isFinished() : Boolean
     
-    class sequence(val animations : MutableList<Animation>) : Animation()
+    open class sequence(val animations : List<Animation>) : Animation()
     {
         val animationIterator = animations.iterator()
         var currAnimation : Animation? = null
@@ -122,6 +121,66 @@ sealed class Animation
         }
     }
     
+    open class moveCameraWithRoomPositions(
+            val from : RoomPosition,
+            val to : RoomPosition,
+            val seconds : Float
+                                          ) : Animation()
+    {
+        val moveCameraPosition = Vector2()
+        
+        override fun start()
+        {
+            resetDeltaTime()
+            moveCameraPosition.set(from.toVector2())
+        }
+        
+        override fun update()
+        {
+            val timeRatio = deltaTimeDifference() / seconds
+            val cameraDistanceX = to.x - from.x
+            val cameraDistanceY = to.y - from.y
+            moveCameraPosition.x = from.x + cameraDistanceX * timeRatio
+            moveCameraPosition.y = from.y + cameraDistanceY * timeRatio
+            GameScreen.focusCameraOnVector2Position(moveCameraPosition)
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (deltaTimeDifference() > seconds)
+        }
+    }
+    
+    open class moveCameraWithIsoPositions(
+            val from : Vector2,
+            val to : Vector2,
+            val seconds : Float
+                                         ) : Animation()
+    {
+        val moveCameraPosition = Vector2()
+        
+        override fun start()
+        {
+            resetDeltaTime()
+            moveCameraPosition.set(from)
+        }
+        
+        override fun update()
+        {
+            val timeRatio = deltaTimeDifference() / seconds
+            val cameraDistanceX = to.x - from.x
+            val cameraDistanceY = to.y - from.y
+            moveCameraPosition.x = from.x + cameraDistanceX * timeRatio
+            moveCameraPosition.y = from.y + cameraDistanceY * timeRatio
+            GameScreen.focusCameraOnIsoPosition(moveCameraPosition)
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (deltaTimeDifference() > seconds)
+        }
+    }
+    
     class focusCamera(val on : RoomPosition, val seconds : Float) : Animation()
     {
         override fun start()
@@ -140,7 +199,12 @@ sealed class Animation
         }
     }
     
-    open class ascendTile(val tile : TiledMapTile?, val on : RoomPosition, val seconds : Float) : Animation()
+    open class ascendTile(
+            val tile : TiledMapTile?,
+            val on : RoomPosition,
+            val seconds : Float,
+            val heightPercent : Float
+                         ) : Animation()
     {
         var ascendPercent = 0.0f
         
@@ -160,7 +224,12 @@ sealed class Animation
         }
     }
     
-    class ascendTileWithCameraFocus(tile : TiledMapTile?, on : RoomPosition, seconds : Float) : ascendTile(tile, on, seconds)
+    class ascendTileWithCameraFocus(
+            tile : TiledMapTile?,
+            on : RoomPosition,
+            seconds : Float,
+            heightPercent : Float
+                                   ) : ascendTile(tile, on, seconds, heightPercent)
     {
         override fun update()
         {
@@ -168,12 +237,18 @@ sealed class Animation
             
             val orthoPosition = roomPositionToOrtho(on)
             val isoPosition = orthoToIso(orthoPosition)
-            val ascendedIsoPosition = Vector2(isoPosition.x, isoPosition.y + ascendPercent * Map.tileLengthInPixels)
+            val ascendedIsoPosition =
+                    Vector2(isoPosition.x, isoPosition.y + ascendPercent * heightPercent * Map.tileLengthInPixels)
             GameScreen.focusCameraOnIsoPosition(ascendedIsoPosition)
         }
     }
     
-    open class descendTile(val tile : TiledMapTile?, val on : RoomPosition, val seconds : Float) : Animation()
+    open class descendTile(
+            val tile : TiledMapTile?,
+            val on : RoomPosition,
+            val seconds : Float,
+            val heightPercent : Float
+                          ) : Animation()
     {
         var descendPercent = 0.0f
         
@@ -193,11 +268,12 @@ sealed class Animation
         }
     }
     
-    class descendTileWithCameraFocus(tile : TiledMapTile?, on : RoomPosition, seconds : Float) : descendTile(
-            tile,
-            on,
-            seconds
-                                                                                                            )
+    class descendTileWithCameraFocus(
+            tile : TiledMapTile?,
+            on : RoomPosition,
+            seconds : Float,
+            heightPercent : Float
+                                    ) : descendTile(tile, on, seconds, heightPercent)
     {
         override fun update()
         {
@@ -205,7 +281,8 @@ sealed class Animation
             
             val orthoPosition = roomPositionToOrtho(on)
             val isoPosition = orthoToIso(orthoPosition)
-            val ascendedIsoPosition = Vector2(isoPosition.x, isoPosition.y + (1 - descendPercent) * Map.tileLengthInPixels)
+            val ascendedIsoPosition =
+                    Vector2(isoPosition.x, isoPosition.y + (1 - descendPercent) * heightPercent * Map.tileLengthInPixels)
             GameScreen.focusCameraOnIsoPosition(ascendedIsoPosition)
         }
     }
@@ -292,6 +369,33 @@ sealed class Animation
             GameScreen.focusCameraOnRoomPosition(where)
         }
         
+    }
+    
+    companion object
+    {
+        fun cameraShake(
+                moves : Int = 2,
+                moveSpeed : Float = 0.05f,
+                moveDistance : Float = 3.0f
+                       ) : Animation.sequence
+        {
+            val animations = mutableListOf<Animation>()
+            
+            val centerCameraPosition = GameScreen.getCameraPosition()
+            val rightCameraPosition = Vector2(centerCameraPosition.x + moveDistance, centerCameraPosition.y + 0f)
+            val leftCameraPosition = Vector2(centerCameraPosition.x - moveDistance, centerCameraPosition.y + 0f)
+            
+            animations.add(Animation.moveCameraWithIsoPositions(centerCameraPosition, rightCameraPosition, moveSpeed * 1))
+            animations.add(Animation.moveCameraWithIsoPositions(rightCameraPosition, leftCameraPosition, moveSpeed * 2))
+            for (i in 1 until moves)
+            {
+                animations.add(Animation.moveCameraWithIsoPositions(leftCameraPosition, rightCameraPosition, moveSpeed * 2))
+                animations.add(Animation.moveCameraWithIsoPositions(rightCameraPosition, leftCameraPosition, moveSpeed * 2))
+            }
+            animations.add(Animation.moveCameraWithIsoPositions(leftCameraPosition, centerCameraPosition, moveSpeed * 1))
+            
+            return Animation.sequence(animations)
+        }
     }
     
     class action(val action : () -> Unit) : Animation()

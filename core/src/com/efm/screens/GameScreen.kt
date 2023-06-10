@@ -320,7 +320,7 @@ object GameScreen : BaseScreen(), GestureListener
                 setState(newState)
             }
         }
-    
+        
         axeButton = itemButtonWithHealthbar(
                 Textures.axe,
                 100f,
@@ -330,13 +330,13 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                             ) {
+                                           ) {
             playSoundOnce(Sounds.blop)
-        
+            
             val axe = SmallAxe()
-        
+            
             val currState = getState()
-        
+            
             val canBeUsed = when (currState)
             {
                 is State.free                              -> true
@@ -346,17 +346,17 @@ object GameScreen : BaseScreen(), GestureListener
                 }
                 else                                       -> false
             }
-        
+            
             if (canBeUsed)
             {
                 val targetPositions = axe.getTargetPositions(World.hero.position)
-            
+                
                 Map.clearLayer(MapLayer.select)
                 for (position in targetPositions)
                 {
                     Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
                 }
-            
+                
                 val newState = when (currState)
                 {
                     is State.free        -> State.free.multiUseMapItemChosen.apply {
@@ -385,7 +385,7 @@ object GameScreen : BaseScreen(), GestureListener
                 setState(newState)
             }
         }
-    
+        
         hammerButton = itemButtonWithHealthbar(
                 Textures.hammer,
                 100f,
@@ -395,13 +395,13 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                             ) {
+                                              ) {
             playSoundOnce(Sounds.blop)
-        
+            
             val hammer = Sledgehammer()
-        
+            
             val currState = getState()
-        
+            
             val canBeUsed = when (currState)
             {
                 is State.free                              -> true
@@ -411,17 +411,17 @@ object GameScreen : BaseScreen(), GestureListener
                 }
                 else                                       -> false
             }
-        
+            
             if (canBeUsed)
             {
                 val targetPositions = hammer.getTargetPositions(World.hero.position)
-            
+                
                 Map.clearLayer(MapLayer.select)
                 for (position in targetPositions)
                 {
                     Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
                 }
-            
+                
                 val newState = when (currState)
                 {
                     is State.free        -> State.free.multiUseMapItemChosen.apply {
@@ -535,7 +535,7 @@ object GameScreen : BaseScreen(), GestureListener
         healthBarContainer.width(healthBarWidth)
         healthStack.add(healthBarContainer)
         healthStack.add(healthBarLabel)
-    
+        
         val abilityBarWidth = 300F
         val abilityStack = Stack()
         val abilityBarContainer : Container<ProgressBar> = Container(abilityBar)
@@ -660,6 +660,11 @@ object GameScreen : BaseScreen(), GestureListener
     fun changeCameraZoom(newZoom : Float)
     {
         gameCamera.zoom = newZoom
+    }
+    
+    fun getCameraPosition() : Vector2
+    {
+        return Vector2(gameCamera.position.x, gameCamera.position.y)
     }
     
     fun focusCameraOnIsoPosition(position : Vector2)

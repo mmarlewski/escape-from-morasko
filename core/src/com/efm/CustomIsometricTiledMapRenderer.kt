@@ -173,7 +173,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                 animationTilePosition.y = animationPosition.y * halfTileHeight - animationPosition.x * halfTileHeight
                 val isAnimationTileOnMapTile =
                         (animationPosition.x.toInt() == col && animationPosition.y.toInt() == row)
-                val ascendHeight = animation.ascendPercent * halfTileHeight * 4
+                val ascendHeight = animation.ascendPercent * animation.heightPercent * halfTileHeight * 4
                 animationTilePosition.y += ascendHeight
                 
                 if (isAnimationTileOnMapTile)
@@ -202,7 +202,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                 animationTilePosition.y = animationPosition.y * halfTileHeight - animationPosition.x * halfTileHeight
                 val isAnimationTileOnMapTile =
                         (animationPosition.x.toInt() == col && animationPosition.y.toInt() == row)
-                val descendHeight = (1 - animation.descendPercent) * halfTileHeight * 4
+                val descendHeight = (1 - animation.descendPercent) * animation.heightPercent * halfTileHeight * 4
                 animationTilePosition.y += descendHeight
                 
                 if (isAnimationTileOnMapTile)
