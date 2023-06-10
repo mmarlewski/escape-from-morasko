@@ -16,7 +16,7 @@ fun updateCombatEnemiesEnemyUnselected(currState : State.combat.enemies.enemyUns
             val currEnemyPosition = currEnemy.position
             Map.changeTile(MapLayer.select, currEnemyPosition, Tiles.selectRed)
             Map.changeTile(MapLayer.outline, currEnemyPosition, currEnemy.getOutlineRedTile())
-            val animation = Animation.showTileWithCameraFocus(null, currEnemyPosition.copy(), 1f)
+            val animation = Animation.focusCamera(currEnemyPosition.copy(), 1f)
             Animating.executeAnimations(mutableListOf(animation))
         }
         
@@ -97,7 +97,7 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
                 if (currEnemy != null)
                 {
                     val currEnemyPosition = currEnemy.position
-                    val animation = Animation.showTileWithCameraFocus(null, currEnemyPosition.copy(), 1f)
+                    val animation = Animation.focusCamera(currEnemyPosition.copy(), 1f)
                     Animating.executeAnimations(mutableListOf(animation))
                 }
                 

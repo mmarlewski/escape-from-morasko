@@ -662,7 +662,18 @@ object GameScreen : BaseScreen(), GestureListener
         gameCamera.zoom = newZoom
     }
     
-    fun focusCameraOnVector2(position : Vector2)
+    fun focusCameraOnIsoPosition(position : Vector2)
+    {
+        gameCamera.position.set(position, 0f)
+    }
+    
+    fun focusCameraOnOrthoPosition(position : Vector2)
+    {
+        val isoPosition = orthoToIso(position)
+        gameCamera.position.set(isoPosition, 0f)
+    }
+    
+    fun focusCameraOnVector2Position(position : Vector2)
     {
         val orthoPosition = positionToOrtho(position)
         val isoPosition = orthoToIso(orthoPosition)

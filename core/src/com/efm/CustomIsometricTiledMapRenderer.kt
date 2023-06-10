@@ -162,6 +162,64 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                                  )
                 }
             }
+            is Animation.ascendTile   ->
+            {
+                val animationPosition = Vector2()
+                animationPosition.x = animation.on.x.toFloat()
+                animationPosition.y = (Map.mapHeightInTiles - animation.on.y - 1).toFloat()
+                val animationTile = animation.tile
+                val animationTilePosition = Vector2()
+                animationTilePosition.x = animationPosition.x * halfTileWidth + animationPosition.y * halfTileWidth
+                animationTilePosition.y = animationPosition.y * halfTileHeight - animationPosition.x * halfTileHeight
+                val isAnimationTileOnMapTile =
+                        (animationPosition.x.toInt() == col && animationPosition.y.toInt() == row)
+                val ascendHeight = animation.ascendPercent * halfTileHeight * 4
+                animationTilePosition.y += ascendHeight
+                
+                if (isAnimationTileOnMapTile)
+                {
+                    drawTile(
+                            animationTile,
+                            false,
+                            false,
+                            0,
+                            0f,
+                            0f,
+                            color,
+                            animationTilePosition.x,
+                            animationTilePosition.y
+                            )
+                }
+            }
+            is Animation.descendTile  ->
+            {
+                val animationPosition = Vector2()
+                animationPosition.x = animation.on.x.toFloat()
+                animationPosition.y = (Map.mapHeightInTiles - animation.on.y - 1).toFloat()
+                val animationTile = animation.tile
+                val animationTilePosition = Vector2()
+                animationTilePosition.x = animationPosition.x * halfTileWidth + animationPosition.y * halfTileWidth
+                animationTilePosition.y = animationPosition.y * halfTileHeight - animationPosition.x * halfTileHeight
+                val isAnimationTileOnMapTile =
+                        (animationPosition.x.toInt() == col && animationPosition.y.toInt() == row)
+                val descendHeight = (1 - animation.descendPercent) * halfTileHeight * 4
+                animationTilePosition.y += descendHeight
+                
+                if (isAnimationTileOnMapTile)
+                {
+                    drawTile(
+                            animationTile,
+                            false,
+                            false,
+                            0,
+                            0f,
+                            0f,
+                            color,
+                            animationTilePosition.x,
+                            animationTilePosition.y
+                            )
+                }
+            }
             is Animation.moveTile     ->
             {
                 val animationPosition = Vector2()

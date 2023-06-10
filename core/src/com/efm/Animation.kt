@@ -122,6 +122,94 @@ sealed class Animation
         }
     }
     
+    class focusCamera(val on : RoomPosition, val seconds : Float) : Animation()
+    {
+        override fun start()
+        {
+            resetDeltaTime()
+        }
+        
+        override fun update()
+        {
+            GameScreen.focusCameraOnRoomPosition(on)
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (deltaTimeDifference() > seconds)
+        }
+    }
+    
+    open class ascendTile(val tile : TiledMapTile?, val on : RoomPosition, val seconds : Float) : Animation()
+    {
+        var ascendPercent = 0.0f
+        
+        override fun start()
+        {
+            resetDeltaTime()
+        }
+        
+        override fun update()
+        {
+            ascendPercent = deltaTimeDifference() / seconds
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (deltaTimeDifference() > seconds)
+        }
+    }
+    
+    class ascendTileWithCameraFocus(tile : TiledMapTile?, on : RoomPosition, seconds : Float) : ascendTile(tile, on, seconds)
+    {
+        override fun update()
+        {
+            super.update()
+            
+            val orthoPosition = roomPositionToOrtho(on)
+            val isoPosition = orthoToIso(orthoPosition)
+            val ascendedIsoPosition = Vector2(isoPosition.x, isoPosition.y + ascendPercent * Map.tileLengthInPixels)
+            GameScreen.focusCameraOnIsoPosition(ascendedIsoPosition)
+        }
+    }
+    
+    open class descendTile(val tile : TiledMapTile?, val on : RoomPosition, val seconds : Float) : Animation()
+    {
+        var descendPercent = 0.0f
+        
+        override fun start()
+        {
+            resetDeltaTime()
+        }
+        
+        override fun update()
+        {
+            descendPercent = deltaTimeDifference() / seconds
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (deltaTimeDifference() > seconds)
+        }
+    }
+    
+    class descendTileWithCameraFocus(tile : TiledMapTile?, on : RoomPosition, seconds : Float) : descendTile(
+            tile,
+            on,
+            seconds
+                                                                                                            )
+    {
+        override fun update()
+        {
+            super.update()
+            
+            val orthoPosition = roomPositionToOrtho(on)
+            val isoPosition = orthoToIso(orthoPosition)
+            val ascendedIsoPosition = Vector2(isoPosition.x, isoPosition.y + (1 - descendPercent) * Map.tileLengthInPixels)
+            GameScreen.focusCameraOnIsoPosition(ascendedIsoPosition)
+        }
+    }
+    
     open class moveTile(
             val tile : TiledMapTile?,
             val from : RoomPosition,
@@ -164,7 +252,7 @@ sealed class Animation
         {
             super.update()
             
-            GameScreen.focusCameraOnVector2(moveTilePosition)
+            GameScreen.focusCameraOnVector2Position(moveTilePosition)
         }
         
     }
