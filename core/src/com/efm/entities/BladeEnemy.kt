@@ -37,11 +37,22 @@ class BladeEnemy : Entity, Enemy
     
     override fun enemyAttack()
     {
-        val animations = mutableListOf<Animation>()
-        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.showTile(Tiles.woodenSword, World.hero.position, 0.5f)
-        animations += Animation.action {
+        val heroPosition = World.hero.position.copy()
+        val heroDirection = getDirection8(this.position, heroPosition)
+        val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
         
+        val animations = mutableListOf<Animation>()
+        
+        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
+        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
+        animations += Animation.simultaneous(
+                listOf(
+                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
+                        Animation.cameraShake(1)
+                      )
+                                            )
+        animations += Animation.action {
+            
             val attackedPosition = World.hero.position
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
@@ -53,6 +64,7 @@ class BladeEnemy : Entity, Enemy
                 }
             }
         }
+        
         Animating.executeAnimations(animations)
     }
 }

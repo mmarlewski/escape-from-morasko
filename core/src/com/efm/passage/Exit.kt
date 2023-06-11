@@ -13,7 +13,7 @@ import com.efm.room.RoomPosition
 interface Exit : Entity, Interactive
 {
     val exitPassage : Passage
-    val direction : Direction
+    val direction : Direction4
     
     override fun interact()
     {

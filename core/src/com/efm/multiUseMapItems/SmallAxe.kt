@@ -9,7 +9,6 @@ import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 
-
 class SmallAxe : MultiUseMapItem
 {
     override val name : String = "Small Axe"
@@ -36,47 +35,111 @@ class SmallAxe : MultiUseMapItem
         //use()
     }
     
-    override fun use(room: Room, targetPosition : RoomPosition)
+    override fun use(room : Room, targetPosition : RoomPosition)
     {
-        val animations = mutableListOf<Animation>()
-        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.showTile(Tiles.axe, targetPosition.copy(), 0.5f)
-        val showAreaOfAxeAnimation = mutableListOf<Animation>()
-        for (pos in this.getAffectedPositions(targetPosition))
-        {
-            showAreaOfAxeAnimation += Animation.showTile(Tiles.sledgehammer, pos, 0.5f)
-        }
-        val showAreaOfAxe = Animation.simultaneous(showAreaOfAxeAnimation)
-        animations += showAreaOfAxe
-    
-        animations += Animation.action {
+        val targetDirection = getDirection4(World.hero.position, targetPosition)
+        val axeTile = if (targetDirection == null) null else Tiles.getAxeTile(targetDirection.toDirection8())
+        val slashPositions = mutableListOf<RoomPosition>()
         
-            for (pos in this.getAffectedPositions(targetPosition))
+        when (targetDirection)
+        {
+            Direction4.up    ->
             {
-                val hitSpace = room.getSpace(pos)
-                val hitEntity = hitSpace?.getEntity()
-                when (hitEntity)
+                slashPositions.add(targetPosition.adjacentPosition(Direction4.left))
+                slashPositions.add(targetPosition.copy())
+                slashPositions.add(targetPosition.adjacentPosition(Direction4.right))
+            }
+            Direction4.right ->
+            {
+                slashPositions.add(targetPosition.adjacentPosition(Direction4.up))
+                slashPositions.add(targetPosition.copy())
+                slashPositions.add(targetPosition.adjacentPosition(Direction4.down))
+            }
+            Direction4.down  ->
+            {
+                slashPositions.add(targetPosition.adjacentPosition(Direction4.right))
+                slashPositions.add(targetPosition.copy())
+                slashPositions.add(targetPosition.adjacentPosition(Direction4.left))
+            }
+            Direction4.left  ->
+            {
+                slashPositions.add(targetPosition.adjacentPosition(Direction4.down))
+                slashPositions.add(targetPosition.copy())
+                slashPositions.add(targetPosition.adjacentPosition(Direction4.up))
+            }
+            null             ->
+            {
+            }
+        }
+        
+        val animations = mutableListOf<Animation>()
+        
+        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
+        animations += Animation.simultaneous(
+                listOf(
+                        Animation.sequence(
+                                listOf(
+                                        Animation.moveTile(axeTile, slashPositions[0], slashPositions[1], 0.2f),
+                                        Animation.moveTile(axeTile, slashPositions[1], slashPositions[2], 0.2f)
+                                      )
+                                          ),
+                        Animation.cameraShake(2)
+                      )
+                                            )
+        animations += Animation.action {
+            
+            for (slashPosition in slashPositions)
+            {
+                val slashSpace = room.getSpace(slashPosition)
+                val slashEntity = slashSpace?.getEntity()
+                when (slashEntity)
                 {
                     is Character ->
                     {
-                        hitEntity.damageCharacter(damage)
+                        slashEntity.damageCharacter(damage)
                     }
                 }
             }
         }
+        
         Animating.executeAnimations(animations)
     }
     
-    override fun getTargetPositions(source:RoomPosition) : List<RoomPosition>
+    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
-        val possiblePositions = mutableListOf<RoomPosition>()
-        possiblePositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
-        possiblePositions.addAll(getSquarePerimeterPositions(World.hero.position, 3))
-        return possiblePositions.toList()
+        val targetPositions = mutableListOf<RoomPosition>()
+        
+        for (direction in Direction4.values())
+        {
+            targetPositions.add(source.adjacentPosition(direction))
+        }
+        
+        return targetPositions.toList()
     }
     
-    override fun getAffectedPositions(targetPosition:RoomPosition) : List<RoomPosition>
+    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
     {
-        return getSquarePerimeterPositions(World.hero.position, 1)
+        val affectedPositions = mutableListOf<RoomPosition>()
+        
+        val targetDirection = getDirection4(World.hero.position, targetPosition)
+        
+        when (targetDirection)
+        {
+            Direction4.up, Direction4.down    ->
+            {
+                affectedPositions.add(targetPosition.adjacentPosition(Direction4.left))
+                affectedPositions.add(targetPosition.adjacentPosition(Direction4.right))
+            }
+            Direction4.right, Direction4.left ->
+            {
+                affectedPositions.add(targetPosition.adjacentPosition(Direction4.up))
+                affectedPositions.add(targetPosition.adjacentPosition(Direction4.down))
+            }
+            null                              ->
+            {
+            }
+        }
+        
+        return affectedPositions
     }
 }

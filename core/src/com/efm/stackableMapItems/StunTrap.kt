@@ -1,8 +1,7 @@
 package com.efm.stackableMapItems
 
 import com.badlogic.gdx.graphics.Texture
-import com.efm.Direction
-import com.efm.assets.Textures
+import com.efm.Direction4
 import com.efm.item.StackableMapItem
 import com.efm.level.World
 import com.efm.room.Room
@@ -42,7 +41,7 @@ class StunTrap(
         {
             for (j in -1..1)
             {
-                possibleSpaces.add((heroPos.positionOffsetBy(i, Direction.up)).positionOffsetBy(j, Direction.left))
+                possibleSpaces.add((heroPos.positionOffsetBy(i, Direction4.up)).positionOffsetBy(j, Direction4.left))
             }
         }
         

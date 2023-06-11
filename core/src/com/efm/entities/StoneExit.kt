@@ -1,12 +1,12 @@
 package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
-import com.efm.Direction
+import com.efm.Direction4
 import com.efm.assets.Tiles
 import com.efm.passage.*
 import com.efm.room.RoomPosition
 
-class StoneExit(override val direction : Direction, val passage : Passage) : Exit
+class StoneExit(override val direction : Direction4, val passage : Passage) : Exit
 {
     override val position = RoomPosition()
     override val exitPassage = passage
@@ -17,18 +17,18 @@ class StoneExit(override val direction : Direction, val passage : Passage) : Exi
         {
             is RoomPassage  -> when (direction)
             {
-                Direction.up    -> Tiles.stoneExitUp
-                Direction.right -> Tiles.stoneExitRight
-                Direction.down  -> Tiles.stoneExitDown
-                Direction.left  -> Tiles.stoneExitLeft
+                Direction4.up    -> Tiles.stoneExitUp
+                Direction4.right -> Tiles.stoneExitRight
+                Direction4.down  -> Tiles.stoneExitDown
+                Direction4.left  -> Tiles.stoneExitLeft
             }
             
             is LevelPassage -> when (direction)
             {
-                Direction.up    -> Tiles.stoneExitLevelUp
-                Direction.right -> Tiles.stoneExitLevelRight
-                Direction.down  -> Tiles.stoneExitLevelDown
-                Direction.left  -> Tiles.stoneExitLevelLeft
+                Direction4.up    -> Tiles.stoneExitLevelUp
+                Direction4.right -> Tiles.stoneExitLevelRight
+                Direction4.down  -> Tiles.stoneExitLevelDown
+                Direction4.left  -> Tiles.stoneExitLevelLeft
             }
             
             else            -> null
@@ -46,18 +46,18 @@ class StoneExit(override val direction : Direction, val passage : Passage) : Exi
         {
             is RoomPassage  -> when (direction)
             {
-                Direction.up    -> Tiles.stoneExitUpOutlineTeal
-                Direction.right -> Tiles.stoneExitRightOutlineTeal
-                Direction.down  -> Tiles.stoneExitDownOutlineTeal
-                Direction.left  -> Tiles.stoneExitLeftOutlineTeal
+                Direction4.up    -> Tiles.stoneExitUpOutlineTeal
+                Direction4.right -> Tiles.stoneExitRightOutlineTeal
+                Direction4.down  -> Tiles.stoneExitDownOutlineTeal
+                Direction4.left  -> Tiles.stoneExitLeftOutlineTeal
             }
         
             is LevelPassage -> when (direction)
             {
-                Direction.up    -> Tiles.stoneExitLevelUpOutlineTeal
-                Direction.right -> Tiles.stoneExitLevelRightOutlineTeal
-                Direction.down  -> Tiles.stoneExitLevelDownOutlineTeal
-                Direction.left  -> Tiles.stoneExitLevelLeftOutlineTeal
+                Direction4.up    -> Tiles.stoneExitLevelUpOutlineTeal
+                Direction4.right -> Tiles.stoneExitLevelRightOutlineTeal
+                Direction4.down  -> Tiles.stoneExitLevelDownOutlineTeal
+                Direction4.left  -> Tiles.stoneExitLevelLeftOutlineTeal
             }
         
             else            -> null

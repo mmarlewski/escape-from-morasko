@@ -1,7 +1,7 @@
 package com.efm.room
 
 import com.badlogic.gdx.math.Vector2
-import com.efm.Direction
+import com.efm.Direction4
 
 /**
  * Position within a Room starting at top left corner.
@@ -21,18 +21,18 @@ data class RoomPosition(var x : Int = 0, var y : Int = 0)
         set(roomPosition.x, roomPosition.y)
     }
     
-    fun positionOffsetBy(by : Int, direction : Direction) : RoomPosition
+    fun positionOffsetBy(by : Int, direction : Direction4) : RoomPosition
     {
         return when (direction)
         {
-            Direction.up    -> RoomPosition(x, y - by)
-            Direction.right -> RoomPosition(x + by, y)
-            Direction.down  -> RoomPosition(x, y + by)
-            Direction.left  -> RoomPosition(x - by, y)
+            Direction4.up    -> RoomPosition(x, y - by)
+            Direction4.right -> RoomPosition(x + by, y)
+            Direction4.down  -> RoomPosition(x, y + by)
+            Direction4.left  -> RoomPosition(x - by, y)
         }
     }
     
-    fun adjacentPosition(direction : Direction) : RoomPosition
+    fun adjacentPosition(direction : Direction4) : RoomPosition
     {
         return positionOffsetBy(1, direction)
     }

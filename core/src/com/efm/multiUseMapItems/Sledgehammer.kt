@@ -8,7 +8,6 @@ import com.efm.entity.Character
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
 import com.efm.room.*
-import kotlin.math.abs
 import kotlin.math.sqrt
 
 class Sledgehammer : MultiUseMapItem
@@ -39,63 +38,62 @@ class Sledgehammer : MultiUseMapItem
     
     override fun use(room : Room, targetPosition : RoomPosition)
     {
+        val targetDirection = getDirection8(World.hero.position, targetPosition)
+        val hammerTile = if (targetDirection == null) null else Tiles.getHammerTile(targetDirection)
+        val positionsAroundTarget = getSquarePerimeterPositions(targetPosition, 1)
+        
         val animations = mutableListOf<Animation>()
+        
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.showTile(Tiles.sledgehammer, targetPosition.copy(), 0.5f)
-        
-        val showAreaOfHammerAnimation = mutableListOf<Animation>()
-        for (pos in this.getAffectedPositions(targetPosition))
+        animations += Animation.descendTile(hammerTile, targetPosition.copy(), 0.2f, 0.25f)
+        val impactAnimations = mutableListOf<Animation>()
+        impactAnimations.add(Animation.showTile(Tiles.impact, targetPosition.copy(), 0.5f))
+        impactAnimations.add(Animation.cameraShake(3))
+        for (positionAroundTarget in positionsAroundTarget)
         {
-            showAreaOfHammerAnimation += Animation.showTile(Tiles.sledgehammer, pos, 0.5f)
+            val impactDirection = getDirection8(targetPosition, positionAroundTarget)
+            val impactTile = if (impactDirection == null) null else Tiles.getImpactTile(impactDirection)
+            impactAnimations.add(Animation.showTile(impactTile, positionAroundTarget.copy(), 0.5f))
         }
-        val showAreaOfHammer = Animation.simultaneous(showAreaOfHammerAnimation)
-        animations += showAreaOfHammer
-        
+        animations += Animation.simultaneous(impactAnimations)
         animations += Animation.action {
             
-            for (pos in this.getAffectedPositions(targetPosition))
+            val attackedPositions = mutableListOf<RoomPosition>()
+            attackedPositions.add(targetPosition)
+            attackedPositions.addAll(getSquarePerimeterPositions(targetPosition, 1))
+            
+            for (attackedPosition in attackedPositions)
             {
-                val hitSpace = room.getSpace(pos)
-                val hitEntity = hitSpace?.getEntity()
-                when (hitEntity)
+                val attackedSpace = room.getSpace(attackedPosition)
+                val attackedEntity = attackedSpace?.getEntity()
+                when (attackedEntity)
                 {
                     is Character ->
                     {
-                        hitEntity.damageCharacter(damage)
+                        attackedEntity.damageCharacter(this.damage)
                     }
                 }
             }
         }
+        
         Animating.executeAnimations(animations)
     }
     
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
-        val possiblePositions = mutableListOf<RoomPosition>()
-        possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.up))
-        possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.down))
-        possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.left))
-        possiblePositions.add(World.hero.position.positionOffsetBy(1, Direction.right))
+        val targetPositions = mutableListOf<RoomPosition>()
         
-        return possiblePositions.toList()
+        targetPositions.addAll(getSquarePerimeterPositions(source, 2))
+        
+        return targetPositions.toList()
     }
     
     override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
     {
         val affectedSpaces = mutableListOf<RoomPosition>()
-        for (posX in 0..World.currentRoom.heightInSpaces)
-        {
-            for (posY in 0..World.currentRoom.widthInSpaces)
-            {
-                val distance =
-                        sqrt(((targetPosition.x - posX) * (targetPosition.x - posX) + (targetPosition.y - posY) * (targetPosition.y - posY)).toDouble())
-                if (distance in 1.5..2.5)
-                {
-                    affectedSpaces.add(Vector2(posX.toFloat(), posY.toFloat()).toRoomPosition())
-                }
-            }
-        }
-        print(affectedSpaces)
+        
+        affectedSpaces.addAll(getSquarePerimeterPositions(targetPosition, 1))
+        
         return affectedSpaces
     }
 }

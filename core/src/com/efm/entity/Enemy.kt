@@ -2,11 +2,8 @@ package com.efm.entity
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.*
-import com.efm.Map
-import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import com.efm.room.Space
 
 /**
  * Enemy has its own turn and can attack the Hero.
@@ -72,7 +69,7 @@ interface Enemy : Character
         {
             for (j in -detectionRange..detectionRange)
             {
-                detectionPositions.add((position.positionOffsetBy(i, Direction.up)).positionOffsetBy(j, Direction.left))
+                detectionPositions.add((position.positionOffsetBy(i, Direction4.up)).positionOffsetBy(j, Direction4.left))
             }
         }
         

@@ -112,8 +112,8 @@ object Textures
     
     // multiUseMapItems
     val sword = load("items/sword1.png")
-    val hammer = load("items/hammer1.png")
-    val axe = load("items/axe1.png")
+    val hammer = load("items/hammer2.png")
+    val axe = load("items/axeDoubleBit2.png")
     val staff = load("items/staff1.png")
     val bow = load("items/bow1.png")
     

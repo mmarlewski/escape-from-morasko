@@ -11,25 +11,25 @@ fun getSquarePerimeterPositions(center : RoomPosition, radius : Int) : List<Room
     
     val positions = mutableListOf<RoomPosition>()
     
-    val newPosition = center.positionOffsetBy(radius,Direction.up).positionOffsetBy(radius,Direction.left)
+    val newPosition = center.positionOffsetBy(radius, Direction4.up).positionOffsetBy(radius, Direction4.left)
     for (i in 0..radius*2)
     {
-        positions.add(newPosition.positionOffsetBy(i,Direction.right))
+        positions.add(newPosition.positionOffsetBy(i, Direction4.right))
     }
-    newPosition.set(newPosition.positionOffsetBy(radius*2,Direction.right))
+    newPosition.set(newPosition.positionOffsetBy(radius*2, Direction4.right))
     for (i in 0..radius*2)
     {
-        positions.add(newPosition.positionOffsetBy(i,Direction.down))
+        positions.add(newPosition.positionOffsetBy(i, Direction4.down))
     }
-    newPosition.set(newPosition.positionOffsetBy(radius*2,Direction.down))
+    newPosition.set(newPosition.positionOffsetBy(radius*2, Direction4.down))
     for (i in 0..radius*2)
     {
-        positions.add(newPosition.positionOffsetBy(i,Direction.left))
+        positions.add(newPosition.positionOffsetBy(i, Direction4.left))
     }
-    newPosition.set(newPosition.positionOffsetBy(radius*2,Direction.left))
+    newPosition.set(newPosition.positionOffsetBy(radius*2, Direction4.left))
     for (i in 0..radius*2)
     {
-        positions.add(newPosition.positionOffsetBy(i,Direction.up))
+        positions.add(newPosition.positionOffsetBy(i, Direction4.up))
     }
     
     return positions.toList()

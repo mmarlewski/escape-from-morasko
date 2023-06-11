@@ -19,17 +19,17 @@ class CrossbowEnemy : Entity, Enemy
     override val detectionRange = 2
     override val attackRange = 2
     override val stepsInOneTurn = 1
-
+    
     override fun getTile() : TiledMapTile
     {
         return Tiles.crossbowEnemy
     }
-
+    
     override fun getOutlineYellowTile() : TiledMapTile
     {
         return Tiles.crossbowEnemyOutlineYellow
     }
-
+    
     override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.crossbowEnemyOutlineRed
@@ -37,11 +37,23 @@ class CrossbowEnemy : Entity, Enemy
     
     override fun enemyAttack()
     {
+        val heroPosition = World.hero.position.copy()
+        val heroDirection = getDirection8(this.position, heroPosition)
+        val arrowTile = if (heroDirection == null) null else Tiles.getArrowTile(heroDirection)
+        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
+        
         val animations = mutableListOf<Animation>()
+        
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.moveTile(Tiles.arrow, position, World.hero.position, 0.25f)
+        animations += Animation.moveTile(arrowTile, position, World.hero.position, 0.2f)
+        animations += Animation.simultaneous(
+                listOf(
+                        Animation.showTile(impactTile, heroPosition.copy(), 0.2f),
+                        Animation.cameraShake(1)
+                      )
+                                        )
         animations += Animation.action {
-            val attackedPosition = World.hero.position
+            val attackedPosition = heroPosition
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
@@ -52,6 +64,7 @@ class CrossbowEnemy : Entity, Enemy
                 }
             }
         }
+        
         Animating.executeAnimations(animations)
     }
 }

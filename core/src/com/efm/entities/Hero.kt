@@ -18,8 +18,8 @@ class Hero(
 {
     override val position = RoomPosition()
     
-    var maxAbilityPoints : Int = 15
-    var abilityPoints : Int = 15
+    var maxAbilityPoints : Int = 14
+    var abilityPoints : Int = 14
     
     override fun getTile() : TiledMapTile
     {

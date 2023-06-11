@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile
+import com.efm.Direction8
 
 object Tiles
 {
@@ -34,7 +35,7 @@ object Tiles
     val stoneWallUpRightLeft = load("stoneWallUpRightLeft.png")
     val stoneWallUpRight = load("stoneWallUpRight.png")
     val stoneWallUpDownLeft = load("stoneWallUpDownLeft.png")
-    val stoneWallUpDown= load("stoneWallUpDown.png")
+    val stoneWallUpDown = load("stoneWallUpDown.png")
     val stoneWallUpLeft = load("stoneWallUpLeft.png")
     val stoneWallUp = load("stoneWallUp.png")
     val stoneWallRightDownLeft = load("stoneWallRightDownLeft.png")
@@ -72,7 +73,7 @@ object Tiles
     val metalWallUpRightLeft = load("metalWallUpRightLeft.png")
     val metalWallUpRight = load("metalWallUpRight.png")
     val metalWallUpDownLeft = load("metalWallUpDownLeft.png")
-    val metalWallUpDown= load("metalWallUpDown.png")
+    val metalWallUpDown = load("metalWallUpDown.png")
     val metalWallUpLeft = load("metalWallUpLeft.png")
     val metalWallUp = load("metalWallUp.png")
     val metalWallRightDownLeft = load("metalWallRightDownLeft.png")
@@ -110,7 +111,7 @@ object Tiles
     val rockWallUpRightLeft = load("rockWallUpRightLeft.png")
     val rockWallUpRight = load("rockWallUpRight.png")
     val rockWallUpDownLeft = load("rockWallUpDownLeft.png")
-    val rockWallUpDown= load("rockWallUpDown.png")
+    val rockWallUpDown = load("rockWallUpDown.png")
     val rockWallUpLeft = load("rockWallUpLeft.png")
     val rockWallUp = load("rockWallUp.png")
     val rockWallRightDownLeft = load("rockWallRightDownLeft.png")
@@ -177,17 +178,162 @@ object Tiles
     val explodingBarrel = load("explodingBarrel.png")
     val explodingBarrelOutlineYellow = load("explodingBarrelOutlineYellow.png")
     
-    // wooden sword
+    // sword
     
-    val woodenSword = load("woodenSword.png")
+    val swordUp = load("swordUp.png")
+    val swordUpRight = load("swordUpRight.png")
+    val swordRight = load("swordRight.png")
+    val swordDownRight = load("swordDownRight.png")
+    val swordDown = load("swordDown.png")
+    val swordDownLeft = load("swordDownLeft.png")
+    val swordLeft = load("swordLeft.png")
+    val swordUpLeft = load("swordUpLeft.png")
     
-    //hammer
+    fun getSwordTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> swordUp
+            Direction8.upRight   -> swordUpRight
+            Direction8.right     -> swordRight
+            Direction8.downRight -> swordDownRight
+            Direction8.down      -> swordDown
+            Direction8.downLeft  -> swordDownLeft
+            Direction8.left      -> swordLeft
+            Direction8.upLeft    -> swordUpLeft
+        }
+    }
     
-    val sledgehammer = load("hammer.png")
+    // axe
     
-    //axe
+    val axeUp = load("axeUp.png")
+    val axeUpRight = load("axeUpRight.png")
+    val axeRight = load("axeRight.png")
+    val axeDownRight = load("axeDownRight.png")
+    val axeDown = load("axeDown.png")
+    val axeDownLeft = load("axeDownLeft.png")
+    val axeLeft = load("axeLeft.png")
+    val axeUpLeft = load("axeUpLeft.png")
     
-    val axe = load("axe.png")
+    fun getAxeTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> axeUp
+            Direction8.upRight   -> axeUpRight
+            Direction8.right     -> axeRight
+            Direction8.downRight -> axeDownRight
+            Direction8.down      -> axeDown
+            Direction8.downLeft  -> axeDownLeft
+            Direction8.left      -> axeLeft
+            Direction8.upLeft    -> axeUpLeft
+        }
+    }
+    
+    // hammer
+    
+    val hammerUp = load("hammerUp.png")
+    val hammerUpRight = load("hammerUpRight.png")
+    val hammerRight = load("hammerRight.png")
+    val hammerDownRight = load("hammerDownRight.png")
+    val hammerDown = load("hammerDown.png")
+    val hammerDownLeft = load("hammerDownLeft.png")
+    val hammerLeft = load("hammerLeft.png")
+    val hammerUpLeft = load("hammerUpLeft.png")
+    
+    fun getHammerTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> hammerUp
+            Direction8.upRight   -> hammerUpRight
+            Direction8.right     -> hammerRight
+            Direction8.downRight -> hammerDownRight
+            Direction8.down      -> hammerDown
+            Direction8.downLeft  -> hammerDownLeft
+            Direction8.left      -> hammerLeft
+            Direction8.upLeft    -> hammerUpLeft
+        }
+    }
+    
+    // bow
+    
+    val bowUp = load("bowUp.png")
+    val bowUpRight = load("bowUpRight.png")
+    val bowRight = load("bowRight.png")
+    val bowDownRight = load("bowDownRight.png")
+    val bowDown = load("bowDown.png")
+    val bowDownLeft = load("bowDownLeft.png")
+    val bowLeft = load("bowLeft.png")
+    val bowUpLeft = load("bowUpLeft.png")
+    
+    fun getBowTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> bowUp
+            Direction8.upRight   -> bowUpRight
+            Direction8.right     -> bowRight
+            Direction8.downRight -> bowDownRight
+            Direction8.down      -> bowDown
+            Direction8.downLeft  -> bowDownLeft
+            Direction8.left      -> bowLeft
+            Direction8.upLeft    -> bowUpLeft
+        }
+    }
+    
+    // arrow
+    
+    val arrowUp = load("arrowUp.png")
+    val arrowUpRight = load("arrowUpRight.png")
+    val arrowRight = load("arrowRight.png")
+    val arrowDownRight = load("arrowDownRight.png")
+    val arrowDown = load("arrowDown.png")
+    val arrowDownLeft = load("arrowDownLeft.png")
+    val arrowLeft = load("arrowLeft.png")
+    val arrowUpLeft = load("arrowUpLeft.png")
+    
+    fun getArrowTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> arrowUp
+            Direction8.upRight   -> arrowUpRight
+            Direction8.right     -> arrowRight
+            Direction8.downRight -> arrowDownRight
+            Direction8.down      -> arrowDown
+            Direction8.downLeft  -> arrowDownLeft
+            Direction8.left      -> arrowLeft
+            Direction8.upLeft    -> arrowUpLeft
+        }
+    }
+    
+    // impact
+    
+    val impact = load("impact.png")
+    val impactUp = load("impactUp.png")
+    val impactUpRight = load("impactUpRight.png")
+    val impactRight = load("impactRight.png")
+    val impactDownRight = load("impactDownRight.png")
+    val impactDown = load("impactDown.png")
+    val impactDownLeft = load("impactDownLeft.png")
+    val impactLeft = load("impactLeft.png")
+    val impactUpLeft = load("impactUpLeft.png")
+    
+    fun getImpactTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> impactUp
+            Direction8.upRight   -> impactUpRight
+            Direction8.right     -> impactRight
+            Direction8.downRight -> impactDownRight
+            Direction8.down      -> impactDown
+            Direction8.downLeft  -> impactDownLeft
+            Direction8.left      -> impactLeft
+            Direction8.upLeft    -> impactUpLeft
+        }
+    }
     
     // bomb
     
@@ -195,10 +341,6 @@ object Tiles
     val fire = load("fire.png")
     val smoke = load("smoke.png")
     
-    // arrow
-    
-    val arrow = load("arrow.png")
-
     fun load(name : String) : StaticTiledMapTile
     {
         val filePath = "tiles/$name"

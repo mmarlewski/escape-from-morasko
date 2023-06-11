@@ -150,7 +150,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
             }
             is Animation.simultaneous ->
             {
-                for (anim in animation.animations)
+                for (anim in animation.mutAnimations)
                 {
                     drawAnimation(
                             anim,

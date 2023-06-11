@@ -58,11 +58,13 @@ sealed class Animation
         }
     }
     
-    class simultaneous(val animations : MutableList<Animation>) : Animation()
+    class simultaneous(animations : List<Animation>) : Animation()
     {
+        val mutAnimations = animations.toMutableList()
+        
         override fun start()
         {
-            for (animation in animations)
+            for (animation in mutAnimations)
             {
                 animation.start()
             }
@@ -71,7 +73,7 @@ sealed class Animation
         override fun update()
         {
             val finishedAnimations = mutableListOf<Animation>()
-            for (animation in animations)
+            for (animation in mutAnimations)
             {
                 animation.update()
                 if (animation.isFinished())
@@ -79,12 +81,12 @@ sealed class Animation
                     finishedAnimations.add(animation)
                 }
             }
-            animations.removeAll(finishedAnimations)
+            mutAnimations.removeAll(finishedAnimations)
         }
         
         override fun isFinished() : Boolean
         {
-            return animations.isEmpty()
+            return mutAnimations.isEmpty()
         }
     }
     
@@ -374,10 +376,10 @@ sealed class Animation
     companion object
     {
         fun cameraShake(
-                moves : Int = 2,
+                moves : Int,
                 moveSpeed : Float = 0.05f,
                 moveDistance : Float = 3.0f
-                       ) : Animation.sequence
+                       ) : sequence
         {
             val animations = mutableListOf<Animation>()
             
@@ -385,16 +387,16 @@ sealed class Animation
             val rightCameraPosition = Vector2(centerCameraPosition.x + moveDistance, centerCameraPosition.y + 0f)
             val leftCameraPosition = Vector2(centerCameraPosition.x - moveDistance, centerCameraPosition.y + 0f)
             
-            animations.add(Animation.moveCameraWithIsoPositions(centerCameraPosition, rightCameraPosition, moveSpeed * 1))
-            animations.add(Animation.moveCameraWithIsoPositions(rightCameraPosition, leftCameraPosition, moveSpeed * 2))
+            animations.add(moveCameraWithIsoPositions(centerCameraPosition, rightCameraPosition, moveSpeed * 1))
+            animations.add(moveCameraWithIsoPositions(rightCameraPosition, leftCameraPosition, moveSpeed * 2))
             for (i in 1 until moves)
             {
-                animations.add(Animation.moveCameraWithIsoPositions(leftCameraPosition, rightCameraPosition, moveSpeed * 2))
-                animations.add(Animation.moveCameraWithIsoPositions(rightCameraPosition, leftCameraPosition, moveSpeed * 2))
+                animations.add(moveCameraWithIsoPositions(leftCameraPosition, rightCameraPosition, moveSpeed * 2))
+                animations.add(moveCameraWithIsoPositions(rightCameraPosition, leftCameraPosition, moveSpeed * 2))
             }
-            animations.add(Animation.moveCameraWithIsoPositions(leftCameraPosition, centerCameraPosition, moveSpeed * 1))
+            animations.add(moveCameraWithIsoPositions(leftCameraPosition, centerCameraPosition, moveSpeed * 1))
             
-            return Animation.sequence(animations)
+            return sequence(animations)
         }
     }
     

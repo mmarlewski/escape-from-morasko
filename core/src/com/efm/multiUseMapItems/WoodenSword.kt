@@ -36,10 +36,19 @@ class WoodenSword : MultiUseMapItem
     
     override fun use(room : Room, targetPosition : RoomPosition)
     {
+        val swordDirection = getDirection8(World.hero.position, targetPosition)
+        val swordTile = if (swordDirection == null) null else Tiles.getSwordTile(swordDirection)
+        
         val animations = mutableListOf<Animation>()
+        
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.descendTile(Tiles.woodenSword, targetPosition.copy(), 0.2f,0.25f)
-        animations += Animation.cameraShake()
+        animations += Animation.descendTile(swordTile, targetPosition.copy(), 0.2f, 0.25f)
+        animations += Animation.simultaneous(
+                listOf(
+                        Animation.showTile(Tiles.impact, targetPosition.copy(), 0.2f),
+                        Animation.cameraShake(1)
+                      )
+                                            )
         animations += Animation.action {
             
             val attackedPosition = targetPosition.copy()
@@ -53,17 +62,18 @@ class WoodenSword : MultiUseMapItem
                 }
             }
         }
+        
         Animating.executeAnimations(animations)
     }
     
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
-        val possiblePositions = mutableListOf<RoomPosition>()
+        val targetPositions = mutableListOf<RoomPosition>()
+    
+        targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 1))
+        targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
         
-        possiblePositions.addAll(getSquarePerimeterPositions(World.hero.position, 1))
-        possiblePositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
-        
-        return possiblePositions.toList()
+        return targetPositions.toList()
     }
     
     override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
@@ -72,6 +82,6 @@ class WoodenSword : MultiUseMapItem
         
         affectedPositions.add(targetPosition)
         
-        return affectedPositions.toList()
+        return affectedPositions
     }
 }
