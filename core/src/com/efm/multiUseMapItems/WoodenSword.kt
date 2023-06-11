@@ -34,6 +34,25 @@ class WoodenSword : MultiUseMapItem
         //use()
     }
     
+    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
+    {
+        val targetPositions = mutableListOf<RoomPosition>()
+        
+        targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 1))
+        targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
+        
+        return targetPositions.toList()
+    }
+    
+    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
+    {
+        val affectedPositions = mutableListOf<RoomPosition>()
+        
+        affectedPositions.add(targetPosition)
+        
+        return affectedPositions
+    }
+    
     override fun use(room : Room, targetPosition : RoomPosition)
     {
         val swordDirection = getDirection8(World.hero.position, targetPosition)
@@ -41,12 +60,12 @@ class WoodenSword : MultiUseMapItem
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
         animations += Animation.descendTile(swordTile, targetPosition.copy(), 0.2f, 0.25f)
+        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
         animations += Animation.simultaneous(
                 listOf(
                         Animation.showTile(Tiles.impact, targetPosition.copy(), 0.2f),
-                        Animation.cameraShake(1)
+                        Animation.cameraShake(1, 0.5f)
                       )
                                             )
         animations += Animation.action {
@@ -64,24 +83,5 @@ class WoodenSword : MultiUseMapItem
         }
         
         Animating.executeAnimations(animations)
-    }
-    
-    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
-    {
-        val targetPositions = mutableListOf<RoomPosition>()
-    
-        targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 1))
-        targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
-        
-        return targetPositions.toList()
-    }
-    
-    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
-    {
-        val affectedPositions = mutableListOf<RoomPosition>()
-        
-        affectedPositions.add(targetPosition)
-        
-        return affectedPositions
     }
 }

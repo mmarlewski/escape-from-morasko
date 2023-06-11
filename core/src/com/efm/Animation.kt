@@ -377,10 +377,12 @@ sealed class Animation
     {
         fun cameraShake(
                 moves : Int,
-                moveSpeed : Float = 0.05f,
+                seconds : Float,
                 moveDistance : Float = 3.0f
                        ) : sequence
         {
+            val moveSpeed = seconds / (4 + 4 * moves)
+            
             val animations = mutableListOf<Animation>()
             
             val centerCameraPosition = GameScreen.getCameraPosition()

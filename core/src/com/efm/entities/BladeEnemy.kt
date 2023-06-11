@@ -43,12 +43,12 @@ class BladeEnemy : Entity, Enemy
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
         animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
+        animations += Animation.action { playSoundOnce(Sounds.metalSword) }
         animations += Animation.simultaneous(
                 listOf(
                         Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
-                        Animation.cameraShake(1)
+                        Animation.cameraShake(1, 0.5f)
                       )
                                             )
         animations += Animation.action {

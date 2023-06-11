@@ -408,7 +408,7 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
             }
             else    ->
             {
-                val pathSpaces = Pathfinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
+                val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
                 if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
                 {
                     Map.clearLayer(MapLayer.select)
@@ -490,7 +490,7 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         }
         else if (selectedPosition != World.hero.position)
         {
-            val pathSpaces = Pathfinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
+            val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
             if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
             {
                 Map.clearLayer(MapLayer.select)

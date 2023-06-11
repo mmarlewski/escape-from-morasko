@@ -31,9 +31,9 @@ enum class Direction4
     {
         return when (this)
         {
-            up    -> Direction8.upLeft
+            up    -> Direction8.up
             right -> Direction8.right
-            down  -> Direction8.downLeft
+            down  -> Direction8.down
             left  -> Direction8.left
         }
     }

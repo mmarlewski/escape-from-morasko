@@ -20,7 +20,7 @@ interface Enemy : Character
     fun performTurn()
     {
         var decision = -1
-        val pathSpaces = Pathfinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
         for (pos in getSquareAreaPositions(position, attackRange))
         {
             if (pos == World.hero.position)

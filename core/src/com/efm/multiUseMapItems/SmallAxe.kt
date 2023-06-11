@@ -12,7 +12,7 @@ import com.efm.room.RoomPosition
 class SmallAxe : MultiUseMapItem
 {
     override val name : String = "Small Axe"
-    override var baseAPUseCost : Int = 4
+    override var baseAPUseCost : Int = 1
     override var durability : Int = 15
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
@@ -33,6 +33,44 @@ class SmallAxe : MultiUseMapItem
     override fun confirmed()
     {
         //use()
+    }
+    
+    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
+    {
+        val targetPositions = mutableListOf<RoomPosition>()
+        
+        for (direction in Direction4.values())
+        {
+            targetPositions.add(source.adjacentPosition(direction))
+        }
+        
+        return targetPositions.toList()
+    }
+    
+    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
+    {
+        val affectedPositions = mutableListOf<RoomPosition>()
+        
+        val targetDirection = getDirection4(World.hero.position, targetPosition)
+        
+        when (targetDirection)
+        {
+            Direction4.up, Direction4.down    ->
+            {
+                affectedPositions.add(targetPosition.adjacentPosition(Direction4.left))
+                affectedPositions.add(targetPosition.adjacentPosition(Direction4.right))
+            }
+            Direction4.right, Direction4.left ->
+            {
+                affectedPositions.add(targetPosition.adjacentPosition(Direction4.up))
+                affectedPositions.add(targetPosition.adjacentPosition(Direction4.down))
+            }
+            null                              ->
+            {
+            }
+        }
+        
+        return affectedPositions
     }
     
     override fun use(room : Room, targetPosition : RoomPosition)
@@ -74,16 +112,17 @@ class SmallAxe : MultiUseMapItem
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
+        val slashShowSeconds = 0.2f
+        animations += Animation.action { playSoundOnce(Sounds.axe) }
         animations += Animation.simultaneous(
                 listOf(
                         Animation.sequence(
                                 listOf(
-                                        Animation.moveTile(axeTile, slashPositions[0], slashPositions[1], 0.2f),
-                                        Animation.moveTile(axeTile, slashPositions[1], slashPositions[2], 0.2f)
+                                        Animation.moveTile(axeTile, slashPositions[0], slashPositions[1], slashShowSeconds),
+                                        Animation.moveTile(axeTile, slashPositions[1], slashPositions[2], slashShowSeconds)
                                       )
                                           ),
-                        Animation.cameraShake(2)
+                        Animation.cameraShake(2, slashShowSeconds * 4)
                       )
                                             )
         animations += Animation.action {
@@ -103,43 +142,5 @@ class SmallAxe : MultiUseMapItem
         }
         
         Animating.executeAnimations(animations)
-    }
-    
-    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
-    {
-        val targetPositions = mutableListOf<RoomPosition>()
-        
-        for (direction in Direction4.values())
-        {
-            targetPositions.add(source.adjacentPosition(direction))
-        }
-        
-        return targetPositions.toList()
-    }
-    
-    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
-    {
-        val affectedPositions = mutableListOf<RoomPosition>()
-        
-        val targetDirection = getDirection4(World.hero.position, targetPosition)
-        
-        when (targetDirection)
-        {
-            Direction4.up, Direction4.down    ->
-            {
-                affectedPositions.add(targetPosition.adjacentPosition(Direction4.left))
-                affectedPositions.add(targetPosition.adjacentPosition(Direction4.right))
-            }
-            Direction4.right, Direction4.left ->
-            {
-                affectedPositions.add(targetPosition.adjacentPosition(Direction4.up))
-                affectedPositions.add(targetPosition.adjacentPosition(Direction4.down))
-            }
-            null                              ->
-            {
-            }
-        }
-        
-        return affectedPositions
     }
 }

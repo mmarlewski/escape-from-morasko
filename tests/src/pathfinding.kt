@@ -1,10 +1,7 @@
-import com.efm.Pathfinding
+import com.efm.PathFinding
 import com.efm.entities.StoneColumn
-import com.efm.level.Level
-import com.efm.level.World
 import com.efm.room.*
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -17,7 +14,7 @@ class `pathfinding`
         val start = RoomPosition(6, 6)
         val end = RoomPosition(1, 1)
         
-        val path = Pathfinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathWithGivenRoom(start, end, room)
         
         assertNull(path)
     }
@@ -28,7 +25,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(6, 6)
         
-        val path = Pathfinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathWithGivenRoom(start, end, room)
         
         assertNull(path)
     }
@@ -48,7 +45,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = Pathfinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathWithGivenRoom(start, end, room)
         
         assertNotNull(path)
     }
@@ -68,7 +65,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = Pathfinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathWithGivenRoom(start, end, room)
         
         assertNotNull(path)
     }
@@ -92,7 +89,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = Pathfinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathWithGivenRoom(start, end, room)
         
         assertNull(path)
     }
@@ -115,7 +112,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = Pathfinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathWithGivenRoom(start, end, room)
         
         assertNotNull(path)
     }
@@ -140,7 +137,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = Pathfinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathWithGivenRoom(start, end, room)
         
         assertNull(path)
     }
@@ -164,7 +161,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = Pathfinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathWithGivenRoom(start, end, room)
         
         assertNotNull(path)
     }

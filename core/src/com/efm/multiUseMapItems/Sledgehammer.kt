@@ -13,7 +13,7 @@ import kotlin.math.sqrt
 class Sledgehammer : MultiUseMapItem
 {
     override val name : String = "Sledgehammer"
-    override var baseAPUseCost : Int = 6
+    override var baseAPUseCost : Int = 1
     override var durability : Int = 50
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
@@ -36,6 +36,24 @@ class Sledgehammer : MultiUseMapItem
         //use()
     }
     
+    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
+    {
+        val targetPositions = mutableListOf<RoomPosition>()
+        
+        targetPositions.addAll(getSquarePerimeterPositions(source, 2))
+        
+        return targetPositions.toList()
+    }
+    
+    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
+    {
+        val affectedSpaces = mutableListOf<RoomPosition>()
+        
+        affectedSpaces.addAll(getSquarePerimeterPositions(targetPosition, 1))
+        
+        return affectedSpaces
+    }
+    
     override fun use(room : Room, targetPosition : RoomPosition)
     {
         val targetDirection = getDirection8(World.hero.position, targetPosition)
@@ -44,11 +62,11 @@ class Sledgehammer : MultiUseMapItem
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
         animations += Animation.descendTile(hammerTile, targetPosition.copy(), 0.2f, 0.25f)
+        animations += Animation.action { playSoundOnce(Sounds.hammer) }
         val impactAnimations = mutableListOf<Animation>()
         impactAnimations.add(Animation.showTile(Tiles.impact, targetPosition.copy(), 0.5f))
-        impactAnimations.add(Animation.cameraShake(3))
+        impactAnimations.add(Animation.cameraShake(3, 1f))
         for (positionAroundTarget in positionsAroundTarget)
         {
             val impactDirection = getDirection8(targetPosition, positionAroundTarget)
@@ -77,23 +95,5 @@ class Sledgehammer : MultiUseMapItem
         }
         
         Animating.executeAnimations(animations)
-    }
-    
-    override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
-    {
-        val targetPositions = mutableListOf<RoomPosition>()
-        
-        targetPositions.addAll(getSquarePerimeterPositions(source, 2))
-        
-        return targetPositions.toList()
-    }
-    
-    override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
-    {
-        val affectedSpaces = mutableListOf<RoomPosition>()
-        
-        affectedSpaces.addAll(getSquarePerimeterPositions(targetPosition, 1))
-        
-        return affectedSpaces
     }
 }

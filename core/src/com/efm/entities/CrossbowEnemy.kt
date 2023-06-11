@@ -17,7 +17,7 @@ class CrossbowEnemy : Entity, Enemy
     override var healthPoints = 10
     override var alive = true
     override val detectionRange = 2
-    override val attackRange = 2
+    override val attackRange = 3
     override val stepsInOneTurn = 1
     
     override fun getTile() : TiledMapTile
@@ -44,14 +44,15 @@ class CrossbowEnemy : Entity, Enemy
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
+        animations += Animation.action { playSoundOnce(Sounds.bowShot) }
         animations += Animation.moveTile(arrowTile, position, World.hero.position, 0.2f)
+        animations += Animation.action { playSoundOnce(Sounds.bowImpact) }
         animations += Animation.simultaneous(
                 listOf(
                         Animation.showTile(impactTile, heroPosition.copy(), 0.2f),
-                        Animation.cameraShake(1)
+                        Animation.cameraShake(1, 0.5f)
                       )
-                                        )
+                                            )
         animations += Animation.action {
             val attackedPosition = heroPosition
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)

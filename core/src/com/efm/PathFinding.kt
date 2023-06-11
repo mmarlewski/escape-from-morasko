@@ -1,6 +1,5 @@
 package com.efm
 
-import com.efm.level.World
 import com.efm.room.*
 import kotlin.math.abs
 
@@ -14,7 +13,7 @@ class Node(val x : Int, val y : Int, val space : Space)
     val fCost get() = gCost + hCost
 }
 
-object Pathfinding
+object PathFinding
 {
     private fun createNodeArrayFromRoom(room : Room) : Array<Array<Node?>>
     {

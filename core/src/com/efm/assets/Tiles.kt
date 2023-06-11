@@ -335,11 +335,48 @@ object Tiles
         }
     }
     
+    // staff
+    
+    val staffUp = load("staffUp.png")
+    val staffUpRight = load("staffUpRight.png")
+    val staffRight = load("staffRight.png")
+    val staffDownRight = load("staffDownRight.png")
+    val staffDown = load("staffDown.png")
+    val staffDownLeft = load("staffDownLeft.png")
+    val staffLeft = load("staffLeft.png")
+    val staffUpLeft = load("staffUpLeft.png")
+    
+    fun getStaffTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> staffUp
+            Direction8.upRight   -> staffUpRight
+            Direction8.right     -> staffRight
+            Direction8.downRight -> staffDownRight
+            Direction8.down      -> staffDown
+            Direction8.downLeft  -> staffDownLeft
+            Direction8.left      -> staffLeft
+            Direction8.upLeft    -> staffUpLeft
+        }
+    }
+    
     // bomb
     
     val bomb = load("bomb.png")
     val fire = load("fire.png")
     val smoke = load("smoke.png")
+    
+    // beam
+    
+    val beamVertical1 = load("beamVertical1.png")
+    val beamVertical2 = load("beamVertical2.png")
+    val beamHorizontal1 = load("beamHorizontal1.png")
+    val beamHorizontal2 = load("beamHorizontal2.png")
+    val beamDiagonalVertical1 = load("beamDiagonalVertical1.png")
+    val beamDiagonalVertical2 = load("beamDiagonalVertical2.png")
+    val beamDiagonalHorizontal1 = load("beamDiagonalHorizontal1.png")
+    val beamDiagonalHorizontal2 = load("beamDiagonalHorizontal2.png")
     
     fun load(name : String) : StaticTiledMapTile
     {
