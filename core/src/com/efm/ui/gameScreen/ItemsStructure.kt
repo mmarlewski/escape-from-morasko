@@ -21,6 +21,15 @@ object ItemsStructure
     var hammerButton : ImageButton
     var bombButton : ImageButton
     
+    init
+    {
+        swordButton = createItemWithHealthbar(100f, 100f, Textures.sword, { swordAttack() })
+        axeButton = createItemWithHealthbar(100f, 100f, Textures.axe, { axeAttack() })
+        hammerButton = createItemWithHealthbar(100f, 100f, Textures.hammer, { hammerAttack() })
+        mushroomButton = createItemWithLabel(5, Textures.mushroom, { Mushroom().use() })
+        bombButton = createItemWithLabel(10, Textures.bomb, { bombAttack() })
+    }
+    
     fun bombAttack()
     {
         val bomb = Bomb()
@@ -275,15 +284,6 @@ object ItemsStructure
             action()
         }
         return button
-    }
-    
-    init
-    {
-        swordButton = createItemWithHealthbar(100f, 100f, Textures.sword, { swordAttack() })
-        axeButton = createItemWithHealthbar(100f, 100f, Textures.axe, { axeAttack() })
-        hammerButton = createItemWithHealthbar(100f, 100f, Textures.hammer, { hammerAttack() })
-        mushroomButton = createItemWithLabel(5, Textures.mushroom, { Mushroom().use() })
-        bombButton = createItemWithLabel(10, Textures.bomb, { bombAttack() })
     }
     
     val equipmentButton = imageButtonOf(

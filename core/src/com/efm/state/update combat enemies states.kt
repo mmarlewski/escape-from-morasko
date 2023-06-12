@@ -5,6 +5,7 @@ import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.ui.gameScreen.RightStructure
 
 fun updateCombatEnemiesEnemyUnselected(currState : State.combat.enemies.enemyUnselected) : State
 {
@@ -82,9 +83,9 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
                 GameScreen.focusCameraOnRoomPosition(World.hero.position)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
-                
-                GameScreen.xButton.isVisible = true
-                
+    
+                RightStructure.xButtonVisibility(true)
+    
                 return State.combat.hero.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom

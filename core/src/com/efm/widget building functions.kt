@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
-import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
+import com.efm.ui.gameScreen.PopUps
 
 fun columnOf(vararg actors : Actor) : VerticalGroup
 {
@@ -462,7 +462,7 @@ fun settingsPause(
     {
         window.isVisible = false
         Sounds.blop.playOnce()
-        GameScreen.menuPause.isVisible = true
+        PopUps.setMenuVisibility(true)
     }
     
     val buttonTable = Table()
@@ -470,19 +470,10 @@ fun settingsPause(
             columnOf(
                     rowOf(
                             musicLabel,
-                            columnOf(),
-                            columnOf(),
-                            columnOf(),
-                            columnOf(),
-                            columnOf(),
-                            columnOf(),
-                            columnOf(),
-                            columnOf(),
-                            columnOf(),
                             musicRadioButton,
                             musicSlider
                          ),
-                    rowOf(soundEffectsLabel, soundEffectsRadioButton, soundEffectsmusicSlider),
+                    rowOf(soundEffectsLabel, soundEffectsRadioButton, soundEffectsmusicSlider, columnOf().padLeft(75f)),
                     rowOf(backButton)
                     )
                    )
@@ -556,7 +547,7 @@ fun menuPopup(
     {
         Sounds.blop.playOnce()
         window.isVisible = false
-        GameScreen.settingsPopUp.isVisible = true
+        PopUps.setSettingsVisibility(true)
     }
     
     val backToMenuButton = textButtonOf(

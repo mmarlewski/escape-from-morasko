@@ -9,6 +9,8 @@ import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.passage.Exit
 import com.efm.screens.GameScreen
+import com.efm.ui.gameScreen.ProgressBars
+import com.efm.ui.gameScreen.RightStructure
 
 fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : State
 {
@@ -19,9 +21,9 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
     
     if (!currState.areEnemiesInRoom)
     {
-        GameScreen.abilityBar.isVisible = false
-        GameScreen.abilityBarLabel.isVisible = false
-        
+        ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarLabel.isVisible = false
+    
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -75,7 +77,7 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
             }
             is Hero  ->
             {
-                GameScreen.xButton.isVisible = true
+                RightStructure.xButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -149,9 +151,9 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
     
     if (!currState.areEnemiesInRoom)
     {
-        GameScreen.abilityBar.isVisible = false
-        GameScreen.abilityBarLabel.isVisible = false
-        
+        ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarLabel.isVisible = false
+    
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -173,7 +175,7 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
         }
         is Hero  ->
         {
-            GameScreen.xButton.isVisible = true
+            RightStructure.xButtonVisibility(true)
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
             Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -224,9 +226,9 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
     
     if (!currState.areEnemiesInRoom)
     {
-        GameScreen.abilityBar.isVisible = false
-        GameScreen.abilityBarLabel.isVisible = false
-        
+        ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarLabel.isVisible = false
+    
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -250,7 +252,7 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
             }
             is Hero  ->
             {
-                GameScreen.xButton.isVisible = true
+                RightStructure.xButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -302,9 +304,9 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
     
     if (!currState.areEnemiesInRoom)
     {
-        GameScreen.abilityBar.isVisible = false
-        GameScreen.abilityBarLabel.isVisible = false
-        
+        ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarLabel.isVisible = false
+    
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -328,7 +330,7 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
             }
             is Hero  ->
             {
-                GameScreen.xButton.isVisible = true
+                RightStructure.xButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -380,12 +382,12 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
     
     if (!currState.areEnemiesInRoom)
     {
-        GameScreen.abilityBar.isVisible = false
-        GameScreen.abilityBarLabel.isVisible = false
-        
+        ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarLabel.isVisible = false
+    
         Map.clearLayer(MapLayer.select)
         Map.clearLayer(MapLayer.outline)
-        
+    
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -413,15 +415,15 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
                 {
                     val abilityBarAnimation = mutableListOf<Animation>()
                     abilityBarAnimation += Animation.flashProgressBar(
-                            GameScreen.abilityBar,
-                            GameScreen.abilityBarLabel,
-                            GameScreen.abilityBar.value - (pathSpaces.size + 1F),
+                            ProgressBars.abilityBar,
+                            ProgressBars.abilityBarLabel,
+                            ProgressBars.abilityBar.value - (pathSpaces.size + 1F),
                             0.5F
                                                                      )
                     abilityBarAnimation += Animation.flashProgressBar(
-                            GameScreen.abilityBar,
-                            GameScreen.abilityBarLabel,
-                            GameScreen.abilityBar.value,
+                            ProgressBars.abilityBar,
+                            ProgressBars.abilityBarLabel,
+                            ProgressBars.abilityBar.value,
                             0.5F
                                                                      )
                     Animating.executeAnimations(abilityBarAnimation)
@@ -471,9 +473,9 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
     
     if (!currState.areEnemiesInRoom)
     {
-        GameScreen.abilityBar.isVisible = false
-        GameScreen.abilityBarLabel.isVisible = false
-        
+        ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarLabel.isVisible = false
+    
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -510,15 +512,15 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
             {
                 val abilityBarAnimation = mutableListOf<Animation>()
                 abilityBarAnimation += Animation.flashProgressBar(
-                        GameScreen.abilityBar,
-                        GameScreen.abilityBarLabel,
-                        GameScreen.abilityBar.value - (pathSpaces.size + 1F),
+                        ProgressBars.abilityBar,
+                        ProgressBars.abilityBarLabel,
+                        ProgressBars.abilityBar.value - (pathSpaces.size + 1F),
                         0.5F
                                                                  )
                 abilityBarAnimation += Animation.flashProgressBar(
-                        GameScreen.abilityBar,
-                        GameScreen.abilityBarLabel,
-                        GameScreen.abilityBar.value,
+                        ProgressBars.abilityBar,
+                        ProgressBars.abilityBarLabel,
+                        ProgressBars.abilityBar.value,
                         0.5F
                                                                  )
                 Animating.executeAnimations(abilityBarAnimation)
@@ -579,13 +581,13 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
                 true  ->
                 {
                     World.hero.regainAllAP()
-                    GameScreen.abilityBar.isVisible = true
-                    GameScreen.abilityBarLabel.isVisible = true
+                    ProgressBars.abilityBar.isVisible = true
+                    ProgressBars.abilityBarLabel.isVisible = true
                 }
                 false ->
                 {
-                    GameScreen.abilityBar.isVisible = false
-                    GameScreen.abilityBarLabel.isVisible = false
+                    ProgressBars.abilityBar.isVisible = false
+                    ProgressBars.abilityBarLabel.isVisible = false
                 }
             }
         }
@@ -594,9 +596,9 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
         {
             false ->
             {
-                GameScreen.abilityBar.isVisible = false
-                GameScreen.abilityBarLabel.isVisible = false
-                
+                ProgressBars.abilityBar.isVisible = false
+                ProgressBars.abilityBarLabel.isVisible = false
+    
                 return State.free.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = areEnemiesInRoom

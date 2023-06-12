@@ -3,9 +3,9 @@ package com.efm.entities
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Character
-import com.efm.state.getState
 import com.efm.room.RoomPosition
-import com.efm.screens.GameScreen
+import com.efm.state.getState
+import com.efm.ui.gameScreen.ProgressBars
 
 /**
  * Hero has its own turn and is controlled by the player.
@@ -39,8 +39,8 @@ class Hero(
     override fun damageCharacter(dmgAmount : Int)
     {
         super.damageCharacter(dmgAmount)
-        GameScreen.healthBar.value = this.healthPoints.toFloat()
-        GameScreen.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
+        ProgressBars.healthBar.value = this.healthPoints.toFloat()
+        ProgressBars.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
     }
     
     override fun healCharacter(healAmount : Int)
@@ -53,8 +53,8 @@ class Hero(
         {
             this.healthPoints += healAmount
         }
-        GameScreen.healthBar.value = this.healthPoints.toFloat()
-        GameScreen.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
+        ProgressBars.healthBar.value = this.healthPoints.toFloat()
+        ProgressBars.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
     }
     
     fun spendAP(apCost : Int)
@@ -67,8 +67,8 @@ class Hero(
         {
             this.abilityPoints -= apCost
         }
-        GameScreen.abilityBar.value -= apCost
-        GameScreen.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
+        ProgressBars.abilityBar.value -= apCost
+        ProgressBars.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
     }
     
     fun gainAP(by : Int)
@@ -81,15 +81,15 @@ class Hero(
         {
             this.abilityPoints += by
         }
-        GameScreen.abilityBar.value = this.abilityPoints.toFloat()
-        GameScreen.abilityBarLabel.setText("${this.abilityPoints} / ${this.maxAbilityPoints}")
+        ProgressBars.abilityBar.value = this.abilityPoints.toFloat()
+        ProgressBars.abilityBarLabel.setText("${this.abilityPoints} / ${this.maxAbilityPoints}")
     }
     
     fun regainAllAP()
     {
         this.abilityPoints = maxAbilityPoints
-        GameScreen.abilityBar.value = maxAbilityPoints.toFloat()
-        GameScreen.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
+        ProgressBars.abilityBar.value = maxAbilityPoints.toFloat()
+        ProgressBars.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
     }
     
     override fun killCharacter()

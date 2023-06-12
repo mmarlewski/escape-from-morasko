@@ -34,7 +34,14 @@ object LeftStructure
                                   ) {
             if (buttonName == "menuButton")
             {
-                GameScreen.menuPause.isVisible = !GameScreen.menuPause.isVisible
+                if (PopUps.menuPause.isVisible)
+                {
+                    PopUps.setMenuVisibility(false)
+                }
+                else
+                {
+                    PopUps.setMenuVisibility(true)
+                }
             }
             if (buttonName == "usableItemsButton")
             {
