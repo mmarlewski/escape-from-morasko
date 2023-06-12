@@ -2,7 +2,11 @@ package com.efm
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.math.Vector2
-import com.efm.room.*
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
+import com.efm.level.World
+import com.efm.room.RoomPosition
+import com.efm.room.toVector2
 import com.efm.screens.GameScreen
 
 sealed class Animation
@@ -347,11 +351,11 @@ sealed class Animation
         {
             resetDeltaTime()
         }
-        
+    
         override fun update()
         {
         }
-        
+    
         override fun isFinished() : Boolean
         {
             return (deltaTimeDifference() > seconds)

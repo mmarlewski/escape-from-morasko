@@ -411,6 +411,21 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
                 val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
                 if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
                 {
+                    val abilityBarAnimation = mutableListOf<Animation>()
+                    abilityBarAnimation += Animation.flashProgressBar(
+                            GameScreen.abilityBar,
+                            GameScreen.abilityBarLabel,
+                            GameScreen.abilityBar.value - (pathSpaces.size + 1F),
+                            0.5F
+                                                                     )
+                    abilityBarAnimation += Animation.flashProgressBar(
+                            GameScreen.abilityBar,
+                            GameScreen.abilityBarLabel,
+                            GameScreen.abilityBar.value,
+                            0.5F
+                                                                     )
+                    Animating.executeAnimations(abilityBarAnimation)
+    
                     Map.clearLayer(MapLayer.select)
                     Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                     for (space in pathSpaces)
@@ -493,6 +508,21 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
             val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
             if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
             {
+                val abilityBarAnimation = mutableListOf<Animation>()
+                abilityBarAnimation += Animation.flashProgressBar(
+                        GameScreen.abilityBar,
+                        GameScreen.abilityBarLabel,
+                        GameScreen.abilityBar.value - (pathSpaces.size + 1F),
+                        0.5F
+                                                                 )
+                abilityBarAnimation += Animation.flashProgressBar(
+                        GameScreen.abilityBar,
+                        GameScreen.abilityBarLabel,
+                        GameScreen.abilityBar.value,
+                        0.5F
+                                                                 )
+                Animating.executeAnimations(abilityBarAnimation)
+    
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                 for (space in pathSpaces)

@@ -18,7 +18,7 @@ import com.efm.assets.*
 import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
-import com.efm.stackableMapItems.*
+import com.efm.stackableMapItems.Bomb
 import com.efm.stackableSelfItems.Mushroom
 import com.efm.state.*
 
@@ -183,7 +183,6 @@ object GameScreen : BaseScreen(), GestureListener
                                  )
         
         //item buttons
-        
         val weaponItemsButton = imageButtonOf(
                 Textures.itemWeapon,
                 Textures.upNinePatch,

@@ -423,6 +423,20 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
                 val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
                 if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
                 {
+                    val abilityBarAnimation = mutableListOf<Animation>()
+                    abilityBarAnimation += Animation.flashProgressBar(
+                            GameScreen.abilityBar,
+                            GameScreen.abilityBarLabel,
+                            GameScreen.abilityBar.value - (pathSpaces.size + 1F),
+                            0.5F
+                                                                     )
+                    abilityBarAnimation += Animation.flashProgressBar(
+                            GameScreen.abilityBar,
+                            GameScreen.abilityBarLabel,
+                            GameScreen.abilityBar.value,
+                            0.5F
+                                                                     )
+                    Animating.executeAnimations(abilityBarAnimation)
                     val detectionPathPositions = mutableListOf<RoomPosition>()
                     for (enemy in World.currentRoom.getEnemies())
                     {
@@ -546,6 +560,21 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
             val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
             if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
             {
+                val abilityBarAnimation = mutableListOf<Animation>()
+                abilityBarAnimation += Animation.flashProgressBar(
+                        GameScreen.abilityBar,
+                        GameScreen.abilityBarLabel,
+                        GameScreen.abilityBar.value - (pathSpaces.size + 1F),
+                        0.5F
+                                                                 )
+                abilityBarAnimation += Animation.flashProgressBar(
+                        GameScreen.abilityBar,
+                        GameScreen.abilityBarLabel,
+                        GameScreen.abilityBar.value,
+                        0.5F
+                                                                 )
+                Animating.executeAnimations(abilityBarAnimation)
+    
                 val detectionPathPositions = mutableListOf<RoomPosition>()
                 for (enemy in World.currentRoom.getEnemies())
                 {
