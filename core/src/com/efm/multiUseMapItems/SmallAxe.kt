@@ -13,7 +13,7 @@ class SmallAxe : MultiUseMapItem
 {
     override val name : String = "Small Axe"
     override var baseAPUseCost : Int = 1
-    override var durability : Int = 15
+    override var durability : Int = 10
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
     
@@ -24,15 +24,10 @@ class SmallAxe : MultiUseMapItem
     
     override fun selected()
     {
-        //podświetl zasięg ataku
-        //życie przeciwników w zasięgu miga ?
-        //pasek ap miga
-        //zmien stan
     }
     
     override fun confirmed()
     {
-        //use()
     }
     
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>

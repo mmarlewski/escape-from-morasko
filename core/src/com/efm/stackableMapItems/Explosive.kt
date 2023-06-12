@@ -9,18 +9,18 @@ import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 
-class Bomb(
+class Explosive(
         override var amount : Int = 1
-          ) : StackableMapItem
+               ) : StackableMapItem
 {
-    override val name : String = "Bomb"
-    override val maxAmount : Int = 4
+    override val name : String = "Explosive"
+    override val maxAmount : Int = 8
     override val baseAPUseCost : Int = 1
-    val damage : Int = 10
+    val damage = 5
     
     override fun getTexture() : Texture
     {
-        return Textures.bomb
+        return Textures.explosive
     }
     
     override fun selected()
@@ -34,7 +34,7 @@ class Bomb(
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
         val targetPositions = mutableListOf<RoomPosition>()
-    
+        
         targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
         targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 3))
         
@@ -44,49 +44,39 @@ class Bomb(
     override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
     {
         val affectedPositions = mutableListOf<RoomPosition>()
-    
-        affectedPositions.addAll(getSquareAreaPositions(targetPosition, 2))
+        
+        affectedPositions.addAll(getSquareAreaPositions(targetPosition, 1))
         
         return affectedPositions.toList()
     }
     
     override fun use(room : Room, targetPosition : RoomPosition)
     {
-        val blastPositions = getSquareAreaPositions(targetPosition.copy(), 2)
-        
-        val showAreaOfFireAnimations = mutableListOf<Animation>()
-        for (blastPosition in blastPositions)
+        val blastPerimeterPositions = getSquarePerimeterPositions(targetPosition.copy(), 1)
+        val showBlast = mutableListOf<Animation>()
+        showBlast.add(Animation.showTile(Tiles.fire, targetPosition.copy(), 0.5f))
+        for (blastPosition in blastPerimeterPositions)
         {
-            showAreaOfFireAnimations += Animation.showTile(Tiles.fire, blastPosition, 0.5f)
+            val blastDirection = getDirection8(targetPosition, blastPosition)
+            val impactTile = if (blastDirection == null) null else Tiles.getImpactTile(blastDirection)
+            showBlast.add(Animation.showTile(impactTile, blastPosition.copy(), 0.5f))
         }
-        val showAreaOfFire = Animation.simultaneous(showAreaOfFireAnimations)
-        
-        val showAreaOfSmokeAnimations = mutableListOf<Animation>()
-        for (blastPosition in blastPositions)
-        {
-            showAreaOfSmokeAnimations += Animation.showTile(Tiles.smoke, blastPosition, 0.5f)
-        }
-        val showAreaOfSmoke = Animation.simultaneous(showAreaOfSmokeAnimations)
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.moveTile(Tiles.bomb, World.hero.position, targetPosition.copy(), 1.0f)
-        animations += Animation.action { playSoundOnce(Sounds.bomb) }
-        animations += Animation.simultaneous(
-                listOf(
-                        Animation.cameraShake(3, 1f),
-                        Animation.sequence(
-                                listOf(
-                                        showAreaOfFire,
-                                        showAreaOfSmoke
+        animations.add(Animation.moveTile(Tiles.explosive, World.hero.position, targetPosition.copy(), 0.5f))
+        animations.add(Animation.action { playSoundOnce(Sounds.explosive) })
+        animations.add(
+                Animation.simultaneous(
+                        listOf(
+                                Animation.cameraShake(2, 0.5f),
+                                Animation.simultaneous(showBlast)
+                              )
                                       )
-                                          )
                       )
-                                            )
-        
-        animations += Animation.action {
+        animations.add(Animation.action {
             
-            for (blastPosition in blastPositions)
+            for (blastPosition in blastPerimeterPositions + targetPosition)
             {
                 val blastSpace = room.getSpace(blastPosition)
                 val blastEntity = blastSpace?.getEntity()
@@ -98,7 +88,7 @@ class Bomb(
                     }
                 }
             }
-        }
+        })
         
         Animating.executeAnimations(animations)
     }

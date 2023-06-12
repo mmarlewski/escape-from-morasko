@@ -118,9 +118,9 @@ object Textures
     val bow = load("items/bow1.png")
     
     // stackableMapItems
-    val bomb = load("items/bomb1.png")
-    val explosive = load("items/explosive1.png")
-    val shuriken = load("items/shuriken1.png")
+    val bomb = load("items/bomb2.png")
+    val explosive = load("items/explosive2.png")
+    val shuriken = load("items/shuriken2.png")
     
     // stackableSelfItems
     val apple = load("items/apple.png")

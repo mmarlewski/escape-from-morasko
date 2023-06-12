@@ -12,8 +12,8 @@ class Mushroom(
     override val name : String = "Mushroom"
     override val maxAmount : Int = 16
     override val baseAPUseCost : Int = 0
-    override val hpBoost : Int = 4
-    override val apBoost : Int = 4
+    override val hpBoost : Int = 5
+    override val apBoost : Int = 5
     
     override fun getTexture() : Texture
     {
@@ -31,5 +31,6 @@ class Mushroom(
     override fun use()
     {
         World.hero.healCharacter(hpBoost)
+        World.hero.gainAP(apBoost)
     }
 }

@@ -18,7 +18,8 @@ import com.efm.assets.*
 import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
-import com.efm.stackableMapItems.Bomb
+import com.efm.stackableMapItems.*
+import com.efm.stackableSelfItems.Mushroom
 import com.efm.state.*
 
 object GameScreen : BaseScreen(), GestureListener
@@ -453,7 +454,7 @@ object GameScreen : BaseScreen(), GestureListener
         
         val amountOfUsesPotion = 5
         potionButton = itemButtonWithLabel(
-                Textures.fish,
+                Textures.mushroom,
                 "$amountOfUsesPotion",
                 Textures.upNinePatch,
                 Textures.downNinePatch,
@@ -462,7 +463,7 @@ object GameScreen : BaseScreen(), GestureListener
                 Textures.focusedNinePatch
                                           ) {
             playSoundOnce(Sounds.blop)
-            World.hero.healCharacter(10)
+            Mushroom().use()
         }
         
         val amountOfUsesBomb = 10
@@ -496,6 +497,13 @@ object GameScreen : BaseScreen(), GestureListener
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenStackableMapItem = bomb
+                    this.targetPositions = targetPositions
+                }
+                is State.combat.hero -> State.combat.hero.stackableMapItemChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                     this.chosenStackableMapItem = bomb
                     this.targetPositions = targetPositions

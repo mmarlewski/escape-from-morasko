@@ -361,12 +361,6 @@ object Tiles
         }
     }
     
-    // bomb
-    
-    val bomb = load("bomb.png")
-    val fire = load("fire.png")
-    val smoke = load("smoke.png")
-    
     // beam
     
     val beamVertical1 = load("beamVertical1.png")
@@ -377,6 +371,14 @@ object Tiles
     val beamDiagonalVertical2 = load("beamDiagonalVertical2.png")
     val beamDiagonalHorizontal1 = load("beamDiagonalHorizontal1.png")
     val beamDiagonalHorizontal2 = load("beamDiagonalHorizontal2.png")
+    
+    // other
+    
+    val bomb = load("bomb.png")
+    val explosive = load("explosive.png")
+    val fire = load("fire.png")
+    val smoke = load("smoke.png")
+    val shuriken = load("shuriken.png")
     
     fun load(name : String) : StaticTiledMapTile
     {

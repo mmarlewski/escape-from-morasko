@@ -1,25 +1,26 @@
-package com.efm.multiUseMapItems
+package com.efm.stackableMapItems
 
 import com.badlogic.gdx.graphics.Texture
 import com.efm.*
 import com.efm.assets.*
 import com.efm.entity.Character
-import com.efm.item.MultiUseMapItem
+import com.efm.item.StackableMapItem
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 
-class Bow : MultiUseMapItem
+class Shuriken(
+        override var amount : Int = 1
+              ) : StackableMapItem
 {
-    override val name : String = "Bow"
+    override val name : String = "Shuriken"
+    override val maxAmount : Int = 16
     override val baseAPUseCost : Int = 1
-    override var durability : Int = 10
-    override val durabilityUseCost : Int = 1
-    val damage : Int = 2
+    val damage = 2
     
     override fun getTexture() : Texture
     {
-        return Textures.bow
+        return Textures.shuriken
     }
     
     override fun selected()
@@ -34,7 +35,7 @@ class Bow : MultiUseMapItem
     {
         val targetPositions = mutableListOf<RoomPosition>()
         
-        val squarePositions = getSquareAreaPositions(source, 5)
+        val squarePositions = getSquareAreaPositions(source, 3)
         for (squarePosition in squarePositions)
         {
             val linePositions =
@@ -45,7 +46,7 @@ class Bow : MultiUseMapItem
             }
         }
         
-        return targetPositions
+        return targetPositions.toList()
     }
     
     override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
@@ -61,7 +62,7 @@ class Bow : MultiUseMapItem
             affectedPositions.add(targetPosition.copy())
         }
         
-        return affectedPositions
+        return affectedPositions.toList()
     }
     
     override fun use(room : Room, targetPosition : RoomPosition)
@@ -72,17 +73,14 @@ class Bow : MultiUseMapItem
         if (linePositions != null)
         {
             val targetDirection = getDirection8(World.hero.position, targetPosition)
-            val bowTile = if (targetDirection == null) null else Tiles.getBowTile(targetDirection)
-            val arrowTile = if (targetDirection == null) null else Tiles.getArrowTile(targetDirection)
             val impactTile = if (targetDirection == null) null else Tiles.getImpactTile(targetDirection)
             
             val animations = mutableListOf<Animation>()
             
             val animationSeconds = linePositions.size * 0.05f
-            animations.add(Animation.showTile(bowTile, heroPosition.copy(), 0.2f))
-            animations.add(Animation.action { playSoundOnce(Sounds.bowShot) })
-            animations.add(Animation.moveTile(arrowTile, heroPosition.copy(), targetPosition.copy(), animationSeconds))
-            animations.add(Animation.action { playSoundOnce(Sounds.bowImpact) })
+            animations.add(Animation.action { playSoundOnce(Sounds.shurikenShot) })
+            animations.add(Animation.moveTile(Tiles.shuriken, heroPosition.copy(), targetPosition.copy(), animationSeconds))
+            animations.add(Animation.action { playSoundOnce(Sounds.shurikenImpact) })
             animations.add(
                     Animation.simultaneous(
                             listOf(

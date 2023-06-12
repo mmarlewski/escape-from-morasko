@@ -11,8 +11,8 @@ import com.efm.room.*
 class WoodenSword : MultiUseMapItem
 {
     override val name : String = "Wooden Sword"
-    override var baseAPUseCost : Int = 2
-    override var durability : Int = 20
+    override var baseAPUseCost : Int = 1
+    override var durability : Int = 10
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
     
@@ -23,15 +23,10 @@ class WoodenSword : MultiUseMapItem
     
     override fun selected()
     {
-        //podświetl zasięg ataku
-        //życie przeciwników w zasięgu miga ?
-        //pasek ap miga
-        //zmien stan
     }
     
     override fun confirmed()
     {
-        //use()
     }
     
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
