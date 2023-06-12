@@ -9,6 +9,7 @@ object Musics
     
     val medical = load("medical.mp3")
     val executive = load("executive.mp3")
+    val voyager = load("voyager.mp3")
     
     private fun load(name : String) : Music
     {

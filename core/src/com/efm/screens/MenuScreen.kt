@@ -39,6 +39,7 @@ object MenuScreen : BaseScreen()
                                          )
         {
             Sounds.blop.playOnce()
+            playMusicIfNotAlreadyPlaying(Musics.voyager)
             GameScreen.setScreen()
         }
         
