@@ -4,9 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entity.Character
-import com.efm.entity.Enemy
-import com.efm.entity.Entity
+import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 

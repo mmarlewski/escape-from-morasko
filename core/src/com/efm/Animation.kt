@@ -362,6 +362,31 @@ sealed class Animation
         }
     }
     
+    open class flashProgressBar(
+            val bar : ProgressBar?,
+            val label : Label,
+            val value : Float,
+            val seconds : Float
+                               ) : Animation()
+    {
+        
+        override fun start()
+        {
+            resetDeltaTime()
+        }
+        
+        override fun update()
+        {
+            label.setText("${value.toInt()} / ${World.hero.maxAbilityPoints}")
+            bar?.setValue(value)
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            return (deltaTimeDifference() > seconds)
+        }
+    }
+    
     class showTileWithCameraFocus(
             tile : TiledMapTile?,
             where : RoomPosition,
