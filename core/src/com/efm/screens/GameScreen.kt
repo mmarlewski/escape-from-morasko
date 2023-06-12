@@ -16,11 +16,10 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
 import com.efm.level.World
-import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
-import com.efm.stackableMapItems.Bomb
-import com.efm.stackableSelfItems.Mushroom
 import com.efm.state.*
+import com.efm.ui.gameScreen.ItemsStructure
+import com.efm.ui.gameScreen.LeftStructure
 
 object GameScreen : BaseScreen(), GestureListener
 {
@@ -52,11 +51,6 @@ object GameScreen : BaseScreen(), GestureListener
     var healthBarLabel : Label
     var abilityBar : ProgressBar
     var abilityBarLabel : Label
-    var potionButton : ImageButton
-    var swordButton : ImageButton
-    var axeButton : ImageButton
-    var hammerButton : ImageButton
-    var bombButton : ImageButton
     var settingsPopUp : Window
     var menuPause : Window
     
@@ -132,17 +126,7 @@ object GameScreen : BaseScreen(), GestureListener
         }
         
         // hud top left
-        val menuButton = imageButtonOf(
-                Textures.menuList,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                      ) {
-            menuPause.isVisible = menuPause.isVisible != true
-            playSoundOnce(Sounds.blop)
-        }
+
         
         //bars
         val healthBarValueCurrent = World.hero.healthPoints //"100"
@@ -183,335 +167,7 @@ object GameScreen : BaseScreen(), GestureListener
                                  )
         
         //item buttons
-        val weaponItemsButton = imageButtonOf(
-                Textures.itemWeapon,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                             ) {
-            playSoundOnce(Sounds.blop)
-        }
-        weaponItemsButton.isVisible = false
-        
-        val healingItemsButton = imageButtonOf(
-                Textures.itemHealing,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                              ) {
-            playSoundOnce(Sounds.blop)
-        }
-        healingItemsButton.isVisible = false
-        
-        val skillsItemsButton = imageButtonOf(
-                Textures.itemSkill,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                             ) {
-            playSoundOnce(Sounds.blop)
-        }
-        skillsItemsButton.isVisible = false
-        
-        val usableItemsButton = imageButtonOf(
-                Textures.itemUsable,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                             ) {
-            playSoundOnce(Sounds.blop)
-        }
-        usableItemsButton.isVisible = false
-        
-        val equipmentButton = imageButtonOf(
-                Textures.backpack,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                           ) {
-            playSoundOnce(Sounds.blop)
-            if (weaponItemsButton.isVisible == true)
-            {
-                weaponItemsButton.isVisible = false
-                healingItemsButton.isVisible = false
-                usableItemsButton.isVisible = false
-                skillsItemsButton.isVisible = false
-            }
-            else
-            {
-                weaponItemsButton.isVisible = true
-                healingItemsButton.isVisible = true
-                usableItemsButton.isVisible = true
-                skillsItemsButton.isVisible = true
-            }
-        }
-        
-        swordButton = itemButtonWithHealthbar(
-                Textures.sword,
-                100f,
-                50f,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                             ) {
-            playSoundOnce(Sounds.blop)
-            
-            val sword = WoodenSword()
-            
-            val currState = getState()
-            
-            val canBeUsed = when (currState)
-            {
-                is State.free                              -> true
-                is State.constrained, is State.combat.hero ->
-                {
-                    World.hero.abilityPoints >= sword.baseAPUseCost
-                }
-                else                                       -> false
-            }
-            
-            if (canBeUsed)
-            {
-                val targetPositions = sword.getTargetPositions(World.hero.position)
-                
-                Map.clearLayer(MapLayer.select)
-                for (position in targetPositions)
-                {
-                    Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
-                }
-                
-                val newState = when (currState)
-                {
-                    is State.free        -> State.free.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.chosenMultiUseItem = sword
-                        this.targetPositions = targetPositions
-                    }
-                    is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.isHeroDetected = currState.isHeroDetected
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.chosenMultiUseItem = sword
-                        this.targetPositions = targetPositions
-                    }
-                    is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.chosenMultiUseItem = sword
-                        this.targetPositions = targetPositions
-                    }
-                    else                 -> currState
-                }
-                setState(newState)
-            }
-        }
-        
-        axeButton = itemButtonWithHealthbar(
-                Textures.axe,
-                100f,
-                50f,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                           ) {
-            playSoundOnce(Sounds.blop)
-            
-            val axe = SmallAxe()
-            
-            val currState = getState()
-            
-            val canBeUsed = when (currState)
-            {
-                is State.free                              -> true
-                is State.constrained, is State.combat.hero ->
-                {
-                    World.hero.abilityPoints >= axe.baseAPUseCost
-                }
-                else                                       -> false
-            }
-            
-            if (canBeUsed)
-            {
-                val targetPositions = axe.getTargetPositions(World.hero.position)
-                
-                Map.clearLayer(MapLayer.select)
-                for (position in targetPositions)
-                {
-                    Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
-                }
-                
-                val newState = when (currState)
-                {
-                    is State.free        -> State.free.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.chosenMultiUseItem = axe
-                        this.targetPositions = targetPositions
-                    }
-                    is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.isHeroDetected = currState.isHeroDetected
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.chosenMultiUseItem = axe
-                        this.targetPositions = targetPositions
-                    }
-                    is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.chosenMultiUseItem = axe
-                        this.targetPositions = targetPositions
-                    }
-                    else                 -> currState
-                }
-                setState(newState)
-            }
-        }
-        
-        hammerButton = itemButtonWithHealthbar(
-                Textures.hammer,
-                100f,
-                50f,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                              ) {
-            playSoundOnce(Sounds.blop)
-            
-            val hammer = Sledgehammer()
-            
-            val currState = getState()
-            
-            val canBeUsed = when (currState)
-            {
-                is State.free                              -> true
-                is State.constrained, is State.combat.hero ->
-                {
-                    World.hero.abilityPoints >= hammer.baseAPUseCost
-                }
-                else                                       -> false
-            }
-            
-            if (canBeUsed)
-            {
-                val targetPositions = hammer.getTargetPositions(World.hero.position)
-                
-                Map.clearLayer(MapLayer.select)
-                for (position in targetPositions)
-                {
-                    Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
-                }
-                
-                val newState = when (currState)
-                {
-                    is State.free        -> State.free.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.chosenMultiUseItem = hammer
-                        this.targetPositions = targetPositions
-                    }
-                    is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.isHeroDetected = currState.isHeroDetected
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.chosenMultiUseItem = hammer
-                        this.targetPositions = targetPositions
-                    }
-                    is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.chosenMultiUseItem = hammer
-                        this.targetPositions = targetPositions
-                    }
-                    else                 -> currState
-                }
-                setState(newState)
-            }
-        }
-        
-        val amountOfUsesPotion = 5
-        potionButton = itemButtonWithLabel(
-                Textures.mushroom,
-                "$amountOfUsesPotion",
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                          ) {
-            playSoundOnce(Sounds.blop)
-            Mushroom().use()
-        }
-        
-        val amountOfUsesBomb = 10
-        bombButton = itemButtonWithLabel(
-                Textures.bomb,
-                "$amountOfUsesBomb",
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                        ) {
-            val bomb = Bomb()
-            val targetPositions = bomb.getTargetPositions(World.hero.position)
-            
-            Map.clearLayer(MapLayer.select)
-            for (position in targetPositions)
-            {
-                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
-            }
-            
-            val newState = when (val currState = getState())
-            {
-                is State.free        -> State.free.stackableMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.chosenStackableMapItem = bomb
-                    this.targetPositions = targetPositions
-                }
-                is State.constrained -> State.constrained.stackableMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.isHeroDetected = currState.isHeroDetected
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenStackableMapItem = bomb
-                    this.targetPositions = targetPositions
-                }
-                is State.combat.hero -> State.combat.hero.stackableMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenStackableMapItem = bomb
-                    this.targetPositions = targetPositions
-                }
-                else                 -> currState
-            }
-            setState(newState)
-        }
-        
+    
         // hud top right - states
         
         val endTurnButton = imageButtonOf(
@@ -527,10 +183,7 @@ object GameScreen : BaseScreen(), GestureListener
         }
         
         //top left icons
-        val columnTopLeft = columnOf(
-                rowOf(menuButton)
-                                    ).align(Align.topLeft)
-        
+    
         //top right icons
         val columnTopRight = columnOf(
                 rowOf(endTurnButton)
@@ -554,19 +207,6 @@ object GameScreen : BaseScreen(), GestureListener
                 rowOf(healthStack, abilityStack)
                                 ).align(Align.top)
         
-        //bottom left icons
-        val columnBottomLeft = columnOf(
-                rowOf(equipmentButton, potionButton, swordButton, axeButton, hammerButton, bombButton)
-                                       ).align(Align.bottomLeft)
-        
-        val columnLeft = columnOf(
-                
-                usableItemsButton,
-                skillsItemsButton,
-                healingItemsButton,
-                weaponItemsButton,
-                                 ).align(Align.left)
-        
         //bottom right icons
         val columnBottomRight = columnOf(
                 rowOf(xButton)
@@ -577,43 +217,47 @@ object GameScreen : BaseScreen(), GestureListener
         val columnMiddleSettings = columnOf(rowOf(settingsPopUp)).align(Align.center)
         
         //padding so it looks nice
-        columnTopLeft.pad(16f)
+    
         columnTopRight.pad(16f)
         columnTop.pad(16f)
-        columnBottomLeft.pad(16f)
+    
         columnBottomRight.pad(16f)
-        columnLeft.padTop(128f)
-        columnLeft.padLeft(16f)
-        
+    
         //set the size to fill the phone screen
-        columnTopLeft.setFillParent(true)
+    
         columnTopRight.setFillParent(true)
         columnTop.setFillParent(true)
-        columnBottomLeft.setFillParent(true)
+    
         columnBottomRight.setFillParent(true)
         columnMiddlePause.setFillParent(true)
         columnMiddlePopUp.setFillParent(true)
         columnMiddleSettings.setFillParent(true)
-        columnLeft.setFillParent(true)
-        
+    
         //display
-        GameScreen.stage.addActor(columnTopLeft)
+    
         GameScreen.stage.addActor(columnTopRight)
         GameScreen.stage.addActor(columnTop)
-        GameScreen.stage.addActor(columnBottomLeft)
+    
         GameScreen.stage.addActor(columnBottomRight)
         GameScreen.stage.addActor(columnMiddlePause)
         GameScreen.stage.addActor(columnMiddlePopUp)
         GameScreen.stage.addActor(columnMiddleSettings)
-        GameScreen.stage.addActor(columnLeft)
-        
+    
+    
+    
+    
+    
+    
+        ItemsStructure.display()
+        LeftStructure.display()
+    
         // xButton is visible only after pressing on hero
         xButton.isVisible = false
-        
+    
         // map
         updateMapBaseLayer()
         updateMapEntityLayer()
-        
+    
         // camera
         changeCameraZoom(currZoom)
         focusCameraOnRoomPosition(World.hero.position)
