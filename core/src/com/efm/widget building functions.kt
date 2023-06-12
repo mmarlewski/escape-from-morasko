@@ -187,7 +187,7 @@ fun progressBarOf(
         min : Float,
         max : Float,
         step : Float,
-        startVal : Float,
+        start : Float,
         knobBackground : NinePatch,
         knobBefore : NinePatch,
         knobAfter : NinePatch,
@@ -217,7 +217,7 @@ fun progressBarOf(
     progressBarStyle.knobAfter = knobAfterDrawable
     
     val progressBar = ProgressBar(min, max, step, false, progressBarStyle)
-    progressBar.value = startVal
+    progressBar.value = start
     
     return progressBar
 }
@@ -226,6 +226,7 @@ fun sliderOf(
         min : Float,
         max : Float,
         step : Float,
+        start : Float,
         knobBackground : NinePatch,
         knobBefore : NinePatch,
         knobAfter : NinePatch,
@@ -238,7 +239,7 @@ fun sliderOf(
     sliderStyle.knobAfter = NinePatchDrawable(knobAfter)
     sliderStyle.knob = NinePatchDrawable(knob)
     val slider = Slider(min, max, step, false, sliderStyle)
-    slider.value = 0.3f
+    slider.value = start
     slider.addListener(object : ChangeListener()
                        {
                            override fun changed(event : ChangeEvent?, actor : Actor)
@@ -421,6 +422,7 @@ fun settingsPause(
             0.0f,
             1.0f,
             0.1f,
+            1.0f,
             Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatchAfter,
             Textures.materialKnobNinePatchBeforeBlack,
@@ -440,6 +442,7 @@ fun settingsPause(
             0.0f,
             1.0f,
             0.1f,
+            1.0f,
             Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatchAfter,
             Textures.materialKnobNinePatchBeforeBlack,

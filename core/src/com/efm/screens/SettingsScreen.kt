@@ -3,6 +3,11 @@ package com.efm.screens
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
+import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Slider
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
@@ -15,6 +20,15 @@ object SettingsScreen : BaseScreen()
     val viewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, camera)
     val stage = Stage(viewport, EscapeFromMorasko.spriteBatch)
     
+    var settingsTitle : Image
+    var musicLabel : Label
+    var soundEffectsLabel : Label
+    var musicRadioButton : CheckBox
+    var musicSlider : Slider
+    var soundEffectsRadioButton : CheckBox
+    var soundEffectsmusicSlider : Slider
+    var backButton : TextButton
+    
     init
     {
         // input processor
@@ -22,15 +36,15 @@ object SettingsScreen : BaseScreen()
         
         // hud
         
-        val settingsTitle = imageOf(
+        settingsTitle = imageOf(
                 Textures.settingsTitle,
                 Scaling.none
-                                   )
+                               )
         
-        val musicLabel = labelOf("music", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
-        val soundEffectsLabel = labelOf("sound effects", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+        musicLabel = labelOf("music", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+        soundEffectsLabel = labelOf("sound effects", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         
-        val musicRadioButton = checkBoxOf(
+        musicRadioButton = checkBoxOf(
                 "", Fonts.pixeloid10, Colors.black,
                 Textures.materialCheckboxOn,
                 Textures.materialCheckboxOff,
@@ -38,18 +52,19 @@ object SettingsScreen : BaseScreen()
                 Textures.materialCheckboxOff,
                 Textures.materialCheckboxOn,
                 Textures.materialCheckboxOff
-                                         )
-        val musicSlider = sliderOf(
+                                     )
+        musicSlider = sliderOf(
                 0.0f,
                 1.0f,
                 0.1f,
+                getMusicVolume(),
                 Textures.materialKnobNinePatchBeforeBlue,
                 Textures.materialKnobNinePatchAfter,
                 Textures.materialKnobNinePatchBeforeBlue,
                 Textures.materialKnobNinePatch
-                                  )
+                              )
         
-        val soundEffectsRadioButton = checkBoxOf(
+        soundEffectsRadioButton = checkBoxOf(
                 "", Fonts.pixeloid10, Colors.black,
                 Textures.materialCheckboxOn,
                 Textures.materialCheckboxOff,
@@ -57,18 +72,19 @@ object SettingsScreen : BaseScreen()
                 Textures.materialCheckboxOff,
                 Textures.materialCheckboxOn,
                 Textures.materialCheckboxOff
-                                                )
-        val soundEffectsmusicSlider = sliderOf(
+                                            )
+        soundEffectsmusicSlider = sliderOf(
                 0.0f,
                 1.0f,
                 0.1f,
+                getSoundVolume(),
                 Textures.materialKnobNinePatchBeforeBlue,
                 Textures.materialKnobNinePatchAfter,
                 Textures.materialKnobNinePatchBeforeBlue,
                 Textures.materialKnobNinePatch
-                                              )
+                                          )
         
-        val backButton = textButtonOf(
+        backButton = textButtonOf(
                 "back",
                 Fonts.inconsolata30,
                 Colors.black,
@@ -77,7 +93,7 @@ object SettingsScreen : BaseScreen()
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                     )
+                                 )
         {
             Sounds.blop.playOnce()
             MenuScreen.setScreen()
@@ -95,6 +111,25 @@ object SettingsScreen : BaseScreen()
     
     override fun render(delta : Float)
     {
+        // update based on input
+        if (musicRadioButton.isChecked)
+        {
+            setMusicVolume(0f)
+        }
+        else
+        {
+            setMusicVolume(musicSlider.value)
+        }
+        if (soundEffectsRadioButton.isChecked)
+        {
+            setSoundVolume(0f)
+        }
+        else
+        {
+            setSoundVolume(soundEffectsmusicSlider.value)
+        }
+        
+        // clear screen
         ScreenUtils.clear(Color.CLEAR)
         
         // Draw the background texture region
