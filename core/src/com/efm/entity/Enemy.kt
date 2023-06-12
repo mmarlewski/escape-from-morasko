@@ -1,7 +1,9 @@
 package com.efm.entity
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.efm.*
+import com.efm.assets.Textures
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
@@ -72,7 +74,23 @@ interface Enemy : Character
                 detectionPositions.add((position.positionOffsetBy(i, Direction4.up)).positionOffsetBy(j, Direction4.left))
             }
         }
-        
+    
         return detectionPositions
+    }
+    
+    fun displayOwnHealthBar()
+    {
+        var ownHealthbar : ProgressBar
+        ownHealthbar = progressBarOf(
+                0.0f,
+                this.maxHealthPoints.toFloat(),
+                1.0f,
+                this.healthPoints.toFloat(),
+                Textures.knobBackgroundNinePatch,
+                Textures.knobHealthbarAfterNinePatch,
+                Textures.knobBeforeNinePatch,
+                128f,
+                24f
+                                    )
     }
 }
