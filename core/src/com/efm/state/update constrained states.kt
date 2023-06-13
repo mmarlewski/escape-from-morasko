@@ -353,7 +353,7 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectRed)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
-                
+                selectedEntity.displayOwnHealthBar()
                 val detectionPositions = selectedEntity.getDetectionPositions()
                 for (position in detectionPositions)
                 {
@@ -525,7 +525,10 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
         {
             Map.clearLayer(MapLayer.select)
             moveHero(World.hero.position, currState.selectedPosition, currState.pathSpaces)
-            
+            for (enemy in World.currentRoom.getEnemies())
+            {
+                enemy.healthBar.isVisible = false
+            }
             var isHeroMovingThroughDetectionPosition = false
             val pathsSpacesPlusSelectedSpace = mutableListOf<Space>()
             pathsSpacesPlusSelectedSpace.addAll(currState.pathSpaces)

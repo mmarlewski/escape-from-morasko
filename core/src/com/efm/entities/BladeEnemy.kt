@@ -1,6 +1,7 @@
 package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
@@ -17,6 +18,7 @@ class BladeEnemy : Entity, Enemy
     override val detectionRange = 1
     override val attackRange = 1
     override val stepsInOneTurn = 2
+    override lateinit var healthBar : ProgressBar
     
     override fun getTile() : TiledMapTile
     {
