@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
 import com.efm.screens.MenuScreen
 import com.efm.ui.gameScreen.PopUps
-import com.efm.ui.gameScreen.ProgressBars
 
 fun columnOf(vararg actors : Actor) : VerticalGroup
 {
@@ -600,12 +599,16 @@ fun itemButtonWithHealthbar(
                             })
     imageButton.pad(10f)
     
-    var healthBar = ProgressBars.createBar(
-            4f,
+    var healthBar = progressBarOf(
+            0f,
+            currentHealth.toFloat(),
+            1f,
+            maxHealth.toFloat(),
+            Textures.translucentNinePatch,
             Textures.knobHealthbarAfterNinePatch,
-            currentHealth,
-            maxHealth
-                                          )
+            Textures.translucentNinePatch,
+            4f
+                                 )
 
 //    //green
 //    healthBar.setColor(36f,222f,66f,100f)
@@ -614,24 +617,19 @@ fun itemButtonWithHealthbar(
 //    //orange
 //    healthBar.setColor(222f, 148f, 36f, 100f)
     //red
-//    healthBar.setColor(222f, 58f, 36f, 100f)
+    healthBar.setColor(222f, 58f, 36f, 100f)
     
-    val barWidth = 32f
+    val barWidth = 64f
     val barStack = Stack()
     val barContainer : Container<ProgressBar> = Container(healthBar)
     barContainer.width(barWidth)
     barStack.add(barContainer)
     
-    imageButton.add(rowOf(barStack))
-    
     val table = Table()
-    table.add(imageButton).center().expand()
-    table.row()
-    table.add(barStack).center().expand().padTop(-10f) // Adjust the padTop value as needed
+    table.add(barStack).padTop(48f).padLeft(-48f)
     
-    val container = Container(table)
-    container.fill()
-    container.pack()
+    imageButton.add(table)
+    imageButton.padLeft(24f)
     
     return imageButton
 }
