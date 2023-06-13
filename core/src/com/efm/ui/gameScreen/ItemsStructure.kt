@@ -20,16 +20,20 @@ object ItemsStructure
     var axeButton : ImageButton
     var hammerButton : ImageButton
     var bombButton : ImageButton
+    var bombButton2 : ImageButton
+    val buttonsAssignment : MutableList<Pair<String, ImageButton>> = mutableListOf()
     
     init
     {
-        swordButton = createItemWithHealthbar(100f, 100f, Textures.sword, { swordAttack() })
-        axeButton = createItemWithHealthbar(100f, 100f, Textures.axe, { axeAttack() })
-        hammerButton = createItemWithHealthbar(100f, 100f, Textures.hammer, { hammerAttack() })
-        mushroomButton = createItemWithLabel(5, Textures.mushroom, { Mushroom().use() })
-        bombButton = createItemWithLabel(10, Textures.bomb, { bombAttack() })
+        // buttons now have 4 types: weapon, potion, usable and skill based on the category within equipment display
+        swordButton = createItemWithHealthbar("weapon", 100f, 100f, Textures.sword, { swordAttack() })
+        axeButton = createItemWithHealthbar("weapon", 100f, 100f, Textures.axe, { axeAttack() })
+        hammerButton = createItemWithHealthbar("weapon", 100f, 100f, Textures.hammer, { hammerAttack() })
+        mushroomButton = createItemWithLabel("potion", 5, Textures.mushroom, { Mushroom().use() })
+        bombButton = createItemWithLabel("usable", 10, Textures.bomb, { bombAttack() })
+        bombButton2 = createItemWithLabel("usable", 10, Textures.bomb, { bombAttack() })
     }
-    
+
     fun bombAttack()
     {
         val bomb = Bomb()
@@ -250,6 +254,7 @@ object ItemsStructure
     }
     
     fun createItemWithHealthbar(
+            type : String,
             maxHealth : Float,
             currentHealth : Float,
             texture : Texture,
@@ -267,10 +272,13 @@ object ItemsStructure
             playSoundOnce(Sounds.blop)
             action()
         }
+    
+        buttonsAssignment.add(Pair(type, button))
+    
         return button
     }
     
-    fun createItemWithLabel(amountOfUses : Int, texture : Texture, action : () -> Unit) : ImageButton
+    fun createItemWithLabel(type : String, amountOfUses : Int, texture : Texture, action : () -> Unit) : ImageButton
     {
         val button = itemButtonWithLabel(
                 texture, "$amountOfUses",
@@ -283,6 +291,7 @@ object ItemsStructure
             playSoundOnce(Sounds.blop)
             action()
         }
+        buttonsAssignment.add(Pair(type, button))
         return button
     }
     
@@ -297,14 +306,6 @@ object ItemsStructure
         playSoundOnce(Sounds.blop)
         LeftStructure.setVisibility(!LeftStructure.healingItemsButton.isVisible)
     }
-    
-    val buttonsAssignment : List<Pair<String, ImageButton>> = listOf(
-            Pair("weapon", swordButton),
-            Pair("weapon", axeButton),
-            Pair("weapon", hammerButton),
-            Pair("potion", mushroomButton),
-            Pair("usable", bombButton)
-                                                                    )
     
     init
     {
