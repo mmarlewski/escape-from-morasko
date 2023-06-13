@@ -26,9 +26,9 @@ object ItemsStructure
     init
     {
         // buttons now have 4 types: weapon, potion, usable and skill based on the category within equipment display
-        swordButton = createItemWithHealthbar("weapon", 100f, 100f, Textures.sword, { swordAttack() })
-        axeButton = createItemWithHealthbar("weapon", 100f, 100f, Textures.axe, { axeAttack() })
-        hammerButton = createItemWithHealthbar("weapon", 100f, 100f, Textures.hammer, { hammerAttack() })
+        swordButton = createItemWithHealthbar("weapon", 100, 100, Textures.sword, { swordAttack() })
+        axeButton = createItemWithHealthbar("weapon", 100, 100, Textures.axe, { axeAttack() })
+        hammerButton = createItemWithHealthbar("weapon", 100, 100, Textures.hammer, { hammerAttack() })
         mushroomButton = createItemWithLabel("potion", 5, Textures.mushroom, { Mushroom().use() })
         bombButton = createItemWithLabel("usable", 10, Textures.bomb, { bombAttack() })
         bombButton2 = createItemWithLabel("usable", 10, Textures.bomb, { bombAttack() })
@@ -255,8 +255,8 @@ object ItemsStructure
     
     fun createItemWithHealthbar(
             type : String,
-            maxHealth : Float,
-            currentHealth : Float,
+            maxHealth : Int,
+            currentHealth : Int,
             texture : Texture,
             action : () -> Unit
                                ) : ImageButton

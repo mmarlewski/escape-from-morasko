@@ -20,7 +20,8 @@ object PopUps
                 "End turn?\n\nYou still have some AP left",
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.pauseBackgroundNinePatch,
+                Textures.pauseBackgroundNinePatch
+                //enemy turn
                                        )
         endTurnPopUp.isVisible = false
         
@@ -61,6 +62,7 @@ object PopUps
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.pauseBackgroundNinePatch
+//                Exit.travelBetweenLevels()
                                          )
         nextLevelPopUp.isVisible = false
         return nextLevelPopUp

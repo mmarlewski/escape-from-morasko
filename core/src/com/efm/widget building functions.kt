@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
-import com.efm.level.World
 import com.efm.screens.MenuScreen
 import com.efm.ui.gameScreen.PopUps
 import com.efm.ui.gameScreen.ProgressBars
@@ -571,8 +570,8 @@ fun menuPopup(
 
 fun itemButtonWithHealthbar(
         image : Texture,
-        maxHealth : Float,
-        currentHealth : Float,
+        maxHealth : Int,
+        currentHealth : Int,
         up : NinePatch,
         down : NinePatch,
         over : NinePatch,
@@ -604,8 +603,8 @@ fun itemButtonWithHealthbar(
     var healthBar = ProgressBars.createBar(
             4f,
             Textures.knobHealthbarAfterNinePatch,
-            World.hero.healthPoints,
-            World.hero.maxHealthPoints
+            currentHealth,
+            maxHealth
                                           )
 
 //    //green
@@ -615,7 +614,7 @@ fun itemButtonWithHealthbar(
 //    //orange
 //    healthBar.setColor(222f, 148f, 36f, 100f)
     //red
-    healthBar.setColor(222f, 58f, 36f, 100f)
+//    healthBar.setColor(222f, 58f, 36f, 100f)
     
     val barWidth = 32f
     val barStack = Stack()
@@ -624,6 +623,15 @@ fun itemButtonWithHealthbar(
     barStack.add(barContainer)
     
     imageButton.add(rowOf(barStack))
+    
+    val table = Table()
+    table.add(imageButton).center().expand()
+    table.row()
+    table.add(barStack).center().expand().padTop(-10f) // Adjust the padTop value as needed
+    
+    val container = Container(table)
+    container.fill()
+    container.pack()
     
     return imageButton
 }
@@ -649,10 +657,12 @@ fun itemButtonWithLabel(
             Color.BLACK,
             Textures.translucentNinePatch
                        )
+    val table = Table()
+    table.add(image).padLeft(16f)
+    table.add(label).padTop(32f).padLeft(-8f)
     
     val stack = Stack()
-    stack.add(image)
-    stack.add(label)
+    stack.add(table)
     
     val imageButton = ImageButton(imageButtonTmp.style)
     imageButton.addListener(object : ClickListener()
@@ -662,7 +672,6 @@ fun itemButtonWithLabel(
                                     onClicked()
                                 }
                             })
-    imageButton.add(stack)
     
     imageButton.addListener(object : ClickListener()
                             {
@@ -671,6 +680,6 @@ fun itemButtonWithLabel(
                                     onClicked()
                                 }
                             })
-    
+    imageButton.add(stack)
     return imageButton
 }
