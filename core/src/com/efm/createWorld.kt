@@ -483,7 +483,7 @@ fun World.addTestBigRoomsLevel()
     tbrl2.addEntityAt(CrossbowEnemy(), 4, 6)
     tbrl2.addEntityAt(BladeEnemyCorpse(), 2, 2)
     tbrl2.addEntityAt(CrossbowEnemyCorpse(), 10, 3)
-    tbrl2.addEntityAt(MiniEnemy(), 8, 8)
+    tbrl2.addEntityAt(MiniEnemy(), 8, 4)
     // add to World
     addLevel(tbrl)
 }

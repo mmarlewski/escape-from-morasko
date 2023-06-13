@@ -26,7 +26,6 @@ object RightStructure
                               )
         {
             playSoundOnce(Sounds.blop)
-            xButton.isVisible = false
             
             Map.clearLayer(MapLayer.select)
             Map.clearLayer(MapLayer.outline)
@@ -79,7 +78,7 @@ object RightStructure
             Textures.focusedNinePatch
                                      ) {
         
-        if (World.hero.abilityPoints > 0)
+        if (World.hero.abilityPoints > 0 && getState() !is State.free)
         {
             if (PopUps.endTurn.isVisible)
             {
@@ -92,7 +91,7 @@ object RightStructure
         }
         else
         {
-//                skip turn
+            endCurrentTurn()
         }
         playSoundOnce(Sounds.blop)
     }
