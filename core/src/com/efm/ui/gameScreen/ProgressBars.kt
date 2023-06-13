@@ -47,10 +47,14 @@ object ProgressBars
         val barWidth = width
         val barStack = Stack()
         val barContainer : Container<ProgressBar> = Container(bar)
+    
+        val table = Table()
+        table.add(barLabel)
+    
         barContainer.width(barWidth)
         barStack.add(barContainer)
-        barStack.add(barLabel)
-        
+        barStack.add(table)
+    
         return barStack
     }
     
@@ -82,7 +86,7 @@ object ProgressBars
         val progressBars = columnOf(
                 rowOf(healthStack, abilityStack)
                                    ).align(Align.top)
-        progressBars.pad(16f)
+        progressBars.pad(40f)
         progressBars.setFillParent(true)
         GameScreen.stage.addActor(progressBars)
     }

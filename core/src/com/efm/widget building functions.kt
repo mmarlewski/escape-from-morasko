@@ -617,7 +617,7 @@ fun itemButtonWithHealthbar(
 //    //orange
 //    healthBar.setColor(222f, 148f, 36f, 100f)
     //red
-    healthBar.setColor(222f, 58f, 36f, 100f)
+//    healthBar.setColor(222f, 58f, 36f, 100f)
     
     val barWidth = 64f
     val barStack = Stack()
