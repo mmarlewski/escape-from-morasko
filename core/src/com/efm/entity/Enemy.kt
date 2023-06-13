@@ -1,11 +1,15 @@
 package com.efm.entity
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.efm.*
 import com.efm.assets.Textures
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.screens.GameScreen
+import com.efm.ui.gameScreen.ProgressBars
+import org.w3c.dom.Text
 
 /**
  * Enemy has its own turn and can attack the Hero.
@@ -16,7 +20,6 @@ interface Enemy : Character
     val detectionRange : Int
     val attackRange : Int
     val stepsInOneTurn : Int
-    
     fun getOutlineRedTile() : TiledMapTile?
     
     fun performTurn()
@@ -80,17 +83,10 @@ interface Enemy : Character
     
     fun displayOwnHealthBar()
     {
-        var ownHealthbar : ProgressBar
-        ownHealthbar = progressBarOf(
-                0.0f,
-                this.maxHealthPoints.toFloat(),
-                1.0f,
-                this.healthPoints.toFloat(),
-                Textures.knobBackgroundNinePatch,
-                Textures.knobHealthbarAfterNinePatch,
-                Textures.knobBeforeNinePatch,
-                128f,
-                24f
-                                    )
+        val healthBar = ProgressBars.createBar(20F, 100F, Textures.knobHealthbarAfterNinePatch, this.healthPoints, this.maxHealthPoints)
+        val orthoPos = roomPositionToOrtho(position)
+        val isoPos = GameScreen.gameViewport.project(orthoToIso(orthoPos))
+        healthBar.setPosition(isoPos.x * 0.5f + 25f, isoPos.y * 0.5f + 120f)
+        GameScreen.stage.addActor(healthBar)
     }
 }

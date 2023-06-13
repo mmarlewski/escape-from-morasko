@@ -353,7 +353,7 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectRed)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
-                
+                selectedEntity.displayOwnHealthBar()
                 val detectionPositions = selectedEntity.getDetectionPositions()
                 for (position in detectionPositions)
                 {
