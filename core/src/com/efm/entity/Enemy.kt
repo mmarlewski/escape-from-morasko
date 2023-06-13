@@ -1,6 +1,5 @@
 package com.efm.entity
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.efm.*
@@ -9,7 +8,6 @@ import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
-import org.w3c.dom.Text
 
 /**
  * Enemy has its own turn and can attack the Hero.
@@ -84,7 +82,8 @@ interface Enemy : Character
     
     fun createOwnHealthBar() : ProgressBar
     {
-        healthBar = ProgressBars.createBar(20F, 100F, Textures.knobHealthbarAfterNinePatch, this.healthPoints, this.maxHealthPoints)
+        healthBar =
+                ProgressBars.createBar(20F, Textures.knobHealthbarAfterNinePatch, this.healthPoints, this.maxHealthPoints)
         GameScreen.stage.addActor(healthBar)
         healthBar.isVisible = false
         return healthBar

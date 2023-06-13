@@ -17,7 +17,6 @@ object ProgressBars
     
     fun createBar(
             height : Float,
-            width : Float,
             colorTexture : NinePatch,
             currentHealth : Int,
             maxHealth : Int
@@ -30,8 +29,7 @@ object ProgressBars
                 maxHealth.toFloat(),
                 Textures.knobBackgroundNinePatch,
                 colorTexture,
-                Textures.knobBeforeNinePatch,
-                width,
+                Textures.translucentNinePatch,
                 height
                                )
         return bar
@@ -60,7 +58,6 @@ object ProgressBars
     {
         healthBar = createBar(
                 24f,
-                376f,
                 Textures.knobHealthbarAfterNinePatch,
                 World.hero.healthPoints,
                 World.hero.maxHealthPoints
@@ -69,7 +66,6 @@ object ProgressBars
         
         abilityBar = createBar(
                 24f,
-                180f,
                 Textures.knobAbilitybarAfterNinePatch,
                 World.hero.abilityPoints,
                 World.hero.maxAbilityPoints

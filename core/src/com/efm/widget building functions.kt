@@ -10,8 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
+import com.efm.level.World
 import com.efm.screens.MenuScreen
 import com.efm.ui.gameScreen.PopUps
+import com.efm.ui.gameScreen.ProgressBars
 
 fun columnOf(vararg actors : Actor) : VerticalGroup
 {
@@ -191,7 +193,6 @@ fun progressBarOf(
         knobBackground : NinePatch,
         knobBefore : NinePatch,
         knobAfter : NinePatch,
-        width : Float,
         height : Float
                  ) : ProgressBar
 {
@@ -199,17 +200,14 @@ fun progressBarOf(
     
     // Create a custom background drawable with the desired width and height
     val backgroundDrawable = NinePatchDrawable(knobBackground)
-    backgroundDrawable.minWidth = width
     backgroundDrawable.minHeight = height
     
     // Create a custom knobBefore drawable with the desired width and height
     val knobBeforeDrawable = NinePatchDrawable(knobBefore)
-    knobBeforeDrawable.minWidth = width
     knobBeforeDrawable.minHeight = height
     
     // Create a custom knobAfter drawable with the desired width and height
     val knobAfterDrawable = NinePatchDrawable(knobAfter)
-    knobAfterDrawable.minWidth = width
     knobAfterDrawable.minHeight = height
     
     progressBarStyle.background = backgroundDrawable
@@ -603,20 +601,29 @@ fun itemButtonWithHealthbar(
                             })
     imageButton.pad(10f)
     
-    var healthBar = progressBarOf(
-            0.0f,
-            maxHealth,
-            1.0f,
-            currentHealth,
-            Textures.knobBackgroundNinePatch,
+    var healthBar = ProgressBars.createBar(
+            4f,
             Textures.knobHealthbarAfterNinePatch,
-            Textures.knobBeforeNinePatch,
-            16f,
-            4f
-                                 )
-    healthBar.setSize(64f, 8f)
+            World.hero.healthPoints,
+            World.hero.maxHealthPoints
+                                          )
+
+//    //green
+//    healthBar.setColor(36f,222f,66f,100f)
+//    //yellow
+//    healthBar.setColor(218f, 222f, 36f, 100f)
+//    //orange
+//    healthBar.setColor(222f, 148f, 36f, 100f)
+    //red
+    healthBar.setColor(222f, 58f, 36f, 100f)
     
-    imageButton.add(columnOf(healthBar))
+    val barWidth = 32f
+    val barStack = Stack()
+    val barContainer : Container<ProgressBar> = Container(healthBar)
+    barContainer.width(barWidth)
+    barStack.add(barContainer)
+    
+    imageButton.add(rowOf(barStack))
     
     return imageButton
 }
