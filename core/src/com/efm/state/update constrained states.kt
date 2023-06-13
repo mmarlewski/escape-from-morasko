@@ -525,7 +525,10 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
         {
             Map.clearLayer(MapLayer.select)
             moveHero(World.hero.position, currState.selectedPosition, currState.pathSpaces)
-            
+            for (enemy in World.currentRoom.getEnemies())
+            {
+                enemy.healthBar.isVisible = false
+            }
             var isHeroMovingThroughDetectionPosition = false
             val pathsSpacesPlusSelectedSpace = mutableListOf<Space>()
             pathsSpacesPlusSelectedSpace.addAll(currState.pathSpaces)

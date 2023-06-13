@@ -68,6 +68,10 @@ object GameScreen : BaseScreen(), GestureListener
             true  -> State.constrained.noSelection
             false -> State.free.noSelection
         }
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.createOwnHealthBar()
+        }
         initState.areEnemiesInRoom = areEnemiesInRoom
         setState(initState)
     }
@@ -217,7 +221,10 @@ object GameScreen : BaseScreen(), GestureListener
         {
             return true
         }
-        
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.hideOwnHealthBar()
+        }
         updateScreenWorldMapTouchPositions(Vector2(x, y))
         
         if (isDragging)

@@ -20,6 +20,7 @@ interface Enemy : Character
     val detectionRange : Int
     val attackRange : Int
     val stepsInOneTurn : Int
+    var healthBar : ProgressBar
     fun getOutlineRedTile() : TiledMapTile?
     
     fun performTurn()
@@ -81,12 +82,25 @@ interface Enemy : Character
         return detectionPositions
     }
     
+    fun createOwnHealthBar() : ProgressBar
+    {
+        healthBar = ProgressBars.createBar(20F, 100F, Textures.knobHealthbarAfterNinePatch, this.healthPoints, this.maxHealthPoints)
+        GameScreen.stage.addActor(healthBar)
+        healthBar.isVisible = false
+        return healthBar
+    }
+    
     fun displayOwnHealthBar()
     {
-        val healthBar = ProgressBars.createBar(20F, 100F, Textures.knobHealthbarAfterNinePatch, this.healthPoints, this.maxHealthPoints)
         val orthoPos = roomPositionToOrtho(position)
         val isoPos = GameScreen.gameViewport.project(orthoToIso(orthoPos))
         healthBar.setPosition(isoPos.x * 0.5f + 25f, isoPos.y * 0.5f + 120f)
-        GameScreen.stage.addActor(healthBar)
+        healthBar.isVisible = true
     }
+    
+    fun hideOwnHealthBar()
+    {
+        healthBar.isVisible = false
+    }
+    
 }
