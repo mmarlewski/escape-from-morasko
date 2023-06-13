@@ -61,7 +61,6 @@ object RightStructure
     init
     {
         xButton = createXButton()
-        xButton.isVisible = false
     }
     
     fun xButtonVisibility(visibility : Boolean)
