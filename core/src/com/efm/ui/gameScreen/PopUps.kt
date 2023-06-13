@@ -1,5 +1,6 @@
 package com.efm.ui.gameScreen
 
+import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.*
@@ -11,11 +12,12 @@ object PopUps
     lateinit var endTurn : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var menuPause : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var settings : com.badlogic.gdx.scenes.scene2d.ui.Window
+    lateinit var nextLevel : com.badlogic.gdx.scenes.scene2d.ui.Window
     
     fun endTurn() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
         val endTurnPopUp = windowAreaOf(
-                "end turn?\n\n you still have some AP left",
+                "End turn?\n\nYou still have some AP left",
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.pauseBackgroundNinePatch,
@@ -39,17 +41,29 @@ object PopUps
     
     fun menuPause() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
-        
-        val menuPause = menuPopup(
+    
+        val menuPausePopUp = menuPopup(
                 "PAUSE",
                 Fonts.pixeloid30,
                 Colors.black,
                 Textures.pauseBackgroundNinePatch
-                                 )
-        menuPause.isVisible = false
-        
-        
-        return menuPause
+                                      )
+        menuPausePopUp.isVisible = false
+    
+    
+        return menuPausePopUp
+    }
+    
+    fun nextLevel() : Window
+    {
+        val nextLevelPopUp = windowAreaOf(
+                "You are about to leave this level\n\nAre you sure?",
+                Fonts.pixeloid20,
+                Colors.black,
+                Textures.pauseBackgroundNinePatch
+                                         )
+        nextLevelPopUp.isVisible = false
+        return nextLevelPopUp
     }
     
     init
@@ -57,6 +71,7 @@ object PopUps
         endTurn = endTurn()
         menuPause = menuPause()
         settings = settings()
+        nextLevel = nextLevel()
     }
     
     fun setEndTurnVisibility(visibility : Boolean)
@@ -74,19 +89,27 @@ object PopUps
         menuPause.isVisible = visibility
     }
     
+    fun setNextLevelVisibility(visibility : Boolean)
+    {
+        nextLevel.isVisible = visibility
+    }
+    
     fun display()
     {
         val endTurnWindow = columnOf(rowOf(endTurn)).align(Align.center)
         val pauseWindow = columnOf(rowOf(menuPause)).align(Align.center)
         val settingsWindow = columnOf(rowOf(settings)).align(Align.center)
+        val nextLevelWindow = columnOf(rowOf(nextLevel)).align(Align.center)
         
         settingsWindow.setFillParent(true)
         endTurnWindow.setFillParent(true)
         pauseWindow.setFillParent(true)
+        nextLevelWindow.setFillParent(true)
         
         GameScreen.stage.addActor(endTurnWindow)
         GameScreen.stage.addActor(settingsWindow)
         GameScreen.stage.addActor(pauseWindow)
+        GameScreen.stage.addActor(nextLevelWindow)
         
     }
 }
