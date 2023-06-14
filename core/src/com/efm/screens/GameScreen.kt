@@ -68,14 +68,18 @@ object GameScreen : BaseScreen(), GestureListener
             true  -> State.constrained.noSelection
             false -> State.free.noSelection
         }
-        for (room in World.currentLevel.getRooms())
+        for (level in World.getLevels())
         {
-            for (enemy in room.getEnemies())
+            for (room in level.getRooms())
             {
-                enemy.createOwnHealthBar()
-                enemy.hideOwnHealthBar()
+                for (enemy in room.getEnemies())
+                {
+                    enemy.createOwnHealthBar()
+                    enemy.hideOwnHealthBar()
+                }
             }
         }
+        
         
         initState.areEnemiesInRoom = areEnemiesInRoom
         setState(initState)
@@ -174,18 +178,15 @@ object GameScreen : BaseScreen(), GestureListener
         Animating.update()
         
         // render
-        if (getState() is State.constrained || getState() is State.combat)
-        {
-            for (enemy in World.currentRoom.getEnemies())
-            {
-                enemy.displayOwnHealthBar()
-            }
-        }
         ScreenUtils.clear(Colors.black)
         hudCamera.update()
         gameCamera.update()
         mapRenderer.setView(gameCamera)
         mapRenderer.render()
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.displayOwnHealthBar()
+        }
         stage.draw()
     }
     
@@ -233,10 +234,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             return true
         }
-        for (enemy in World.currentRoom.getEnemies())
-        {
-            enemy.hideOwnHealthBar()
-        }
+
         updateScreenWorldMapTouchPositions(Vector2(x, y))
         
         if (isDragging)
