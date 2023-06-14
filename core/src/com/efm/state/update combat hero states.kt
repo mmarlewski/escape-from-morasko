@@ -30,30 +30,6 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
         }
     }
     
-    if (World.hero.abilityPoints <= 0)
-    {
-        Map.clearLayer(MapLayer.select)
-        
-        val animation = Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
-        Animating.executeAnimations(mutableListOf(animation))
-        
-        return State.combat.enemies.enemyUnselected.apply {
-            this.isHeroAlive = currState.isHeroAlive
-            this.areEnemiesInRoom = currState.areEnemiesInRoom
-            this.enemies = World.currentRoom.getEnemies()
-            this.enemyIterator = this.enemies?.iterator()
-            this.currEnemy = when (val enemyIterator = this.enemyIterator)
-            {
-                null -> null
-                else -> when (enemyIterator.hasNext())
-                {
-                    true  -> enemyIterator.next()
-                    false -> null
-                }
-            }
-        }
-    }
-    
     if (GameScreen.isTouched)
     {
         val selectedPosition = GameScreen.roomTouchPosition

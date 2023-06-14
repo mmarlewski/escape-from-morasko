@@ -45,11 +45,7 @@ class MiniEnemy : Entity, Enemy
     
         animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.10f)
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.simultaneous(
-                listOf(
-                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f)
-                      )
-                                            )
+        animations += Animation.showTile(Tiles.impact, heroPosition.copy(), 0.1f)
         animations += Animation.action {
         
             val attackedPosition = World.hero.position

@@ -3,8 +3,11 @@ package com.efm.ui.gameScreen
 import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
+import com.efm.Map
 import com.efm.assets.*
+import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.state.*
 
 object PopUps
 {
@@ -23,6 +26,9 @@ object PopUps
                 Textures.pauseBackgroundNinePatch
                 //enemy turn
                                        )
+        {
+            endCurrentTurn()
+        }
         endTurnPopUp.isVisible = false
         
         return endTurnPopUp
@@ -64,6 +70,9 @@ object PopUps
                 Textures.pauseBackgroundNinePatch
 //                Exit.travelBetweenLevels()
                                          )
+        {
+            //
+        }
         nextLevelPopUp.isVisible = false
         return nextLevelPopUp
     }

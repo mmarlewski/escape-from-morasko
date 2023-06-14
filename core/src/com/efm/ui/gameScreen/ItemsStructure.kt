@@ -6,80 +6,47 @@ import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
+import com.efm.item.*
 import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.screens.GameScreen
-import com.efm.stackableMapItems.Bomb
-import com.efm.stackableSelfItems.Mushroom
+import com.efm.stackableMapItems.*
+import com.efm.stackableSelfItems.*
 import com.efm.state.*
 
 object ItemsStructure
 {
-    var mushroomButton : ImageButton
     var swordButton : ImageButton
     var axeButton : ImageButton
     var hammerButton : ImageButton
+    var bowButton : ImageButton
+    var staffButton : ImageButton
+    var appleButton : ImageButton
+    var fishButton : ImageButton
+    var mushroomButton : ImageButton
     var bombButton : ImageButton
-    var bombButton2 : ImageButton
+    var explosiveButton : ImageButton
+    var shurikenButton : ImageButton
     val buttonsAssignment : MutableList<Pair<String, ImageButton>> = mutableListOf()
     
     init
     {
         // buttons now have 4 types: weapon, potion, usable and skill based on the category within equipment display
-        swordButton = createItemWithHealthbar("weapon", 100, 100, Textures.sword, { swordAttack() })
-        axeButton = createItemWithHealthbar("weapon", 100, 100, Textures.axe, { axeAttack() })
-        hammerButton = createItemWithHealthbar("weapon", 100, 100, Textures.hammer, { hammerAttack() })
-        mushroomButton = createItemWithLabel("potion", 5, Textures.mushroom, { Mushroom().use() })
-        bombButton = createItemWithLabel("usable", 10, Textures.bomb, { bombAttack() })
-        bombButton2 = createItemWithLabel("usable", 10, Textures.bomb, { bombAttack() })
-    }
-
-    fun bombAttack()
-    {
-        val bomb = Bomb()
-        val targetPositions = bomb.getTargetPositions(World.hero.position)
-        
-        Map.clearLayer(MapLayer.select)
-        for (position in targetPositions)
-        {
-            Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
-        }
-        
-        val newState = when (val currState = getState())
-        {
-            is State.free        -> State.free.stackableMapItemChosen.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.chosenStackableMapItem = bomb
-                this.targetPositions = targetPositions
-            }
-            
-            is State.constrained -> State.constrained.stackableMapItemChosen.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.isHeroDetected = currState.isHeroDetected
-                this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                this.chosenStackableMapItem = bomb
-                this.targetPositions = targetPositions
-            }
-            
-            is State.combat.hero -> State.combat.hero.stackableMapItemChosen.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                this.chosenStackableMapItem = bomb
-                this.targetPositions = targetPositions
-            }
-            
-            else                 -> currState
-        }
-        setState(newState)
+        swordButton = createItemWithHealthbar("weapon", 100, 100, WoodenSword().getTexture(), { attack(WoodenSword()) })
+        axeButton = createItemWithHealthbar("weapon", 100, 100, SmallAxe().getTexture(), { attack(SmallAxe()) })
+        hammerButton = createItemWithHealthbar("weapon", 100, 100, Sledgehammer().getTexture(), { attack(Sledgehammer()) })
+        bowButton = createItemWithHealthbar("weapon", 100, 100, Bow().getTexture(), { attack(Bow()) })
+        staffButton = createItemWithHealthbar("weapon", 100, 100, Staff().getTexture(), { attack(Staff()) })
+        appleButton = createItemWithLabel("potion", 5, Apple().getTexture(), { attack(Apple()) })
+        fishButton = createItemWithLabel("potion", 5, Fish().getTexture(), { attack(Fish()) })
+        mushroomButton = createItemWithLabel("potion", 5, Mushroom().getTexture(), { attack(Mushroom()) })
+        bombButton = createItemWithLabel("usable", 10, Bomb().getTexture(), { attack(Bomb()) })
+        explosiveButton = createItemWithLabel("usable", 10, Explosive().getTexture(), { attack(Explosive()) })
+        shurikenButton = createItemWithLabel("usable", 10, Shuriken().getTexture(), { attack(Shuriken()) })
     }
     
-    fun swordAttack()
+    fun attack(item : Item)
     {
-        val sword = WoodenSword()
-        
         val currState = getState()
         
         val canBeUsed = when (currState)
@@ -87,7 +54,7 @@ object ItemsStructure
             is State.free                              -> true
             is State.constrained, is State.combat.hero ->
             {
-                World.hero.abilityPoints >= sword.baseAPUseCost
+                World.hero.abilityPoints >= item.baseAPUseCost
             }
             
             else                                       -> false
@@ -95,7 +62,14 @@ object ItemsStructure
         
         if (canBeUsed)
         {
-            val targetPositions = sword.getTargetPositions(World.hero.position)
+            if (item is StackableSelfItem) item.use()
+            
+            val targetPositions = when (item)
+            {
+                is MultiUseMapItem  -> item.getTargetPositions(World.hero.position)
+                is StackableMapItem -> item.getTargetPositions(World.hero.position)
+                else                -> emptyList()
+            }
             
             Map.clearLayer(MapLayer.select)
             for (position in targetPositions)
@@ -105,146 +79,88 @@ object ItemsStructure
             
             val newState = when (currState)
             {
-                is State.free        -> State.free.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.chosenMultiUseItem = sword
-                    this.targetPositions = targetPositions
+                is State.free        -> when (item)
+                {
+                    is MultiUseMapItem   -> State.free.multiUseMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.chosenMultiUseItem = item
+                        this.targetPositions = targetPositions
+                    }
+                    
+                    is StackableMapItem  -> State.free.stackableMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.chosenStackableMapItem = item
+                        this.targetPositions = targetPositions
+                    }
+                    
+                    is StackableSelfItem -> State.free.stackableSelfItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.chosenStackableSelfItem = item
+                    }
+                    
+                    else                 -> currState
                 }
                 
-                is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.isHeroDetected = currState.isHeroDetected
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenMultiUseItem = sword
-                    this.targetPositions = targetPositions
+                is State.constrained -> when (item)
+                {
+                    is MultiUseMapItem   -> State.constrained.multiUseMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.isHeroDetected = currState.isHeroDetected
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenMultiUseItem = item
+                        this.targetPositions = targetPositions
+                    }
+                    
+                    is StackableMapItem  -> State.constrained.stackableMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.isHeroDetected = currState.isHeroDetected
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenStackableMapItem = item
+                        this.targetPositions = targetPositions
+                    }
+                    
+                    is StackableSelfItem -> State.constrained.stackableSelfItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.isHeroDetected = currState.isHeroDetected
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenStackableSelfItem = item
+                    }
+                    
+                    else                 -> currState
                 }
                 
-                is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenMultiUseItem = sword
-                    this.targetPositions = targetPositions
-                }
-                
-                else                 -> currState
-            }
-            setState(newState)
-        }
-    }
-    
-    fun axeAttack()
-    {
-        val axe = SmallAxe()
-        
-        val currState = getState()
-        
-        val canBeUsed = when (currState)
-        {
-            is State.free                              -> true
-            is State.constrained, is State.combat.hero ->
-            {
-                World.hero.abilityPoints >= axe.baseAPUseCost
-            }
-            
-            else                                       -> false
-        }
-        
-        if (canBeUsed)
-        {
-            val targetPositions = axe.getTargetPositions(World.hero.position)
-            
-            Map.clearLayer(MapLayer.select)
-            for (position in targetPositions)
-            {
-                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
-            }
-            
-            val newState = when (currState)
-            {
-                is State.free        -> State.free.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.chosenMultiUseItem = axe
-                    this.targetPositions = targetPositions
-                }
-                
-                is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.isHeroDetected = currState.isHeroDetected
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenMultiUseItem = axe
-                    this.targetPositions = targetPositions
-                }
-                
-                is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenMultiUseItem = axe
-                    this.targetPositions = targetPositions
-                }
-                
-                else                 -> currState
-            }
-            setState(newState)
-        }
-    }
-    
-    fun hammerAttack()
-    {
-        val hammer = Sledgehammer()
-        
-        val currState = getState()
-        
-        val canBeUsed = when (currState)
-        {
-            is State.free                              -> true
-            is State.constrained, is State.combat.hero ->
-            {
-                World.hero.abilityPoints >= hammer.baseAPUseCost
-            }
-            
-            else                                       -> false
-        }
-        
-        if (canBeUsed)
-        {
-            val targetPositions = hammer.getTargetPositions(World.hero.position)
-            
-            Map.clearLayer(MapLayer.select)
-            for (position in targetPositions)
-            {
-                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
-            }
-            
-            val newState = when (currState)
-            {
-                is State.free        -> State.free.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.chosenMultiUseItem = hammer
-                    this.targetPositions = targetPositions
-                }
-                
-                is State.constrained -> State.constrained.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.isHeroDetected = currState.isHeroDetected
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenMultiUseItem = hammer
-                    this.targetPositions = targetPositions
-                }
-                
-                is State.combat.hero -> State.combat.hero.multiUseMapItemChosen.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.chosenMultiUseItem = hammer
-                    this.targetPositions = targetPositions
+                is State.combat.hero -> when (item)
+                {
+                    is MultiUseMapItem   -> State.combat.hero.multiUseMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenMultiUseItem = item
+                        this.targetPositions = targetPositions
+                    }
+                    
+                    is StackableMapItem  -> State.combat.hero.stackableMapItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenStackableMapItem = item
+                        this.targetPositions = targetPositions
+                    }
+                    
+                    is StackableSelfItem -> State.combat.hero.stackableSelfItemChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenStackableSelfItem = item
+                    }
+                    
+                    else                 -> currState
                 }
                 
                 else                 -> currState
@@ -272,9 +188,9 @@ object ItemsStructure
             playSoundOnce(Sounds.blop)
             action()
         }
-    
+        
         buttonsAssignment.add(Pair(type, button))
-    
+        
         return button
     }
     
