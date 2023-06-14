@@ -2,6 +2,9 @@ package com.efm.room
 
 import com.badlogic.gdx.Gdx
 import com.efm.entity.*
+import com.efm.level.World
+import com.efm.Map
+import com.efm.MapLayer
 import com.efm.passage.Passage
 
 /**
@@ -92,6 +95,7 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
                 if (character is Enemy)
                 {
                     character.healthBar.remove()
+                    Map.changeTile(MapLayer.outline, character.position, null)
                 }
             }
         }
