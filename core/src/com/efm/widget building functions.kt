@@ -604,20 +604,22 @@ fun itemButtonWithHealthbar(
             currentHealth.toFloat(),
             1f,
             maxHealth.toFloat(),
-            Textures.translucentNinePatch,
-            Textures.knobHealthbarAfterNinePatch,
+            Textures.knobBackgroundNinePatch,
+            Textures.knobWhiteNinePatch,
             Textures.translucentNinePatch,
             4f
                                  )
-
-//    //green
-//    healthBar.setColor(36f,222f,66f,100f)
-//    //yellow
-//    healthBar.setColor(218f, 222f, 36f, 100f)
-//    //orange
-//    healthBar.setColor(222f, 148f, 36f, 100f)
-    //red
-//    healthBar.setColor(222f, 58f, 36f, 100f)
+    
+    val healthPercentage = currentHealth.toFloat() / maxHealth.toFloat()
+    val color = when
+    {
+        healthPercentage == 0f    -> Colors.black
+        healthPercentage <= 0.25f -> Colors.red
+        healthPercentage <= 0.5f  -> Colors.orange
+        healthPercentage <= 0.75f -> Colors.yellow
+        else                      -> Colors.green
+    }
+    healthBar.setColor(color)
     
     val barWidth = 64f
     val barStack = Stack()
