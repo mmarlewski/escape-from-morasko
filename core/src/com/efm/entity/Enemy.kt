@@ -83,7 +83,7 @@ interface Enemy : Character
     fun createOwnHealthBar() : ProgressBar
     {
         healthBar =
-                ProgressBars.createBar(20F, Textures.knobHealthbarAfterNinePatch, this.healthPoints, this.maxHealthPoints)
+                ProgressBars.createBar(20F, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
         GameScreen.stage.addActor(healthBar)
         healthBar.isVisible = false
         return healthBar

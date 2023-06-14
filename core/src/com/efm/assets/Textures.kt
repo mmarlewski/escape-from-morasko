@@ -44,7 +44,7 @@ object Textures
     val knob = load("/bars/knob.png")
     val knobHealthbarAfter = load("/bars/healthbarForeground.png")
     val knobAbilitybarAfter = load("/bars/abilityBarForeground.png")
-//    val knobEnemyHealthbarAfter = load("bar/healthbarEnemy.png")
+    val knobEnemyHealthbar = load("bars/healthbarRed.png")
     val materialKnob = load("bars/materialKnob.png")
     val materialKnobAfter = load("bars/materialKnobAfter.png")
     val materialKnobBeforeBlack = load("bars/materialKnobBeforeBlack.png")
@@ -62,7 +62,7 @@ object Textures
     val materialKnobNinePatchBeforeBlue = NinePatch(materialKnobBeforeBlue, 5, 5, 5, 5)
     val materialKnobNinePatchAfter = NinePatch(materialKnobAfter, 5, 5, 5, 5)
     val knobWhiteNinePatch = NinePatch(knobWhite, 5, 5, 5, 5)
-//    val knobEnemyHealthBarAfterNinePatch = NinePatch(knobEnemyHealthbarAfter, 5, 5, 5, 5)
+    val knobEnemyHealthBarNinePatch = NinePatch(knobEnemyHealthbar, 5, 5, 5, 5)
     
     //other
     val cursor = load("/other/cursor.png")
