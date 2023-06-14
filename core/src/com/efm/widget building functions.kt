@@ -601,10 +601,10 @@ fun itemButtonWithHealthbar(
     
     var healthBar = progressBarOf(
             0f,
-            currentHealth.toFloat(),
-            1f,
             maxHealth.toFloat(),
-            Textures.knobBackgroundNinePatch,
+            1f,
+            currentHealth.toFloat(),
+            Textures.translucentNinePatch,
             Textures.knobWhiteNinePatch,
             Textures.translucentNinePatch,
             4f

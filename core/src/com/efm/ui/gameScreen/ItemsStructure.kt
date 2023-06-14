@@ -33,10 +33,10 @@ object ItemsStructure
     {
         // buttons now have 4 types: weapon, potion, usable and skill based on the category within equipment display
         swordButton = createItemWithHealthbar("weapon", 100, 100, WoodenSword().getTexture(), { attack(WoodenSword()) })
-        axeButton = createItemWithHealthbar("weapon", 100, 100, SmallAxe().getTexture(), { attack(SmallAxe()) })
-        hammerButton = createItemWithHealthbar("weapon", 100, 100, Sledgehammer().getTexture(), { attack(Sledgehammer()) })
-        bowButton = createItemWithHealthbar("weapon", 100, 100, Bow().getTexture(), { attack(Bow()) })
-        staffButton = createItemWithHealthbar("weapon", 100, 100, Staff().getTexture(), { attack(Staff()) })
+        axeButton = createItemWithHealthbar("weapon", 100, 0, SmallAxe().getTexture(), { attack(SmallAxe()) })
+        hammerButton = createItemWithHealthbar("weapon", 100, 50, Sledgehammer().getTexture(), { attack(Sledgehammer()) })
+        bowButton = createItemWithHealthbar("weapon", 100, 75, Bow().getTexture(), { attack(Bow()) })
+        staffButton = createItemWithHealthbar("weapon", 100, 25, Staff().getTexture(), { attack(Staff()) })
         appleButton = createItemWithLabel("potion", 5, Apple().getTexture(), { attack(Apple()) })
         fishButton = createItemWithLabel("potion", 5, Fish().getTexture(), { attack(Fish()) })
         mushroomButton = createItemWithLabel("potion", 5, Mushroom().getTexture(), { attack(Mushroom()) })
