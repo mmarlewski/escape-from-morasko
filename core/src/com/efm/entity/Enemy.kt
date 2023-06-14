@@ -94,6 +94,7 @@ interface Enemy : Character
         val orthoPos = roomPositionToOrtho(position)
         val isoPos = GameScreen.gameViewport.project(orthoToIso(orthoPos))
         healthBar.setPosition(isoPos.x * 0.5f + 25f, isoPos.y * 0.5f + 120f)
+        healthBar.value = healthPoints.toFloat()
         healthBar.isVisible = true
     }
     

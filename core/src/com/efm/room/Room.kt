@@ -89,6 +89,10 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
             {
                 println(character)
                 killedCharacters.add(character)
+                if (character is Enemy)
+                {
+                    character.healthBar.remove()
+                }
             }
         }
         enemies.removeAll(killedCharacters)

@@ -68,10 +68,15 @@ object GameScreen : BaseScreen(), GestureListener
             true  -> State.constrained.noSelection
             false -> State.free.noSelection
         }
-        for (enemy in World.currentRoom.getEnemies())
+        for (room in World.currentLevel.getRooms())
         {
-            enemy.createOwnHealthBar()
+            for (enemy in room.getEnemies())
+            {
+                enemy.createOwnHealthBar()
+                enemy.hideOwnHealthBar()
+            }
         }
+        
         initState.areEnemiesInRoom = areEnemiesInRoom
         setState(initState)
     }
@@ -169,6 +174,13 @@ object GameScreen : BaseScreen(), GestureListener
         Animating.update()
         
         // render
+        if (getState() is State.constrained || getState() is State.combat)
+        {
+            for (enemy in World.currentRoom.getEnemies())
+            {
+                enemy.displayOwnHealthBar()
+            }
+        }
         ScreenUtils.clear(Colors.black)
         hudCamera.update()
         gameCamera.update()
