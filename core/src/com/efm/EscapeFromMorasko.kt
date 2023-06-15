@@ -13,16 +13,13 @@ object EscapeFromMorasko : Game()
     {
         spriteBatch = SpriteBatch()
     
-        World.createWorld()
-    
-        // test big rooms
-        World.addTestBigRoomsLevel()
-        val test_level = World.getLevels().find { it.name == "test_level" }
-        if (test_level != null)
+        World.createWorldPrototypeTwo()
+        val startingLevel = World.getLevels().find { it.name == "1" }
+        if (startingLevel != null)
         {
-            World.changeCurrentLevel(test_level)
-            World.changeCurrentRoom(test_level.getStartingRoom())
-            World.currentRoom.addEntityAt(World.hero, test_level.getStartingPosition())
+            World.changeCurrentLevel(startingLevel)
+            World.changeCurrentRoom(startingLevel.getStartingRoom())
+            World.currentRoom.addEntityAt(World.hero, startingLevel.getStartingPosition())
             World.currentRoom.updateSpacesEntities()
         }
     

@@ -7,10 +7,10 @@ import com.efm.passage.LevelPassage
 import com.efm.passage.RoomPassage
 import com.efm.room.*
 
-fun World.createWorld()
+/*
+fun World.createWorldPrototypeOne()
 {
     // rooms
-    
     val forge = Level("forge")
     val forge1 = Room("forge1", 5, 5)
     val forge2 = Room("forge1", 5, 5)
@@ -352,161 +352,267 @@ fun World.createWorld()
     forge1.addEntityAt(hero, forge.getStartingPosition())
     forge1.updateSpacesEntities()
     
-}
+}*/
 
-fun World.addTestBigRoomsLevel()
+fun World.createWorldPrototypeTwo()
 {
+    //
+    // level 1
+    //
+    
     // rooms
-    // tbrl1
-    val tbrl1 = Room("1", 11, 11)
-    for (y in 1 until tbrl1.heightInSpaces)
+    
+    // l1r1
+    val l1r1 = Room("1", 11, 11)
+    // change base
+    for (y in 1 until l1r1.heightInSpaces) for (x in 1 until l1r1.widthInSpaces) l1r1.changeBaseAt(
+            Base.values()[y % 4], x, y
+                                                                                                  )
+    // add lava
+    for (y in 4 until 6) for (x in 4 until 6) l1r1.changeBaseAt(Base.lava, x, y)
+    // add walls on left side (facing right)
+    for (y in 1 until l1r1.heightInSpaces) l1r1.addEntityAt(StoneWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l1r1.widthInSpaces) l1r1.addEntityAt(StoneWall(Direction4.down), x, 0)
+    
+    // l1r1
+    val l1r2 = Room("2", 16, 16)
+    // change base
+    for (y in 1 until l1r2.heightInSpaces) for (x in 1 until l1r2.widthInSpaces) l1r2.changeBaseAt(
+            Base.values()[x % 4], x, y
+                                                                                                  )
+    // add lava
+    for (y in 5 until 6) for (x in 2 until 10) l1r2.changeBaseAt(Base.lava, x, y)
+    // add walls on left side (facing right)
+    for (y in 1 until l1r2.heightInSpaces) l1r2.addEntityAt(StoneWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l1r2.widthInSpaces) l1r2.addEntityAt(StoneWall(Direction4.down), x, 0)
+    
+    // l1r3
+    val l1r3 = Room("3", 6, 21)
+    // change base
+    for (y in 1 until l1r3.heightInSpaces) for (x in 1 until l1r3.widthInSpaces)
     {
-        for (x in 1 until tbrl1.widthInSpaces)
-        {
-            tbrl1.changeBaseAt(Base.values()[y % 4], x, y)
-        }
+        if (x % 2 == 0 && y % 2 == 0) l1r3.changeBaseAt(Base.values()[2], x, y)
+        else l1r3.changeBaseAt(Base.values()[0], x, y)
     }
-    for (y in 4 until 6)
+    // add lava
+    for (y in 1 until 2) for (x in 1 until 20) l1r3.changeBaseAt(Base.lava, x, y)
+    // add walls on left side (facing right)
+    for (y in 1 until l1r3.heightInSpaces) l1r3.addEntityAt(StoneWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l1r3.widthInSpaces) l1r3.addEntityAt(StoneWall(Direction4.down), x, 0)
+    
+    // l1r4
+    val l1r4 = Room("4", 21, 6)
+    // change base
+    for (y in 1 until l1r4.heightInSpaces) for (x in 1 until l1r4.widthInSpaces)
     {
-        for (x in 4 until 6)
-        {
-            tbrl1.changeBaseAt(Base.lava, x, y)
-        }
+        if (x % 2 == 0 && y % 2 == 0) l1r4.changeBaseAt(Base.values()[2], x, y)
+        else l1r4.changeBaseAt(Base.values()[0], x, y)
     }
-    for (y in 1 until tbrl1.heightInSpaces)
-    {
-        tbrl1.addEntityAt(StoneWall(Direction4.right), 0, y)
-    }
-    for (x in 1 until tbrl1.widthInSpaces)
-    {
-        tbrl1.addEntityAt(StoneWall(Direction4.down), x, 0)
-    }
-    // tbrl2
-    val tbrl2 = Room("2", 16, 16)
-    for (y in 1 until tbrl2.heightInSpaces)
-    {
-        for (x in 1 until tbrl2.widthInSpaces)
-        {
-            tbrl2.changeBaseAt(Base.values()[x % 4], x, y)
-        }
-    }
-    for (y in 5 until 6)
-    {
-        for (x in 2 until 10)
-        {
-            tbrl2.changeBaseAt(Base.lava, x, y)
-        }
-    }
-    for (y in 1 until tbrl2.heightInSpaces)
-    {
-        tbrl2.addEntityAt(StoneWall(Direction4.right), 0, y)
-    }
-    for (x in 1 until tbrl2.widthInSpaces)
-    {
-        tbrl2.addEntityAt(StoneWall(Direction4.down), x, 0)
-    }
-    // tbrl3
-    val tbrl3 = Room("3", 6, 21)
-    for (y in 1 until tbrl3.heightInSpaces)
-    {
-        for (x in 1 until tbrl3.widthInSpaces)
-        {
-            if (x % 2 == 0 && y % 2 == 0) tbrl3.changeBaseAt(Base.values()[2], x, y)
-            else tbrl3.changeBaseAt(Base.values()[0], x, y)
-        }
-    }
-    for (y in 1 until 2)
-    {
-        for (x in 1 until 20)
-        {
-            tbrl3.changeBaseAt(Base.lava, x, y)
-        }
-    }
-    for (y in 1 until tbrl3.heightInSpaces)
-    {
-        tbrl3.addEntityAt(StoneWall(Direction4.right), 0, y)
-    }
-    for (x in 1 until tbrl3.widthInSpaces)
-    {
-        tbrl3.addEntityAt(StoneWall(Direction4.down), x, 0)
-    }
-    // tbrl4
-    val tbrl4 = Room("4", 21, 6)
-    for (y in 1 until tbrl4.heightInSpaces)
-    {
-        for (x in 1 until tbrl4.widthInSpaces)
-        {
-            if (x % 2 == 0 && y % 2 == 0) tbrl4.changeBaseAt(Base.values()[2], x, y)
-            else tbrl4.changeBaseAt(Base.values()[0], x, y)
-        }
-    }
-    for (y in 1 until 20)
-    {
-        for (x in 2 until 3)
-        {
-            tbrl4.changeBaseAt(Base.lava, x, y)
-        }
-    }
-    for (y in 1 until tbrl4.heightInSpaces)
-    {
-        tbrl4.addEntityAt(StoneWall(Direction4.right), 0, y)
-    }
-    for (x in 1 until tbrl4.widthInSpaces)
-    {
-        tbrl4.addEntityAt(StoneWall(Direction4.down), x, 0)
-    }
+    // add lava
+    for (y in 1 until 20) for (x in 2 until 3) l1r4.changeBaseAt(Base.lava, x, y)
+    // add walls on left side (facing right)
+    for (y in 1 until l1r4.heightInSpaces) l1r4.addEntityAt(StoneWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l1r4.widthInSpaces) l1r4.addEntityAt(StoneWall(Direction4.down), x, 0)
+    
     // room list
-    val rooms = mutableListOf<Room>(tbrl1, tbrl2, tbrl3, tbrl4)
+    val l1_rooms = mutableListOf<Room>(l1r1, l1r2, l1r3, l1r4)
+    
     // room passages
-    val roomPassages = mutableListOf<RoomPassage>(
-            RoomPassage(tbrl1, RoomPosition(10, 3), Direction4.left, tbrl2, RoomPosition(0, 6)),
-            //RoomPassage(tbrl2, RoomPosition(15, 4), Direction4.left, tbrl3, RoomPosition(0, 4)),
-            RoomPassage(tbrl2, RoomPosition(15, 9), Direction4.left, tbrl4, RoomPosition(0, 4)),
-            RoomPassage(tbrl3, RoomPosition(3, 5), Direction4.up, tbrl4, RoomPosition(3, 0), isActive = false)
-                                                 )
+    val l1_roomPassages = mutableListOf<RoomPassage>(
+            RoomPassage(l1r1, RoomPosition(10, 3), Direction4.left, l1r2, RoomPosition(0, 6)),
+            RoomPassage(l1r2, RoomPosition(15, 4), Direction4.left, l1r3, RoomPosition(0, 4)),
+            RoomPassage(l1r2, RoomPosition(15, 9), Direction4.left, l1r4, RoomPosition(0, 4)),
+            RoomPassage(l1r3, RoomPosition(3, 5), Direction4.up, l1r4, RoomPosition(3, 0))  //, isActive = false)
+                                                    )
+    
     // add room exits
-    for (passage in roomPassages)
+    for (passage in l1_roomPassages)
     {
         // add in roomA
         passage.roomA.replaceEntityAt(StoneExit(passage.directionA, passage), passage.positionA)
         // add in roomB
         passage.roomB.replaceEntityAt(StoneExit(passage.directionB, passage), passage.positionB)
     }
-    // level
-    val level2room = Room("1", 5, 5)
-    for (y in 1 until level2room.heightInSpaces)
+    
+    // level with starting point
+    val l1 = Level("1", l1_rooms, l1_roomPassages)
+    l1.changeStartingRoom(l1r2)
+    l1.changeStartingPosition(1, 1)
+    
+    // entities
+    l1r2.addEntityAt(BladeEnemy(), 3, 3)
+    l1r2.addEntityAt(Chest(), 5, 5)
+    l1r2.addEntityAt(ExplodingBarrel(), 8, 3)
+    l1r2.addEntityAt(CrossbowEnemy(), 4, 6)
+    l1r2.addEntityAt(BladeEnemyCorpse(), 2, 2)
+    l1r2.addEntityAt(CrossbowEnemyCorpse(), 10, 3)
+    l1r2.addEntityAt(MiniEnemy(), 8, 4)
+    l1r4.addEntityAt(WizardBoss(), 3, 3)
+    
+    // add to World
+    addLevel(l1)
+    
+    //
+    // level 2
+    //
+    
+    // rooms
+    
+    // l2r1
+    val l2r1 = Room("1", 5 + 1, 6 + 1)
+    // change base
+    for (y in 1 until l2r1.heightInSpaces) for (x in 1 until l2r1.widthInSpaces) l2r1.changeBaseAt(
+            Base.values()[y % 4], x, y
+                                                                                                  )
+    // add walls on left side (facing right)
+    for (y in 1 until l2r1.heightInSpaces) l2r1.addEntityAt(StoneWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l2r1.widthInSpaces) l2r1.addEntityAt(StoneWall(Direction4.down), x, 0)
+    // add entities
+    l2r1.addEntityAt(Chest(), 4, 3)
+    
+    // l2r2
+    val l2r2 = Room("2", 8 + 1, 15 + 1)
+    // change base
+    for (y in 1 until l2r2.heightInSpaces)
     {
-        for (x in 1 until level2room.widthInSpaces)
+        var base_number = 0
+        for (x in 1 until l2r2.widthInSpaces)
         {
-            level2room.changeBaseAt(Base.values()[y % 4], x, y)
+            l2r2.changeBaseAt(Base.values()[base_number], x, y)
+            if (x % 3 == 0) base_number = (base_number + 1) % 3
         }
     }
-    val level2 = Level("test_level2", mutableListOf<Room>(level2room), mutableListOf<RoomPassage>())
-    level2.changeStartingRoom(level2room)
-    level2.changeStartingPosition(3, 3)
-    // level passages
-    val levelPassages = mutableListOf<LevelPassage>(
-            LevelPassage(tbrl2, RoomPosition(15, 4), Direction4.left, level2, true)
-                                                   )
-    // add level exits
-    for (passage in levelPassages)
+    // delete base and space
+    for (y in 6 until l2r2.heightInSpaces) for (x in 9 until l2r2.widthInSpaces)
+    {
+        l2r2.changeBaseAt(null, x, y)
+        l2r2.deleteSpaceAt(x, y)
+    }
+    // add lava
+    for (y in 5 until 8) for (x in 3 until 6) l2r2.changeBaseAt(Base.lava, x, y)
+    for (y in 3 until 7) for (x in 4 until 7) l2r2.changeBaseAt(Base.lava, x, y)
+    // add walls on left side (facing right)
+    for (y in 1 until l2r2.heightInSpaces) l2r2.addEntityAt(StoneWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l2r2.widthInSpaces) l2r2.addEntityAt(StoneWall(Direction4.down), x, 0)
+    
+    // l2r3
+    val l2r3 = Room("3", 10 + 1, 5 + 1)
+    // change base
+    for (y in 1 until l2r3.heightInSpaces) for (x in 1 until l2r3.widthInSpaces) l2r3.changeBaseAt(Base.metal, x, y)
+    
+    // add walls on left side (facing right)
+    for (y in 1 until l2r3.heightInSpaces) l2r3.addEntityAt(MetalWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l2r3.widthInSpaces) l2r3.addEntityAt(MetalWall(Direction4.down), x, 0)
+    
+    // l2r4
+    val l2r4 = Room("4", 8 + 1, 16 + 1)
+    // change base
+    for (y in 1 until l2r4.heightInSpaces)
+    {
+        var base_number = 0
+        for (x in 1 until l2r4.widthInSpaces)
+        {
+            l2r4.changeBaseAt(Base.values()[base_number], x, y)
+            if (y % 3 == 0) base_number = (base_number + 1) % 3
+        }
+    }
+    // add lava
+    for (y in 6 until l2r4.heightInSpaces) for (x in 4 until 13) l2r4.changeBaseAt(Base.lava, x, y)
+    for (y in 5 until l2r4.heightInSpaces) for (x in 6 until 11) l2r4.changeBaseAt(Base.lava, x, y)
+    // delete base and space
+    for (y in 0 until 3) for (x in 5 until l2r4.widthInSpaces)
+    {
+        l2r4.changeBaseAt(null, x, y)
+        if (y != 2) l2r4.deleteSpaceAt(x, y)
+    }
+    // add walls on left side (facing right)
+    for (y in 1 until l2r4.heightInSpaces) l2r4.addEntityAt(StoneWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l2r4.widthInSpaces) l2r4.addEntityAt(StoneWall(Direction4.down), x, 0)
+    // add walls on right side (facing left) for l2r5
+    for (y in 1 until 3) l2r4.replaceEntityAt(StoneWall(Direction4.left), 4, y)
+    // add walls on top side (facing down) for l2r5
+    for (x in 4 until l2r4.widthInSpaces) l2r4.replaceEntityAt(StoneWall(Direction4.down), x, 2)
+    
+    // l2r5
+    val l2r5 = Room("5", 6 + 1, 6 + 1)
+    // change base
+    for (y in 1 until l2r5.heightInSpaces) for (x in 1 until l2r5.widthInSpaces) l2r5.changeBaseAt(Base.grass, x, y)
+    // add walls on left side (facing right)
+    for (y in 1 until l2r5.heightInSpaces) l2r5.addEntityAt(RockWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l2r5.widthInSpaces) l2r5.addEntityAt(RockWall(Direction4.down), x, 0)
+    // add entities
+    l2r5.addEntityAt(Chest(), 4, 2)
+    
+    // l2r6
+    val l2r6 = Room("6", 9 + 1, 10 + 1)
+    // change base
+    for (y in 1 until l2r6.heightInSpaces)
+    {
+        var base_number = 0
+        for (x in 1 until l2r6.widthInSpaces)
+        {
+            l2r6.changeBaseAt(Base.values()[0], x, y)
+            if (y % 3 == 0) base_number = (base_number + 1) % 3
+            if (x % 4 == 0) base_number = (base_number - 1) % 3
+        }
+    }
+    // add walls on left side (facing right)
+    for (y in 1 until l2r6.heightInSpaces) l2r6.addEntityAt(RockWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l2r6.widthInSpaces) l2r6.addEntityAt(RockWall(Direction4.down), x, 0)
+    
+    // room list
+    val l2_rooms = mutableListOf<Room>(l2r1, l2r2, l2r3, l2r4, l2r5, l2r6)
+    
+    // room passages
+    val l2_roomPassages = mutableListOf<RoomPassage>(
+            RoomPassage(l2r1, RoomPosition(l2r1.widthInSpaces - 1, 2), Direction4.left, l2r2, RoomPosition(0, 4)),
+            RoomPassage(l2r2, RoomPosition(l2r2.widthInSpaces - 1, 3), Direction4.left, l2r3, RoomPosition(0, 3)),
+            RoomPassage(l2r3, RoomPosition(3, l2r3.heightInSpaces - 1), Direction4.up, l2r4, RoomPosition(14, 2)),
+            RoomPassage(l2r4, RoomPosition(4, 1), Direction4.left, l2r5, RoomPosition(0, 5)),
+            RoomPassage(
+                    l2r4,
+                    RoomPosition(0, l2r4.heightInSpaces - 2),
+                    Direction4.right,
+                    l2r6,
+                    RoomPosition(l2r6.widthInSpaces - 1, l2r6.heightInSpaces - 2)
+                       ),
+            RoomPassage(l2r6, RoomPosition(3, 0), Direction4.down, l2r1, RoomPosition(3, l2r1.heightInSpaces - 1))
+                                                    )
+    
+    // add room exits
+    for (passage in l2_roomPassages)
     {
         // add in roomA
-        passage.originRoom.replaceEntityAt(StoneExit(passage.originDirection, passage), passage.originPosition)
+        passage.roomA.replaceEntityAt(StoneExit(passage.directionA, passage), passage.positionA)
+        // add in roomB
+        passage.roomB.replaceEntityAt(StoneExit(passage.directionB, passage), passage.positionB)
     }
-    // level
-    val tbrl = Level("test_level", rooms, roomPassages)
-    tbrl.changeStartingRoom(tbrl2)
-    tbrl.changeStartingPosition(1, 1)
-    tbrl2.addEntityAt(BladeEnemy(), 3, 3)
-    tbrl2.addEntityAt(Chest(), 5, 5)
-    tbrl2.addEntityAt(ExplodingBarrel(), 8, 3)
-    tbrl2.addEntityAt(CrossbowEnemy(), 4, 6)
-    tbrl2.addEntityAt(BladeEnemyCorpse(), 2, 2)
-    tbrl2.addEntityAt(CrossbowEnemyCorpse(), 10, 3)
-    tbrl2.addEntityAt(MiniEnemy(), 8, 4)
-    tbrl4.addEntityAt(WizardBoss(), 3, 3)
+    
+    // level with starting point
+    val l2 = Level("2", l2_rooms, l2_roomPassages)
+    l2.changeStartingRoom(l2r1)
+    l2.changeStartingPosition(1, 2)
+    
     // add to World
-    addLevel(tbrl)
-    addLevel(level2)
+    addLevel(l2)
+    
+    // level passages
+    val levelPassages = mutableListOf<LevelPassage>(
+            LevelPassage(l1r4, RoomPosition(l1r4.widthInSpaces - 1, l1r4.heightInSpaces - 1), Direction4.left, l2, true)
+                                                   )
+    
+    // add level exits
+    for (passage in levelPassages) passage.originRoom.replaceEntityAt(
+            StoneExitActiveWhenNoEnemiesAreInRoom(passage.originDirection, passage), passage.originPosition
+                                                                     )
 }
