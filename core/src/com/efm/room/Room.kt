@@ -135,17 +135,17 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     
     fun getEntities() : List<Entity>
     {
-        return entities
+        return entities.toList()
     }
     
     fun getCharacters() : List<Character>
     {
-        return characters
+        return characters.toList()
     }
     
     fun getEnemies() : List<Enemy>
     {
-        return enemies
+        return enemies.toList()
     }
     
     fun addEntity(entity : Entity)

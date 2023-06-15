@@ -193,8 +193,8 @@ object GameScreen : BaseScreen(), GestureListener
             enemy.changeOwnHealthBarPos()
         }
 //        ProgressBars.handleProgressBarsFlashing()
-        stage.draw()
         gameStage.draw()
+        stage.draw()
     }
     
     override fun resize(width : Int, height : Int)
@@ -206,6 +206,7 @@ object GameScreen : BaseScreen(), GestureListener
     override fun dispose()
     {
         stage.dispose()
+        gameStage.dispose()
     }
     
     // overridden GestureListener methods

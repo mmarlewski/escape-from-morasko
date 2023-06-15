@@ -72,6 +72,7 @@ object ItemsStructure
             }
             
             Map.clearLayer(MapLayer.select)
+            Map.clearLayer(MapLayer.outline)
             for (position in targetPositions)
             {
                 Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
