@@ -24,6 +24,7 @@ object GameScreen : BaseScreen(), GestureListener
     val hudViewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, hudCamera)
     val gameViewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, gameCamera)
     val stage = Stage(hudViewport, EscapeFromMorasko.spriteBatch)
+    val gameStage = Stage(gameViewport, EscapeFromMorasko.spriteBatch)
     val inputMultiplexer = InputMultiplexer(stage, GestureDetector(this))
     val mapRenderer = CustomIsometricTiledMapRenderer(Map.tiledMap, 1f, EscapeFromMorasko.spriteBatch)
     
@@ -44,23 +45,23 @@ object GameScreen : BaseScreen(), GestureListener
     {
         // input processor
         super.inputProcessor = inputMultiplexer
-    
+        
         // hud
-    
+        
         ItemsStructure.display()
         LeftStructure.display()
         ProgressBars.display()
         RightStructure.display()
         PopUps.display()
-    
+        
         // map
         updateMapBaseLayer()
         updateMapEntityLayer()
-    
+        
         // camera
         changeCameraZoom(currZoom)
         focusCameraOnRoomPosition(World.hero.position)
-    
+        
         // state
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
         val initState = when (areEnemiesInRoom)
@@ -189,10 +190,11 @@ object GameScreen : BaseScreen(), GestureListener
         mapRenderer.render()
         for (enemy in World.currentRoom.getEnemies())
         {
-            enemy.changeOwnHelthBarPos()
+            enemy.changeOwnHealthBarPos()
         }
         ProgressBars.flashProgressBar()
         stage.draw()
+        gameStage.draw()
     }
     
     override fun resize(width : Int, height : Int)
@@ -239,7 +241,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             return true
         }
-
+        
         updateScreenWorldMapTouchPositions(Vector2(x, y))
         
         if (isDragging)
