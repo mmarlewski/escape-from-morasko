@@ -425,6 +425,9 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
                 if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
                 {
                     val abilityBarAnimation = mutableListOf<Animation>()
+                    ProgressBars.abilityBar.isVisible = false
+                    var tempBarBefore = ProgressBars.abilityBar
+                    tempBarBefore.isVisible = true
                     abilityBarAnimation += Animation.flashProgressBar(
                             ProgressBars.abilityBar,
                             ProgressBars.abilityBarLabel,
@@ -565,6 +568,9 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
             if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
             {
                 val abilityBarAnimation = mutableListOf<Animation>()
+                ProgressBars.abilityBar.isVisible = false
+                var tempBarBefore = ProgressBars.abilityBar
+                tempBarBefore.isVisible = true
                 abilityBarAnimation += Animation.flashProgressBar(
                         ProgressBars.abilityBar,
                         ProgressBars.abilityBarLabel,
@@ -643,28 +649,42 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
         
         World.hero.spendAP(currState.pathSpaces.size + 1)
+        for (level in World.getLevels())
+        {
+            for (room in level.getRooms())
+            {
+                for (enemy in room.getEnemies())
+                {
+                    enemy.hideOwnHealthBar()
+                }
+            }
+        }
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.displayOwnHealthBar()
+        }
+        
         
         val isMoveToAnotherRoom = currState.isMoveToAnotherRoom
         val isMoveToAnotherLevel = currState.isMoveToAnotherLevel
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
-        
-        if (isMoveToAnotherRoom)
+    
+    
+        when (areEnemiesInRoom)
         {
-            when (areEnemiesInRoom)
+            true  ->
             {
-                true  ->
-                {
-                    World.hero.regainAllAP()
-                    ProgressBars.abilityBar.isVisible = true
-                    ProgressBars.abilityBarLabel.isVisible = true
-                }
-                false ->
-                {
-                    ProgressBars.abilityBar.isVisible = false
-                    ProgressBars.abilityBarLabel.isVisible = false
-                }
+                World.hero.regainAllAP()
+                ProgressBars.abilityBar.isVisible = true
+                ProgressBars.abilityBarLabel.isVisible = true
+            }
+            false ->
+            {
+                ProgressBars.abilityBar.isVisible = false
+                ProgressBars.abilityBarLabel.isVisible = false
             }
         }
+        
         
         return when (areEnemiesInRoom)
         {

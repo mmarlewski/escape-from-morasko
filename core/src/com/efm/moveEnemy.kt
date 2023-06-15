@@ -17,6 +17,7 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
         GameScreen.updateMapEntityLayer()
     }
     val animations = mutableListOf<Animation>()
+    animations += Animation.action{enemy.hideOwnHealthBar()}
     animations += Animation.action { Map.changeTile(MapLayer.entity, enemy.position, null) }
     val prevMovePosition = startPosition.copy()
     for (space in path)
@@ -27,5 +28,6 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
     }
     animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
+    animations += Animation.action{enemy.displayOwnHealthBar()}
     Animating.executeAnimations(animations)
 }

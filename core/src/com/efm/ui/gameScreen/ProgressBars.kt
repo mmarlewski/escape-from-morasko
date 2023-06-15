@@ -14,6 +14,7 @@ object ProgressBars
     lateinit var healthBarLabel : Label
     lateinit var abilityBar : ProgressBar
     lateinit var abilityBarLabel : Label
+    lateinit var flashingProgressBars : MutableList<ProgressBar>
     
     fun createBar(
             height : Float,
@@ -90,4 +91,14 @@ object ProgressBars
         progressBars.setFillParent(true)
         GameScreen.stage.addActor(progressBars)
     }
+    
+//    fun handleProgressBarsFlashing()
+//    {
+//        if (flashingProgressBars.size > 0)
+//        {
+//
+//        }
+//    }
+//
+
 }

@@ -389,7 +389,20 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         
         GameScreen.roomTouchPosition.set(World.hero.position)
         Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
-        
+        for (level in World.getLevels())
+        {
+            for (room in level.getRooms())
+            {
+                for (enemy in room.getEnemies())
+                {
+                    enemy.hideOwnHealthBar()
+                }
+            }
+        }
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.displayOwnHealthBar()
+        }
         val isMoveToAnotherRoom = currState.isMoveToAnotherRoom
         val isMoveToAnotherLevel = currState.isMoveToAnotherLevel
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()

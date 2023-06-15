@@ -79,6 +79,10 @@ object GameScreen : BaseScreen(), GestureListener
                 }
             }
         }
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.displayOwnHealthBar()
+        }
         
         
         initState.areEnemiesInRoom = areEnemiesInRoom
@@ -185,8 +189,9 @@ object GameScreen : BaseScreen(), GestureListener
         mapRenderer.render()
         for (enemy in World.currentRoom.getEnemies())
         {
-            enemy.displayOwnHealthBar()
+            enemy.changeOwnHelthBarPos()
         }
+//        ProgressBars.handleProgressBarsFlashing()
         stage.draw()
     }
     

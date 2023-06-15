@@ -390,6 +390,9 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
                 if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
                 {
                     val abilityBarAnimation = mutableListOf<Animation>()
+                    ProgressBars.abilityBar.isVisible = false
+                    var tempBarBefore = ProgressBars.abilityBar
+                    tempBarBefore.isVisible = true
                     abilityBarAnimation += Animation.flashProgressBar(
                             ProgressBars.abilityBar,
                             ProgressBars.abilityBarLabel,
@@ -487,6 +490,9 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
             if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
             {
                 val abilityBarAnimation = mutableListOf<Animation>()
+                ProgressBars.abilityBar.isVisible = false
+                var tempBarBefore = ProgressBars.abilityBar
+                tempBarBefore.isVisible = true
                 abilityBarAnimation += Animation.flashProgressBar(
                         ProgressBars.abilityBar,
                         ProgressBars.abilityBarLabel,
@@ -545,7 +551,20 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
         
         World.hero.spendAP(currState.pathSpaces.size + 1)
-        
+        for (level in World.getLevels())
+        {
+            for (room in level.getRooms())
+            {
+                for (enemy in room.getEnemies())
+                {
+                    enemy.hideOwnHealthBar()
+                }
+            }
+        }
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.displayOwnHealthBar()
+        }
         val isMoveToAnotherRoom = currState.isMoveToAnotherRoom
         val isMoveToAnotherLevel = currState.isMoveToAnotherLevel
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
