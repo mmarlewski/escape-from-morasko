@@ -45,10 +45,10 @@ class WizardBoss : Entity, Enemy
         {
             areaOfEffectAttack()
         }
-//        if (World.currentRoom.getEnemies().size <= 2)
-//        {
-//            summonMinions()
-//        }
+        else if (World.currentRoom.getEnemies().size <= 2)
+        {
+            summonMinions()
+        }
         else
         {
             enemyAttack()
@@ -131,7 +131,8 @@ class WizardBoss : Entity, Enemy
                 val currState = getState()
                 if (currState is State.combat.enemies)
                 {
-                    currState.enemies = currState.enemies?.plus(minion)
+                    currState.enemyIterator = currState.enemies?.iterator()
+                    currState.currEnemy = currState.enemies?.get(0)
                 }
                 count ++
             }

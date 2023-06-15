@@ -85,18 +85,23 @@ interface Enemy : Character
         healthBar =
                 ProgressBars.createBar(20F, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
         GameScreen.stage.addActor(healthBar)
-        healthBar.isVisible = false
+        healthBar.isVisible = true
         return healthBar
     }
     
     fun displayOwnHealthBar()
     {
+        healthBar.isVisible = true
+    }
+    
+    fun changeOwnHelthBarPos()
+    {
         val orthoPos = roomPositionToOrtho(position)
         val isoPos = GameScreen.gameViewport.project(orthoToIso(orthoPos))
         healthBar.setPosition(isoPos.x * 0.5f + 25f, isoPos.y * 0.5f + 120f)
         healthBar.value = healthPoints.toFloat()
-        healthBar.isVisible = true
     }
+    
     
     fun hideOwnHealthBar()
     {
