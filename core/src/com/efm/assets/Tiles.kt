@@ -169,6 +169,8 @@ object Tiles
     val miniEnemyCorpseOutlineYellow = load("miniEnemyCorpseOutlineYellow.png")
     
     val wizardEnemy = load("wizardEnemy.png")
+    val wizardEnemyOutlineYellow = load("wizardEnemyOutlineYellow.png")
+    val wizardEnemyOutlineRed = load("wizardEnemyOutlineRed.png")
     
     val stoneColumn = load("stoneColumn.png")
     val stoneColumnOutlineYellow = load("stoneColumnOutlineYellow.png")

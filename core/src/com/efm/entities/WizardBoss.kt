@@ -30,12 +30,12 @@ class WizardBoss : Entity, Enemy
     
     override fun getOutlineYellowTile() : TiledMapTile
     {
-        return Tiles.bladeEnemyOutlineYellow
+        return Tiles.wizardEnemyOutlineYellow
     }
     
     override fun getOutlineRedTile() : TiledMapTile
     {
-        return Tiles.bladeEnemyOutlineRed
+        return Tiles.wizardEnemyOutlineRed
     }
     
     override fun performTurn()
