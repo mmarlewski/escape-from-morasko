@@ -6,6 +6,7 @@ import com.efm.level.World
 import com.efm.passage.LevelPassage
 import com.efm.passage.RoomPassage
 import com.efm.room.*
+
 /*
 fun World.createWorldPrototypeOne()
 {
@@ -612,6 +613,6 @@ fun World.createWorldPrototypeTwo()
     
     // add level exits
     for (passage in levelPassages) passage.originRoom.replaceEntityAt(
-            StoneExit(passage.originDirection, passage), passage.originPosition
+            StoneExitActiveWhenNoEnemiesAreInRoom(passage.originDirection, passage), passage.originPosition
                                                                      )
 }

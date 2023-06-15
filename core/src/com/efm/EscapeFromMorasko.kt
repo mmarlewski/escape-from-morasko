@@ -14,7 +14,7 @@ object EscapeFromMorasko : Game()
         spriteBatch = SpriteBatch()
     
         World.createWorldPrototypeTwo()
-        val startingLevel = World.getLevels().find { it.name == "2" }
+        val startingLevel = World.getLevels().find { it.name == "1" }
         if (startingLevel != null)
         {
             World.changeCurrentLevel(startingLevel)
