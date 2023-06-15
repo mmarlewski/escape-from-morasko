@@ -8,6 +8,7 @@ import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.passage.Exit
+import com.efm.room.Space
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
 import com.efm.ui.gameScreen.RightStructure
@@ -22,6 +23,7 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
     
         return State.free.noSelection.apply {
@@ -128,6 +130,7 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
     
         return State.free.noSelection.apply {
@@ -203,6 +206,7 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
     
         return State.free.noSelection.apply {
@@ -281,6 +285,7 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
     
         return State.free.noSelection.apply {
@@ -359,6 +364,7 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
     
         Map.clearLayer(MapLayer.select)
@@ -389,26 +395,9 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
                 val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
                 if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
                 {
-                    val abilityBarAnimation = mutableListOf<Animation>()
-                    ProgressBars.abilityBar.isVisible = false
-                    var tempBarBefore = ProgressBars.abilityBar
-                    tempBarBefore.isVisible = true
-                    abilityBarAnimation += Animation.flashProgressBar(
-                            ProgressBars.abilityBar,
-                            ProgressBars.abilityBarLabel,
-                            ProgressBars.abilityBar.value - (pathSpaces.size + 1F),
-                            0.5F
-                                                                     )
-                    abilityBarAnimation += Animation.flashProgressBar(
-                            ProgressBars.abilityBar,
-                            ProgressBars.abilityBarLabel,
-                            ProgressBars.abilityBar.value,
-                            0.5F
-                                                                     )
-                    Animating.executeAnimations(abilityBarAnimation)
-    
                     Map.clearLayer(MapLayer.select)
                     Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+                    ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value -  (pathSpaces.size + 1)
                     for (space in pathSpaces)
                     {
                         Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
@@ -453,6 +442,7 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
     
         return State.free.noSelection.apply {
@@ -466,8 +456,6 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         val selectedPosition = GameScreen.roomTouchPosition
         val selectedSpace = World.currentRoom.getSpace(selectedPosition)
         val selectedEntity = selectedSpace?.getEntity()
-        
-        Map.clearLayer(MapLayer.outline)
         
         if (selectedPosition == currState.selectedPosition)
         {
@@ -489,26 +477,9 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
             val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
             if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
             {
-                val abilityBarAnimation = mutableListOf<Animation>()
-                ProgressBars.abilityBar.isVisible = false
-                var tempBarBefore = ProgressBars.abilityBar
-                tempBarBefore.isVisible = true
-                abilityBarAnimation += Animation.flashProgressBar(
-                        ProgressBars.abilityBar,
-                        ProgressBars.abilityBarLabel,
-                        ProgressBars.abilityBar.value - (pathSpaces.size + 1F),
-                        0.5F
-                                                                 )
-                abilityBarAnimation += Animation.flashProgressBar(
-                        ProgressBars.abilityBar,
-                        ProgressBars.abilityBarLabel,
-                        ProgressBars.abilityBar.value,
-                        0.5F
-                                                                 )
-                Animating.executeAnimations(abilityBarAnimation)
-    
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+                ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value -  (pathSpaces.size + 1)
                 for (space in pathSpaces)
                 {
                     Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
@@ -578,11 +549,13 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
                 {
                     World.hero.regainAllAP()
                     ProgressBars.abilityBar.isVisible = true
+                    ProgressBars.abilityBarForFlashing.isVisible = true
                     ProgressBars.abilityBarLabel.isVisible = true
                 }
                 false ->
                 {
                     ProgressBars.abilityBar.isVisible = false
+                    ProgressBars.abilityBarForFlashing.isVisible = false
                     ProgressBars.abilityBarLabel.isVisible = false
                 }
             }
@@ -593,6 +566,7 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
             false ->
             {
                 ProgressBars.abilityBar.isVisible = false
+                ProgressBars.abilityBarForFlashing.isVisible = false
                 ProgressBars.abilityBarLabel.isVisible = false
     
                 return State.free.heroSelected.apply {
@@ -646,24 +620,28 @@ fun updateCombatHeroMultiUseMapItemChosen(currState : State.combat.hero.multiUse
     {
         val selectedPosition = GameScreen.roomTouchPosition
         val targetPositions = currState.targetPositions ?: emptyList()
-        if (selectedPosition in targetPositions)
+        if (currState.chosenMultiUseItem!!.baseAPUseCost <= World.hero.abilityPoints)
         {
-            val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition)
-            
-            for (position in affectedPositions)
+            ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - multiUseMapItem.baseAPUseCost
+            if (selectedPosition in targetPositions)
             {
-                Map.changeTile(MapLayer.select, position, Tiles.selectOrange)
-            }
-            Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-            
-            return State.combat.hero.multiUseMapItemTargetSelectedOnce.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                this.chosenMultiUseItem = multiUseMapItem
-                this.targetPositions = targetPositions
-                this.selectedPosition.set(selectedPosition)
-                this.effectPositions = affectedPositions
+                val affectedPositions = multiUseMapItem.getAffectedPositions(selectedPosition)
+        
+                for (position in affectedPositions)
+                {
+                    Map.changeTile(MapLayer.select, position, Tiles.selectOrange)
+                }
+                Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+        
+                return State.combat.hero.multiUseMapItemTargetSelectedOnce.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenMultiUseItem = multiUseMapItem
+                    this.targetPositions = targetPositions
+                    this.selectedPosition.set(selectedPosition)
+                    this.effectPositions = affectedPositions
+                }
             }
         }
     }
@@ -684,7 +662,8 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedOnce(currState : State.combat.h
     {
         val selectedPosition = GameScreen.roomTouchPosition
         Map.clearLayer(MapLayer.select)
-        
+        ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - multiUseMapItem.baseAPUseCost
+    
         if (selectedPosition == currState.selectedPosition)
         {
             multiUseMapItem.use(World.currentRoom, selectedPosition)
@@ -755,6 +734,8 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
         if (canBeUsedAgain)
         {
             val targetPositions = State.combat.hero.multiUseMapItemChosen.targetPositions ?: emptyList()
+            ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - (currState.chosenMultiUseItem?.baseAPUseCost
+                    ?: 0)
             for (position in targetPositions)
             {
                 Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
@@ -795,24 +776,28 @@ fun updateCombatHeroStackableMapItemChosen(currState : State.combat.hero.stackab
     {
         val selectedPosition = GameScreen.roomTouchPosition
         val targetPositions = currState.targetPositions ?: emptyList()
-        if (selectedPosition in targetPositions)
+        if (stackableMapItem.baseAPUseCost <= World.hero.abilityPoints)
         {
-            val affectedPositions = stackableMapItem.getAffectedPositions(selectedPosition)
-            
-            for (position in affectedPositions)
+            ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - stackableMapItem.baseAPUseCost
+            if (selectedPosition in targetPositions)
             {
-                Map.changeTile(MapLayer.select, position, Tiles.selectOrange)
-            }
-            Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-            
-            return State.combat.hero.stackableMapItemTargetSelectedOnce.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-                this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                this.chosenStackableMapItem = stackableMapItem
-                this.targetPositions = targetPositions
-                this.selectedPosition.set(selectedPosition)
-                this.effectPositions = affectedPositions
+                val affectedPositions = stackableMapItem.getAffectedPositions(selectedPosition)
+        
+                for (position in affectedPositions)
+                {
+                    Map.changeTile(MapLayer.select, position, Tiles.selectOrange)
+                }
+                Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+        
+                return State.combat.hero.stackableMapItemTargetSelectedOnce.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenStackableMapItem = stackableMapItem
+                    this.targetPositions = targetPositions
+                    this.selectedPosition.set(selectedPosition)
+                    this.effectPositions = affectedPositions
+                }
             }
         }
     }
@@ -833,7 +818,8 @@ fun updateCombatHeroStackableMapItemTargetSelectedOnce(currState : State.combat.
     {
         val selectedPosition = GameScreen.roomTouchPosition
         Map.clearLayer(MapLayer.select)
-        
+        ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - stackableMapItem.baseAPUseCost
+    
         if (selectedPosition == currState.selectedPosition)
         {
             stackableMapItem.use(World.currentRoom, selectedPosition)
@@ -903,6 +889,8 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
         
         if (canBeUsedAgain)
         {
+            ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - (currState.chosenStackableMapItem?.baseAPUseCost
+                    ?: 0)
             val targetPositions = State.combat.hero.stackableMapItemChosen.targetPositions ?: emptyList()
             for (position in targetPositions)
             {

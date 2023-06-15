@@ -7,6 +7,9 @@ import com.efm.*
 import com.efm.assets.*
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.state.State
+import com.efm.state.getState
+import kotlin.math.cos
 
 object ProgressBars
 {
@@ -14,8 +17,10 @@ object ProgressBars
     lateinit var healthBarLabel : Label
     lateinit var abilityBar : ProgressBar
     lateinit var abilityBarLabel : Label
+    lateinit var abilityBarForFlashing : ProgressBar
     lateinit var flashingProgressBars : MutableList<ProgressBar>
-    
+    var flashTimer = 0.0
+    var timerChange = 0.03
     fun createBar(
             height : Float,
             colorTexture : NinePatch,
@@ -48,14 +53,33 @@ object ProgressBars
         val barWidth = width
         val barStack = Stack()
         val barContainer : Container<ProgressBar> = Container(bar)
-    
+        
         val table = Table()
         table.add(barLabel)
-    
+        
         barContainer.width(barWidth)
         barStack.add(barContainer)
         barStack.add(table)
+        
+        return barStack
+    }
     
+    fun createAbilityStack(bar1 : ProgressBar, bar2 : ProgressBar, width : Float, barLabel : Label) : Stack
+    {
+        val barWidth = width
+        val barStack = Stack()
+        val barContainer1 : Container<ProgressBar> = Container(bar1)
+        val barContainer2 : Container<ProgressBar> = Container(bar2)
+        
+        val table = Table()
+        table.add(barLabel)
+        
+        barContainer1.width(barWidth)
+        barStack.add(barContainer1)
+        barContainer2.width(barWidth)
+        barStack.add(barContainer2)
+        barStack.add(table)
+        
         return barStack
     }
     
@@ -75,6 +99,13 @@ object ProgressBars
                 World.hero.abilityPoints,
                 World.hero.maxAbilityPoints
                               )
+        abilityBarForFlashing = createBar(
+                24f,
+                Textures.knobAbilitybarAfterNinePatch,
+                World.hero.abilityPoints,
+                World.hero.maxAbilityPoints
+                                         )
+        abilityBarForFlashing.setColor(8f, 196f, 252f, 1f)
         abilityBarLabel = createLabel(World.hero.abilityPoints, World.hero.maxAbilityPoints)
     }
     
@@ -82,8 +113,7 @@ object ProgressBars
     {
         
         val healthStack = createStack(healthBar, 376f, healthBarLabel)
-        val abilityStack = createStack(abilityBar, 180f, abilityBarLabel)
-        
+        val abilityStack = createAbilityStack(abilityBarForFlashing, abilityBar, 180f, abilityBarLabel)
         val progressBars = columnOf(
                 rowOf(healthStack, abilityStack)
                                    ).align(Align.top)
@@ -92,13 +122,85 @@ object ProgressBars
         GameScreen.stage.addActor(progressBars)
     }
     
-//    fun handleProgressBarsFlashing()
-//    {
-//        if (flashingProgressBars.size > 0)
-//        {
-//
-//        }
-//    }
-//
-
+    fun flashProgressBar()
+    {
+        if (flashTimer < 0.07)
+        {
+            timerChange = 0.03
+        }
+        if (flashTimer > 1.50)
+        {
+            timerChange = -0.03
+        }
+        val newState = when (val currState = getState())
+        {
+            is State.constrained.moveSelectedTwice       ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.constrained.enemySelected           ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.constrained.entitySelected          ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.constrained.noSelection             ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.constrained.nothingSelected         ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.constrained.stackableSelfItemChosen ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.combat.hero.moveSelectedTwice       ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.combat.hero.enemySelected           ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.combat.hero.entitySelected          ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.combat.hero.noSelection             ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.combat.hero.nothingSelected         ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            is State.combat.hero.stackableSelfItemChosen ->
+            {
+                flashTimer = 0.0
+                abilityBar.setColor(8f, 196f, 252f, 1f)
+            }
+            else                                         ->
+            {
+                abilityBar.setColor(8f, 196f, 252f, cos(flashTimer).toFloat())
+                flashTimer += timerChange
+            }
+        }
+        
+    }
+    
 }

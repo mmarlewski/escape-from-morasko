@@ -191,7 +191,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             enemy.changeOwnHelthBarPos()
         }
-//        ProgressBars.handleProgressBarsFlashing()
+        ProgressBars.flashProgressBar()
         stage.draw()
     }
     

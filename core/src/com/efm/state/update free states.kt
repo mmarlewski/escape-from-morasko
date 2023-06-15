@@ -23,6 +23,7 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
     {
         World.hero.regainAllAP()
         ProgressBars.abilityBar.isVisible = true
+        ProgressBars.abilityBarForFlashing.isVisible = true
         ProgressBars.abilityBarLabel.isVisible = true
     
         return State.constrained.noSelection.apply {
@@ -94,6 +95,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
     {
         World.hero.regainAllAP()
         ProgressBars.abilityBar.isVisible = true
+        ProgressBars.abilityBarForFlashing.isVisible = true
         ProgressBars.abilityBarLabel.isVisible = true
     
         return State.constrained.noSelection.apply {
@@ -169,6 +171,7 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
     {
         World.hero.regainAllAP()
         ProgressBars.abilityBar.isVisible = true
+        ProgressBars.abilityBarForFlashing.isVisible = true
         ProgressBars.abilityBarLabel.isVisible = true
     
         return State.constrained.noSelection.apply {
@@ -233,6 +236,7 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
     {
         World.hero.regainAllAP()
         ProgressBars.abilityBar.isVisible = true
+        ProgressBars.abilityBarForFlashing.isVisible = true
         ProgressBars.abilityBarLabel.isVisible = true
     
         return State.constrained.noSelection.apply {
@@ -308,6 +312,7 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
     {
         World.hero.regainAllAP()
         ProgressBars.abilityBar.isVisible = true
+        ProgressBars.abilityBarForFlashing.isVisible = true
         ProgressBars.abilityBarLabel.isVisible = true
     
         return State.constrained.noSelection.apply {
@@ -415,11 +420,13 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
                 {
                     World.hero.regainAllAP()
                     ProgressBars.abilityBar.isVisible = true
+                    ProgressBars.abilityBarForFlashing.isVisible = true
                     ProgressBars.abilityBarLabel.isVisible = true
                 }
                 false ->
                 {
                     ProgressBars.abilityBar.isVisible = false
+                    ProgressBars.abilityBarForFlashing.isVisible = false
                     ProgressBars.abilityBarLabel.isVisible = false
                 }
             }

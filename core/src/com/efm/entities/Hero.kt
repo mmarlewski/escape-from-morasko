@@ -68,6 +68,7 @@ class Hero(
             this.abilityPoints -= apCost
         }
         ProgressBars.abilityBar.value -= apCost
+        ProgressBars.abilityBarForFlashing.value -= apCost
         ProgressBars.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
     }
     
@@ -82,6 +83,7 @@ class Hero(
             this.abilityPoints += by
         }
         ProgressBars.abilityBar.value = this.abilityPoints.toFloat()
+        ProgressBars.abilityBarForFlashing.value = this.abilityPoints.toFloat()
         ProgressBars.abilityBarLabel.setText("${this.abilityPoints} / ${this.maxAbilityPoints}")
     }
     
