@@ -178,7 +178,7 @@ object ItemsStructure
             action : () -> Unit
                                ) : ImageButton
     {
-        val button = itemButtonWithHealthbar(
+        val button = itemButtonWithHealthBar(
                 texture, maxHealth, currentHealth,
                 Textures.upNinePatch,
                 Textures.downNinePatch,

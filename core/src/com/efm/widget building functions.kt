@@ -562,12 +562,12 @@ fun menuPopup(
         window.isVisible = false
     }
     
-    window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)
+    window.add(columnOf(resumeButton, equipmentButton, /*settingsButton,*/ backToMenuButton)).pad(50f)
     
     return window
 }
 
-fun itemButtonWithHealthbar(
+fun itemButtonWithHealthBar(
         image : Texture,
         maxHealth : Int,
         currentHealth : Int,

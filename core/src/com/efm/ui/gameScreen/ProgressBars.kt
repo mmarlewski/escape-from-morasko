@@ -64,6 +64,24 @@ object ProgressBars
         return barStack
     }
     
+    fun createEnemyHealthBarStack(bar : ProgressBar, width : Float, barLabel : Label) : Stack
+    {
+        val barWidth = width
+        val barStack = Stack()
+        val barContainer : Container<ProgressBar> = Container(bar)
+        
+        val table = Table()
+        table.add(barLabel)
+        
+        barContainer.width(barWidth)
+        barStack.add(barContainer)
+//        barStack.add(table)
+        
+        barStack.pack()
+        
+        return barStack
+    }
+    
     fun createAbilityStack(bar1 : ProgressBar, bar2 : ProgressBar, width : Float, barLabel : Label) : Stack
     {
         val barWidth = width
