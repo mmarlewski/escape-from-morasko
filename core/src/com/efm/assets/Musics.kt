@@ -11,6 +11,11 @@ object Musics
     val executive = load("executive.mp3")
     val voyager = load("voyager.mp3")
     
+    val versaLifeAmbient = load("versaLifeAmbient.mp3")
+    val versaLifeCombat = load("versaLifeCombat.mp3")
+    val enemyWithinAmbient = load("enemyWithinAmbient.mp3")
+    val enemyWithinCombat = load("enemyWithinCombat.mp3")
+    
     private fun load(name : String) : Music
     {
         val filePath = "music/$name"

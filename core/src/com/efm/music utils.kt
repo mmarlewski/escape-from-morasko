@@ -3,7 +3,7 @@ package com.efm
 import com.badlogic.gdx.audio.Music
 
 private var currentMusic : Music? = null
-private var musicVolume = 1f
+private var musicVolume = 0.5f
 
 /**
  * newVolume in range 0f .. 1f

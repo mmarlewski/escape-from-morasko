@@ -39,7 +39,7 @@ object MenuScreen : BaseScreen()
                                          )
         {
             Sounds.blop.playOnce()
-            playMusicIfNotAlreadyPlaying(Musics.voyager)
+            playMusicIfNotAlreadyPlaying(Musics.versaLifeAmbient)
             GameScreen.setScreen()
         }
         
