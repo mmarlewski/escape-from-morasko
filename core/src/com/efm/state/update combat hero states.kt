@@ -550,6 +550,7 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
         val isMoveToAnotherLevel = currState.isMoveToAnotherLevel
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
         
+        // maybe this can be moved to Exit.interact() if Exit can check current state // wait why is this checked twice?T
         if (isMoveToAnotherRoom)
         {
             when (areEnemiesInRoom)

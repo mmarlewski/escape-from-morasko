@@ -38,13 +38,14 @@ fun World.createWorld()
     val betweenForge1AndForge3 = RoomPassage(forge1, RoomPosition(2, 1), Direction4.up, forge3, RoomPosition(2, 3))
     
     val betweenFurnace1AndFurnace2 = RoomPassage(furnace1, RoomPosition(3, 2), Direction4.left, furnace2, RoomPosition(1, 2))
-    val betweenFurnace1AndFurnace3 = RoomPassage(furnace1, RoomPosition(1, 2), Direction4.right, furnace3, RoomPosition(3, 2))
+    val betweenFurnace1AndFurnace3 =
+            RoomPassage(furnace1, RoomPosition(1, 2), Direction4.right, furnace3, RoomPosition(3, 2))
     
     val betweenMines1AndMines2 = RoomPassage(mines1, RoomPosition(2, 3), Direction4.up, mines2, RoomPosition(2, 1))
     val betweenMines2AndMines3 = RoomPassage(mines2, RoomPosition(2, 3), Direction4.up, mines3, RoomPosition(2, 1))
     
-    val fromForge3ToFurnace = LevelPassage(forge3, Direction4.up, furnace)
-    val fromFurnace3ToMines = LevelPassage(furnace3, Direction4.right, mines, true)
+    //val fromForge3ToFurnace = LevelPassage(forge3, Direction4.up, furnace)
+    //val fromFurnace3ToMines = LevelPassage(furnace3, Direction4.right, mines, true)
     
     // forge
     
@@ -112,7 +113,7 @@ fun World.createWorld()
     forge3.addEntityAt(StoneWall(Direction4.left), 4, 1)
     forge3.addEntityAt(StoneWall(Direction4.left), 4, 2)
     forge3.addEntityAt(StoneWall(Direction4.up, Direction4.left), 3, 3)
-    forge3.addEntityAt(MetalExit(Direction4.up, fromForge3ToFurnace), 2, 4)
+    //forge3.addEntityAt(MetalExit(Direction4.up, fromForge3ToFurnace), 2, 4)
     forge3.addEntityAt(StoneWall(Direction4.up), 1, 4)
     forge3.addEntityAt(StoneWall(), 0, 4)
     forge3.addEntityAt(StoneWall(Direction4.right), 0, 3)
@@ -217,7 +218,7 @@ fun World.createWorld()
     furnace3.addEntityAt(MetalWall(Direction4.up), 1, 4)
     furnace3.addEntityAt(MetalWall(), 0, 4)
     furnace3.addEntityAt(MetalWall(Direction4.right), 0, 3)
-    furnace3.addEntityAt(MetalExit(Direction4.right, fromFurnace3ToMines), 0, 2)
+    //furnace3.addEntityAt(MetalExit(Direction4.right, fromFurnace3ToMines), 0, 2)
     furnace3.addEntityAt(MetalWall(Direction4.right), 0, 1)
     
     furnace3.addEntityAt(StoneColumn(), 2, 2)
@@ -459,7 +460,7 @@ fun World.addTestBigRoomsLevel()
     // room passages
     val roomPassages = mutableListOf<RoomPassage>(
             RoomPassage(tbrl1, RoomPosition(10, 3), Direction4.left, tbrl2, RoomPosition(0, 6)),
-            RoomPassage(tbrl2, RoomPosition(15, 4), Direction4.left, tbrl3, RoomPosition(0, 4)),
+            //RoomPassage(tbrl2, RoomPosition(15, 4), Direction4.left, tbrl3, RoomPosition(0, 4)),
             RoomPassage(tbrl2, RoomPosition(15, 9), Direction4.left, tbrl4, RoomPosition(0, 4)),
             RoomPassage(tbrl3, RoomPosition(3, 5), Direction4.up, tbrl4, RoomPosition(3, 0), isActive = false)
                                                  )
@@ -471,8 +472,28 @@ fun World.addTestBigRoomsLevel()
         // add in roomB
         passage.roomB.replaceEntityAt(StoneExit(passage.directionB, passage), passage.positionB)
     }
-    //level passages
-    
+    // level
+    val level2room = Room("1", 5, 5)
+    for (y in 1 until level2room.heightInSpaces)
+    {
+        for (x in 1 until level2room.widthInSpaces)
+        {
+            level2room.changeBaseAt(Base.values()[y % 4], x, y)
+        }
+    }
+    val level2 = Level("test_level2", mutableListOf<Room>(level2room), mutableListOf<RoomPassage>())
+    level2.changeStartingRoom(level2room)
+    level2.changeStartingPosition(3, 3)
+    // level passages
+    val levelPassages = mutableListOf<LevelPassage>(
+            LevelPassage(tbrl2, RoomPosition(15, 4), Direction4.left, level2, true)
+                                                   )
+    // add level exits
+    for (passage in levelPassages)
+    {
+        // add in roomA
+        passage.originRoom.replaceEntityAt(StoneExit(passage.originDirection, passage), passage.originPosition)
+    }
     // level
     val tbrl = Level("test_level", rooms, roomPassages)
     tbrl.changeStartingRoom(tbrl2)
@@ -487,4 +508,5 @@ fun World.addTestBigRoomsLevel()
     tbrl4.addEntityAt(WizardBoss(), 3, 3)
     // add to World
     addLevel(tbrl)
+    addLevel(level2)
 }

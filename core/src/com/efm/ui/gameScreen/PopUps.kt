@@ -1,13 +1,9 @@
 package com.efm.ui.gameScreen
 
-import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
-import com.efm.Map
 import com.efm.assets.*
-import com.efm.level.World
 import com.efm.screens.GameScreen
-import com.efm.state.*
 
 object PopUps
 {
@@ -15,7 +11,6 @@ object PopUps
     lateinit var endTurn : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var menuPause : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var settings : com.badlogic.gdx.scenes.scene2d.ui.Window
-    lateinit var nextLevel : com.badlogic.gdx.scenes.scene2d.ui.Window
     
     fun endTurn() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
@@ -24,11 +19,11 @@ object PopUps
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.pauseBackgroundNinePatch
-                //enemy turn
                                        )
         {
             endCurrentTurn()
         }
+    
         endTurnPopUp.isVisible = false
         
         return endTurnPopUp
@@ -61,28 +56,11 @@ object PopUps
         return menuPausePopUp
     }
     
-    fun nextLevel() : Window
-    {
-        val nextLevelPopUp = windowAreaOf(
-                "You are about to leave this level\n\nAre you sure?",
-                Fonts.pixeloid20,
-                Colors.black,
-                Textures.pauseBackgroundNinePatch
-//                Exit.travelBetweenLevels()
-                                         )
-        {
-            //
-        }
-        nextLevelPopUp.isVisible = false
-        return nextLevelPopUp
-    }
-    
     init
     {
         endTurn = endTurn()
         menuPause = menuPause()
         settings = settings()
-        nextLevel = nextLevel()
     }
     
     fun setEndTurnVisibility(visibility : Boolean)
@@ -100,27 +78,19 @@ object PopUps
         menuPause.isVisible = visibility
     }
     
-    fun setNextLevelVisibility(visibility : Boolean)
-    {
-        nextLevel.isVisible = visibility
-    }
-    
     fun display()
     {
         val endTurnWindow = columnOf(rowOf(endTurn)).align(Align.center)
         val pauseWindow = columnOf(rowOf(menuPause)).align(Align.center)
         val settingsWindow = columnOf(rowOf(settings)).align(Align.center)
-        val nextLevelWindow = columnOf(rowOf(nextLevel)).align(Align.center)
         
         settingsWindow.setFillParent(true)
         endTurnWindow.setFillParent(true)
         pauseWindow.setFillParent(true)
-        nextLevelWindow.setFillParent(true)
         
         GameScreen.stage.addActor(endTurnWindow)
         GameScreen.stage.addActor(settingsWindow)
         GameScreen.stage.addActor(pauseWindow)
-        GameScreen.stage.addActor(nextLevelWindow)
         
     }
 }

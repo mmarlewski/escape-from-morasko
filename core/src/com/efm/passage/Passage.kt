@@ -16,6 +16,7 @@ interface Passage
  */
 class LevelPassage(
         val originRoom : Room,
+        val originPosition : RoomPosition,
         val originDirection : Direction4,
         val targetLevel : Level,
         var isActive : Boolean = true
