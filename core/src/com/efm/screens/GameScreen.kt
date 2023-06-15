@@ -192,7 +192,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             enemy.changeOwnHealthBarPos()
         }
-//        ProgressBars.handleProgressBarsFlashing()
+        ProgressBars.flashProgressBar()
         gameStage.draw()
         stage.draw()
     }
