@@ -3,6 +3,7 @@ package com.efm.entity
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.efm.*
+import com.efm.Map
 import com.efm.assets.Textures
 import com.efm.level.World
 import com.efm.room.RoomPosition
@@ -76,15 +77,15 @@ interface Enemy : Character
                 detectionPositions.add((position.positionOffsetBy(i, Direction4.up)).positionOffsetBy(j, Direction4.left))
             }
         }
-    
+        
         return detectionPositions
     }
     
     fun createOwnHealthBar() : ProgressBar
     {
         healthBar =
-                ProgressBars.createBar(20F, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
-        GameScreen.stage.addActor(healthBar)
+                ProgressBars.createBar(5f, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
+        GameScreen.gameStage.addActor(healthBar)
         healthBar.isVisible = true
         return healthBar
     }
@@ -94,14 +95,16 @@ interface Enemy : Character
         healthBar.isVisible = true
     }
     
-    fun changeOwnHelthBarPos()
+    fun changeOwnHealthBarPos()
     {
-        val orthoPos = roomPositionToOrtho(position)
-        val isoPos = GameScreen.gameViewport.project(orthoToIso(orthoPos))
-        healthBar.setPosition(isoPos.x * 0.5f + 25f, isoPos.y * 0.5f + 120f)
+        val orthoPosition = roomPositionToOrtho(position)
+        val isoPosition = orthoToIso(orthoPosition)
+        isoPosition.x
+        isoPosition.y += Map.tileLengthHalfInPixels
+        healthBar.setPosition(isoPosition.x, isoPosition.y)
+        
         healthBar.value = healthPoints.toFloat()
     }
-    
     
     fun hideOwnHealthBar()
     {
