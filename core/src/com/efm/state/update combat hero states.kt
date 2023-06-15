@@ -456,7 +456,8 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         val selectedPosition = GameScreen.roomTouchPosition
         val selectedSpace = World.currentRoom.getSpace(selectedPosition)
         val selectedEntity = selectedSpace?.getEntity()
-        
+        Map.clearLayer(MapLayer.outline)
+    
         if (selectedPosition == currState.selectedPosition)
         {
             Map.clearLayer(MapLayer.select)

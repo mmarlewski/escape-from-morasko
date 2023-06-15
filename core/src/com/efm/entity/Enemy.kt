@@ -2,6 +2,7 @@ package com.efm.entity
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Textures
@@ -20,6 +21,7 @@ interface Enemy : Character
     val attackRange : Int
     val stepsInOneTurn : Int
     var healthBar : ProgressBar
+    var healthStack : Stack
     fun getOutlineRedTile() : TiledMapTile?
     
     fun performTurn()
@@ -81,34 +83,40 @@ interface Enemy : Character
         return detectionPositions
     }
     
-    fun createOwnHealthBar() : ProgressBar
+    fun createOwnHealthBar()
     {
         healthBar =
                 ProgressBars.createBar(5f, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
         GameScreen.gameStage.addActor(healthBar)
-        healthBar.isVisible = true
-        return healthBar
+        val healthLabel = ProgressBars.createLabel(this.healthPoints, this.maxHealthPoints)
+        healthLabel.isVisible = false
+        healthStack = ProgressBars.createStack(healthBar, 100f, healthLabel)
+        GameScreen.stage.addActor(healthStack)
+        healthStack.isVisible = true
     }
     
     fun displayOwnHealthBar()
     {
-        healthBar.isVisible = true
+        healthStack.isVisible = true
     }
     
     fun changeOwnHealthBarPos()
     {
-        val orthoPosition = roomPositionToOrtho(position)
-        val isoPosition = orthoToIso(orthoPosition)
-        isoPosition.x
-        isoPosition.y += Map.tileLengthHalfInPixels
-        healthBar.setPosition(isoPosition.x, isoPosition.y)
-        
+//        val orthoPosition = roomPositionToOrtho(position)
+//        val isoPosition = orthoToIso(orthoPosition)
+//        isoPosition.x
+//        isoPosition.y += Map.tileLengthHalfInPixels
+//        healthStack.setPosition(isoPosition.x, isoPosition.y)
+//        healthBar.value = healthPoints.toFloat()
+        val orthoPos = roomPositionToOrtho(position)
+        val isoPos = GameScreen.gameViewport.project(orthoToIso(orthoPos))
+        healthStack.setPosition(isoPos.x * 0.5f + 25f, isoPos.y * 0.5f + 70f)
         healthBar.value = healthPoints.toFloat()
     }
     
     fun hideOwnHealthBar()
     {
-        healthBar.isVisible = false
+        healthStack.isVisible = false
     }
     
 }

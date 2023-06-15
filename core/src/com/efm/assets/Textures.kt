@@ -56,7 +56,7 @@ object Textures
     val knobAfterNinePatch = NinePatch(knobAfter, 5, 5, 5, 5)
     val knobNinePatch = NinePatch(knob, 5, 5, 5, 5)
     val knobHealthbarAfterNinePatch = NinePatch(knobHealthbarAfter, 5, 5, 5, 5)
-    val knobAbilitybarAfterNinePatch = NinePatch(knobAbilitybarAfter, 5, 5, 5, 5)
+    val knobAbilitybarAfterNinePatch = NinePatch(knobAbilitybarAfter, 0, 0, 0, 0)
     val materialKnobNinePatch = NinePatch(materialKnob, 5, 5, 5, 5)
     val materialKnobNinePatchBeforeBlack = NinePatch(materialKnobBeforeBlack, 5, 5, 5, 5)
     val materialKnobNinePatchBeforeBlue = NinePatch(materialKnobBeforeBlue, 5, 5, 5, 5)

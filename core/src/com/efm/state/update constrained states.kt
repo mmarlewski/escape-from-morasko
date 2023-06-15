@@ -519,7 +519,7 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
             moveHero(World.hero.position, currState.selectedPosition, currState.pathSpaces)
             for (enemy in World.currentRoom.getEnemies())
             {
-                enemy.healthBar.isVisible = false
+                enemy.healthStack.isVisible = false
             }
             var isHeroMovingThroughDetectionPosition = false
             val pathsSpacesPlusSelectedSpace = mutableListOf<Space>()

@@ -2,6 +2,7 @@ package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
@@ -19,6 +20,7 @@ class CrossbowEnemy : Entity, Enemy
     override val attackRange = 3
     override val stepsInOneTurn = 1
     override lateinit var healthBar : ProgressBar
+    override lateinit var healthStack : Stack
     
     override fun getTile() : TiledMapTile
     {
