@@ -34,7 +34,7 @@ class Bomb(
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
         val targetPositions = mutableListOf<RoomPosition>()
-    
+        
         targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 2))
         targetPositions.addAll(getSquarePerimeterPositions(World.hero.position, 3))
         
@@ -44,7 +44,7 @@ class Bomb(
     override fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
     {
         val affectedPositions = mutableListOf<RoomPosition>()
-    
+        
         affectedPositions.addAll(getSquareAreaPositions(targetPosition, 2))
         
         return affectedPositions.toList()
@@ -70,7 +70,7 @@ class Bomb(
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.moveTile(Tiles.bomb, World.hero.position, targetPosition.copy(), 1.0f)
+        animations += Animation.moveTileWithArch(Tiles.bomb, World.hero.position, targetPosition.copy(), 1.0f, 0.5f)
         animations += Animation.action { playSoundOnce(Sounds.bomb) }
         animations += Animation.simultaneous(
                 listOf(

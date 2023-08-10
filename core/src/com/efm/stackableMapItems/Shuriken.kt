@@ -35,7 +35,7 @@ class Shuriken(
     {
         val targetPositions = mutableListOf<RoomPosition>()
         
-        val squarePositions = getSquareAreaPositions(source, 3)
+        val squarePositions = getSquareAreaPositions(source, 4)
         for (squarePosition in squarePositions)
         {
             val linePositions =

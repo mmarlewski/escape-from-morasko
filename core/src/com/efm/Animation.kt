@@ -8,6 +8,7 @@ import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.toVector2
 import com.efm.screens.GameScreen
+import kotlin.math.abs
 
 sealed class Animation
 {
@@ -187,6 +188,90 @@ sealed class Animation
         }
     }
     
+    open class moveCameraSmoothlyWithRoomPositions(
+            val from : RoomPosition?,
+            val to : RoomPosition,
+            val smoothness : Float
+                                                  ) : Animation()
+    {
+        val moveCameraPosition = Vector2()
+        
+        override fun start()
+        {
+            resetDeltaTime()
+            
+            if (from != null)
+            {
+                moveCameraPosition.set(from.toVector2())
+            }
+            else
+            {
+                val isoCameraPosition = GameScreen.getCameraPosition()
+                val orthoCameraPosition = isoToOrtho(isoCameraPosition)
+                val roomCameraPosition = orthoToRoomPosition(orthoCameraPosition)
+                moveCameraPosition.set(roomCameraPosition.toVector2())
+            }
+        }
+        
+        override fun update()
+        {
+            val cameraDistanceX = to.x - moveCameraPosition.x
+            val cameraDistanceY = to.y - moveCameraPosition.y
+            moveCameraPosition.x += cameraDistanceX * smoothness
+            moveCameraPosition.y += cameraDistanceY * smoothness
+            GameScreen.focusCameraOnVector2Position(moveCameraPosition)
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            val tileDistanceX = to.x - moveCameraPosition.x
+            val tileDistanceY = to.y - moveCameraPosition.y
+            return (abs(tileDistanceX) < smoothness && abs(tileDistanceY) < smoothness)
+        }
+    }
+    
+    open class moveCameraSmoothlyWithIsoPositions(
+            val from : Vector2?,
+            val to : Vector2,
+            val smoothness : Float
+                                                 ) : Animation()
+    {
+        val moveCameraPosition = Vector2()
+        
+        override fun start()
+        {
+            resetDeltaTime()
+            
+            if (from != null)
+            {
+                moveCameraPosition.set(from)
+            }
+            else
+            {
+                val isoCameraPosition = GameScreen.getCameraPosition()
+                val orthoCameraPosition = isoToOrtho(isoCameraPosition)
+                val roomCameraPosition = orthoToRoomPosition(orthoCameraPosition)
+                moveCameraPosition.set(roomCameraPosition.toVector2())
+            }
+        }
+        
+        override fun update()
+        {
+            val cameraDistanceX = to.x - moveCameraPosition.x
+            val cameraDistanceY = to.y - moveCameraPosition.y
+            moveCameraPosition.x += cameraDistanceX * smoothness
+            moveCameraPosition.y += cameraDistanceY * smoothness
+            GameScreen.focusCameraOnIsoPosition(moveCameraPosition)
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            val tileDistanceX = to.x - moveCameraPosition.x
+            val tileDistanceY = to.y - moveCameraPosition.y
+            return (abs(tileDistanceX) < smoothness && abs(tileDistanceY) < smoothness)
+        }
+    }
+    
     class focusCamera(val on : RoomPosition, val seconds : Float) : Animation()
     {
         override fun start()
@@ -340,6 +425,83 @@ sealed class Animation
         
     }
     
+    open class moveTileSmoothly(
+            val tile : TiledMapTile?,
+            val from : RoomPosition?,
+            val to : RoomPosition,
+            val smoothness : Float
+                               ) : Animation()
+    {
+        val moveTilePosition = Vector2()
+        
+        override fun start()
+        {
+            resetDeltaTime()
+            
+            if (from != null)
+            {
+                moveTilePosition.set(from.toVector2())
+            }
+            else
+            {
+                val isoCameraPosition = GameScreen.getCameraPosition()
+                val orthoCameraPosition = isoToOrtho(isoCameraPosition)
+                val roomCameraPosition = orthoToRoomPosition(orthoCameraPosition)
+                moveTilePosition.set(roomCameraPosition.toVector2())
+            }
+        }
+        
+        override fun update()
+        {
+            val tileDistanceX = to.x - moveTilePosition.x
+            val tileDistanceY = to.y - moveTilePosition.y
+            moveTilePosition.x += tileDistanceX * smoothness
+            moveTilePosition.y += tileDistanceY * smoothness
+        }
+        
+        override fun isFinished() : Boolean
+        {
+            val tileDistanceX = to.x - moveTilePosition.x
+            val tileDistanceY = to.y - moveTilePosition.y
+            return (abs(tileDistanceX) < smoothness && abs(tileDistanceY) < smoothness)
+        }
+    }
+    
+    class moveTileSmoothlyWithCameraFocus(
+            tile : TiledMapTile?,
+            from : RoomPosition?,
+            to : RoomPosition,
+            smoothness : Float
+                                         ) : moveTileSmoothly(tile, from, to, smoothness)
+    {
+        
+        override fun update()
+        {
+            super.update()
+            
+            GameScreen.focusCameraOnVector2Position(moveTilePosition)
+        }
+        
+    }
+    
+    class moveTileWithArch(
+            tile : TiledMapTile?,
+            from : RoomPosition,
+            to : RoomPosition,
+            seconds : Float,
+            val heightPercent : Float
+                          ) : moveTile(tile, from, to, seconds)
+    {
+        var movePercent = 0.0f
+        
+        override fun update()
+        {
+            super.update()
+            
+            movePercent = deltaTimeDifference() / seconds
+        }
+    }
+    
     open class showTile(
             val tile : TiledMapTile?,
             val where : RoomPosition,
@@ -351,11 +513,11 @@ sealed class Animation
         {
             resetDeltaTime()
         }
-    
+        
         override fun update()
         {
         }
-    
+        
         override fun isFinished() : Boolean
         {
             return (deltaTimeDifference() > seconds)

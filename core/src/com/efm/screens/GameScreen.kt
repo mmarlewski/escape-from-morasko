@@ -15,6 +15,7 @@ import com.efm.assets.Colors
 import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.room.toVector2
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
 

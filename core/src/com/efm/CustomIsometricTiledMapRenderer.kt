@@ -7,6 +7,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.renderers.BatchTiledMapRenderer
 import com.badlogic.gdx.math.*
+import kotlin.math.PI
+import kotlin.math.sin
 
 class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
 {
@@ -132,7 +134,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
     {
         when (animation)
         {
-            is Animation.sequence     ->
+            is Animation.sequence         ->
             {
                 val anim = animation.currAnimation
                 
@@ -148,7 +150,8 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                                  )
                 }
             }
-            is Animation.simultaneous ->
+            
+            is Animation.simultaneous     ->
             {
                 for (anim in animation.mutAnimations)
                 {
@@ -162,7 +165,8 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                                  )
                 }
             }
-            is Animation.ascendTile   ->
+            
+            is Animation.ascendTile       ->
             {
                 val animationPosition = Vector2()
                 animationPosition.x = animation.on.x.toFloat()
@@ -191,7 +195,8 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                             )
                 }
             }
-            is Animation.descendTile  ->
+            
+            is Animation.descendTile      ->
             {
                 val animationPosition = Vector2()
                 animationPosition.x = animation.on.x.toFloat()
@@ -220,7 +225,38 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                             )
                 }
             }
-            is Animation.moveTile     ->
+            
+            is Animation.moveTileWithArch ->
+            {
+                val animationPosition = Vector2()
+                animationPosition.x = animation.moveTilePosition.x
+                animationPosition.y = Map.mapHeightInTiles - animation.moveTilePosition.y - 1
+                val animationTile = animation.tile
+                val animationTilePosition = Vector2()
+                animationTilePosition.x = animationPosition.x * halfTileWidth + animationPosition.y * halfTileWidth
+                animationTilePosition.y = animationPosition.y * halfTileHeight - animationPosition.x * halfTileHeight
+                val isAnimationTileOnMapTile =
+                        (animationPosition.x.toInt() == col && animationPosition.y.toInt() == row)
+                val height = sin(animation.movePercent * PI.toFloat()) * animation.heightPercent * halfTileHeight * 4
+                animationTilePosition.y += height
+                
+                if (isAnimationTileOnMapTile)
+                {
+                    drawTile(
+                            animationTile,
+                            false,
+                            false,
+                            0,
+                            0f,
+                            0f,
+                            color,
+                            animationTilePosition.x,
+                            animationTilePosition.y
+                            )
+                }
+            }
+            
+            is Animation.moveTile         ->
             {
                 val animationPosition = Vector2()
                 animationPosition.x = animation.moveTilePosition.x
@@ -247,7 +283,36 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                             )
                 }
             }
-            is Animation.showTile     ->
+            
+            is Animation.moveTileSmoothly         ->
+            {
+                val animationPosition = Vector2()
+                animationPosition.x = animation.moveTilePosition.x
+                animationPosition.y = Map.mapHeightInTiles - animation.moveTilePosition.y - 1
+                val animationTile = animation.tile
+                val animationTilePosition = Vector2()
+                animationTilePosition.x = animationPosition.x * halfTileWidth + animationPosition.y * halfTileWidth
+                animationTilePosition.y = animationPosition.y * halfTileHeight - animationPosition.x * halfTileHeight
+                val isAnimationTileOnMapTile =
+                        (animationPosition.x.toInt() == col && animationPosition.y.toInt() == row)
+                
+                if (isAnimationTileOnMapTile)
+                {
+                    drawTile(
+                            animationTile,
+                            false,
+                            false,
+                            0,
+                            0f,
+                            0f,
+                            color,
+                            animationTilePosition.x,
+                            animationTilePosition.y
+                            )
+                }
+            }
+            
+            is Animation.showTile         ->
             {
                 val animationPosition = Vector2()
                 animationPosition.x = animation.where.x.toFloat()
@@ -274,7 +339,8 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                             )
                 }
             }
-            else                      ->
+            
+            else                          ->
             {
             }
         }
@@ -361,6 +427,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                     vertices[Batch.U3] = vertices[Batch.U4]
                     vertices[Batch.U4] = tempU
                 }
+                
                 TiledMapTileLayer.Cell.ROTATE_180 ->
                 {
                     var tempU = vertices[Batch.U1]
@@ -376,6 +443,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                     vertices[Batch.V2] = vertices[Batch.V4]
                     vertices[Batch.V4] = tempV
                 }
+                
                 TiledMapTileLayer.Cell.ROTATE_270 ->
                 {
                     val tempV = vertices[Batch.V1]
