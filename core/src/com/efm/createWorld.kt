@@ -444,10 +444,10 @@ fun World.createWorldPrototypeTwo()
     l1.changeStartingPosition(1, 1)
     
     // entities
-    l1r2.addEntityAt(BladeEnemy(), 3, 3)
+    l1r2.addEntityAt(EnemyMushroom(), 3, 3)
     l1r2.addEntityAt(Chest(), 5, 5)
     l1r2.addEntityAt(ExplodingBarrel(), 8, 3)
-    l1r2.addEntityAt(CrossbowEnemy(), 4, 6)
+    l1r2.addEntityAt(EnemySkeleton(), 4, 6)
     l1r2.addEntityAt(BladeEnemyCorpse(), 2, 2)
     l1r2.addEntityAt(CrossbowEnemyCorpse(), 10, 3)
     l1r2.addEntityAt(MiniEnemy(), 8, 4)

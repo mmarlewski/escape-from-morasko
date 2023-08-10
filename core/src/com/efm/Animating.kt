@@ -32,9 +32,9 @@ object Animating
         nextAnimation = if (animationsIterator.hasNext()) animationsIterator.next() else null
     }
     
-    fun update()
+    fun update(dt : Float)
     {
-        deltaTime += Gdx.graphics.deltaTime
+        deltaTime += dt
         currAnimation.update()
         
         if (currAnimation.isFinished())

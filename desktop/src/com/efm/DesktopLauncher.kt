@@ -9,7 +9,7 @@ object DesktopLauncher
     @JvmStatic fun main(arg : Array<String>)
     {
         val config = Lwjgl3ApplicationConfiguration()
-        config.setForegroundFPS(forefroundFPS)
+        config.setForegroundFPS(foregroundFPS)
         config.setWindowedMode(windowWidth, windowHeight)
         config.setTitle("escape-from-morasko")
         Lwjgl3Application(EscapeFromMorasko, config)

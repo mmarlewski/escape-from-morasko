@@ -16,7 +16,8 @@ fun updateCombatEnemiesEnemyUnselected(currState : State.combat.enemies.enemyUns
         {
             val currEnemyPosition = currEnemy.position
             Map.changeTile(MapLayer.select, currEnemyPosition, Tiles.selectRed)
-            Map.changeTile(MapLayer.outline, currEnemyPosition, currEnemy.getOutlineRedTile())
+            Map.changeTile(MapLayer.entity, currEnemy.position, currEnemy.getIIdleTile(1))
+            Map.changeTile(MapLayer.outline, currEnemyPosition, currEnemy.getOutlineRedTile(1))
             val animation = Animation.focusCamera(currEnemyPosition.copy(), 1f)
             Animating.executeAnimations(mutableListOf(animation))
         }
@@ -42,6 +43,7 @@ fun updateCombatEnemiesEnemySelected(currState : State.combat.enemies.enemySelec
         {
             Map.clearLayer(MapLayer.select)
             Map.clearLayer(MapLayer.outline)
+            Map.changeTile(MapLayer.entity, currEnemy.position, currEnemy.getAttackTile())
             currEnemy.performTurn()
         }
         
@@ -83,15 +85,16 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
                 GameScreen.focusCameraOnRoomPosition(World.hero.position)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
-    
+                
                 RightStructure.xButtonVisibility(true)
-    
+                
                 return State.combat.hero.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.areAnyActionPointsLeft = true
                 }
             }
+            
             else ->
             {
                 val currEnemy = currState.currEnemy

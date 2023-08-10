@@ -35,9 +35,36 @@ class WizardBoss : Entity, Enemy
         return Tiles.wizardEnemyOutlineYellow
     }
     
-    override fun getOutlineRedTile() : TiledMapTile
+    override fun getOutlineRedTile(n:Int) : TiledMapTile
     {
         return Tiles.wizardEnemyOutlineRed
+    }
+    
+    override fun getIIdleTile(n : Int) : TiledMapTile?
+    {
+        return when(n)
+        {
+            1->Tiles.skeletonIdle1
+            2->Tiles.skeletonIdle2
+            3->Tiles.skeletonIdle3
+            else->null
+        }
+    }
+    
+    override fun getMoveTile(n : Int) : TiledMapTile?
+    {
+        return when(n)
+        {
+            1->Tiles.skeletonMove1
+            2->Tiles.skeletonMove2
+            3->Tiles.skeletonMove3
+            else->null
+        }
+    }
+    
+    override fun getAttackTile() : TiledMapTile?
+    {
+        return Tiles.skeletonAttack
     }
     
     override fun performTurn()

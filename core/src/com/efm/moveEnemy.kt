@@ -1,11 +1,9 @@
 package com.efm
-import com.efm.assets.Tiles
-import com.efm.entities.Hero
+
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.screens.GameScreen
-import com.efm.Map
 import com.efm.entity.Enemy
 
 fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : List<Space>, enemy : Enemy)
@@ -17,17 +15,25 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
         GameScreen.updateMapEntityLayer()
     }
     val animations = mutableListOf<Animation>()
-    animations += Animation.action{enemy.hideOwnHealthBar()}
+    animations += Animation.action { enemy.hideOwnHealthBar() }
     animations += Animation.action { Map.changeTile(MapLayer.entity, enemy.position, null) }
     val prevMovePosition = startPosition.copy()
-    for (space in path)
-    {
-        animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition.copy(), space.position.copy(), 0.1f)
-        animations += Animation.showTileWithCameraFocus(enemy.getTile(), space.position.copy(), 0.01f)
+    path.forEachIndexed { index, space ->
+        
+        val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
+        val moveTile = enemy.getMoveTile(n)
+        
+        animations += Animation.moveTileWithCameraFocus(
+                moveTile,
+                prevMovePosition.copy(),
+                space.position.copy(),
+                0.1f
+                                                       )
+        animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
         prevMovePosition.set(space.position)
     }
     animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
-    animations += Animation.action{enemy.displayOwnHealthBar()}
+    animations += Animation.action { enemy.displayOwnHealthBar() }
     Animating.executeAnimations(animations)
 }

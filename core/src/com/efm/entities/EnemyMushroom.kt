@@ -10,53 +10,81 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class CrossbowEnemy : Entity, Enemy
+class EnemyMushroom : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 10
     override var healthPoints = 10
     override var alive = true
-    override val detectionRange = 2
-    override val attackRange = 3
-    override val stepsInOneTurn = 1
+    override val detectionRange = 1
+    override val attackRange = 1
+    override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.crossbowEnemy
+        return Tiles.mushroomIdle1
     }
     
     override fun getOutlineYellowTile() : TiledMapTile
     {
-        return Tiles.crossbowEnemyOutlineYellow
+        return Tiles.bladeEnemyOutlineYellow
     }
     
-    override fun getOutlineRedTile() : TiledMapTile
+    override fun getOutlineRedTile(n : Int) : TiledMapTile
     {
-        return Tiles.crossbowEnemyOutlineRed
+        return Tiles.bladeEnemyOutlineRed
+    }
+    
+    override fun getIIdleTile(n : Int) : TiledMapTile?
+    {
+        return when (n)
+        {
+            1    -> Tiles.mushroomIdle1
+            2    -> Tiles.mushroomIdle2
+            3    -> Tiles.mushroomIdle1
+            4    -> Tiles.mushroomIdle2
+            else -> Tiles.mushroomIdle1
+        }
+    }
+    
+    override fun getMoveTile(n : Int) : TiledMapTile?
+    {
+        return when (n)
+        {
+            1    -> Tiles.mushroomMove1
+            2    -> Tiles.mushroomMove2
+            3    -> Tiles.mushroomMove1
+            4    -> Tiles.mushroomMove2
+            else -> Tiles.mushroomMove1
+        }
+    }
+    
+    override fun getAttackTile() : TiledMapTile?
+    {
+        return Tiles.mushroomAttack
     }
     
     override fun enemyAttack()
     {
         val heroPosition = World.hero.position.copy()
         val heroDirection = getDirection8(this.position, heroPosition)
-        val arrowTile = if (heroDirection == null) null else Tiles.getArrowTile(heroDirection)
-        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
+        val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.action { playSoundOnce(Sounds.bowShot) }
-        animations += Animation.moveTile(arrowTile, position, World.hero.position, 0.2f)
-        animations += Animation.action { playSoundOnce(Sounds.bowImpact) }
+        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
+        animations += Animation.action { playSoundOnce(Sounds.metalSword) }
         animations += Animation.simultaneous(
                 listOf(
-                        Animation.showTile(impactTile, heroPosition.copy(), 0.2f),
+                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
                         Animation.cameraShake(1, 0.5f)
                       )
                                             )
         animations += Animation.action {
-            val attackedPosition = heroPosition
+            
+            val attackedPosition = World.hero.position
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)

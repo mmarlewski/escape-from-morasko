@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Colors
+import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.state.*
@@ -120,6 +121,36 @@ object GameScreen : BaseScreen(), GestureListener
         }
     }
     
+    fun updateMapEnemyIdleAnimation()
+    {
+        for (i in 0 until Map.mapHeightInTiles)
+        {
+            for (j in 0 until Map.mapWidthInTiles)
+            {
+                val space = World.currentRoom.getSpace(j, i)
+                
+                if (space != null)
+                {
+                    val entity = space.getEntity()
+                    
+                    if (entity is Enemy)
+                    {
+                        val state = getState()
+                        
+                        if (!(state is State.combat.enemies.enemyAction &&
+                                        State.combat.enemies.enemyAction.currEnemy == entity)
+                        )
+                        {
+                            val tile = entity.getIIdleTile(IdleAnimation.idleAnimationCount)
+                            
+                            Map.changeTile(MapLayer.entity, j, i, tile)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     fun getCameraZoom() : Float
     {
         return gameCamera.zoom
@@ -180,7 +211,14 @@ object GameScreen : BaseScreen(), GestureListener
         isTouched = false
         
         // animation
-        Animating.update()
+        Animating.update(delta)
+        
+        // idle animation
+        IdleAnimation.update(delta)
+        if (IdleAnimation.idleAnimationChange)
+        {
+            updateMapEnemyIdleAnimation()
+        }
         
         // render
         ScreenUtils.clear(Colors.black)

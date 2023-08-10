@@ -1,12 +1,12 @@
 package com.efm
 
-val forefroundFPS = 60
+const val foregroundFPS = 60
 
-val windowWidth = 1080
-val windowHeight = 720
+const val windowWidth = 1080
+const val windowHeight = 720
 
-val minScreenWidth = 960f
-val minScreenHeight = 720f
+const val minScreenWidth = 960f
+const val minScreenHeight = 720f
 
-val maxScreenWidth = 1280f
-val maxScreenHeight = 1024f
+const val maxScreenWidth = 1280f
+const val maxScreenHeight = 1024f

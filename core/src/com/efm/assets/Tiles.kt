@@ -156,11 +156,25 @@ object Tiles
     val bladeEnemyCorpse = load("bladeEnemyCorpse.png")
     val bladeEnemyCorpseOutlineYellow = load("bladeEnemyCorpseOutlineYellow.png")
     
+    val mushroomIdle1 = load("mushroomIdle1.png")
+    val mushroomIdle2 = load("mushroomIdle2.png")
+    val mushroomMove1 = load("mushroomMove1.png")
+    val mushroomMove2 = load("mushroomMove2.png")
+    val mushroomAttack = load("mushroomAttack.png")
+    
     val crossbowEnemy = load("crossbowEnemy.png")
     val crossbowEnemyOutlineYellow = load("crossbowEnemyOutlineYellow.png")
     val crossbowEnemyOutlineRed = load("crossbowEnemyOutlineRed.png")
     val crossbowEnemyCorpse = load("crossbowEnemyCorpse.png")
     val crossbowEnemyCorpseOutlineYellow = load("crossbowEnemyCorpseOutlineYellow.png")
+    
+    val skeletonIdle1 = load("skeletonIdle1.png")
+    val skeletonIdle2 = load("skeletonIdle2.png")
+    val skeletonIdle3 = load("skeletonIdle3.png")
+    val skeletonMove1 = load("skeletonMove1.png")
+    val skeletonMove2 = load("skeletonMove2.png")
+    val skeletonMove3 = load("skeletonMove3.png")
+    val skeletonAttack = load("skeletonAttack.png")
     
     val miniEnemy = load("miniEnemy.png")
     val miniEnemyOutlineYellow = load("miniEnemyOutlineYellow.png")

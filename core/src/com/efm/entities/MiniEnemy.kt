@@ -32,9 +32,38 @@ class MiniEnemy : Entity, Enemy
         return Tiles.miniEnemyOutlineYellow
     }
     
-    override fun getOutlineRedTile() : TiledMapTile
+    override fun getOutlineRedTile(n:Int) : TiledMapTile
     {
         return Tiles.miniEnemyOutlineRed
+    }
+    
+    override fun getIIdleTile(n : Int) : TiledMapTile?
+    {
+        return when (n)
+        {
+            1    -> Tiles.miniEnemy
+            2    -> Tiles.miniEnemy
+            3    -> Tiles.miniEnemy
+            4    -> Tiles.miniEnemy
+            else -> Tiles.miniEnemy
+        }
+    }
+    
+    override fun getMoveTile(n : Int) : TiledMapTile?
+    {
+        return when (n)
+        {
+            1    -> Tiles.miniEnemy
+            2    -> Tiles.miniEnemy
+            3    -> Tiles.miniEnemy
+            4    -> Tiles.miniEnemy
+            else -> Tiles.miniEnemy
+        }
+    }
+    
+    override fun getAttackTile() : TiledMapTile?
+    {
+        return Tiles.miniEnemy
     }
     
     override fun enemyAttack()
