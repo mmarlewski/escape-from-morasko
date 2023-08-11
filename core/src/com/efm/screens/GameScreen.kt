@@ -137,8 +137,10 @@ object GameScreen : BaseScreen(), GestureListener
                     {
                         val state = getState()
                         
-                        if (!(state is State.combat.enemies &&
-                                        State.combat.enemies.enemyAction.currEnemy == entity)
+                        if (
+                                !(state is State.combat.enemies.enemyUnselected && State.combat.enemies.enemyUnselected.currEnemy == entity) &&
+                                !(state is State.combat.enemies.enemySelected && State.combat.enemies.enemySelected.currEnemy == entity) &&
+                                !(state is State.combat.enemies.enemyAction && State.combat.enemies.enemyAction.currEnemy == entity)
                         )
                         {
                             val tile = entity.getIdleTile()
