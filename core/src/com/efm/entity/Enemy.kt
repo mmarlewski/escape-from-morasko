@@ -23,9 +23,17 @@ interface Enemy : Character
     var healthBar : ProgressBar
     var healthStack : Stack
     
-    fun getOutlineRedTile(n:Int) : TiledMapTile?
-    fun getIIdleTile(n:Int) : TiledMapTile?
-    fun getMoveTile(n:Int) : TiledMapTile?
+    fun getOutlineRedTile() : TiledMapTile?
+    
+    fun getIdleTile(n : Int) : TiledMapTile?
+    
+    fun getIdleTile() : TiledMapTile?
+    {
+        return getIdleTile(IdleAnimation.idleAnimationCount)
+    }
+    
+    fun getMoveTile(n : Int) : TiledMapTile?
+    
     fun getAttackTile() : TiledMapTile?
     
     fun performTurn()
@@ -54,6 +62,7 @@ interface Enemy : Character
                 //attack
                 enemyAttack()
             }
+            
             1 ->
             {
                 val stepsSpaces = pathSpaces?.take(stepsInOneTurn)

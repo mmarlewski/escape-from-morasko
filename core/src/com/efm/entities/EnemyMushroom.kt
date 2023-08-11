@@ -27,17 +27,24 @@ class EnemyMushroom : Entity, Enemy
         return Tiles.mushroomIdle1
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
-        return Tiles.bladeEnemyOutlineYellow
+        return when (n)
+        {
+            1    -> Tiles.mushroomIdle1OutlineYellow
+            2    -> Tiles.mushroomIdle2OutlineYellow
+            3    -> Tiles.mushroomIdle1OutlineYellow
+            4    -> Tiles.mushroomIdle2OutlineYellow
+            else -> Tiles.mushroomIdle1OutlineYellow
+        }
     }
     
-    override fun getOutlineRedTile(n : Int) : TiledMapTile
+    override fun getOutlineRedTile() : TiledMapTile
     {
-        return Tiles.bladeEnemyOutlineRed
+        return Tiles.mushroomIdle1OutlineRed
     }
     
-    override fun getIIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile?
     {
         return when (n)
         {

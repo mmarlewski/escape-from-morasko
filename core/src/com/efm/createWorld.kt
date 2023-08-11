@@ -448,9 +448,9 @@ fun World.createWorldPrototypeTwo()
     l1r2.addEntityAt(Chest(), 5, 5)
     l1r2.addEntityAt(ExplodingBarrel(), 8, 3)
     l1r2.addEntityAt(EnemySkeleton(), 4, 6)
-    l1r2.addEntityAt(BladeEnemyCorpse(), 2, 2)
-    l1r2.addEntityAt(CrossbowEnemyCorpse(), 10, 3)
-    l1r2.addEntityAt(MiniEnemy(), 8, 4)
+    l1r2.addEntityAt(EnemyMushroomCorpse(), 2, 2)
+    l1r2.addEntityAt(EnemySkeletonCorpse(), 10, 3)
+    l1r2.addEntityAt(EnemyBat(), 8, 4)
     l1r4.addEntityAt(WizardBoss(), 3, 3)
     
     // add to World

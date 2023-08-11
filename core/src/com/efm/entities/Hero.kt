@@ -26,7 +26,7 @@ class Hero(
         return Tiles.hero
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return Tiles.heroOutlineYellow
     }

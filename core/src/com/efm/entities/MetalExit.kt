@@ -36,7 +36,7 @@ class MetalExit(override val direction : Direction4, val passage : Passage) : En
         }
     }
 
-    override fun getOutlineYellowTile() : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
     {
         return null
     }

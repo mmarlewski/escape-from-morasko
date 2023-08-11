@@ -9,7 +9,6 @@ import com.efm.assets.Tiles
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import com.efm.screens.GameScreen
 import com.efm.state.State
 import com.efm.state.getState
 
@@ -30,17 +29,17 @@ class WizardBoss : Entity, Enemy
         return Tiles.wizardEnemy
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return Tiles.wizardEnemyOutlineYellow
     }
     
-    override fun getOutlineRedTile(n:Int) : TiledMapTile
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.wizardEnemyOutlineRed
     }
     
-    override fun getIIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile?
     {
         return when(n)
         {
@@ -154,7 +153,7 @@ class WizardBoss : Entity, Enemy
             if (World.currentRoom.isPositionWithinBounds(posX, posY) && World.currentRoom.getSpace(posX, posY)?.getEntity() == null
                     && World.currentRoom.getSpace(posX, posY)?.isTraversable() != false)
             {
-                val minion = MiniEnemy()
+                val minion = EnemyBat()
                 minion.createOwnHealthBar()
                 World.currentRoom.addEntityAt(minion, posX, posY)
                 val currState = getState()

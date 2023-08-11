@@ -13,7 +13,7 @@ class Trap : Entity
         return null
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
     {
         return null
     }

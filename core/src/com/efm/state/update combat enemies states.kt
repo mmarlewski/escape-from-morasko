@@ -16,8 +16,8 @@ fun updateCombatEnemiesEnemyUnselected(currState : State.combat.enemies.enemyUns
         {
             val currEnemyPosition = currEnemy.position
             Map.changeTile(MapLayer.select, currEnemyPosition, Tiles.selectRed)
-            Map.changeTile(MapLayer.entity, currEnemy.position, currEnemy.getIIdleTile(1))
-            Map.changeTile(MapLayer.outline, currEnemyPosition, currEnemy.getOutlineRedTile(1))
+            Map.changeTile(MapLayer.entity, currEnemy.position, currEnemy.getIdleTile(1))
+            Map.changeTile(MapLayer.outline, currEnemyPosition, currEnemy.getOutlineRedTile())
             val animations = mutableListOf<Animation>()
             animations.add(Animation.moveCameraSmoothlyWithRoomPositions(null, currEnemyPosition.copy(), 0.1f))
             animations.add(Animation.focusCamera(currEnemyPosition.copy(), 0.01f))

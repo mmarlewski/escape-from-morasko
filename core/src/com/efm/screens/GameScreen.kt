@@ -15,7 +15,6 @@ import com.efm.assets.Colors
 import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import com.efm.room.toVector2
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
 
@@ -138,13 +137,47 @@ object GameScreen : BaseScreen(), GestureListener
                     {
                         val state = getState()
                         
-                        if (!(state is State.combat.enemies.enemyAction &&
+                        if (!(state is State.combat.enemies &&
                                         State.combat.enemies.enemyAction.currEnemy == entity)
                         )
                         {
-                            val tile = entity.getIIdleTile(IdleAnimation.idleAnimationCount)
+                            val tile = entity.getIdleTile()
                             
                             Map.changeTile(MapLayer.entity, j, i, tile)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    fun updateMapEnemyIdleOutlineYellowAnimation()
+    {
+        for (i in 0 until Map.mapHeightInTiles)
+        {
+            for (j in 0 until Map.mapWidthInTiles)
+            {
+                val space = World.currentRoom.getSpace(j, i)
+                
+                if (space != null)
+                {
+                    val entity = space.getEntity()
+                    
+                    if (entity is Enemy)
+                    {
+                        val state = getState()
+                        
+                        if (
+                                (state is State.free.entitySelected && State.free.entitySelected.selectedEntity == entity) ||
+                                (state is State.constrained.entitySelected && State.constrained.entitySelected.selectedEntity == entity) ||
+                                (state is State.constrained.enemySelected && State.constrained.enemySelected.selectedEnemy == entity) ||
+                                (state is State.combat.hero.entitySelected && State.combat.hero.entitySelected.selectedEntity == entity) ||
+                                (state is State.combat.hero.enemySelected && State.combat.hero.enemySelected.selectedEnemy == entity)
+                        )
+                        {
+                            val tile = entity.getOutlineYellowTile()
+                            
+                            Map.changeTile(MapLayer.outline, j, i, tile)
                         }
                     }
                 }
@@ -219,6 +252,7 @@ object GameScreen : BaseScreen(), GestureListener
         if (IdleAnimation.idleAnimationChange)
         {
             updateMapEnemyIdleAnimation()
+            updateMapEnemyIdleOutlineYellowAnimation()
         }
         
         // render

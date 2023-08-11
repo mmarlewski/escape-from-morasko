@@ -1,6 +1,7 @@
 package com.efm.entity
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.efm.IdleAnimation
 import com.efm.room.RoomPosition
 
 /**
@@ -10,7 +11,12 @@ interface Entity
 {
     fun getTile() : TiledMapTile?
     
+    fun getOutlineYellowTile(n : Int) : TiledMapTile?
+    
     fun getOutlineYellowTile() : TiledMapTile?
+    {
+        return getOutlineYellowTile(IdleAnimation.idleAnimationCount)
+    }
     
     val position : RoomPosition
     

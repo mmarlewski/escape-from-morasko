@@ -35,7 +35,7 @@ class StoneExit(override val direction : Direction4, val passage : Passage) : Ex
         }
     }
 
-    override fun getOutlineYellowTile() : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
     {
         return null
     }
@@ -95,7 +95,7 @@ class StoneExitActiveWhenNoEnemiesAreInRoom(override val direction : Direction4,
         }
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
     {
         return null
     }

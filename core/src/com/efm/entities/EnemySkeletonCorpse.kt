@@ -5,17 +5,17 @@ import com.efm.assets.Tiles
 import com.efm.entity.Entity
 import com.efm.room.RoomPosition
 
-class MiniEnemyCorpse : Entity
+class EnemySkeletonCorpse : Entity
 {
     override val position = RoomPosition()
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.miniEnemyCorpse
+        return Tiles.skeletonCorpse
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
-        return Tiles.miniEnemyCorpseOutlineYellow
+        return Tiles.skeletonCorpseOutlineYellow
     }
 }

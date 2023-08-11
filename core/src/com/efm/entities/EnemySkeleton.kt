@@ -27,17 +27,24 @@ class EnemySkeleton : Entity, Enemy
         return Tiles.skeletonIdle1
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
-        return Tiles.crossbowEnemyOutlineYellow
+        return when (n)
+        {
+            1    -> Tiles.skeletonIdle1OutlineYellow
+            2    -> Tiles.skeletonIdle3OutlineYellow
+            3    -> Tiles.skeletonIdle2OutlineYellow
+            4    -> Tiles.skeletonIdle1OutlineYellow
+            else -> Tiles.skeletonIdle1OutlineYellow
+        }
     }
     
-    override fun getOutlineRedTile(n : Int) : TiledMapTile?
+    override fun getOutlineRedTile() : TiledMapTile?
     {
-        return Tiles.crossbowEnemyOutlineRed
+        return Tiles.skeletonIdle1OutlineRed
     }
     
-    override fun getIIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile?
     {
         return when (n)
         {

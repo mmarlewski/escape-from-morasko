@@ -39,7 +39,7 @@ class StoneWall(vararg val directions : Direction4) : Entity
         }
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
     {
         return null
     }

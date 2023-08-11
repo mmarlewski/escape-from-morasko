@@ -10,7 +10,7 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class MiniEnemy : Entity, Enemy
+class EnemyBat : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 5
@@ -24,28 +24,35 @@ class MiniEnemy : Entity, Enemy
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.miniEnemy
+        return Tiles.batIdle1
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile
-    {
-        return Tiles.miniEnemyOutlineYellow
-    }
-    
-    override fun getOutlineRedTile(n:Int) : TiledMapTile
-    {
-        return Tiles.miniEnemyOutlineRed
-    }
-    
-    override fun getIIdleTile(n : Int) : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
-            1    -> Tiles.miniEnemy
-            2    -> Tiles.miniEnemy
-            3    -> Tiles.miniEnemy
-            4    -> Tiles.miniEnemy
-            else -> Tiles.miniEnemy
+            1    -> Tiles.batIdle1OutlineYellow
+            2    -> Tiles.batIdle2OutlineYellow
+            3    -> Tiles.batIdle3OutlineYellow
+            4    -> Tiles.batIdle2OutlineYellow
+            else -> Tiles.batIdle1OutlineYellow
+        }
+    }
+    
+    override fun getOutlineRedTile() : TiledMapTile
+    {
+        return Tiles.batIdle1OutlineRed
+    }
+    
+    override fun getIdleTile(n : Int) : TiledMapTile?
+    {
+        return when (n)
+        {
+            1    -> Tiles.batIdle1
+            2    -> Tiles.batIdle2
+            3    -> Tiles.batIdle3
+            4    -> Tiles.batIdle2
+            else -> Tiles.batIdle1
         }
     }
     
@@ -53,17 +60,17 @@ class MiniEnemy : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.miniEnemy
-            2    -> Tiles.miniEnemy
-            3    -> Tiles.miniEnemy
-            4    -> Tiles.miniEnemy
-            else -> Tiles.miniEnemy
+            1    -> Tiles.batMove1
+            2    -> Tiles.batMove2
+            3    -> Tiles.batMove3
+            4    -> Tiles.batMove2
+            else -> Tiles.batMove1
         }
     }
     
     override fun getAttackTile() : TiledMapTile?
     {
-        return Tiles.miniEnemy
+        return Tiles.batAttack
     }
     
     override fun enemyAttack()

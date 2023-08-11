@@ -36,7 +36,7 @@ class RockExit(override val direction : Direction4, val passage : Passage) : Ent
         }
     }
     
-    override fun getOutlineYellowTile() : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
     {
         return null
     }
