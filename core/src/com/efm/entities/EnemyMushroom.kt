@@ -25,6 +25,7 @@ class EnemyMushroom : Entity, Enemy
     override fun getTile() : TiledMapTile
     {
         return Tiles.mushroomIdle1
+//        return Tiles.dragonIdle1
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
@@ -37,11 +38,20 @@ class EnemyMushroom : Entity, Enemy
             4    -> Tiles.mushroomIdle2OutlineYellow
             else -> Tiles.mushroomIdle1OutlineYellow
         }
+//        return when (n)
+//        {
+//            1    -> Tiles.dragonIdle1OutlineYellow
+//            2    -> Tiles.dragonIdle2OutlineYellow
+//            3    -> Tiles.dragonIdle1OutlineYellow
+//            4    -> Tiles.dragonIdle2OutlineYellow
+//            else -> Tiles.dragonIdle1OutlineYellow
+//        }
     }
     
     override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.mushroomIdle1OutlineRed
+//        return Tiles.dragonIdle1OutlineRed
     }
     
     override fun getIdleTile(n : Int) : TiledMapTile?
@@ -54,6 +64,14 @@ class EnemyMushroom : Entity, Enemy
             4    -> Tiles.mushroomIdle2
             else -> Tiles.mushroomIdle1
         }
+//        return when (n)
+//        {
+//            1    -> Tiles.dragonIdle1
+//            2    -> Tiles.dragonIdle2
+//            3    -> Tiles.dragonIdle1
+//            4    -> Tiles.dragonIdle2
+//            else -> Tiles.dragonIdle1
+//        }
     }
     
     override fun getMoveTile(n : Int) : TiledMapTile?
@@ -66,11 +84,20 @@ class EnemyMushroom : Entity, Enemy
             4    -> Tiles.mushroomMove2
             else -> Tiles.mushroomMove1
         }
+//        return when (n)
+//        {
+//            1    -> Tiles.dragonMove1
+//            2    -> Tiles.dragonMove2
+//            3    -> Tiles.dragonMove1
+//            4    -> Tiles.dragonMove2
+//            else -> Tiles.dragonMove1
+//        }
     }
     
     override fun getAttackTile() : TiledMapTile?
     {
         return Tiles.mushroomAttack
+//        return Tiles.dragonAttack
     }
     
     override fun enemyAttack()
