@@ -17,6 +17,8 @@ object Tiles
     val rockFloor = load("rockFloor.png")
     val grassFloor = load("grassFloor.png")
     val lavaPool = load("lavaPool.png")
+    val waterPool = load("waterPool.png")
+    val waterOctopus = load("waterOctopus.png")
     
     // select
     
@@ -142,13 +144,15 @@ object Tiles
     val rockExitLevelLeft = load("rockExitLevelLeft.png")
     val rockExitLevelLeftOutlineTeal = load("rockExitLevelLeftOutlineTeal.png")
     
-    // other entities
+    // hero
     
     val hero = load("hero.png")
     val heroOutlineYellow = load("heroOutlineYellow.png")
     val heroOutlineGreen = load("heroOutlineGreen.png")
     val heroCorpse = load("heroCorpse.png")
     val heroCorpseOutlineYellow = load("heroCorpseOutlineYellow.png")
+    
+    // mushroom
     
     val mushroomIdle1 = load("mushroomIdle1.png")
     val mushroomIdle1OutlineYellow = load("mushroomIdle1OutlineYellow.png")
@@ -160,6 +164,8 @@ object Tiles
     val mushroomAttack = load("mushroomAttack.png")
     val mushroomCorpse = load("mushroomCorpse.png")
     val mushroomCorpseOutlineYellow = load("mushroomCorpseOutlineYellow.png")
+    
+    // skeleton
     
     val skeletonIdle1 = load("skeletonIdle1.png")
     val skeletonIdle1OutlineYellow = load("skeletonIdle1OutlineYellow.png")
@@ -175,6 +181,8 @@ object Tiles
     val skeletonCorpse = load("skeletonCorpse.png")
     val skeletonCorpseOutlineYellow = load("skeletonCorpseOutlineYellow.png")
     
+    // bat
+    
     val batIdle1 = load("batIdle1.png")
     val batIdle1OutlineYellow = load("batIdle1OutlineYellow.png")
     val batIdle1OutlineRed = load("batIdle1OutlineRed.png")
@@ -189,6 +197,8 @@ object Tiles
     val batCorpse = load("batCorpse.png")
     val batCorpseOutlineYellow = load("batCorpseOutlineYellow.png")
     
+    // boar
+    
     val boarIdle1 = load("boarIdle1.png")
     val boarIdle1OutlineYellow = load("boarIdle1OutlineYellow.png")
     val boarIdle1OutlineRed = load("boarIdle1OutlineRed.png")
@@ -199,6 +209,8 @@ object Tiles
     val boarAttack = load("boarAttack.png")
     val boarCorpse = load("boarCorpse.png")
     val boarCorpseOutlineYellow = load("boarCorpseOutlineYellow.png")
+    
+    // wizard
     
     val wizardIdle1 = load("wizardIdle1.png")
     val wizardIdle1OutlineYellow = load("wizardIdle1OutlineYellow.png")
@@ -218,6 +230,8 @@ object Tiles
     val wizardCorpse = load("wizardCorpse.png")
     val wizardCorpseOutlineYellow = load("wizardCorpseOutlineYellow.png")
     
+    // plant
+    
     val plantIdle1 = load("plantIdle1.png")
     val plantIdle1OutlineYellow = load("plantIdle1OutlineYellow.png")
     val plantIdle1OutlineRed = load("plantIdle1OutlineRed.png")
@@ -226,6 +240,8 @@ object Tiles
     val plantAttack = load("plantAttack.png")
     val plantCorpse = load("plantCorpse.png")
     val plantCorpseOutlineYellow = load("plantCorpseOutlineYellow.png")
+    
+    // ghost
     
     val ghost1Idle1 = load("ghost1Idle1.png")
     val ghost2Idle1 = load("ghost2Idle1.png")
@@ -252,6 +268,8 @@ object Tiles
     val ghostCorpse = load("ghostCorpse.png")
     val ghostCorpseOutlineYellow = load("ghostCorpseOutlineYellow.png")
     
+    // turret
+    
     val turretIdle1 = load("turretIdle1.png")
     val turretIdle1OutlineYellow = load("turretIdle1OutlineYellow.png")
     val turretIdle1OutlineRed = load("turretIdle1OutlineRed.png")
@@ -261,6 +279,8 @@ object Tiles
     val turretProjectile = load("turretProjectile.png")
     val turretCorpse = load("turretCorpse.png")
     val turretCorpseOutlineYellow = load("turretCorpseOutlineYellow.png")
+    
+    // golem
     
     val golemIdle1 = load("golemIdle1.png")
     val golemIdle1OutlineYellow = load("golemIdle1OutlineYellow.png")
@@ -274,6 +294,8 @@ object Tiles
     val golemCorpse = load("golemCorpse.png")
     val golemCorpseOutlineYellow = load("golemCorpseOutlineYellow.png")
     
+     // mimic
+    
     val mimicIdle1 = load("mimicIdle1.png")
     val mimicIdle1OutlineYellow = load("mimicIdle1OutlineYellow.png")
     val mimicIdle1OutlineRed = load("mimicIdle1OutlineRed.png")
@@ -285,6 +307,8 @@ object Tiles
     val mimicCorpse = load("mimicCorpse.png")
     val mimicCorpseOutlineYellow = load("mimicCorpseOutlineYellow.png")
     
+    // rock
+    
     val rockIdle1 = load("rockIdle1.png")
     val rockIdle1OutlineYellow = load("rockIdle1OutlineYellow.png")
     val rockIdle1OutlineRed = load("rockIdle1OutlineRed.png")
@@ -295,6 +319,8 @@ object Tiles
     val rockCorpse = load("rockCorpse.png")
     val rockCorpseOutlineYellow = load("rockCorpseOutlineYellow.png")
     
+    // dragon
+    
     val dragonIdle1 = load("dragonIdle1.png")
     val dragonIdle1OutlineYellow = load("dragonIdle1OutlineYellow.png")
     val dragonIdle1OutlineRed = load("dragonIdle1OutlineRed.png")
@@ -303,23 +329,149 @@ object Tiles
     val dragonMove1 = load("dragonMove1.png")
     val dragonMove2 = load("dragonMove2.png")
     val dragonAttack = load("dragonAttack.png")
-    val dragonProjectile = load("dragonProjectile.png")
     val dragonCorpse = load("dragonCorpse.png")
     val dragonCorpseOutlineYellow = load("dragonCorpseOutlineYellow.png")
+    
+    // goblin
+    
+    val goblinEmptyIdle1 = load("goblinEmptyIdle1.png")
+    val goblinEmptyIdle1OutlineYellow = load("goblinEmptyIdle1OutlineYellow.png")
+    val goblinEmptyIdle1OutlineRed = load("goblinEmptyIdle1OutlineRed.png")
+    val goblinEmptyIdle2 = load("goblinEmptyIdle2.png")
+    val goblinEmptyIdle2OutlineYellow = load("goblinEmptyIdle2OutlineYellow.png")
+    val goblinEmptyMove1 = load("goblinEmptyMove1.png")
+    val goblinEmptyMove2 = load("goblinEmptyMove2.png")
+    val goblinEmptyAttack = load("goblinEmptyAttack.png")
+    val goblinEmptyCorpse = load("goblinEmptyCorpse.png")
+    val goblinEmptyCorpseOutlineYellow = load("goblinEmptyCorpseOutlineYellow.png")
+    
+    val goblinSpearIdle1 = load("goblinSpearIdle1.png")
+    val goblinSpearIdle1OutlineYellow = load("goblinSpearIdle1OutlineYellow.png")
+    val goblinSpearIdle1OutlineRed = load("goblinSpearIdle1OutlineRed.png")
+    val goblinSpearIdle2 = load("goblinSpearIdle2.png")
+    val goblinSpearIdle2OutlineYellow = load("goblinSpearIdle2OutlineYellow.png")
+    val goblinSpearMove1 = load("goblinSpearMove1.png")
+    val goblinSpearMove2 = load("goblinSpearMove2.png")
+    val goblinSpearAttack = load("goblinSpearAttack.png")
+    val goblinSpearCorpse = load("goblinSpearCorpse.png")
+    val goblinSpearCorpseOutlineYellow = load("goblinSpearCorpseOutlineYellow.png")
+    
+    val goblinBowIdle1 = load("goblinBowIdle1.png")
+    val goblinBowIdle1OutlineYellow = load("goblinBowIdle1OutlineYellow.png")
+    val goblinBowIdle1OutlineRed = load("goblinBowIdle1OutlineRed.png")
+    val goblinBowIdle2 = load("goblinBowIdle2.png")
+    val goblinBowIdle2OutlineYellow = load("goblinBowIdle2OutlineYellow.png")
+    val goblinBowMove1 = load("goblinBowMove1.png")
+    val goblinBowMove2 = load("goblinBowMove2.png")
+    val goblinBowAttack = load("goblinBowAttack.png")
+    val goblinBowCorpse = load("goblinBowCorpse.png")
+    val goblinBowCorpseOutlineYellow = load("goblinBowCorpseOutlineYellow.png")
+    
+    val goblinBarrelIdle1 = load("goblinBarrelIdle1.png")
+    val goblinBarrelIdle1OutlineYellow = load("goblinBarrelIdle1OutlineYellow.png")
+    val goblinBarrelIdle1OutlineRed = load("goblinBarrelIdle1OutlineRed.png")
+    val goblinBarrelIdle2 = load("goblinBarrelIdle2.png")
+    val goblinBarrelIdle2OutlineYellow = load("goblinBarrelIdle2OutlineYellow.png")
+    val goblinBarrelMove1 = load("goblinBarrelMove1.png")
+    val goblinBarrelMove2 = load("goblinBarrelMove2.png")
+    val goblinBarrelAttack = load("goblinBarrelAttack.png")
+    
+    // chess
+    
+    val chessPawnWhite = load("chessPawnWhite.png")
+    val chessPawnBlack = load("chessPawnBlack.png")
+    val chessPawnOutlineYellow = load("chessPawnOutlineYellow.png")
+    val chessPawnOutlineRed = load("chessPawnOutlineRed.png")
+    
+    val chessBishopWhite = load("chessBishopWhite.png")
+    val chessBishopBlack = load("chessBishopBlack.png")
+    val chessBishopOutlineYellow = load("chessBishopOutlineYellow.png")
+    val chessBishopOutlineRed = load("chessBishopOutlineRed.png")
+    
+    val chessRookWhite = load("chessRookWhite.png")
+    val chessRookBlack = load("chessRookBlack.png")
+    val chessRookOutlineYellow = load("chessRookOutlineYellow.png")
+    val chessRookOutlineRed = load("chessRookOutlineRed.png")
+    
+    val chessKnightWhite = load("chessKnightWhite.png")
+    val chessKnightBlack = load("chessKnightBlack.png")
+    val chessKnightOutlineYellow = load("chessKnightOutlineYellow.png")
+    val chessKnightOutlineRed = load("chessKnightOutlineRed.png")
+    
+    val chessQueenWhite = load("chessQueenWhite.png")
+    val chessQueenBlack = load("chessQueenBlack.png")
+    val chessQueenOutlineYellow = load("chessQueenOutlineYellow.png")
+    val chessQueenOutlineRed = load("chessQueenOutlineRed.png")
+    
+    val chessKingWhite = load("chessKingWhite.png")
+    val chessKingBlack = load("chessKingBlack.png")
+    val chessKingOutlineYellow = load("chessKingOutlineYellow.png")
+    val chessKingOutlineRed = load("chessKingOutlineRed.png")
+    
+    // octopus
+    
+    val octopusHeadIdle1 = load("octopusHeadIdle1.png")
+    val octopusHeadIdle1OutlineYellow = load("octopusHeadIdle1OutlineYellow.png")
+    val octopusHeadIdle1OutlineRed = load("octopusHeadIdle1OutlineRed.png")
+    val octopusHeadIdle2 = load("octopusHeadIdle2.png")
+    val octopusHeadIdle2OutlineYellow = load("octopusHeadIdle2OutlineYellow.png")
+    val octopusHeadCorpse = load("octopusHeadCorpse.png")
+    val octopusHeadCorpseOutlineYellow = load("octopusHeadCorpseOutlineYellow.png")
+    
+    val octopusTentacleIdle1 = load("octopusTentacleIdle1.png")
+    val octopusTentacleIdle1OutlineYellow = load("octopusTentacleIdle1OutlineYellow.png")
+    val octopusTentacleIdle1OutlineRed = load("octopusTentacleIdle1OutlineRed.png")
+    val octopusTentacleIdle2 = load("octopusTentacleIdle2.png")
+    val octopusTentacleIdle2OutlineYellow = load("octopusTentacleIdle2OutlineYellow.png")
+    val octopusTentacleIdle3 = load("octopusTentacleIdle3.png")
+    val octopusTentacleIdle3OutlineYellow = load("octopusTentacleIdle3OutlineYellow.png")
+    val octopusTentacleAttack = load("octopusTentacleAttack.png")
+    
+    // slime
+    
+    val slimeGreenIdle1 = load("slimeGreenIdle1.png")
+    val slimeGreenIdle1OutlineYellow = load("slimeGreenIdle1OutlineYellow.png")
+    val slimeGreenIdle1OutlineRed = load("slimeGreenIdle1OutlineRed.png")
+    val slimeGreenIdle2 = load("slimeGreenIdle2.png")
+    val slimeGreenIdle2OutlineYellow = load("slimeGreenIdle2OutlineYellow.png")
+    val slimeGreenAttack = load("slimeGreenAttack.png")
+    
+    val slimeYellowIdle1 = load("slimeYellowIdle1.png")
+    val slimeYellowIdle1OutlineYellow = load("slimeYellowIdle1OutlineYellow.png")
+    val slimeYellowIdle1OutlineRed = load("slimeYellowIdle1OutlineRed.png")
+    val slimeYellowIdle2 = load("slimeYellowIdle2.png")
+    val slimeYellowIdle2OutlineYellow = load("slimeYellowIdle2OutlineYellow.png")
+    val slimeYellowAttack = load("slimeYellowAttack.png")
+    
+    val slimeRedIdle1 = load("slimeRedIdle1.png")
+    val slimeRedIdle1OutlineYellow = load("slimeRedIdle1OutlineYellow.png")
+    val slimeRedIdle1OutlineRed = load("slimeRedIdle1OutlineRed.png")
+    val slimeRedIdle2 = load("slimeRedIdle2.png")
+    val slimeRedIdle2OutlineYellow = load("slimeRedIdle2OutlineYellow.png")
+    val slimeRedAttack = load("slimeRedAttack.png")
+    
+    // wizard boss
     
     val wizardEnemy = load("wizardEnemy.png")
     val wizardEnemyOutlineYellow = load("wizardEnemyOutlineYellow.png")
     val wizardEnemyOutlineRed = load("wizardEnemyOutlineRed.png")
     
+    // stoneColumn
+    
     val stoneColumn = load("stoneColumn.png")
     val stoneColumnOutlineYellow = load("stoneColumnOutlineYellow.png")
+    
+    // chest
     
     val chest = load("chest.png")
     val chestOutlineYellow = load("chestOutlineYellow.png")
     val chestOutlineTeal = load("chestOutlineTeal.png")
     
+    // explodingBarrel
+    
     val explodingBarrel = load("explodingBarrel.png")
     val explodingBarrelOutlineYellow = load("explodingBarrelOutlineYellow.png")
+    val explodingBarrelExplosion = load("explodingBarrelExplosion.png")
     
     // sword
     
