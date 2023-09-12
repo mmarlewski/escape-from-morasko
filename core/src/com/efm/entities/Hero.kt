@@ -3,6 +3,7 @@ package com.efm.entities
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Character
+import com.efm.item.Item
 import com.efm.room.RoomPosition
 import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
@@ -20,6 +21,9 @@ class Hero(
     
     var maxAbilityPoints : Int = 14
     var abilityPoints : Int = 14
+    
+    val equipmentMax = 20
+    val equipment = mutableListOf<Item>()
     
     override fun getTile() : TiledMapTile
     {
@@ -98,5 +102,23 @@ class Hero(
     {
         super.killCharacter()
         getState().isHeroAlive = false
+    }
+    
+    fun getEquipmentItems() : List<Item>
+    {
+        return equipment.toList()
+    }
+    
+    fun addItemToEquipment(item : Item)
+    {
+        if (equipment.size < equipmentMax)
+        {
+            equipment.add(item)
+        }
+    }
+    
+    fun removeItemFromEquipment(item : Item)
+    {
+        equipment.remove(item)
     }
 }
