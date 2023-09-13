@@ -10,5 +10,3 @@ const val minScreenHeight = 720f
 
 const val maxScreenWidth = 1280f
 const val maxScreenHeight = 1024f
-
-// przy pullowaniu usuwa mi sie ten plik, moze jak go zmodyfikuje to sie zmieni
