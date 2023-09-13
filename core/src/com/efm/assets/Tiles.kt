@@ -675,6 +675,12 @@ object Tiles
     val smoke = load("smoke.png")
     val shuriken = load("shuriken.png")
     
+    // new walls
+    val walls_folder_name = "new_walls/"
+    // cobblestoneLightWall
+    val cobblestoneLightWallDown = load(walls_folder_name + "cobblestoneLightWallDown.png")
+    val cobblestoneLightWallRight = load(walls_folder_name + "cobblestoneLightWallRight.png")
+    
     fun load(name : String) : StaticTiledMapTile
     {
         val filePath = "tiles/$name"
