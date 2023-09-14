@@ -294,7 +294,7 @@ object Tiles
     val golemCorpse = load("golemCorpse.png")
     val golemCorpseOutlineYellow = load("golemCorpseOutlineYellow.png")
     
-     // mimic
+    // mimic
     
     val mimicIdle1 = load("mimicIdle1.png")
     val mimicIdle1OutlineYellow = load("mimicIdle1OutlineYellow.png")
@@ -674,12 +674,118 @@ object Tiles
     val fire = load("fire.png")
     val smoke = load("smoke.png")
     val shuriken = load("shuriken.png")
+    val bloodSplatter = load("blood_splatter_32x32.png")
     
     // new walls
     val walls_folder_name = "new_walls/"
+    
+    // cobblestone
+    
     // cobblestoneLightWall
     val cobblestoneLightWallDown = load(walls_folder_name + "cobblestoneLightWallDown.png")
     val cobblestoneLightWallRight = load(walls_folder_name + "cobblestoneLightWallRight.png")
+    // cobblestoneDarkWall
+    val cobblestoneDarkWallDown = load(walls_folder_name + "cobblestoneDarkWallDown.png")
+    val cobblestoneDarkWallRight = load(walls_folder_name + "cobblestoneDarkWallRight.png")
+    // cobblestoneLightTallWall
+    val cobblestoneLightTallWallDown = load(walls_folder_name + "cobblestoneLightTallWallDown.png")
+    val cobblestoneLightTallWallRight = load(walls_folder_name + "cobblestoneLightTallWallRight.png")
+    // cobblestoneDarkTallWall
+    val cobblestoneDarkTallWallDown = load(walls_folder_name + "cobblestoneDarkTallWallDown.png")
+    val cobblestoneDarkTallWallRight = load(walls_folder_name + "cobblestoneDarkTallWallRight.png")
+    
+    // orange brick
+    
+    // brickOrangeLightWall
+    val brickOrangeLightWallDown = load(walls_folder_name + "brickOrangeLightWallDown.png")
+    val brickOrangeLightWallRight = load(walls_folder_name + "brickOrangeLightWallRight.png")
+    // brickOrangeDarkWall
+    val brickOrangeDarkWallDown = load(walls_folder_name + "brickOrangeDarkWallDown.png")
+    val brickOrangeDarkWallRight = load(walls_folder_name + "brickOrangeDarkWallRight.png")
+    // brickOrangeLightTallWall
+    val brickOrangeLightTallWallDown = load(walls_folder_name + "brickOrangeLightTallWallDown.png")
+    val brickOrangeLightTallWallRight = load(walls_folder_name + "brickOrangeLightTallWallRight.png")
+    // brickOrangeDarkTallWall
+    val brickOrangeDarkTallWallDown = load(walls_folder_name + "brickOrangeDarkTallWallDown.png")
+    val brickOrangeDarkTallWallRight = load(walls_folder_name + "brickOrangeDarkTallWallRight.png")
+    
+    // red brick
+    
+    // brickRedLightWall
+    val brickRedLightWallDown = load(walls_folder_name + "brickRedLightWallDown.png")
+    val brickRedLightWallRight = load(walls_folder_name + "brickRedLightWallRight.png")
+    // brickRedDarkWall
+    val brickRedDarkWallDown = load(walls_folder_name + "brickRedDarkWallDown.png")
+    val brickRedDarkWallRight = load(walls_folder_name + "brickRedDarkWallRight.png")
+    // brickRedLightTallWall
+    val brickRedLightTallWallDown = load(walls_folder_name + "brickRedLightTallWallDown.png")
+    val brickRedLightTallWallRight = load(walls_folder_name + "brickRedLightTallWallRight.png")
+    // brickRedDarkTallWall
+    val brickRedDarkTallWallDown = load(walls_folder_name + "brickRedDarkTallWallDown.png")
+    val brickRedDarkTallWallRight = load(walls_folder_name + "brickRedDarkTallWallRight.png")
+    
+    // grass floor tiles
+    val grass_floor_tiles_folder_name = "new_floor_tiles/grass/"
+    
+    val grassDarkFloor1 = load(grass_floor_tiles_folder_name + "grass_floor_dark_1.png")
+    val grassDarkFloor2 = load(grass_floor_tiles_folder_name + "grass_floor_dark_2.png")
+    val grassLightFloor1 = load(grass_floor_tiles_folder_name + "grass_floor_light_1.png")
+    val grassStoneFloor1 = load(grass_floor_tiles_folder_name + "grass_floor_stone_1.png")
+    val grassStoneFloor2 = load(grass_floor_tiles_folder_name + "grass_floor_stone_2.png")
+    val grassStoneFloor3 = load(grass_floor_tiles_folder_name + "grass_floor_stone_3.png")
+    
+    // tiled floor tiles
+    val tiled_floor_tiles_folder_name = "new_floor_tiles/tiled/"
+    
+    val tiledFloor1 = load(grass_floor_tiles_folder_name + "tiled_floor_1.png")
+    val tiledFloor1Blood1 = load(grass_floor_tiles_folder_name + "tiled_floor_1_blood_1.png")
+    val tiledFloor1Blood2 = load(grass_floor_tiles_folder_name + "tiled_floor_1_blood_2.png")
+    val tiledFloor1Blood3 = load(grass_floor_tiles_folder_name + "tiled_floor_1_blood_3.png")
+    val tiledFloor2 = load(grass_floor_tiles_folder_name + "tiled_floor_2.png")
+    val tiledFloor3 = load(grass_floor_tiles_folder_name + "tiled_floor_3.png")
+    
+    // wooden floor tiles
+    val wooden_floor_tiles_folder_name = "new_floor_tiles/wooden/"
+    
+    val woodenFloor1 = load(grass_floor_tiles_folder_name + "wooden_floor_1.png")
+    val woodenFloor2 = load(grass_floor_tiles_folder_name + "wooden_floor_2.png")
+    val woodenFloor3 = load(grass_floor_tiles_folder_name + "wooden_floor_3.png")
+    
+    // props
+    val props_folder_name = "new_props/"
+    
+    val barrelSmall = load(props_folder_name + "barrel_small.png")
+    val barrelSmallDamaged1 = load(props_folder_name + "barrel_small_damaged_1.png")
+    val barrelSmallDamaged2 = load(props_folder_name + "barrel_small_damaged_2.png")
+    val bookshelfHugeEmpty = load(props_folder_name + "bookshelf_huge_empty.png")
+    val cabinetWide = load(props_folder_name + "cabinet_wide.png")
+    val chairFront = load(props_folder_name + "chair_front.png")
+    val chairSideLeft = load(props_folder_name + "chair_side_left.png")
+    val chairSideRight = load(props_folder_name + "chair_side_right.png")
+    val crateSmall = load(props_folder_name + "crate_small.png")
+    val crateSmallDamaged1 = load(props_folder_name + "crate_small_damaged_1.png")
+    val crateSmallDamaged2 = load(props_folder_name + "crate_small_damaged_2.png")
+    val potSmall = load(props_folder_name + "pot_small.png")
+    val potSmallDamaged1 = load(props_folder_name + "pot_small_damaged_1.png")
+    val potSmallFullWater = load(props_folder_name + "pot_small_full_water.png")
+    val potSmallFullWine = load(props_folder_name + "pot_small_full_wine.png")
+    val stool = load(props_folder_name + "stool.png")
+    val tableMedium = load(props_folder_name + "table_medium.png")
+    val tableSmall = load(props_folder_name + "table_small.png")
+    val vase = load(props_folder_name + "vase.png")
+    val vaseDamaged = load(props_folder_name + "vase_damaged.png")
+    val vaseFullWater = load(props_folder_name + "vase_full_water.png")
+    val vaseFullWine = load(props_folder_name + "vase_full_wine.png")
+    
+    // composite props
+    val props_composite_folder_name = "new_props/new_props_composit/"
+    
+    val tableMediumWaterWater = load(props_composite_folder_name + "table_medium_water_water.png")
+    val tableMediumWaterWine = load(props_composite_folder_name + "table_medium_water_wine.png")
+    val tableMediumWineWater = load(props_composite_folder_name + "table_medium_wine_water.png")
+    val tableMediumWineWine = load(props_composite_folder_name + "table_medium_wine_wine.png")
+    val tableSmallWater = load(props_composite_folder_name + "table_small_water.png")
+    val tableSmallWine = load(props_composite_folder_name + "table_small_wine.png")
     
     fun load(name : String) : StaticTiledMapTile
     {
