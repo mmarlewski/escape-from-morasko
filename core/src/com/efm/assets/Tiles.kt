@@ -737,19 +737,19 @@ object Tiles
     // tiled floor tiles
     val tiled_floor_tiles_folder_name = "new_floor_tiles/tiled/"
     
-    val tiledFloor1 = load(grass_floor_tiles_folder_name + "tiled_floor_1.png")
-    val tiledFloor1Blood1 = load(grass_floor_tiles_folder_name + "tiled_floor_1_blood_1.png")
-    val tiledFloor1Blood2 = load(grass_floor_tiles_folder_name + "tiled_floor_1_blood_2.png")
-    val tiledFloor1Blood3 = load(grass_floor_tiles_folder_name + "tiled_floor_1_blood_3.png")
-    val tiledFloor2 = load(grass_floor_tiles_folder_name + "tiled_floor_2.png")
-    val tiledFloor3 = load(grass_floor_tiles_folder_name + "tiled_floor_3.png")
+    val tiledFloor1 = load(tiled_floor_tiles_folder_name + "tiled_floor_1.png")
+    val tiledFloor1Blood1 = load(tiled_floor_tiles_folder_name + "tiled_floor_1_blood_1.png")
+    val tiledFloor1Blood2 = load(tiled_floor_tiles_folder_name + "tiled_floor_1_blood_2.png")
+    val tiledFloor1Blood3 = load(tiled_floor_tiles_folder_name + "tiled_floor_1_blood_3.png")
+    val tiledFloor2 = load(tiled_floor_tiles_folder_name + "tiled_floor_2.png")
+    val tiledFloor3 = load(tiled_floor_tiles_folder_name + "tiled_floor_3.png")
     
     // wooden floor tiles
     val wooden_floor_tiles_folder_name = "new_floor_tiles/wooden/"
     
-    val woodenFloor1 = load(grass_floor_tiles_folder_name + "wooden_floor_1.png")
-    val woodenFloor2 = load(grass_floor_tiles_folder_name + "wooden_floor_2.png")
-    val woodenFloor3 = load(grass_floor_tiles_folder_name + "wooden_floor_3.png")
+    val woodenFloor1 = load(wooden_floor_tiles_folder_name + "wooden_floor_1.png")
+    val woodenFloor2 = load(wooden_floor_tiles_folder_name + "wooden_floor_2.png")
+    val woodenFloor3 = load(wooden_floor_tiles_folder_name + "wooden_floor_3.png")
     
     // props
     val props_folder_name = "new_props/"
