@@ -176,7 +176,7 @@ class `widget building functions`
                 0f, 1f, 0.1f, 0f,
                 Textures.knobBackgroundNinePatch,
                 Textures.knobBeforeNinePatch,
-                Textures.knobAfterNinePatch, 10f, 10f
+                Textures.knobAfterNinePatch, 10f
                                        )
         
         progressBar.color
@@ -193,7 +193,7 @@ class `widget building functions`
     @Test fun `sliderOf initializes all members of Slider`()
     {
         val slider = sliderOf(
-                0f, 1f, 0.1f,
+                0f, 1f, 0.1f, 0f,
                 Textures.knobBackgroundNinePatch,
                 Textures.knobBeforeNinePatch,
                 Textures.knobAfterNinePatch,
