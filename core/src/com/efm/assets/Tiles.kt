@@ -777,6 +777,19 @@ object Tiles
     val vaseFullWater = load(props_folder_name + "vase_full_water.png")
     val vaseFullWine = load(props_folder_name + "vase_full_wine.png")
     
+    val barrelSmallOutlineYellow = load(props_folder_name + "barrel_small_outline_yellow.png")
+    val bookshelfHugeOutlineYellow = load(props_folder_name + "bookshelf_huge_outline_yellow.png")
+    val cabinetWideOutlineYellow = load(props_folder_name + "cabinet_wide_outline_yellow.png")
+    val chairFrontOutlineYellow = load(props_folder_name + "chair_front_outline_yellow.png")
+    val chairSideLeftOutlineYellow = load(props_folder_name + "chair_side_left_outline_yellow.png")
+    val chairSideRightOutlineYellow = load(props_folder_name + "chair_side_right_outline_yellow.png")
+    val crateSmallOutlineYellow = load(props_folder_name + "crate_small_outline_yellow.png")
+    val potSmallOutlineYellow = load(props_folder_name + "pot_small_outline_yellow.png")
+    val stoolOutlineYellow = load(props_folder_name + "stool_outline_yellow.png")
+    val tableMediumOutlineYellow = load(props_folder_name + "table_medium_outline_yellow.png")
+    val tableSmallOutlineYellow = load(props_folder_name + "table_small_outline_yellow.png")
+    val vaseOutlineYellow = load(props_folder_name + "vase_outline_yellow.png")
+    
     // composite props
     val props_composite_folder_name = "new_props/new_props_composit/"
     
