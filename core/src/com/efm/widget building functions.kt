@@ -13,6 +13,25 @@ import com.efm.assets.*
 import com.efm.screens.MenuScreen
 import com.efm.ui.gameScreen.PopUps
 
+fun highlightSelection(imageButton : ImageButton, down : NinePatch, up : NinePatch)
+{
+    imageButton.addListener(object : ChangeListener()
+                            {
+                                override fun changed(event : ChangeEvent?, actor : Actor?)
+                                {
+                                    if (imageButton.isChecked)
+                                    {
+                                        imageButton.style.up = NinePatchDrawable(down)
+                                        playSoundOnce(Sounds.blop)
+                                    }
+                                    else
+                                    {
+                                        imageButton.style.up = NinePatchDrawable(up)
+                                    }
+                                }
+                            })
+}
+
 fun columnOf(vararg actors : Actor) : VerticalGroup
 {
     val column = VerticalGroup()
@@ -566,6 +585,7 @@ fun menuPopup(
     
     return window
 }
+val itemButtonWithHealthBarGroup = ButtonGroup<ImageButton>()
 
 fun itemButtonWithHealthBar(
         image : Texture,
@@ -579,6 +599,7 @@ fun itemButtonWithHealthBar(
         onClicked : () -> Unit
                            ) : ImageButton
 {
+    val itemButtonGroup = ButtonGroup<ImageButton>()
     val imageButtonStyle = ImageButton.ImageButtonStyle()
     imageButtonStyle.imageUp = TextureRegionDrawable(image)
     imageButtonStyle.imageDown = TextureRegionDrawable(image)
@@ -589,7 +610,10 @@ fun itemButtonWithHealthBar(
     imageButtonStyle.over = NinePatchDrawable(over)
     imageButtonStyle.disabled = NinePatchDrawable(disabled)
     imageButtonStyle.focused = NinePatchDrawable(focused)
+    
     val imageButton = ImageButton(imageButtonStyle)
+    itemButtonWithHealthBarGroup.add(imageButton)
+    
     imageButton.addListener(object : ClickListener()
                             {
                                 override fun clicked(event : InputEvent?, x : Float, y : Float)
@@ -630,12 +654,15 @@ fun itemButtonWithHealthBar(
     val table = Table()
     table.add(barStack).padTop(48f).padLeft(-48f)
     
+    highlightSelection(imageButton, down, up)
+    
     imageButton.add(table)
     imageButton.padLeft(24f)
     
     return imageButton
 }
 
+val itemButtonWithLabelGroup = ButtonGroup<ImageButton>()
 fun itemButtonWithLabel(
         image : Texture,
         text : String,
@@ -647,6 +674,7 @@ fun itemButtonWithLabel(
         onClicked : () -> Unit
                        ) : ImageButton
 {
+
     val imageButtonTmp = imageButtonOf(Textures.translucent1px, up, down, over, disabled, focused, onClicked)
     
     var image = imageOf(image, Scaling.none)
@@ -665,6 +693,7 @@ fun itemButtonWithLabel(
     stack.add(table)
     
     val imageButton = ImageButton(imageButtonTmp.style)
+    itemButtonWithLabelGroup.add(imageButton)
     imageButton.addListener(object : ClickListener()
                             {
                                 override fun clicked(event : InputEvent?, x : Float, y : Float)
@@ -680,6 +709,8 @@ fun itemButtonWithLabel(
                                     onClicked()
                                 }
                             })
+    highlightSelection(imageButton, down, up)
+    
     imageButton.add(stack)
     return imageButton
 }
