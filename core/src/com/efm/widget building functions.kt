@@ -599,7 +599,6 @@ fun itemButtonWithHealthBar(
         onClicked : () -> Unit
                            ) : ImageButton
 {
-    val itemButtonWithHealthBarGroup = ButtonGroup<ImageButton>()
     val imageButtonStyle = ImageButton.ImageButtonStyle()
     imageButtonStyle.imageUp = TextureRegionDrawable(image)
     imageButtonStyle.imageDown = TextureRegionDrawable(image)
