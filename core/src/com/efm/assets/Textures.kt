@@ -104,6 +104,7 @@ object Textures
     val itemSkill = load("/icons/itemSkill.png")
     val itemUsable = load("/icons/itemUsable.png")
     val itemWeapon = load("/icons/itemWeapon.png")
+    val delete = load("/icons/delete.png")
     
     //images
     val title = load("/images/title.png")
