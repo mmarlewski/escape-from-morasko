@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
+import com.efm.screens.EquipmentScreen
 import com.efm.screens.MenuScreen
 import com.efm.ui.gameScreen.PopUps
 
@@ -22,7 +23,6 @@ fun highlightSelection(imageButton : ImageButton, down : NinePatch, up : NinePat
                                     if (imageButton.isChecked)
                                     {
                                         imageButton.style.up = NinePatchDrawable(down)
-                                        playSoundOnce(Sounds.blop)
                                     }
                                     else
                                     {
@@ -547,6 +547,8 @@ fun menuPopup(
             Textures.focusedNinePatch
                                       ) {
         Sounds.blop.playOnce()
+        window.isVisible = false
+        changeScreen(EquipmentScreen)
     }
     
     val settingsButton = textButtonOf(
@@ -585,6 +587,7 @@ fun menuPopup(
     
     return window
 }
+
 val itemButtonWithHealthBarGroup = ButtonGroup<ImageButton>()
 
 fun itemButtonWithHealthBar(
@@ -712,4 +715,29 @@ fun itemButtonWithLabel(
     
     imageButton.add(stack)
     return imageButton
+}
+
+fun equipmentOverlay(
+        background : NinePatch
+                    ) : Window
+{
+    
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.inconsolata10
+    windowStyle.titleFontColor = Colors.black
+    windowStyle.background = NinePatchDrawable(background)
+    
+    val window = Window("", windowStyle)
+    
+    // Get the title label from the window's title table
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    
+    // Set the alignment of the title label to center
+    titleLabel.setAlignment(Align.center)
+    
+    // Set the width of the title label to fill the title table
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(50f)
+    
+    
+    return window
 }
