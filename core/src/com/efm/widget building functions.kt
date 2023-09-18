@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
 import com.efm.screens.EquipmentScreen
 import com.efm.screens.MenuScreen
+import com.efm.ui.gameScreen.ItemsStructure
 import com.efm.ui.gameScreen.PopUps
 
 fun highlightSelection(imageButton : ImageButton, down : NinePatch, up : NinePatch)
@@ -728,16 +729,45 @@ fun equipmentOverlay(
     windowStyle.background = NinePatchDrawable(background)
     
     val window = Window("", windowStyle)
-    
+//    window.defaults().minWidth(screenWidth).minHeight(screenHeight)
     // Get the title label from the window's title table
     val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
     
     // Set the alignment of the title label to center
-    titleLabel.setAlignment(Align.center)
+    titleLabel.setAlignment(Align.left)
     
     // Set the width of the title label to fill the title table
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(50f)
     
+    val weaponsLabel = labelOf("WEAPONS", Fonts.pixeloid30, Colors.black, Textures.translucentNinePatch)
+    val potionsLabel = labelOf("POTIONS", Fonts.pixeloid30, Colors.black, Textures.translucentNinePatch)
+    val usableLabel = labelOf("USABLE", Fonts.pixeloid30, Colors.black, Textures.translucentNinePatch)
+    
+    val weaponEqDisplay = ItemsStructure.weaponEqDisplay()
+    val potionEqDisplay = ItemsStructure.potionEqDisplay()
+    val usableEqDisplay = ItemsStructure.usableEqDisplay()
+    
+    val contentContainer = Container<Table>()
+    val contentTable = Table()
+
+// Add the labels and displays to the content table
+    contentTable.add(weaponsLabel).padLeft(16f).padRight(16f).align(Align.topLeft)
+    contentTable.row()
+    contentTable.add(weaponEqDisplay).padLeft(16f).padRight(16f).align(Align.topLeft)
+    contentTable.row()
+    contentTable.add(potionsLabel).padLeft(16f).padRight(16f).align(Align.topLeft)
+    contentTable.row()
+    contentTable.add(potionEqDisplay).padLeft(16f).padRight(16f).align(Align.topLeft)
+    contentTable.row()
+    contentTable.add(usableLabel).padLeft(16f).padRight(16f).align(Align.topLeft)
+    contentTable.row()
+    contentTable.add(usableEqDisplay).padLeft(16f).padRight(16f).align(Align.topLeft)
+    
+    contentTable.row().height(100f)
+    
+    contentContainer.setActor(contentTable)
+    
+    window.add(contentContainer).fillX().expandX()
     
     return window
 }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.Textures
-import com.efm.ui.gameScreen.Equipment
+import com.efm.ui.equipmentScreen.Equipment
 
 object EquipmentScreen : BaseScreen()
 {
@@ -21,7 +21,7 @@ object EquipmentScreen : BaseScreen()
         super.inputProcessor = stage
         
         // hud
-        
+    
         Equipment.display()
     }
     

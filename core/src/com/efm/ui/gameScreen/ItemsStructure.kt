@@ -1,7 +1,7 @@
 package com.efm.ui.gameScreen
 
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
@@ -341,13 +341,57 @@ object ItemsStructure
         potionDisplay.setFillParent(true)
         usableDisplay.setFillParent(true)
         skillDisplay.setFillParent(true)
-        
+    
         GameScreen.stage.addActor(equipmentDisplay)
         GameScreen.stage.addActor(weaponDisplay)
         GameScreen.stage.addActor(potionDisplay)
         GameScreen.stage.addActor(usableDisplay)
         GameScreen.stage.addActor(skillDisplay)
+    
+    }
+    
+    fun weaponEqDisplay() : HorizontalGroup
+    {
+        val swordButton = createItemWithHealthbar("weapon", 100, 100, WoodenSword().getTexture()) { attack(WoodenSword()) }
+        val axeButton = createItemWithHealthbar("weapon", 100, 0, SmallAxe().getTexture()) { attack(SmallAxe()) }
+        val hammerButton = createItemWithHealthbar("weapon", 100, 50, Sledgehammer().getTexture()) { attack(Sledgehammer()) }
+        val bowButton = createItemWithHealthbar("weapon", 100, 75, Bow().getTexture()) { attack(Bow()) }
+        val staffButton = createItemWithHealthbar("weapon", 100, 25, Staff().getTexture()) { attack(Staff()) }
         
+        val buttons = listOf(swordButton, axeButton, hammerButton, bowButton, staffButton)
+        
+        return rowOf(*buttons.toTypedArray()).align(Align.left)
+    }
+    
+    fun potionEqDisplay() : HorizontalGroup
+    {
+        val appleButton = createItemWithLabel("potion", 5, Apple().getTexture()) { attack(Apple()) }
+        val fishButton = createItemWithLabel("potion", 5, Fish().getTexture()) { attack(Fish()) }
+        val mushroomButton = createItemWithLabel("potion", 5, Mushroom().getTexture()) { attack(Mushroom()) }
+        
+        val buttons = listOf(appleButton, fishButton, mushroomButton)
+        
+        return rowOf(*buttons.toTypedArray()).align(Align.left)
+    }
+    
+    fun usableEqDisplay() : HorizontalGroup
+    {
+        val bombButton = createItemWithLabel("usable", 10, Bomb().getTexture()) { attack(Bomb()) }
+        val explosiveButton = createItemWithLabel("usable", 10, Explosive().getTexture()) { attack(Explosive()) }
+        val shurikenButton = createItemWithLabel("usable", 10, Shuriken().getTexture()) { attack(Shuriken()) }
+        
+        val buttons = listOf(bombButton, explosiveButton, shurikenButton)
+        
+        return rowOf(*buttons.toTypedArray()).align(Align.left)
+    }
+    
+    fun equipmentDisplay() : VerticalGroup?
+    {
+        val weaponEqDisplay = weaponEqDisplay()
+        val potionEqDisplay = potionEqDisplay()
+        val usableEqDisplay = usableEqDisplay()
+        
+        return columnOf(rowOf(weaponEqDisplay), rowOf(potionEqDisplay), rowOf(usableEqDisplay))
     }
     
 }

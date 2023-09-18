@@ -1,4 +1,4 @@
-package com.efm.ui.gameScreen
+package com.efm.ui.equipmentScreen
 
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Window
@@ -23,7 +23,7 @@ object Equipment
     
     fun createReturnButton() : ImageButton
     {
-        
+    
         val returnButton = imageButtonOf(
                 Textures.close,
                 Textures.upNinePatch,
@@ -64,14 +64,17 @@ object Equipment
     
     fun display()
     {
-        val buttons = rowOf(columnOf(createOverlay()), columnOf(returnButton, deleteButton)).align(Align.bottomRight)
-        
-        buttons.pad(16f)
-        
+        val buttons = columnOf(returnButton, deleteButton).align(Align.bottomRight)
+    
+        val overlay = columnOf(createOverlay()).align(Align.left)
+    
+    
+        buttons.pad(32f)
+    
         buttons.setFillParent(true)
-//        overlay.setFillParent(true)
-        
+        overlay.setFillParent(true)
+    
         EquipmentScreen.stage.addActor(buttons)
-//        EquipmentScreen.stage.addActor(overlay)
+        EquipmentScreen.stage.addActor(overlay)
     }
 }
