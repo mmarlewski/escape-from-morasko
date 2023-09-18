@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.Textures
-import com.efm.ui.equipmentScreen.Equipment
+import com.efm.ui.equipmentScreen.EquipmentUI
 
 object EquipmentScreen : BaseScreen()
 {
@@ -22,7 +22,7 @@ object EquipmentScreen : BaseScreen()
         
         // hud
     
-        Equipment.display()
+        EquipmentUI.display()
     }
     
     override fun render(delta : Float)

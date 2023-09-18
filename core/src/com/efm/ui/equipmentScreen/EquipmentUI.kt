@@ -9,7 +9,7 @@ import com.efm.assets.Textures
 import com.efm.screens.EquipmentScreen
 import com.efm.screens.GameScreen
 
-object Equipment
+object EquipmentUI
 {
     lateinit var deleteButton : ImageButton
     lateinit var returnButton : ImageButton
