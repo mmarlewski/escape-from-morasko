@@ -37,6 +37,8 @@ object GameScreen : BaseScreen(), GestureListener
     var currZoom = 0.33f
     
     // touch
+    var canBeInteractedWith = true
+    
     var isTouched = false
     val screenTouchPosition = Vector2()
     var worldTouchPosition = Vector2()
@@ -288,77 +290,111 @@ object GameScreen : BaseScreen(), GestureListener
     
     override fun touchDown(x : Float, y : Float, pointer : Int, button : Int) : Boolean
     {
-        currZoom = getCameraZoom()
+        if (canBeInteractedWith)
+        {
+            currZoom = getCameraZoom()
         
-        return true
+            return true
+        }
+        return false
     }
     
     override fun tap(x : Float, y : Float, count : Int, button : Int) : Boolean
     {
-        isTouched = true
-        val newScreenTouchPosition = Vector2(x, y)
-        updateScreenWorldMapTouchPositions(newScreenTouchPosition)
-        return true
+        if (canBeInteractedWith)
+        {
+            isTouched = true
+            val newScreenTouchPosition = Vector2(x, y)
+            updateScreenWorldMapTouchPositions(newScreenTouchPosition)
+            return true
+        }
+        return false
+    
     }
     
     override fun longPress(x : Float, y : Float) : Boolean
     {
-        return true
+        if (canBeInteractedWith)
+        {
+            return true
+        }
+        return false
     }
     
     override fun fling(velocityX : Float, velocityY : Float, button : Int) : Boolean
     {
-        return true
+        if (canBeInteractedWith)
+        {
+            return true
+        }
+        return false
     }
     
     override fun pan(x : Float, y : Float, deltaX : Float, deltaY : Float) : Boolean
     {
-        if (Animating.isAnimating())
+        if (canBeInteractedWith)
         {
+            if (Animating.isAnimating())
+            {
+                return true
+            }
+        
+            updateScreenWorldMapTouchPositions(Vector2(x, y))
+        
+            if (isDragging)
+            {
+                val dragDifference = Vector2(
+                        worldTouchPosition.x - gameCamera.position.x, worldTouchPosition.y - gameCamera.position.y
+                                            )
+                val newCameraPosition = Vector3(
+                        dragOriginPosition.x - dragDifference.x, dragOriginPosition.y - dragDifference.y, 0f
+                                               )
+                gameCamera.position.set(newCameraPosition)
+            }
+            else
+            {
+                dragOriginPosition.set(worldTouchPosition)
+                isDragging = true
+            }
+        
+        
             return true
         }
-        
-        updateScreenWorldMapTouchPositions(Vector2(x, y))
-        
-        if (isDragging)
-        {
-            val dragDifference = Vector2(
-                    worldTouchPosition.x - gameCamera.position.x, worldTouchPosition.y - gameCamera.position.y
-                                        )
-            val newCameraPosition = Vector3(
-                    dragOriginPosition.x - dragDifference.x, dragOriginPosition.y - dragDifference.y, 0f
-                                           )
-            gameCamera.position.set(newCameraPosition)
-        }
-        else
-        {
-            dragOriginPosition.set(worldTouchPosition)
-            isDragging = true
-        }
-        
-        return true
+        return false
     }
     
     override fun panStop(x : Float, y : Float, pointer : Int, button : Int) : Boolean
     {
-        isDragging = false
+        if (canBeInteractedWith)
+        {
+            isDragging = false
         
-        return true
+            return true
+        }
+        return false
     }
     
     override fun zoom(initialDistance : Float, distance : Float) : Boolean
     {
-        val zoomChange = initialDistance / distance
-        changeCameraZoom(currZoom * zoomChange)
+        if (canBeInteractedWith)
+        {
+            val zoomChange = initialDistance / distance
+            changeCameraZoom(currZoom * zoomChange)
         
-        return true
+            return true
+        }
+        return false
     }
     
     override fun pinch(
             initialPointer1 : Vector2?, initialPointer2 : Vector2?, pointer1 : Vector2?, pointer2 : Vector2?
                       ) : Boolean
     {
-        return true
+        if (canBeInteractedWith)
+        {
+            return true
+        }
+        return false
     }
     
     override fun pinchStop()
