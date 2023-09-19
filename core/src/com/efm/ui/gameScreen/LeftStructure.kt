@@ -37,10 +37,12 @@ object LeftStructure
                 if (PopUps.menuPause.isVisible)
                 {
                     PopUps.setMenuVisibility(false)
+                    PopUps.setBackgroundVisibility(true)
                 }
                 else
                 {
                     PopUps.setMenuVisibility(true)
+                    PopUps.setBackgroundVisibility(false)
                 }
             }
             if (buttonName == "usableItemsButton")

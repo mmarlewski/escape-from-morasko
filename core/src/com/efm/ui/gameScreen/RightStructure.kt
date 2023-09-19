@@ -12,6 +12,13 @@ import com.efm.state.*
 object RightStructure
 {
     lateinit var xButton : TextButton
+    
+    fun setVisibility(boolean : Boolean)
+    {
+        xButtonVisibility(boolean)
+        endTurnButton.isVisible = boolean
+    }
+    
     fun createXButton() : TextButton
     {
         xButton = textButtonOf(
@@ -82,10 +89,12 @@ object RightStructure
             if (PopUps.endTurn.isVisible)
             {
                 PopUps.setEndTurnVisibility(false)
+                PopUps.setBackgroundVisibility(true)
             }
             else
             {
                 PopUps.setEndTurnVisibility(true)
+                PopUps.setBackgroundVisibility(false)
             }
         }
         else
@@ -93,6 +102,7 @@ object RightStructure
             endCurrentTurn()
         }
         playSoundOnce(Sounds.blop)
+    
     }
     
     fun display()

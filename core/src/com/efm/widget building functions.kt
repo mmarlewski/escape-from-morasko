@@ -374,6 +374,7 @@ fun windowAreaOf(
         Sounds.blop.playOnce()
         window.isVisible = false
         onYes()
+        PopUps.setBackgroundVisibility(true)
     }
     
     val noButton = imageButtonOf(
@@ -387,6 +388,7 @@ fun windowAreaOf(
     {
         window.isVisible = false
         Sounds.blop.playOnce()
+        PopUps.setBackgroundVisibility(true)
     }
     
     val buttonTable = Table()
@@ -535,6 +537,7 @@ fun menuPopup(
     {
         window.isVisible = false
         Sounds.blop.playOnce()
+        PopUps.setBackgroundVisibility(true)
     }
     
     val equipmentButton = textButtonOf(
@@ -550,6 +553,7 @@ fun menuPopup(
         Sounds.blop.playOnce()
         window.isVisible = false
         changeScreen(EquipmentScreen)
+        PopUps.setBackgroundVisibility(true)
     }
     
     val settingsButton = textButtonOf(
@@ -566,6 +570,7 @@ fun menuPopup(
         Sounds.blop.playOnce()
         window.isVisible = false
         PopUps.setSettingsVisibility(true)
+        PopUps.setBackgroundVisibility(true)
     }
     
     val backToMenuButton = textButtonOf(
@@ -582,6 +587,7 @@ fun menuPopup(
         Sounds.blop.playOnce()
         changeScreen(MenuScreen)
         window.isVisible = false
+        PopUps.setBackgroundVisibility(true)
     }
     
     window.add(columnOf(resumeButton, equipmentButton, /*settingsButton,*/ backToMenuButton)).pad(50f)

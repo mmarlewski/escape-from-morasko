@@ -12,6 +12,15 @@ object PopUps
     lateinit var menuPause : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var settings : com.badlogic.gdx.scenes.scene2d.ui.Window
     
+    fun setBackgroundVisibility(boolean : Boolean)
+    {
+        GameScreen.canBeInteractedWith = boolean
+        RightStructure.setVisibility(boolean)
+        ItemsStructure.setVisibility(boolean)
+        LeftStructure.setVisibility(boolean)
+        
+    }
+    
     fun endTurn() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
         val endTurnPopUp = windowAreaOf(

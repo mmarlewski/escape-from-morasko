@@ -1,6 +1,7 @@
 package com.efm.ui.gameScreen
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
 import com.efm.*
@@ -43,6 +44,32 @@ object ItemsStructure
         bombButton = createItemWithLabel("usable", 10, Bomb().getTexture(), { attack(Bomb()) })
         explosiveButton = createItemWithLabel("usable", 10, Explosive().getTexture(), { attack(Explosive()) })
         shurikenButton = createItemWithLabel("usable", 10, Shuriken().getTexture(), { attack(Shuriken()) })
+    }
+    
+    fun setVisibility(boolean : Boolean)
+    {
+        for (item : Actor in weaponDisplay.children)
+        {
+            item.isVisible = boolean
+        }
+        
+        for (item : Actor in potionDisplay.children)
+        {
+            item.isVisible = boolean
+        }
+        
+        for (item : Actor in skillDisplay.children)
+        {
+            item.isVisible = boolean
+        }
+        
+        for (item : Actor in usableDisplay.children)
+        {
+            item.isVisible = boolean
+        }
+        
+        equipmentDisplay.isVisible = boolean
+        
     }
     
     fun attack(item : Item)
