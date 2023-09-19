@@ -115,6 +115,8 @@ class Hero(
         {
             equipment.add(item)
         }
+        else
+            throw EquipmentFullException("Cannot add any more items to equipment.")
     }
     
     fun removeItemFromEquipment(item : Item)
@@ -122,3 +124,5 @@ class Hero(
         equipment.remove(item)
     }
 }
+
+class EquipmentFullException(message : String? = null, cause : Throwable? = null) : Exception(message, cause)
