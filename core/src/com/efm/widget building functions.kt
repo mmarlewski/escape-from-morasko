@@ -10,10 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
-import com.efm.screens.EquipmentScreen
 import com.efm.screens.MenuScreen
-import com.efm.ui.gameScreen.ItemsStructure
-import com.efm.ui.gameScreen.PopUps
+import com.efm.ui.gameScreen.*
 
 fun highlightSelection(imageButton : ImageButton, down : NinePatch, up : NinePatch)
 {
@@ -552,8 +550,10 @@ fun menuPopup(
                                       ) {
         Sounds.blop.playOnce()
         window.isVisible = false
-        changeScreen(EquipmentScreen)
-        PopUps.setBackgroundVisibility(true)
+        EquipmentStructure.setVisibility(true)
+        PopUps.setBackgroundVisibility(false)
+        ProgressBars.setVisibilty(false)
+        LeftStructure.menuButton.isVisible = false
     }
     
     val settingsButton = textButtonOf(

@@ -21,6 +21,14 @@ object ProgressBars
     lateinit var flashingProgressBars : MutableList<ProgressBar>
     var flashTimer = 0.0
     var timerChange = 0.03
+    
+    fun setVisibilty(boolean : Boolean)
+    {
+        abilityBarForFlashing.isVisible = boolean
+        abilityBar.isVisible = boolean
+        healthBar.isVisible = boolean
+    }
+    
     fun createBar(
             height : Float,
             colorTexture : NinePatch,

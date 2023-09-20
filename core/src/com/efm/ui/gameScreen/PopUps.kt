@@ -17,8 +17,11 @@ object PopUps
         GameScreen.canBeInteractedWith = boolean
         RightStructure.setVisibility(boolean)
         ItemsStructure.setVisibility(boolean)
-        LeftStructure.setVisibility(boolean)
-        
+        if (!boolean)
+        {
+            LeftStructure.setVisibility(boolean)
+        }
+    
     }
     
     fun endTurn() : com.badlogic.gdx.scenes.scene2d.ui.Window

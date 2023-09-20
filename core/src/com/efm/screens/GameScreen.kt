@@ -56,6 +56,7 @@ object GameScreen : BaseScreen(), GestureListener
         ProgressBars.display()
         RightStructure.display()
         PopUps.display()
+        EquipmentStructure.display()
         
         // map
         updateMapBaseLayer()

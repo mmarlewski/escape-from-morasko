@@ -1,4 +1,4 @@
-package com.efm.ui.equipmentScreen
+package com.efm.ui.gameScreen
 
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Window
@@ -6,17 +6,18 @@ import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Textures
-import com.efm.screens.EquipmentScreen
 import com.efm.screens.GameScreen
 
-object EquipmentUI
+object EquipmentStructure
 {
     lateinit var deleteButton : ImageButton
     lateinit var returnButton : ImageButton
+    lateinit var overlay : Window
     
     fun createOverlay() : Window
     {
         val overlay = equipmentOverlay(Textures.pauseBackgroundNinePatch)
+        overlay.isVisible = false
         
         return overlay
     }
@@ -34,9 +35,12 @@ object EquipmentUI
                                         )
         {
             Sounds.blop.playOnce()
-            changeScreen(GameScreen)
+            ProgressBars.setVisibilty(true)
+            PopUps.setBackgroundVisibility(true)
+            LeftStructure.menuButton.isVisible = true
+            setVisibility(false)
         }
-        
+        returnButton.isVisible = false
         return returnButton
     }
     
@@ -53,6 +57,8 @@ object EquipmentUI
         {
             Sounds.blop.playOnce()
         }
+        deleteButton.isVisible = false
+    
         return deleteButton
     }
     
@@ -60,21 +66,29 @@ object EquipmentUI
     {
         returnButton = createReturnButton()
         deleteButton = createDeleteButton()
+        overlay = createOverlay()
+    }
+    
+    fun setVisibility(boolean : Boolean)
+    {
+        returnButton.isVisible = boolean
+        deleteButton.isVisible = boolean
+        overlay.isVisible = boolean
     }
     
     fun display()
     {
         val buttons = columnOf(returnButton, deleteButton).align(Align.bottomRight)
-    
-        val overlay = columnOf(createOverlay()).align(Align.left)
-    
-    
+        
+        val overlay = columnOf(overlay).align(Align.left)
+        
+        
         buttons.pad(32f)
-    
+        
         buttons.setFillParent(true)
         overlay.setFillParent(true)
-    
-        EquipmentScreen.stage.addActor(buttons)
-        EquipmentScreen.stage.addActor(overlay)
+        
+        GameScreen.stage.addActor(buttons)
+        GameScreen.stage.addActor(overlay)
     }
 }
