@@ -79,16 +79,16 @@ object EquipmentStructure
     fun display()
     {
         val buttons = columnOf(returnButton, deleteButton).align(Align.bottomRight)
-        
-        val overlay = columnOf(overlay).align(Align.left)
-        
-        
-        buttons.pad(32f)
-        
+    
+        val equipment = columnOf(overlay).align(Align.center).fill(1.9f)
+    
+    
+        buttons.padBottom(overlay.height - 16f).padRight(24f)
+    
         buttons.setFillParent(true)
-        overlay.setFillParent(true)
-        
+        equipment.setFillParent(true)
+    
         GameScreen.stage.addActor(buttons)
-        GameScreen.stage.addActor(overlay)
+        GameScreen.stage.addActor(equipment)
     }
 }
