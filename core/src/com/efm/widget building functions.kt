@@ -539,7 +539,7 @@ fun menuPopup(
     }
     
     val equipmentButton = textButtonOf(
-            "equipment",
+            "inventory",
             Fonts.inconsolata30,
             Colors.darkGray,
             Textures.upLongNinePatch,
@@ -652,7 +652,7 @@ fun itemButtonWithHealthBar(
         healthPercentage <= 0.75f -> Colors.yellow
         else                      -> Colors.green
     }
-    healthBar.setColor(color)
+    healthBar.color = color
     
     val barWidth = 64f
     val barStack = Stack()
@@ -771,7 +771,7 @@ fun equipmentOverlay(
     
     contentTable.row().height(100f)
     
-    contentContainer.setActor(contentTable)
+    contentContainer.actor = contentTable
     
     window.add(contentContainer).fillX().expandX()
     

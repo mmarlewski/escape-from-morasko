@@ -32,7 +32,7 @@ object ItemsStructure
     
     init
     {
-        // buttons now have 4 types: weapon, potion, usable and skill based on the category within equipment display
+        // buttons now have 4 types: weapon, potion, usable and skill based on the category within inventory display
         swordButton = createItemWithHealthbar("weapon", 100, 100, WoodenSword().getTexture(), { attack(WoodenSword()) })
         axeButton = createItemWithHealthbar("weapon", 100, 0, SmallAxe().getTexture(), { attack(SmallAxe()) })
         hammerButton = createItemWithHealthbar("weapon", 100, 50, Sledgehammer().getTexture(), { attack(Sledgehammer()) })
@@ -254,14 +254,7 @@ object ItemsStructure
     init
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "weapon")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "weapon"
         }
         
     }
@@ -293,56 +286,28 @@ object ItemsStructure
     fun setWeaponDisplay()
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "weapon")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "weapon"
         }
     }
     
     fun setPotionDisplay()
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "potion")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "potion"
         }
     }
     
     fun setUsableDisplay()
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "usable")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "usable"
         }
     }
     
     fun setSkillDisplay()
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "skill")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "skill"
         }
     }
     
