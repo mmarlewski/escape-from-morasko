@@ -262,14 +262,7 @@ object ItemsStructure
     init
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "weapon")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "weapon"
         }
         
     }
@@ -301,56 +294,28 @@ object ItemsStructure
     fun setWeaponDisplay()
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "weapon")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "weapon"
         }
     }
     
     fun setPotionDisplay()
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "potion")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "potion"
         }
     }
     
     fun setUsableDisplay()
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "usable")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "usable"
         }
     }
     
     fun setSkillDisplay()
     {
         buttonsAssignment.forEach { (category, button) ->
-            if (category == "skill")
-            {
-                button.isVisible = true
-            }
-            else
-            {
-                button.isVisible = false
-            }
+            button.isVisible = category == "skill"
         }
     }
     

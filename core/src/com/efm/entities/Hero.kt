@@ -3,6 +3,7 @@ package com.efm.entities
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Character
+import com.efm.item.Container
 import com.efm.item.Item
 import com.efm.room.RoomPosition
 import com.efm.state.getState
@@ -12,9 +13,7 @@ import com.efm.ui.gameScreen.ProgressBars
  * Hero has its own turn and is controlled by the player.
  */
 class Hero(
-        override var maxHealthPoints : Int = 100,
-        override var healthPoints : Int = 100,
-        override var alive : Boolean = true
+        override var maxHealthPoints : Int = 100, override var healthPoints : Int = 100, override var alive : Boolean = true
           ) : Character
 {
     override val position = RoomPosition()
@@ -22,8 +21,7 @@ class Hero(
     var maxAbilityPoints : Int = 14
     var abilityPoints : Int = 14
     
-    val equipmentMax = 25
-    val equipment = mutableListOf<Item>()
+    val inventory = HeroInventory()
     
     override fun getTile() : TiledMapTile
     {
@@ -103,26 +101,10 @@ class Hero(
         super.killCharacter()
         getState().isHeroAlive = false
     }
-    
-    fun getEquipmentItems() : List<Item>
-    {
-        return equipment.toList()
-    }
-    
-    fun addItemToEquipment(item : Item)
-    {
-        if (equipment.size < equipmentMax)
-        {
-            equipment.add(item)
-        }
-        else
-            throw EquipmentFullException("Cannot add any more items to equipment.")
-    }
-    
-    fun removeItemFromEquipment(item : Item)
-    {
-        equipment.remove(item)
-    }
 }
 
-class EquipmentFullException(message : String? = null, cause : Throwable? = null) : Exception(message, cause)
+class HeroInventory : Container
+{
+    override val items : MutableList<Item> = mutableListOf<Item>()
+    override var maxItems : Int = 20
+}

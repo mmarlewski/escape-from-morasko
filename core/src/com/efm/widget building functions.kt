@@ -657,7 +657,7 @@ fun itemButtonWithHealthBar(
         healthPercentage <= 0.75f -> Colors.yellow
         else                      -> Colors.green
     }
-    healthBar.setColor(color)
+    healthBar.color = color
     
     val barWidth = 64f
     val barStack = Stack()

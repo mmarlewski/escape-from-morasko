@@ -4,16 +4,15 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Entity
 import com.efm.entity.Interactive
-import com.efm.item.Item
-import com.efm.item.StackableItem
+import com.efm.item.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import kotlin.math.min
 
-class Chest : Entity, Interactive
+class Chest : Entity, Interactive, Container
 {
     override val position = RoomPosition()
-    val items = mutableListOf<Item>()
+    override val items : MutableList<Item> = mutableListOf<Item>()
+    override var maxItems : Int = 16
     
     override fun getTile() : TiledMapTile
     {
@@ -37,38 +36,14 @@ class Chest : Entity, Interactive
     
     fun takeItemFromChest(item : Item)
     {
-        val equipment = World.hero.equipment
-        
-        // jezeli przedmiot jest stackowalny
-        if (item is StackableItem)
+        World.hero.inventory.addItem(item)
+        if (item is StackableItem && item.amount > 0)
         {
-            // jezeli przedmiot jest w ekwipunku
-            val itemInEq : StackableItem? = equipment.find { it::class == item::class } as StackableItem?
-            if (itemInEq != null)
-            {
-                // maksymalna liczba przedmiotow jaka mozna zabrac ze skrzynki
-                val amountToTake = min(itemInEq.amountPossibleToAdd(), item.amount)
-                // dodaj przedmioty do ekwipunku
-                itemInEq.add(amountToTake)
-                // usun przedmioty ze skrzynki
-                item.remove(amountToTake)
-                if (item.amount == 0)
-                {
-                    items.remove(item)
-                }
-            }
+            // zostalo troche przedmiotu w skrzyni
         }
-        // jezeli przedmiot nie jest stackowalny sproboj dodac go do ekwipunku
         else
         {
-            try
-            {
-                equipment.add(item)
-                items.remove(item)
-            } catch (e : EquipmentFullException)
-            {
-                // nie mozna zabrac przedmiotu ze skrzynki
-            }
+            items.remove(item)
         }
     }
 }
