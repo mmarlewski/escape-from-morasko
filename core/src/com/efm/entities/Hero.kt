@@ -22,7 +22,7 @@ class Hero(
     var maxAbilityPoints : Int = 14
     var abilityPoints : Int = 14
     
-    val equipmentMax = 20
+    val equipmentMax = 25
     val equipment = mutableListOf<Item>()
     
     override fun getTile() : TiledMapTile

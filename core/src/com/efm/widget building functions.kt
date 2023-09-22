@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
+import com.efm.level.World
+import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 import com.efm.ui.gameScreen.*
 
@@ -341,7 +343,7 @@ fun windowAreaOf(
         fontType : BitmapFont,
         fontColor : Color,
         background : NinePatch,
-        onYes: () -> Unit
+        onYes : () -> Unit
                 ) : Window
 {
     val windowStyle = Window.WindowStyle()
@@ -551,9 +553,12 @@ fun menuPopup(
         Sounds.blop.playOnce()
         window.isVisible = false
         EquipmentStructure.setVisibility(true)
+        EquipmentStructure.deleteButton.isVisible = false
         PopUps.setBackgroundVisibility(false)
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
+        GameScreen.fillEquipmentWithItems(true, World.hero.getEquipmentItems())
+        GameScreen.fillEquipmentWithItems(false, GameScreen.containerItems)
     }
     
     val settingsButton = textButtonOf(
@@ -598,7 +603,7 @@ fun menuPopup(
 val itemButtonWithHealthBarGroup = ButtonGroup<ImageButton>()
 
 fun itemButtonWithHealthBar(
-        image : Texture,
+        image : Texture?,
         maxHealth : Int,
         currentHealth : Int,
         up : NinePatch,
@@ -663,7 +668,7 @@ fun itemButtonWithHealthBar(
     val table = Table()
     table.add(barStack).padTop(48f).padLeft(-48f)
     
-    highlightSelection(imageButton, down, up)
+//    highlightSelection(imageButton, down, up)
     
     imageButton.add(table)
     imageButton.padLeft(24f)
@@ -673,7 +678,7 @@ fun itemButtonWithHealthBar(
 
 val itemButtonWithLabelGroup = ButtonGroup<ImageButton>()
 fun itemButtonWithLabel(
-        image : Texture,
+        image : Texture?,
         text : String,
         up : NinePatch,
         down : NinePatch,
@@ -683,10 +688,10 @@ fun itemButtonWithLabel(
         onClicked : () -> Unit
                        ) : ImageButton
 {
-
+    
     val imageButtonTmp = imageButtonOf(Textures.translucent1px, up, down, over, disabled, focused, onClicked)
     
-    var image = imageOf(image, Scaling.none)
+    var image = if (image != null) imageOf(image, Scaling.none) else null
     
     var label = labelOf(
             text,
@@ -710,70 +715,39 @@ fun itemButtonWithLabel(
                                     onClicked()
                                 }
                             })
-    
-    imageButton.addListener(object : ClickListener()
-                            {
-                                override fun clicked(event : InputEvent?, x : Float, y : Float)
-                                {
-                                    onClicked()
-                                }
-                            })
-    highlightSelection(imageButton, down, up)
+//    highlightSelection(imageButton, down, up)
     
     imageButton.add(stack)
     return imageButton
 }
 
 fun equipmentOverlay(
-        background : NinePatch
+        title : String
                     ) : Window
 {
     
     val windowStyle = Window.WindowStyle()
-    windowStyle.titleFont = Fonts.inconsolata10
+    windowStyle.titleFont = Fonts.pixeloid30
     windowStyle.titleFontColor = Colors.black
-    windowStyle.background = NinePatchDrawable(background)
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundNinePatch)
     
     val window = Window("", windowStyle)
-//    window.defaults().minWidth(screenWidth).minHeight(screenHeight)
-    // Get the title label from the window's title table
-    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
     
-    // Set the alignment of the title label to center
-    titleLabel.setAlignment(Align.left)
+    val titleLabel = labelOf(title, Fonts.pixeloid30, Colors.black, Textures.translucentNinePatch)
     
-    // Set the width of the title label to fill the title table
-    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(50f)
+    val table = Table()
+    table.add(titleLabel).align(Align.center).row()
     
-    val weaponsLabel = labelOf("WEAPONS", Fonts.pixeloid30, Colors.black, Textures.translucentNinePatch)
-    val potionsLabel = labelOf("POTIONS", Fonts.pixeloid30, Colors.black, Textures.translucentNinePatch)
-    val usableLabel = labelOf("USABLE", Fonts.pixeloid30, Colors.black, Textures.translucentNinePatch)
+    for (i in 0 until EQUIPMENT_ROWS)
+    {
+        val itemRow = rowOf()
+        table.add(itemRow).align(Align.center).row()
+    }
     
-    val weaponEqDisplay = ItemsStructure.weaponEqDisplay()
-    val potionEqDisplay = ItemsStructure.potionEqDisplay()
-    val usableEqDisplay = ItemsStructure.usableEqDisplay()
-    
-    val contentContainer = Container<Table>()
-    val contentTable = Table()
-
-// Add the labels and displays to the content table
-    contentTable.add(weaponsLabel).padLeft(16f).padRight(16f).align(Align.topLeft)
-    contentTable.row()
-    contentTable.add(weaponEqDisplay).padLeft(16f).padRight(16f).align(Align.topLeft)
-    contentTable.row()
-    contentTable.add(potionsLabel).padLeft(16f).padRight(16f).align(Align.topLeft)
-    contentTable.row()
-    contentTable.add(potionEqDisplay).padLeft(16f).padRight(16f).align(Align.topLeft)
-    contentTable.row()
-    contentTable.add(usableLabel).padLeft(16f).padRight(16f).align(Align.topLeft)
-    contentTable.row()
-    contentTable.add(usableEqDisplay).padLeft(16f).padRight(16f).align(Align.topLeft)
-    
-    contentTable.row().height(100f)
-    
-    contentContainer.setActor(contentTable)
-    
-    window.add(contentContainer).fillX().expandX()
+    window.add(table)
     
     return window
 }
+
+const val EQUIPMENT_ROW_MAX = 5
+const val EQUIPMENT_ROWS = 5

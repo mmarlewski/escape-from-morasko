@@ -6,15 +6,24 @@ import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.input.GestureDetector.GestureListener
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Colors
+import com.efm.assets.Textures
 import com.efm.entity.Enemy
+import com.efm.item.*
 import com.efm.level.World
+import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
+import com.efm.stackableMapItems.*
+import com.efm.stackableSelfItems.*
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
 
@@ -38,11 +47,122 @@ object GameScreen : BaseScreen(), GestureListener
     
     // touch
     var canBeInteractedWith = true
-    
     var isTouched = false
     val screenTouchPosition = Vector2()
     var worldTouchPosition = Vector2()
     val roomTouchPosition = RoomPosition()
+    
+    // equipment
+    var selectedHeroItem : Item? = null
+    var selectedHeroButton : ImageButton? = null
+    val containerItems = mutableListOf<Item>(
+            WoodenSword(), SmallAxe(), Sledgehammer(), Bow(), Staff(),
+            Bomb(), Explosive(), Shuriken(), Apple(), Fish(), Mushroom(),
+            PotionSmall(), PotionBig(), PotionSmall(), PotionBig()
+                                            )
+    
+    fun fillEquipmentWithItems(heroEquipment : Boolean, items : List<Item>)
+    {
+        fun onClick(item : Item?, button : ImageButton?)
+        {
+            selectedHeroButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
+            
+            if (heroEquipment)
+            {
+                EquipmentStructure.deleteButton.isVisible = true
+                
+                if (selectedHeroButton === button)
+                {
+                    selectedHeroItem = null
+                    selectedHeroButton = null
+                }
+                else
+                {
+                    selectedHeroItem = item
+                    selectedHeroButton = button
+                }
+            }
+            else
+            {
+                if (item != null && World.hero.getEquipmentItems().size < World.hero.equipmentMax)
+                {
+                    containerItems.remove(item)
+                    World.hero.addItemToEquipment(item)
+                    
+                    fillEquipmentWithItems(true, World.hero.getEquipmentItems())
+                    fillEquipmentWithItems(false, containerItems)
+                    
+                    selectedHeroItem = null
+                    selectedHeroButton = null
+                }
+            }
+            
+            selectedHeroButton?.style?.up = NinePatchDrawable(Textures.downNinePatch)
+            
+            EquipmentStructure.deleteButton.isVisible = (selectedHeroButton != null)
+        }
+        
+        val table = if (heroEquipment) EquipmentStructure.heroOverlay.getChild(1) as Table
+        else EquipmentStructure.containerOverlay.getChild(1) as Table
+        
+        val itemRows = mutableListOf<HorizontalGroup>()
+        
+        for (i in 0 until EQUIPMENT_ROWS)
+        {
+            val itemRow = table.getChild(1 + i) as HorizontalGroup
+            itemRow.clear()
+            itemRows.add(itemRow)
+        }
+        
+        var itemCount = 0
+        
+        for (item in items)
+        {
+            when (item)
+            {
+                is MultiUseMapItem   ->
+                {
+                    val button = ItemsStructure.createItemWithHealthbar(100, item.durability, item.getTexture()) {}
+                    button.addListener(object : ClickListener()
+                                       {
+                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
+                                           {
+                                               onClick(item, button)
+                                           }
+                                       })
+                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
+                }
+                
+                is StackableMapItem  ->
+                {
+                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
+                    button.addListener(object : ClickListener()
+                                       {
+                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
+                                           {
+                                               onClick(item, button)
+                                           }
+                                       })
+                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
+                }
+                
+                is StackableSelfItem ->
+                {
+                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
+                    button.addListener(object : ClickListener()
+                                       {
+                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
+                                           {
+                                               onClick(item, button)
+                                           }
+                                       })
+                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
+                }
+            }
+            
+            itemCount++
+        }
+    }
     
     init
     {
@@ -50,7 +170,6 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
-        
         ItemsStructure.display()
         LeftStructure.display()
         ProgressBars.display()
@@ -65,6 +184,21 @@ object GameScreen : BaseScreen(), GestureListener
         // camera
         changeCameraZoom(currZoom)
         focusCameraOnRoomPosition(World.hero.position)
+        
+        // hero
+        World.hero.addItemToEquipment(WoodenSword())
+        World.hero.addItemToEquipment(SmallAxe())
+        World.hero.addItemToEquipment(Sledgehammer())
+        World.hero.addItemToEquipment(Bow())
+        World.hero.addItemToEquipment(Staff())
+        World.hero.addItemToEquipment(Bomb())
+        World.hero.addItemToEquipment(Explosive())
+        World.hero.addItemToEquipment(Shuriken())
+        World.hero.addItemToEquipment(Apple())
+        World.hero.addItemToEquipment(Fish())
+        World.hero.addItemToEquipment(Mushroom())
+        World.hero.addItemToEquipment(PotionSmall())
+        World.hero.addItemToEquipment(PotionBig())
         
         // state
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
@@ -294,7 +428,7 @@ object GameScreen : BaseScreen(), GestureListener
         if (canBeInteractedWith)
         {
             currZoom = getCameraZoom()
-        
+            
             return true
         }
         return false
@@ -310,7 +444,7 @@ object GameScreen : BaseScreen(), GestureListener
             return true
         }
         return false
-    
+        
     }
     
     override fun longPress(x : Float, y : Float) : Boolean
@@ -339,9 +473,9 @@ object GameScreen : BaseScreen(), GestureListener
             {
                 return true
             }
-        
+            
             updateScreenWorldMapTouchPositions(Vector2(x, y))
-        
+            
             if (isDragging)
             {
                 val dragDifference = Vector2(
@@ -357,8 +491,8 @@ object GameScreen : BaseScreen(), GestureListener
                 dragOriginPosition.set(worldTouchPosition)
                 isDragging = true
             }
-        
-        
+            
+            
             return true
         }
         return false
@@ -369,7 +503,7 @@ object GameScreen : BaseScreen(), GestureListener
         if (canBeInteractedWith)
         {
             isDragging = false
-        
+            
             return true
         }
         return false
@@ -381,7 +515,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             val zoomChange = initialDistance / distance
             changeCameraZoom(currZoom * zoomChange)
-        
+            
             return true
         }
         return false

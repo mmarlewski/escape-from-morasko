@@ -1,30 +1,26 @@
 package com.efm.ui.gameScreen
 
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Textures
+import com.efm.level.World
 import com.efm.screens.GameScreen
 
 object EquipmentStructure
 {
+    lateinit var equipment : HorizontalGroup
     lateinit var deleteButton : ImageButton
     lateinit var returnButton : ImageButton
-    lateinit var overlay : Window
-    
-    fun createOverlay() : Window
-    {
-        val overlay = equipmentOverlay(Textures.pauseBackgroundNinePatch)
-        overlay.isVisible = false
-        
-        return overlay
-    }
+    lateinit var heroOverlay : Window
+    lateinit var containerOverlay : Window
     
     fun createReturnButton() : ImageButton
     {
-    
+        
         val returnButton = imageButtonOf(
                 Textures.close,
                 Textures.upNinePatch,
@@ -56,9 +52,21 @@ object EquipmentStructure
                                         )
         {
             Sounds.blop.playOnce()
+            
+            if (GameScreen.selectedHeroItem != null)
+            {
+                World.hero.removeItemFromEquipment(GameScreen.selectedHeroItem!!)
+                GameScreen.fillEquipmentWithItems(true, World.hero.getEquipmentItems())
+                
+                GameScreen.selectedHeroItem = null
+                GameScreen.selectedHeroButton = null
+            }
+            
+            deleteButton.isVisible = (GameScreen.selectedHeroButton != null)
         }
+        
         deleteButton.isVisible = false
-    
+        
         return deleteButton
     }
     
@@ -66,29 +74,29 @@ object EquipmentStructure
     {
         returnButton = createReturnButton()
         deleteButton = createDeleteButton()
-        overlay = createOverlay()
+        
+        heroOverlay = equipmentOverlay("HERO'S EQUIPMENT")
+        heroOverlay.isVisible = false
+        containerOverlay = equipmentOverlay("CONTAINER'S EQUIPMENT")
+        containerOverlay.isVisible = false
     }
     
     fun setVisibility(boolean : Boolean)
     {
         returnButton.isVisible = boolean
         deleteButton.isVisible = boolean
-        overlay.isVisible = boolean
+        heroOverlay.isVisible = boolean
+        containerOverlay.isVisible = boolean
     }
     
     fun display()
     {
-        val buttons = columnOf(returnButton, deleteButton).align(Align.bottomRight)
-    
-        val equipment = columnOf(overlay).align(Align.center).fill(1.9f)
-    
-    
-        buttons.padBottom(overlay.height - 16f).padRight(24f)
-    
-        buttons.setFillParent(true)
+        val buttons = columnOf(returnButton, deleteButton)
+        
+        equipment = rowOf(heroOverlay, buttons, containerOverlay)
+        
         equipment.setFillParent(true)
-    
-        GameScreen.stage.addActor(buttons)
+        
         GameScreen.stage.addActor(equipment)
     }
 }

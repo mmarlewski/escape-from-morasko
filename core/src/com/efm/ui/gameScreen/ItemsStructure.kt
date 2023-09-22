@@ -33,17 +33,28 @@ object ItemsStructure
     init
     {
         // buttons now have 4 types: weapon, potion, usable and skill based on the category within equipment display
-        swordButton = createItemWithHealthbar("weapon", 100, 100, WoodenSword().getTexture(), { attack(WoodenSword()) })
-        axeButton = createItemWithHealthbar("weapon", 100, 0, SmallAxe().getTexture(), { attack(SmallAxe()) })
-        hammerButton = createItemWithHealthbar("weapon", 100, 50, Sledgehammer().getTexture(), { attack(Sledgehammer()) })
-        bowButton = createItemWithHealthbar("weapon", 100, 75, Bow().getTexture(), { attack(Bow()) })
-        staffButton = createItemWithHealthbar("weapon", 100, 25, Staff().getTexture(), { attack(Staff()) })
-        appleButton = createItemWithLabel("potion", 5, Apple().getTexture(), { attack(Apple()) })
-        fishButton = createItemWithLabel("potion", 5, Fish().getTexture(), { attack(Fish()) })
-        mushroomButton = createItemWithLabel("potion", 5, Mushroom().getTexture(), { attack(Mushroom()) })
-        bombButton = createItemWithLabel("usable", 10, Bomb().getTexture(), { attack(Bomb()) })
-        explosiveButton = createItemWithLabel("usable", 10, Explosive().getTexture(), { attack(Explosive()) })
-        shurikenButton = createItemWithLabel("usable", 10, Shuriken().getTexture(), { attack(Shuriken()) })
+        swordButton = createItemWithHealthbar( 100, 100, WoodenSword().getTexture(), { attack(WoodenSword()) })
+        buttonsAssignment.add(Pair("weapon", swordButton))
+        axeButton = createItemWithHealthbar( 100, 0, SmallAxe().getTexture(), { attack(SmallAxe()) })
+        buttonsAssignment.add(Pair("weapon", axeButton))
+        hammerButton = createItemWithHealthbar(100, 50, Sledgehammer().getTexture(), { attack(Sledgehammer()) })
+        buttonsAssignment.add(Pair("weapon", hammerButton))
+        bowButton = createItemWithHealthbar( 100, 75, Bow().getTexture(), { attack(Bow()) })
+        buttonsAssignment.add(Pair("weapon", bowButton))
+        staffButton = createItemWithHealthbar( 100, 25, Staff().getTexture(), { attack(Staff()) })
+        buttonsAssignment.add(Pair("weapon", staffButton))
+        appleButton = createItemWithLabel( 5, Apple().getTexture(), { attack(Apple()) })
+        buttonsAssignment.add(Pair("potion", appleButton))
+        fishButton = createItemWithLabel( 5, Fish().getTexture(), { attack(Fish()) })
+        buttonsAssignment.add(Pair("potion", fishButton))
+        mushroomButton = createItemWithLabel( 5, Mushroom().getTexture(), { attack(Mushroom()) })
+        buttonsAssignment.add(Pair("potion", mushroomButton))
+        bombButton = createItemWithLabel( 10, Bomb().getTexture(), { attack(Bomb()) })
+        buttonsAssignment.add(Pair("usable", bombButton))
+        explosiveButton = createItemWithLabel( 10, Explosive().getTexture(), { attack(Explosive()) })
+        buttonsAssignment.add(Pair("usable", explosiveButton))
+        shurikenButton = createItemWithLabel( 10, Shuriken().getTexture(), { attack(Shuriken()) })
+        buttonsAssignment.add(Pair("usable", shurikenButton))
     }
     
     fun setVisibility(boolean : Boolean)
@@ -198,10 +209,9 @@ object ItemsStructure
     }
     
     fun createItemWithHealthbar(
-            type : String,
             maxHealth : Int,
             currentHealth : Int,
-            texture : Texture,
+            texture : Texture?,
             action : () -> Unit
                                ) : ImageButton
     {
@@ -217,12 +227,10 @@ object ItemsStructure
             action()
         }
         
-        buttonsAssignment.add(Pair(type, button))
-        
         return button
     }
     
-    fun createItemWithLabel(type : String, amountOfUses : Int, texture : Texture, action : () -> Unit) : ImageButton
+    fun createItemWithLabel(amountOfUses : Int, texture : Texture?, action : () -> Unit) : ImageButton
     {
         val button = itemButtonWithLabel(
                 texture, "$amountOfUses",
@@ -235,7 +243,7 @@ object ItemsStructure
             playSoundOnce(Sounds.blop)
             action()
         }
-        buttonsAssignment.add(Pair(type, button))
+        
         return button
     }
     
@@ -379,11 +387,11 @@ object ItemsStructure
     
     fun weaponEqDisplay() : HorizontalGroup
     {
-        val swordButton = createItemWithHealthbar("weapon", 100, 100, WoodenSword().getTexture()) { attack(WoodenSword()) }
-        val axeButton = createItemWithHealthbar("weapon", 100, 0, SmallAxe().getTexture()) { attack(SmallAxe()) }
-        val hammerButton = createItemWithHealthbar("weapon", 100, 50, Sledgehammer().getTexture()) { attack(Sledgehammer()) }
-        val bowButton = createItemWithHealthbar("weapon", 100, 75, Bow().getTexture()) { attack(Bow()) }
-        val staffButton = createItemWithHealthbar("weapon", 100, 25, Staff().getTexture()) { attack(Staff()) }
+        val swordButton = createItemWithHealthbar(100, 100, WoodenSword().getTexture()) { attack(WoodenSword()) }
+        val axeButton = createItemWithHealthbar( 100, 0, SmallAxe().getTexture()) { attack(SmallAxe()) }
+        val hammerButton = createItemWithHealthbar( 100, 50, Sledgehammer().getTexture()) { attack(Sledgehammer()) }
+        val bowButton = createItemWithHealthbar( 100, 75, Bow().getTexture()) { attack(Bow()) }
+        val staffButton = createItemWithHealthbar(100, 25, Staff().getTexture()) { attack(Staff()) }
         
         val buttons = listOf(swordButton, axeButton, hammerButton, bowButton, staffButton)
         
@@ -392,9 +400,9 @@ object ItemsStructure
     
     fun potionEqDisplay() : HorizontalGroup
     {
-        val appleButton = createItemWithLabel("potion", 5, Apple().getTexture()) { attack(Apple()) }
-        val fishButton = createItemWithLabel("potion", 5, Fish().getTexture()) { attack(Fish()) }
-        val mushroomButton = createItemWithLabel("potion", 5, Mushroom().getTexture()) { attack(Mushroom()) }
+        val appleButton = createItemWithLabel( 5, Apple().getTexture()) { attack(Apple()) }
+        val fishButton = createItemWithLabel(5, Fish().getTexture()) { attack(Fish()) }
+        val mushroomButton = createItemWithLabel( 5, Mushroom().getTexture()) { attack(Mushroom()) }
         
         val buttons = listOf(appleButton, fishButton, mushroomButton)
         
@@ -403,9 +411,9 @@ object ItemsStructure
     
     fun usableEqDisplay() : HorizontalGroup
     {
-        val bombButton = createItemWithLabel("usable", 10, Bomb().getTexture()) { attack(Bomb()) }
-        val explosiveButton = createItemWithLabel("usable", 10, Explosive().getTexture()) { attack(Explosive()) }
-        val shurikenButton = createItemWithLabel("usable", 10, Shuriken().getTexture()) { attack(Shuriken()) }
+        val bombButton = createItemWithLabel(10, Bomb().getTexture()) { attack(Bomb()) }
+        val explosiveButton = createItemWithLabel(10, Explosive().getTexture()) { attack(Explosive()) }
+        val shurikenButton = createItemWithLabel(10, Shuriken().getTexture()) { attack(Shuriken()) }
         
         val buttons = listOf(bombButton, explosiveButton, shurikenButton)
         
