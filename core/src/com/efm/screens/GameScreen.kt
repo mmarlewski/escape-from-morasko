@@ -84,12 +84,12 @@ object GameScreen : BaseScreen(), GestureListener
             }
             else
             {
-                if (item != null && World.hero.getEquipmentItems().size < World.hero.equipmentMax)
+                if (item != null && World.hero.inventory.items.size < World.hero.inventory.maxItems)
                 {
                     containerItems.remove(item)
-                    World.hero.addItemToEquipment(item)
+                    World.hero.inventory.addItem(item)
                     
-                    fillEquipmentWithItems(true, World.hero.getEquipmentItems())
+                    fillEquipmentWithItems(true, World.hero.inventory.items)
                     fillEquipmentWithItems(false, containerItems)
                     
                     selectedHeroItem = null
@@ -186,19 +186,19 @@ object GameScreen : BaseScreen(), GestureListener
         focusCameraOnRoomPosition(World.hero.position)
         
         // hero
-        World.hero.addItemToEquipment(WoodenSword())
-        World.hero.addItemToEquipment(SmallAxe())
-        World.hero.addItemToEquipment(Sledgehammer())
-        World.hero.addItemToEquipment(Bow())
-        World.hero.addItemToEquipment(Staff())
-        World.hero.addItemToEquipment(Bomb())
-        World.hero.addItemToEquipment(Explosive())
-        World.hero.addItemToEquipment(Shuriken())
-        World.hero.addItemToEquipment(Apple())
-        World.hero.addItemToEquipment(Fish())
-        World.hero.addItemToEquipment(Mushroom())
-        World.hero.addItemToEquipment(PotionSmall())
-        World.hero.addItemToEquipment(PotionBig())
+        World.hero.inventory.addItem(WoodenSword())
+        World.hero.inventory.addItem(SmallAxe())
+        World.hero.inventory.addItem(Sledgehammer())
+        World.hero.inventory.addItem(Bow())
+        World.hero.inventory.addItem(Staff())
+        World.hero.inventory.addItem(Bomb())
+        World.hero.inventory.addItem(Explosive())
+        World.hero.inventory.addItem(Shuriken())
+        World.hero.inventory.addItem(Apple())
+        World.hero.inventory.addItem(Fish())
+        World.hero.inventory.addItem(Mushroom())
+        World.hero.inventory.addItem(PotionSmall())
+        World.hero.inventory.addItem(PotionBig())
         
         // state
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()

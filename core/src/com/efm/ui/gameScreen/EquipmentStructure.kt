@@ -55,8 +55,8 @@ object EquipmentStructure
             
             if (GameScreen.selectedHeroItem != null)
             {
-                World.hero.removeItemFromEquipment(GameScreen.selectedHeroItem!!)
-                GameScreen.fillEquipmentWithItems(true, World.hero.getEquipmentItems())
+                World.hero.inventory.removeItem(GameScreen.selectedHeroItem!!)
+                GameScreen.fillEquipmentWithItems(true, World.hero.inventory.items)
                 
                 GameScreen.selectedHeroItem = null
                 GameScreen.selectedHeroButton = null

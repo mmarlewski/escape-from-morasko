@@ -557,7 +557,7 @@ fun menuPopup(
         PopUps.setBackgroundVisibility(false)
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
-        GameScreen.fillEquipmentWithItems(true, World.hero.getEquipmentItems())
+        GameScreen.fillEquipmentWithItems(true, World.hero.inventory.items)
         GameScreen.fillEquipmentWithItems(false, GameScreen.containerItems)
     }
     
