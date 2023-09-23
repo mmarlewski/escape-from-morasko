@@ -1,9 +1,11 @@
 package com.efm.ui.gameScreen
 
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.efm.*
-import com.efm.assets.Sounds
-import com.efm.assets.Textures
+import com.efm.assets.*
 import com.efm.item.Container
 import com.efm.level.World
 import com.efm.screens.GameScreen
@@ -14,8 +16,8 @@ object EquipmentStructure
     lateinit var deleteButton : ImageButton
     lateinit var arrowButton : ImageButton
     lateinit var returnButton : ImageButton
-    lateinit var heroOverlay : Window
-    lateinit var containerOverlay : Window
+    lateinit var heroOverlay : Table
+    lateinit var containerOverlay : Table
     
     fun createReturnButton() : ImageButton
     {
@@ -93,8 +95,8 @@ object EquipmentStructure
             
             if(selectedItem != null && currEquipment != null && otherEquipment.items.size < otherEquipment.maxItems)
             {
-                currEquipment.items.remove(selectedItem)
-                otherEquipment.items.add(selectedItem)
+                otherEquipment.addItem(selectedItem)
+                currEquipment.removeItem(selectedItem)
     
                 GameScreen.fillEquipmentWithItems(currEquipment)
                 GameScreen.fillEquipmentWithItems(otherEquipment)

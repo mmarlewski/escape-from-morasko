@@ -661,7 +661,7 @@ fun itemButtonWithHealthBar(
     
     val table = Table()
     table.add(barStack).padTop(48f).padLeft(-48f)
-    
+
 //    highlightSelection(imageButton, down, up)
     
     imageButton.add(table)
@@ -717,19 +717,13 @@ fun itemButtonWithLabel(
 
 fun equipmentOverlay(
         title : String
-                    ) : Window
+                    ) : Table
 {
     
-    val windowStyle = Window.WindowStyle()
-    windowStyle.titleFont = Fonts.pixeloid30
-    windowStyle.titleFontColor = Colors.black
-    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundNinePatch)
-    
-    val window = Window("", windowStyle)
+    val table = Table()
+    table.background = NinePatchDrawable(Textures.pauseBackgroundNinePatch)
     
     val titleLabel = labelOf(title, Fonts.pixeloid30, Colors.black, Textures.translucentNinePatch)
-    
-    val table = Table()
     table.add(titleLabel).align(Align.center).row()
     
     for (i in 0 until EQUIPMENT_ROWS)
@@ -738,9 +732,7 @@ fun equipmentOverlay(
         table.add(itemRow).align(Align.center).row()
     }
     
-    window.add(table)
-    
-    return window
+    return table
 }
 
 const val EQUIPMENT_ROW_MAX = 5

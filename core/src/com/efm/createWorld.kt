@@ -8,6 +8,7 @@ import com.efm.passage.LevelPassage
 import com.efm.passage.RoomPassage
 import com.efm.room.*
 import com.efm.stackableMapItems.Bomb
+import com.efm.stackableSelfItems.*
 
 /*
 fun World.createWorldPrototypeOne()
@@ -448,8 +449,10 @@ fun World.createWorldPrototypeTwo()
     // entities
     l1r2.addEntityAt(EnemyMushroom(), 3, 3)
     val chest = Chest()
-    chest.addItem(Bow())
-    chest.addItem(Bomb(2))
+    chest.addItem(Bomb(4))
+    chest.addItem(Fish(15))
+    chest.addItem(Apple(16))
+    chest.addItem(Mushroom(14))
     l1r2.addEntityAt(chest, 5, 5)
     l1r2.addEntityAt(ExplodingBarrel(), 8, 3)
     l1r2.addEntityAt(EnemySkeleton(), 4, 6)

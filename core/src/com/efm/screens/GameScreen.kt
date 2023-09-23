@@ -105,8 +105,8 @@ object GameScreen : BaseScreen(), GestureListener
             }
         }
         
-        val table = if (equipment === heroEquipment) EquipmentStructure.heroOverlay.getChild(1) as Table
-        else EquipmentStructure.containerOverlay.getChild(1) as Table
+        val table = if (equipment === heroEquipment) EquipmentStructure.heroOverlay
+        else EquipmentStructure.containerOverlay
         
         val itemRows = mutableListOf<HorizontalGroup>()
         
