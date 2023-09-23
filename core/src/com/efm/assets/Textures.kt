@@ -98,6 +98,7 @@ object Textures
     val close = load("/icons/close.png")
     val back = load("/icons/goBack.png")
     val arrowLeft = load("/icons/arrowLeft.png")
+    val arrowRight = load("/icons/arrowRight.png")
     val check = load("/icons/check.png")
     val backpack = load("/icons/backpack.png")
     val itemHealing = load("/icons/itemHealing.png")

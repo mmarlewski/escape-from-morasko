@@ -106,5 +106,5 @@ class Hero(
 class HeroInventory : Container
 {
     override val items : MutableList<Item> = mutableListOf<Item>()
-    override var maxItems : Int = 20
+    override var maxItems : Int = 10
 }

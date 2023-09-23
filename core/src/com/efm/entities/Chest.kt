@@ -13,7 +13,7 @@ class Chest : Entity, Interactive, Container
 {
     override val position = RoomPosition()
     override val items : MutableList<Item> = mutableListOf<Item>()
-    override var maxItems : Int = 16
+    override var maxItems : Int = 5
     
     override fun getTile() : TiledMapTile
     {
@@ -32,9 +32,7 @@ class Chest : Entity, Interactive, Container
     
     override fun interact()
     {
-        // otworz widok zawartosci skrzyni (chest ui)
-        EquipmentStructure.showTwoContainers(World.hero.inventory, this)
-        
+        EquipmentStructure.showHeroAndContainerEquipments(this)
     }
     
     fun takeItemFromChest(item : Item)

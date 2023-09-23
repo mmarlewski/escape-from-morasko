@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
@@ -19,6 +21,7 @@ import com.efm.assets.Colors
 import com.efm.assets.Textures
 import com.efm.entity.Enemy
 import com.efm.item.*
+import com.efm.item.Container
 import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
@@ -53,56 +56,56 @@ object GameScreen : BaseScreen(), GestureListener
     val roomTouchPosition = RoomPosition()
     
     // equipment
-    var selectedHeroItem : Item? = null
-    var selectedHeroButton : ImageButton? = null
-    val containerItems = mutableListOf<Item>(
-            WoodenSword(), SmallAxe(), Sledgehammer(), Bow(), Staff(),
-            Bomb(), Explosive(), Shuriken(), Apple(), Fish(), Mushroom(),
-            PotionSmall(), PotionBig(), PotionSmall(), PotionBig()
-                                            )
+    var isHeroEquipmentOnly = true
+    var currEquipment : Container? = null
+    var heroEquipment : Container = World.hero.inventory
+    lateinit var containerEquipment : Container
+    var selectedItem : Item? = null
+    var selectedButton : ImageButton? = null
     
-    fun fillEquipmentWithItems(heroEquipment : Boolean, items : List<Item>)
+    fun setNewContainerEquipment(newContainerEquipment : Container)
+    {
+        containerEquipment = newContainerEquipment
+    }
+    
+    fun fillEquipmentWithItems(equipment : Container)
     {
         fun onClick(item : Item?, button : ImageButton?)
         {
-            selectedHeroButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
+            selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
             
-            if (heroEquipment)
+            EquipmentStructure.deleteButton.isVisible = true
+            
+            if (selectedButton === button)
             {
-                EquipmentStructure.deleteButton.isVisible = true
-                
-                if (selectedHeroButton === button)
-                {
-                    selectedHeroItem = null
-                    selectedHeroButton = null
-                }
-                else
-                {
-                    selectedHeroItem = item
-                    selectedHeroButton = button
-                }
+                selectedItem = null
+                selectedButton = null
+                currEquipment = null
             }
             else
             {
-                if (item != null && World.hero.inventory.items.size < World.hero.inventory.maxItems)
-                {
-                    containerItems.remove(item)
-                    World.hero.inventory.addItem(item)
-                    
-                    fillEquipmentWithItems(true, World.hero.inventory.items)
-                    fillEquipmentWithItems(false, containerItems)
-                    
-                    selectedHeroItem = null
-                    selectedHeroButton = null
-                }
+                selectedItem = item
+                selectedButton = button
+                currEquipment = equipment
             }
             
-            selectedHeroButton?.style?.up = NinePatchDrawable(Textures.downNinePatch)
+            selectedButton?.style?.up = NinePatchDrawable(Textures.downNinePatch)
             
-            EquipmentStructure.deleteButton.isVisible = (selectedHeroButton != null)
+            EquipmentStructure.deleteButton.isVisible = (selectedButton != null)
+            EquipmentStructure.arrowButton.isVisible = (selectedButton != null && !isHeroEquipmentOnly)
+            EquipmentStructure.arrowButton.style.imageUp = when(equipment === heroEquipment)
+            {
+                true->TextureRegionDrawable(Textures.arrowRight)
+                false->TextureRegionDrawable(Textures.arrowLeft)
+            }
+            EquipmentStructure.arrowButton.style.imageDown = when(equipment === heroEquipment)
+            {
+                true->TextureRegionDrawable(Textures.arrowRight)
+                false->TextureRegionDrawable(Textures.arrowLeft)
+            }
         }
         
-        val table = if (heroEquipment) EquipmentStructure.heroOverlay.getChild(1) as Table
+        val table = if (equipment === heroEquipment) EquipmentStructure.heroOverlay.getChild(1) as Table
         else EquipmentStructure.containerOverlay.getChild(1) as Table
         
         val itemRows = mutableListOf<HorizontalGroup>()
@@ -116,7 +119,7 @@ object GameScreen : BaseScreen(), GestureListener
         
         var itemCount = 0
         
-        for (item in items)
+        for (item in equipment.items)
         {
             when (item)
             {
@@ -162,6 +165,18 @@ object GameScreen : BaseScreen(), GestureListener
             
             itemCount++
         }
+    
+        for (i in itemCount until equipment.maxItems)
+        {
+            val image = imageOf(Textures.down, Scaling.fill)
+            itemRows[i / EQUIPMENT_ROW_MAX].addActor(image)
+        }
+    
+        for (i in equipment.maxItems until EQUIPMENT_ROWS * EQUIPMENT_ROW_MAX)
+        {
+            val image = imageOf(Textures.disabled, Scaling.fill)
+            itemRows[i / EQUIPMENT_ROW_MAX].addActor(image)
+        }
     }
     
     init
@@ -186,19 +201,14 @@ object GameScreen : BaseScreen(), GestureListener
         focusCameraOnRoomPosition(World.hero.position)
         
         // hero
-        World.hero.inventory.addItem(WoodenSword())
         World.hero.inventory.addItem(SmallAxe())
         World.hero.inventory.addItem(Sledgehammer())
         World.hero.inventory.addItem(Bow())
         World.hero.inventory.addItem(Staff())
         World.hero.inventory.addItem(Bomb())
-        World.hero.inventory.addItem(Explosive())
-        World.hero.inventory.addItem(Shuriken())
         World.hero.inventory.addItem(Apple())
         World.hero.inventory.addItem(Fish())
         World.hero.inventory.addItem(Mushroom())
-        World.hero.inventory.addItem(PotionSmall())
-        World.hero.inventory.addItem(PotionBig())
         
         // state
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()

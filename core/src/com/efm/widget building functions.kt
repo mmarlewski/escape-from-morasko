@@ -549,17 +549,10 @@ fun menuPopup(
             Textures.overNinePatch,
             Textures.disabledNinePatch,
             Textures.focusedNinePatch
-                                      ) {
-        Sounds.blop.playOnce()
+                                      )
+    {
         window.isVisible = false
-        EquipmentStructure.setVisibility(true)
-        EquipmentStructure.deleteButton.isVisible = false
-        EquipmentStructure.equipment.removeActor(EquipmentStructure.containerOverlay)
-        PopUps.setBackgroundVisibility(false)
-        ProgressBars.setVisibilty(false)
-        LeftStructure.menuButton.isVisible = false
-        GameScreen.fillEquipmentWithItems(true, World.hero.inventory.items)
-        GameScreen.fillEquipmentWithItems(false, GameScreen.containerItems)
+        EquipmentStructure.showHeroEquipment()
     }
     
     val settingsButton = textButtonOf(

@@ -12,6 +12,7 @@ object EquipmentStructure
 {
     lateinit var equipment : HorizontalGroup
     lateinit var deleteButton : ImageButton
+    lateinit var arrowButton : ImageButton
     lateinit var returnButton : ImageButton
     lateinit var heroOverlay : Window
     lateinit var containerOverlay : Window
@@ -51,16 +52,17 @@ object EquipmentStructure
         {
             Sounds.blop.playOnce()
             
-            if (GameScreen.selectedHeroItem != null)
+            if (GameScreen.selectedItem != null)
             {
-                World.hero.inventory.removeItem(GameScreen.selectedHeroItem!!)
-                GameScreen.fillEquipmentWithItems(true, World.hero.inventory.items)
+                GameScreen.currEquipment?.items?.remove(GameScreen.selectedItem!!)
+                GameScreen.fillEquipmentWithItems(GameScreen.currEquipment!!)
                 
-                GameScreen.selectedHeroItem = null
-                GameScreen.selectedHeroButton = null
+                GameScreen.selectedItem = null
+                GameScreen.selectedButton = null
             }
-            
-            deleteButton.isVisible = (GameScreen.selectedHeroButton != null)
+    
+            deleteButton.isVisible = false
+            arrowButton.isVisible = false
         }
         
         deleteButton.isVisible = false
@@ -68,10 +70,50 @@ object EquipmentStructure
         return deleteButton
     }
     
+    fun createArrowButton() : ImageButton
+    {
+        val arrowButton = imageButtonOf(
+                Textures.arrowRight,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                        )
+        {
+            Sounds.blop.playOnce()
+            
+            val selectedItem = GameScreen.selectedItem
+            val currEquipment = GameScreen.currEquipment
+            val otherEquipment = when(currEquipment)
+            {
+                GameScreen.heroEquipment -> GameScreen.containerEquipment
+                else -> GameScreen.heroEquipment
+            }
+            
+            if(selectedItem != null && currEquipment != null && otherEquipment.items.size < otherEquipment.maxItems)
+            {
+                currEquipment.items.remove(selectedItem)
+                otherEquipment.items.add(selectedItem)
+    
+                GameScreen.fillEquipmentWithItems(currEquipment)
+                GameScreen.fillEquipmentWithItems(otherEquipment)
+            }
+    
+            deleteButton.isVisible = false
+            arrowButton.isVisible = false
+        }
+    
+        arrowButton.isVisible = false
+        
+        return arrowButton
+    }
+    
     init
     {
         returnButton = createReturnButton()
         deleteButton = createDeleteButton()
+        arrowButton = createArrowButton()
         
         heroOverlay = equipmentOverlay("HERO'S EQUIPMENT")
         heroOverlay.isVisible = false
@@ -83,13 +125,14 @@ object EquipmentStructure
     {
         returnButton.isVisible = boolean
         deleteButton.isVisible = boolean
+        arrowButton.isVisible = boolean
         heroOverlay.isVisible = boolean
         containerOverlay.isVisible = boolean
     }
     
     fun display()
     {
-        val buttons = columnOf(returnButton, deleteButton)
+        val buttons = columnOf(returnButton, deleteButton, arrowButton)
         
         equipment = rowOf(heroOverlay, buttons, containerOverlay)
         
@@ -98,16 +141,39 @@ object EquipmentStructure
         GameScreen.stage.addActor(equipment)
     }
     
-    fun showTwoContainers(leftContainer: Container, rightContainer : Container)
+    fun showHeroEquipment()
     {
         Sounds.blop.playOnce()
-        EquipmentStructure
+        if(containerOverlay in equipment.children)
+        {
+            equipment.removeActor(containerOverlay)
+        }
         setVisibility(true)
         deleteButton.isVisible = false
+        arrowButton.isVisible = false
         PopUps.setBackgroundVisibility(false)
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
-        GameScreen.fillEquipmentWithItems(true, leftContainer.items)
-        GameScreen.fillEquipmentWithItems(false, rightContainer.items)
+        GameScreen.fillEquipmentWithItems(GameScreen.heroEquipment)
+        GameScreen.isHeroEquipmentOnly = true
+    }
+    
+    fun showHeroAndContainerEquipments(containerEquipment : Container)
+    {
+        Sounds.blop.playOnce()
+        if(containerOverlay !in equipment.children)
+        {
+            equipment.addActor(containerOverlay)
+        }
+        setVisibility(true)
+        deleteButton.isVisible = false
+        arrowButton.isVisible = false
+        PopUps.setBackgroundVisibility(false)
+        ProgressBars.setVisibilty(false)
+        LeftStructure.menuButton.isVisible = false
+        GameScreen.fillEquipmentWithItems(GameScreen.heroEquipment)
+        GameScreen.setNewContainerEquipment(containerEquipment)
+        GameScreen.fillEquipmentWithItems(GameScreen.containerEquipment)
+        GameScreen.isHeroEquipmentOnly = false
     }
 }
