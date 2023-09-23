@@ -1,12 +1,10 @@
 package com.efm.ui.gameScreen
 
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Window
-import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Textures
+import com.efm.item.Container
 import com.efm.level.World
 import com.efm.screens.GameScreen
 
@@ -98,5 +96,18 @@ object EquipmentStructure
         equipment.setFillParent(true)
         
         GameScreen.stage.addActor(equipment)
+    }
+    
+    fun showTwoContainers(leftContainer: Container, rightContainer : Container)
+    {
+        Sounds.blop.playOnce()
+        EquipmentStructure
+        setVisibility(true)
+        deleteButton.isVisible = false
+        PopUps.setBackgroundVisibility(false)
+        ProgressBars.setVisibilty(false)
+        LeftStructure.menuButton.isVisible = false
+        GameScreen.fillEquipmentWithItems(true, leftContainer.items)
+        GameScreen.fillEquipmentWithItems(false, rightContainer.items)
     }
 }

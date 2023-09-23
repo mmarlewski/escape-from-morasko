@@ -554,6 +554,7 @@ fun menuPopup(
         window.isVisible = false
         EquipmentStructure.setVisibility(true)
         EquipmentStructure.deleteButton.isVisible = false
+        EquipmentStructure.equipment.removeActor(EquipmentStructure.containerOverlay)
         PopUps.setBackgroundVisibility(false)
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false

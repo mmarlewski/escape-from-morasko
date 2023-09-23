@@ -7,6 +7,7 @@ import com.efm.entity.Interactive
 import com.efm.item.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.ui.gameScreen.EquipmentStructure
 
 class Chest : Entity, Interactive, Container
 {
@@ -32,6 +33,8 @@ class Chest : Entity, Interactive, Container
     override fun interact()
     {
         // otworz widok zawartosci skrzyni (chest ui)
+        EquipmentStructure.showTwoContainers(World.hero.inventory, this)
+        
     }
     
     fun takeItemFromChest(item : Item)

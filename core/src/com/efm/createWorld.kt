@@ -3,9 +3,11 @@ package com.efm
 import com.efm.entities.*
 import com.efm.level.Level
 import com.efm.level.World
+import com.efm.multiUseMapItems.Bow
 import com.efm.passage.LevelPassage
 import com.efm.passage.RoomPassage
 import com.efm.room.*
+import com.efm.stackableMapItems.Bomb
 
 /*
 fun World.createWorldPrototypeOne()
@@ -445,7 +447,10 @@ fun World.createWorldPrototypeTwo()
     
     // entities
     l1r2.addEntityAt(EnemyMushroom(), 3, 3)
-    l1r2.addEntityAt(Chest(), 5, 5)
+    val chest = Chest()
+    chest.addItem(Bow())
+    chest.addItem(Bomb(2))
+    l1r2.addEntityAt(chest, 5, 5)
     l1r2.addEntityAt(ExplodingBarrel(), 8, 3)
     l1r2.addEntityAt(EnemySkeleton(), 4, 6)
     l1r2.addEntityAt(EnemyMushroomCorpse(), 2, 2)
