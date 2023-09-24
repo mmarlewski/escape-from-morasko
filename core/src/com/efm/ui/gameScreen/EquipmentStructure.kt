@@ -54,6 +54,8 @@ object EquipmentStructure
         {
             Sounds.blop.playOnce()
             
+            GameScreen.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
+            
             if (GameScreen.selectedItem != null)
             {
                 GameScreen.currEquipment?.items?.remove(GameScreen.selectedItem!!)
@@ -85,6 +87,8 @@ object EquipmentStructure
         {
             Sounds.blop.playOnce()
             
+            GameScreen.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
+            
             val selectedItem = GameScreen.selectedItem
             val currEquipment = GameScreen.currEquipment
             val otherEquipment = when(currEquipment)
@@ -97,6 +101,9 @@ object EquipmentStructure
             {
                 otherEquipment.addItem(selectedItem)
                 currEquipment.removeItem(selectedItem)
+                
+                otherEquipment.sortItems()
+                currEquipment.sortItems()
     
                 GameScreen.fillEquipmentWithItems(currEquipment)
                 GameScreen.fillEquipmentWithItems(otherEquipment)
@@ -156,6 +163,7 @@ object EquipmentStructure
         PopUps.setBackgroundVisibility(false)
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
+        GameScreen.heroEquipment.sortItems()
         GameScreen.fillEquipmentWithItems(GameScreen.heroEquipment)
         GameScreen.isHeroEquipmentOnly = true
     }
@@ -173,8 +181,10 @@ object EquipmentStructure
         PopUps.setBackgroundVisibility(false)
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
+        GameScreen.heroEquipment.sortItems()
         GameScreen.fillEquipmentWithItems(GameScreen.heroEquipment)
         GameScreen.setNewContainerEquipment(containerEquipment)
+        GameScreen.containerEquipment.sortItems()
         GameScreen.fillEquipmentWithItems(GameScreen.containerEquipment)
         GameScreen.isHeroEquipmentOnly = false
     }

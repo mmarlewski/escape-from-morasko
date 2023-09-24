@@ -35,6 +35,11 @@ interface Container
         items.remove(item)
     }
     
+    fun sortItems()
+    {
+        items.sortBy { it.javaClass.canonicalName }
+    }
+    
     private fun addItemToNewSlot(item : Item)
     {
         if (items.size < maxItems)

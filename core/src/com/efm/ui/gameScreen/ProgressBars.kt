@@ -26,7 +26,9 @@ object ProgressBars
     {
         abilityBarForFlashing.isVisible = boolean
         abilityBar.isVisible = boolean
+        abilityBarLabel.isVisible = boolean
         healthBar.isVisible = boolean
+        healthBarLabel.isVisible = boolean
     }
     
     fun createBar(
