@@ -1,6 +1,7 @@
 import com.efm.entities.*
 import com.efm.item.StackableItem
 import com.efm.multiUseMapItems.Bow
+import com.efm.stackableSelfItems.Mushroom
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -42,10 +43,17 @@ import org.junit.runner.RunWith
     {
         val seed = 2
         val chest1 = Chest(possibleItems, seed)
-        // printChestItems(chest1,"Chest1")
+        // printChestItems(chest1, "Chest1")
         val chest2 = Chest(possibleItems, seed)
-        // printChestItems(chest2,"Chest2")
-        assertArrayEquals(chest1.items.toTypedArray(), chest2.items.toTypedArray())
+        // printChestItems(chest2, "Chest2")
+        for (i in 0 until chest1.items.size)
+        {
+            assertTrue(chest1.items[i]::class == chest2.items[i]::class)
+            if (chest1.items[i] is StackableItem)
+            {
+                assertTrue((chest1.items[i] as StackableItem).amount == (chest1.items[i] as StackableItem).amount)
+            }
+        }
     }
     
     @Test fun `cannot add same item more times than initial timesLeftPossibleToAdd`()
@@ -58,5 +66,23 @@ import org.junit.runner.RunWith
         // printChestItems(chest2,"Chest2")
         assertTrue(chest1.findAllStacks(Bow()).isNotEmpty())
         assertTrue(chest2.findAllStacks(Bow()).isEmpty())
+    }
+    
+    @Test fun `cannot add more of an item than initial amountLeftPossibleToAdd`()
+    {
+        // Mushroom has initial amountLeftPossibleToAdd=10
+        // first added 6
+        // second added 10-6=3
+        // third added 0
+        val seed = 5
+        val chest1 = Chest(possibleItems, seed)
+        // printChestItems(chest1, "Chest1")
+        val chest2 = Chest(possibleItems, seed)
+        // printChestItems(chest2,"Chest2")
+        val chest3 = Chest(possibleItems, seed)
+        // printChestItems(chest3, "Chest3")
+        assertTrue(chest1.findAllStacks(Mushroom()).isNotEmpty())
+        assertTrue(chest2.findAllStacks(Mushroom()).isNotEmpty())
+        assertTrue(chest3.findAllStacks(Mushroom()).isEmpty())
     }
 }
