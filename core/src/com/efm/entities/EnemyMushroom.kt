@@ -76,7 +76,7 @@ class EnemyMushroom : Entity, Enemy
     
     override fun getMoveSound() : Sound?
     {
-        return Sounds.wizardMove
+        return Sounds.mushroomMove
     }
     
     override fun enemyAttack()

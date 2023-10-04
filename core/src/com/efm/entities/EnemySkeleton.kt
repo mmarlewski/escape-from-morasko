@@ -76,7 +76,7 @@ class EnemySkeleton : Entity, Enemy
     
     override fun getMoveSound() : Sound?
     {
-        return Sounds.wizardMove
+        return Sounds.skeletonMove
     }
     
     override fun enemyAttack()
