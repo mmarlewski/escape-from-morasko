@@ -1,5 +1,6 @@
 package com.efm.entities
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
@@ -71,6 +72,11 @@ class EnemyBat : Entity, Enemy
     override fun getAttackTile() : TiledMapTile?
     {
         return Tiles.batAttack
+    }
+    
+    override fun getMoveSound() : Sound?
+    {
+        return Sounds.wizardMove
     }
     
     override fun enemyAttack()

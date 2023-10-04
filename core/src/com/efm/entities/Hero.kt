@@ -21,6 +21,8 @@ class Hero(
     var maxAbilityPoints : Int = 14
     var abilityPoints : Int = 14
     
+    var apDrainInNextTurn = 0
+    
     val inventory = HeroInventory()
     
     override fun getTile() : TiledMapTile
@@ -91,8 +93,9 @@ class Hero(
     
     fun regainAllAP()
     {
-        this.abilityPoints = maxAbilityPoints
-        ProgressBars.abilityBar.value = maxAbilityPoints.toFloat()
+        this.abilityPoints = maxAbilityPoints - apDrainInNextTurn
+        apDrainInNextTurn = 0
+        ProgressBars.abilityBar.value = this.abilityPoints.toFloat()
         ProgressBars.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
     }
     

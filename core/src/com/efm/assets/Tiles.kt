@@ -329,8 +329,16 @@ object Tiles
     val dragonMove1 = load("dragonMove1.png")
     val dragonMove2 = load("dragonMove2.png")
     val dragonAttack = load("dragonAttack.png")
+    val dragonProjectile = load("dragonProjectile.png")
     val dragonCorpse = load("dragonCorpse.png")
     val dragonCorpseOutlineYellow = load("dragonCorpseOutlineYellow.png")
+    
+    val dragonSittingIdle1 = load("dragonSittingIdle1.png")
+    val dragonSittingIdle1OutlineYellow = load("dragonSittingIdle1OutlineYellow.png")
+    val dragonSittingIdle1OutlineRed = load("dragonSittingIdle1OutlineRed.png")
+    val dragonSittingIdle2 = load("dragonSittingIdle2.png")
+    val dragonSittingIdle2OutlineYellow = load("dragonSittingIdle2OutlineYellow.png")
+    val dragonSittingAttack = load("dragonSittingAttack.png")
     
     // goblin
     
@@ -653,6 +661,32 @@ object Tiles
             Direction8.downLeft  -> staffDownLeft
             Direction8.left      -> staffLeft
             Direction8.upLeft    -> staffUpLeft
+        }
+    }
+    
+    // fire
+    
+    val fireUp = load("fireUp.png")
+    val fireUpRight = load("fireUpRight.png")
+    val fireRight = load("fireRight.png")
+    val fireDownRight = load("fireDownRight.png")
+    val fireDown = load("fireDown.png")
+    val fireDownLeft = load("fireDownLeft.png")
+    val fireLeft = load("fireLeft.png")
+    val fireUpLeft = load("fireUpLeft.png")
+    
+    fun getFireTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> fireUp
+            Direction8.upRight   -> fireUpRight
+            Direction8.right     -> fireRight
+            Direction8.downRight -> fireDownRight
+            Direction8.down      -> fireDown
+            Direction8.downLeft  -> fireDownLeft
+            Direction8.left      -> fireLeft
+            Direction8.upLeft    -> fireUpLeft
         }
     }
     

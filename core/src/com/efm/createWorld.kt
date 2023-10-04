@@ -447,18 +447,21 @@ fun World.createWorldPrototypeTwo()
     l1.changeStartingPosition(1, 1)
     
     // entities
-    l1r2.addEntityAt(EnemyMushroom(), 3, 3)
     val chest = Chest()
     chest.addItem(Bomb(4))
     chest.addItem(Fish(15))
     chest.addItem(Apple(16))
     chest.addItem(Mushroom(14))
+    l1r2.addEntityAt(EnemyMushroom(), 3, 3)
     l1r2.addEntityAt(chest, 5, 5)
     l1r2.addEntityAt(ExplodingBarrel(), 8, 3)
     l1r2.addEntityAt(EnemySkeleton(), 4, 6)
     l1r2.addEntityAt(EnemyMushroomCorpse(), 2, 2)
     l1r2.addEntityAt(EnemySkeletonCorpse(), 10, 3)
     l1r2.addEntityAt(EnemyBat(), 8, 4)
+    l1r2.addEntityAt(EnemyWizard(), 8, 8)
+    l1r2.addEntityAt(EnemyTurret(), 5, 8)
+    l1r2.addEntityAt(EnemyDragon(), 3, 8)
     l1r4.addEntityAt(WizardBoss(), 3, 3)
     
     // add to World

@@ -1,5 +1,6 @@
 package com.efm.entities
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
@@ -64,6 +65,11 @@ class WizardBoss : Entity, Enemy
     override fun getAttackTile() : TiledMapTile?
     {
         return Tiles.skeletonAttack
+    }
+    
+    override fun getMoveSound() : Sound?
+    {
+        return Sounds.wizardMove
     }
     
     override fun performTurn()

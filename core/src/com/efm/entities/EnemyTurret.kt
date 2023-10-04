@@ -11,7 +11,7 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class EnemySkeleton : Entity, Enemy
+class EnemyTurret : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 10
@@ -19,84 +19,78 @@ class EnemySkeleton : Entity, Enemy
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 3
-    override val stepsInOneTurn = 1
+    override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.skeletonIdle1
+        return Tiles.turretIdle1
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
-            1    -> Tiles.skeletonIdle1OutlineYellow
-            2    -> Tiles.skeletonIdle3OutlineYellow
-            3    -> Tiles.skeletonIdle2OutlineYellow
-            4    -> Tiles.skeletonIdle1OutlineYellow
-            else -> Tiles.skeletonIdle1OutlineYellow
+            1    -> Tiles.turretIdle1OutlineYellow
+            2    -> Tiles.turretIdle2OutlineYellow
+            3    -> Tiles.turretIdle1OutlineYellow
+            4    -> Tiles.turretIdle2OutlineYellow
+            else -> Tiles.turretIdle1OutlineYellow
         }
     }
     
     override fun getOutlineRedTile() : TiledMapTile?
     {
-        return Tiles.skeletonIdle1OutlineRed
+        return Tiles.turretIdle1OutlineRed
     }
     
     override fun getIdleTile(n : Int) : TiledMapTile?
     {
         return when (n)
         {
-            1    -> Tiles.skeletonIdle1
-            2    -> Tiles.skeletonIdle3
-            3    -> Tiles.skeletonIdle2
-            4    -> Tiles.skeletonIdle1
-            else -> Tiles.skeletonIdle1
+            1    -> Tiles.turretIdle1
+            2    -> Tiles.turretIdle2
+            3    -> Tiles.turretIdle1
+            4    -> Tiles.turretIdle2
+            else -> Tiles.turretIdle1
         }
     }
     
     override fun getMoveTile(n : Int) : TiledMapTile?
     {
-        return when (n)
-        {
-            1    -> Tiles.skeletonMove1
-            2    -> Tiles.skeletonMove2
-            3    -> Tiles.skeletonMove2
-            4    -> Tiles.skeletonMove3
-            else -> Tiles.skeletonMove1
-        }
+        return null
     }
     
     override fun getAttackTile() : TiledMapTile?
     {
-        return Tiles.skeletonAttack
+        return Tiles.turretAttack
     }
     
     override fun getMoveSound() : Sound?
     {
-        return Sounds.wizardMove
+        return null
     }
     
     override fun enemyAttack()
     {
         val heroPosition = World.hero.position.copy()
-        val heroDirection = getDirection8(this.position, heroPosition)
-        val arrowTile = if (heroDirection == null) null else Tiles.getArrowTile(heroDirection)
-        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
+        val projectileTile = Tiles.turretProjectile
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.action { playSoundOnce(Sounds.bowShot) }
-        animations += Animation.moveTile(arrowTile, position, World.hero.position, 0.2f)
-        animations += Animation.action { playSoundOnce(Sounds.bowImpact) }
-        animations += Animation.simultaneous(
-                listOf(
-                        Animation.showTile(impactTile, heroPosition.copy(), 0.2f),
-                        Animation.cameraShake(1, 0.5f)
-                      )
-                                            )
+        val shot = listOf(
+                Animation.action { playSoundOnce(Sounds.turretAttack) },
+                Animation.cameraShake(1, 0.5f),
+                Animation.moveTileWithArch(projectileTile, position, heroPosition, 1.0f, 1.0f)
+                         )
+        animations += Animation.simultaneous(shot)
+        val impact = listOf(
+                Animation.action { playSoundOnce(Sounds.explosive) },
+                Animation.cameraShake(1, 0.5f),
+                Animation.showTile(Tiles.impact, heroPosition, 0.5f)
+                           )
+        animations += Animation.simultaneous(impact)
         animations += Animation.action {
             val attackedPosition = heroPosition
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)
@@ -105,7 +99,7 @@ class EnemySkeleton : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(2)
+                    attackedEntity.damageCharacter(5)
                 }
             }
         }

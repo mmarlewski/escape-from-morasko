@@ -1,5 +1,6 @@
 package com.efm.entity
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
@@ -36,6 +37,8 @@ interface Enemy : Character
     
     fun getAttackTile() : TiledMapTile?
     
+    fun getMoveSound() : Sound?
+    
     fun performTurn()
     {
         var decision = -1
@@ -66,18 +69,18 @@ interface Enemy : Character
             1 ->
             {
                 val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
-                if (stepsSpaces != null)
+                if (!stepsSpaces.isNullOrEmpty())
                 {
                     val stepsIndex = if (stepsSpaces.size == pathSpaces.size)
                     {
                         stepsSpaces.size - 1
                     }
                     else stepsSpaces.size
+                    getMoveSound()?.let { playSoundOnce(it) }
                     moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
                 }
             }
         }
-        
     }
     
     fun enemyAttack()
