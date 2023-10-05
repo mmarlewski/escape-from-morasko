@@ -1,13 +1,12 @@
 package com.efm.ui.gameScreen
 
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.efm.*
-import com.efm.assets.*
+import com.efm.assets.Sounds
+import com.efm.assets.Textures
 import com.efm.item.Container
-import com.efm.level.World
+import com.efm.item.moveItem
 import com.efm.screens.GameScreen
 
 object EquipmentStructure
@@ -29,8 +28,7 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                        )
-        {
+                                        ) {
             Sounds.blop.playOnce()
             ProgressBars.setVisibilty(true)
             PopUps.setBackgroundVisibility(true)
@@ -50,17 +48,16 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                        )
-        {
+                                        ) {
             Sounds.blop.playOnce()
-            
+    
             GameScreen.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
-            
+    
             if (GameScreen.selectedItem != null)
             {
                 GameScreen.currEquipment?.items?.remove(GameScreen.selectedItem!!)
                 GameScreen.fillEquipmentWithItems(GameScreen.currEquipment!!)
-                
+        
                 GameScreen.selectedItem = null
                 GameScreen.selectedButton = null
             }
@@ -83,28 +80,23 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                        )
-        {
+                                       ) {
             Sounds.blop.playOnce()
-            
+    
             GameScreen.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
-            
+    
             val selectedItem = GameScreen.selectedItem
             val currEquipment = GameScreen.currEquipment
-            val otherEquipment = when(currEquipment)
+            val otherEquipment = when (currEquipment)
             {
                 GameScreen.heroEquipment -> GameScreen.containerEquipment
-                else -> GameScreen.heroEquipment
+                else                     -> GameScreen.heroEquipment
             }
-            
-            if(selectedItem != null && currEquipment != null && otherEquipment.items.size < otherEquipment.maxItems)
-            {
-                otherEquipment.addItem(selectedItem)
-                currEquipment.removeItem(selectedItem)
-                
-                otherEquipment.sortItems()
-                currEquipment.sortItems()
     
+            if (selectedItem != null && currEquipment != null)
+            {
+                moveItem(selectedItem, currEquipment, otherEquipment)
+        
                 GameScreen.fillEquipmentWithItems(currEquipment)
                 GameScreen.fillEquipmentWithItems(otherEquipment)
             }
@@ -153,7 +145,7 @@ object EquipmentStructure
     fun showHeroEquipment()
     {
         Sounds.blop.playOnce()
-        if(containerOverlay in equipment.children)
+        if (containerOverlay in equipment.children)
         {
             equipment.removeActor(containerOverlay)
         }
@@ -163,7 +155,7 @@ object EquipmentStructure
         PopUps.setBackgroundVisibility(false)
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
-        GameScreen.heroEquipment.sortItems()
+        // GameScreen.heroEquipment.sortItems()
         GameScreen.fillEquipmentWithItems(GameScreen.heroEquipment)
         GameScreen.isHeroEquipmentOnly = true
     }
@@ -171,7 +163,7 @@ object EquipmentStructure
     fun showHeroAndContainerEquipments(containerEquipment : Container)
     {
         Sounds.blop.playOnce()
-        if(containerOverlay !in equipment.children)
+        if (containerOverlay !in equipment.children)
         {
             equipment.addActor(containerOverlay)
         }
@@ -181,10 +173,10 @@ object EquipmentStructure
         PopUps.setBackgroundVisibility(false)
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
-        GameScreen.heroEquipment.sortItems()
+        // GameScreen.heroEquipment.sortItems()
         GameScreen.fillEquipmentWithItems(GameScreen.heroEquipment)
         GameScreen.setNewContainerEquipment(containerEquipment)
-        GameScreen.containerEquipment.sortItems()
+        // GameScreen.containerEquipment.sortItems()
         GameScreen.fillEquipmentWithItems(GameScreen.containerEquipment)
         GameScreen.isHeroEquipmentOnly = false
     }

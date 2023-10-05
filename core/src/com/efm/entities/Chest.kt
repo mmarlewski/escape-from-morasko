@@ -37,15 +37,7 @@ class Chest(possibleItems : PossibleItems? = null, seed : Int = Random.nextInt()
     
     fun takeItemFromChest(item : Item)
     {
-        World.hero.inventory.addItem(item)
-        if (item is StackableItem && item.amount > 0)
-        {
-            // zostalo troche przedmiotu w skrzyni
-        }
-        else
-        {
-            items.remove(item)
-        }
+        moveItem(item, this, World.hero.inventory)
     }
     
     init

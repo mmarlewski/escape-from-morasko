@@ -1,5 +1,6 @@
 import com.efm.entities.*
 import com.efm.item.StackableItem
+import com.efm.item.examplePossibleItems
 import com.efm.multiUseMapItems.Bow
 import com.efm.stackableSelfItems.Mushroom
 import org.junit.Assert.*

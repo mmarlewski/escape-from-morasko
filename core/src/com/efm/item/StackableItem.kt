@@ -38,6 +38,7 @@ interface StackableItem : Item
     {
         return maxAmount - amount
     }
+    
 }
 
 class AmountOverflowException(message : String? = null, cause : Throwable? = null) : Exception(message, cause)

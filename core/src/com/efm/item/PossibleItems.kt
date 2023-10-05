@@ -1,6 +1,5 @@
-package com.efm.entities
+package com.efm.item
 
-import com.efm.item.*
 import com.efm.multiUseMapItems.Bow
 import com.efm.stackableMapItems.Bomb
 import com.efm.stackableSelfItems.Apple
@@ -46,7 +45,8 @@ class PossibleItems(
     private fun drawItem(possibleItem : PossibleItem, drawnItems : MutableList<Item>, generator : Random)
     {
         // important to copy and not use possibleItem.item
-        val drawnItem = Class.forName(possibleItem.item::class.qualifiedName).getConstructor().newInstance()
+        // val drawnItem = Class.forName(possibleItem.item::class.qualifiedName).getConstructor().newInstance()
+        val drawnItem = possibleItem.item.clone()
         val amount = possibleItem.amountRange.random(generator)
         if (drawnItem is StackableItem)
         {

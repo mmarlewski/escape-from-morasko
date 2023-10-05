@@ -1,7 +1,7 @@
 package com.efm.entity
 
-import com.efm.entities.PossibleItems
 import com.efm.item.Container
+import com.efm.item.PossibleItems
 import com.efm.ui.gameScreen.EquipmentStructure
 
 interface EnemyCorpse : Interactive, Container
