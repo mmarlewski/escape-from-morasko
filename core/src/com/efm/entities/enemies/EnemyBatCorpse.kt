@@ -1,21 +1,21 @@
-package com.efm.entities
+package com.efm.entities.enemies
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Entity
 import com.efm.room.RoomPosition
 
-class EnemySkeletonCorpse : Entity
+class EnemyBatCorpse : Entity
 {
     override val position = RoomPosition()
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.skeletonCorpse
+        return Tiles.batCorpse
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
-        return Tiles.skeletonCorpseOutlineYellow
+        return Tiles.batCorpseOutlineYellow
     }
 }

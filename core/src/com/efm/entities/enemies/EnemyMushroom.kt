@@ -1,4 +1,4 @@
-package com.efm.entities
+package com.efm.entities.enemies
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -11,49 +11,49 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class EnemyBat : Entity, Enemy
+class EnemyMushroom : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 5
-    override var healthPoints = 5
+    override var maxHealthPoints = 10
+    override var healthPoints = 10
     override var alive = true
-    override val detectionRange = 3
+    override val detectionRange = 1
     override val attackRange = 1
-    override val stepsInOneTurn = 3
+    override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.batIdle1
+        return Tiles.mushroomIdle1
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
-            1    -> Tiles.batIdle1OutlineYellow
-            2    -> Tiles.batIdle2OutlineYellow
-            3    -> Tiles.batIdle3OutlineYellow
-            4    -> Tiles.batIdle2OutlineYellow
-            else -> Tiles.batIdle1OutlineYellow
+            1    -> Tiles.mushroomIdle1OutlineYellow
+            2    -> Tiles.mushroomIdle2OutlineYellow
+            3    -> Tiles.mushroomIdle1OutlineYellow
+            4    -> Tiles.mushroomIdle2OutlineYellow
+            else -> Tiles.mushroomIdle1OutlineYellow
         }
     }
     
     override fun getOutlineRedTile() : TiledMapTile
     {
-        return Tiles.batIdle1OutlineRed
+        return Tiles.mushroomIdle1OutlineRed
     }
     
     override fun getIdleTile(n : Int) : TiledMapTile?
     {
         return when (n)
         {
-            1    -> Tiles.batIdle1
-            2    -> Tiles.batIdle2
-            3    -> Tiles.batIdle3
-            4    -> Tiles.batIdle2
-            else -> Tiles.batIdle1
+            1    -> Tiles.mushroomIdle1
+            2    -> Tiles.mushroomIdle2
+            3    -> Tiles.mushroomIdle1
+            4    -> Tiles.mushroomIdle2
+            else -> Tiles.mushroomIdle1
         }
     }
     
@@ -61,22 +61,22 @@ class EnemyBat : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.batMove1
-            2    -> Tiles.batMove2
-            3    -> Tiles.batMove3
-            4    -> Tiles.batMove2
-            else -> Tiles.batMove1
+            1    -> Tiles.mushroomMove1
+            2    -> Tiles.mushroomMove2
+            3    -> Tiles.mushroomMove1
+            4    -> Tiles.mushroomMove2
+            else -> Tiles.mushroomMove1
         }
     }
     
     override fun getAttackTile() : TiledMapTile?
     {
-        return Tiles.batAttack
+        return Tiles.mushroomAttack
     }
     
     override fun getMoveSound() : Sound?
     {
-        return Sounds.batMove
+        return Sounds.mushroomMove
     }
     
     override fun enemyAttack()
@@ -84,14 +84,19 @@ class EnemyBat : Entity, Enemy
         val heroPosition = World.hero.position.copy()
         val heroDirection = getDirection8(this.position, heroPosition)
         val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
-    
-        val animations = mutableListOf<Animation>()
-    
-        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.10f)
-        animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
-        animations += Animation.showTile(Tiles.impact, heroPosition.copy(), 0.1f)
-        animations += Animation.action {
         
+        val animations = mutableListOf<Animation>()
+        
+        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
+        animations += Animation.action { playSoundOnce(Sounds.metalSword) }
+        animations += Animation.simultaneous(
+                listOf(
+                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
+                        Animation.cameraShake(1, 0.5f)
+                      )
+                                            )
+        animations += Animation.action {
+            
             val attackedPosition = World.hero.position
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
@@ -103,6 +108,7 @@ class EnemyBat : Entity, Enemy
                 }
             }
         }
+        
         Animating.executeAnimations(animations)
     }
 }

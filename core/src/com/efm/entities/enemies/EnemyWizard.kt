@@ -1,4 +1,4 @@
-package com.efm.entities
+package com.efm.entities.enemies
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entity.Character
+import com.efm.entities.Hero
 import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.room.RoomPosition

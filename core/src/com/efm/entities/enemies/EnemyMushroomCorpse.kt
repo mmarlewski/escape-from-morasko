@@ -1,9 +1,9 @@
-package com.efm.entities
+package com.efm.entities.enemies
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.EnemyCorpse
-import com.efm.item.Item
+import com.efm.item.*
 import com.efm.room.RoomPosition
 import com.efm.stackableSelfItems.Mushroom
 

@@ -1,4 +1,4 @@
-package com.efm.entities
+package com.efm.entities.enemies
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile

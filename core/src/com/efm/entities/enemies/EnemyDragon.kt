@@ -1,4 +1,4 @@
-package com.efm.entities
+package com.efm.entities.enemies
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -12,7 +12,6 @@ import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
-import kotlin.random.Random
 
 class EnemyDragon : Entity, Enemy
 {

@@ -1,14 +1,15 @@
-package com.efm.entities
+package com.efm.entities.enemies
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
-import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entity.*
+import com.efm.entity.Enemy
+import com.efm.entity.Entity
 import com.efm.level.World
+import com.efm.playSoundOnce
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen

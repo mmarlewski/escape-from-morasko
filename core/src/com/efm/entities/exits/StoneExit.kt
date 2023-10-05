@@ -1,4 +1,4 @@
-package com.efm.entities
+package com.efm.entities.exits
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.Direction4

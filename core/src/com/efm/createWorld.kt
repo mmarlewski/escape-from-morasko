@@ -1,9 +1,14 @@
 package com.efm
 
-import com.efm.entities.*
+import com.efm.entities.Chest
+import com.efm.entities.ExplodingBarrel
+import com.efm.entities.bosses.WizardBoss
+import com.efm.entities.enemies.*
+import com.efm.entities.exits.StoneExit
+import com.efm.entities.exits.StoneExitActiveWhenNoEnemiesAreInRoom
+import com.efm.entities.walls.*
 import com.efm.level.Level
 import com.efm.level.World
-import com.efm.multiUseMapItems.Bow
 import com.efm.passage.LevelPassage
 import com.efm.passage.RoomPassage
 import com.efm.room.*
