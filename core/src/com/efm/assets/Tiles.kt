@@ -16,9 +16,9 @@ object Tiles
     val metalFloor = load("metalFloor.png")
     val rockFloor = load("rockFloor.png")
     val grassFloor = load("grassFloor.png")
-    val lavaPool = load("lavaPool.png")
-    val waterPool = load("waterPool.png")
-    val waterOctopus = load("waterOctopus.png")
+    val lavaFloor = load("lavaFloor.png")
+    val waterFloor = load("waterFloor.png")
+    val waterFloorOctopus = load("waterFloorOctopus.png")
     
     // select
     

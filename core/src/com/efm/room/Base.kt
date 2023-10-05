@@ -12,5 +12,7 @@ enum class Base(val tile : TiledMapTile, val isTreadable : Boolean)
     metal(Tiles.metalFloor, true),
     rock(Tiles.rockFloor, true),
     grass(Tiles.grassFloor, true),
-    lava(Tiles.lavaPool, false)
+    lava(Tiles.lavaFloor, false),
+    water(Tiles.waterFloor, false),
+    waterOctopus(Tiles.waterFloorOctopus, false)
 }
