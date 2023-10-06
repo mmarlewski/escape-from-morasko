@@ -31,4 +31,9 @@ interface Character : Entity
     {
         this.alive = false
     }
+    
+    fun getCorpse() : Entity?
+    {
+        return null
+    }
 }

@@ -1,17 +1,14 @@
 package com.efm.entity
 
-import com.efm.item.Container
-import com.efm.item.PossibleItems
+import com.efm.item.*
 import com.efm.ui.gameScreen.EquipmentStructure
 
 interface EnemyCorpse : Interactive, Container
 {
+    /** can be empty PossibleItems() **/
     var loot : PossibleItems
-        get() = PossibleItems()
-        set(value)
-        {
-            loot = value
-        }
+    /** items = loot.drawItems() **/
+    override val items : MutableList<Item>
     
     override fun interact()
     {
