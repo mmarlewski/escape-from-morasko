@@ -2,7 +2,7 @@ package com.efm
 
 import com.efm.entities.Chest
 import com.efm.entities.ExplodingBarrel
-import com.efm.entities.bosses.WizardBoss
+import com.efm.entities.bosses.*
 import com.efm.entities.enemies.*
 import com.efm.entities.exits.StoneExit
 import com.efm.entities.exits.StoneExitActiveWhenNoEnemiesAreInRoom
@@ -457,10 +457,10 @@ fun World.createWorldPrototypeTwo()
     chest.addItem(Fish(15))
     chest.addItem(Apple(16))
     chest.addItem(Mushroom(14))
-    val octopusHead = EnemyOctopusHead()
-    val octopusTentacle1 = EnemyOctopusTentacle()
+    val octopusHead = BossOctopusHead()
+    val octopusTentacle1 = BossOctopusTentacle()
     octopusHead.addTentacle(octopusTentacle1)
-    val octopusTentacle2 = EnemyOctopusTentacle()
+    val octopusTentacle2 = BossOctopusTentacle()
     octopusHead.addTentacle(octopusTentacle2)
     l1r2.addEntityAt(EnemyMushroom(), 3, 3)
     l1r2.addEntityAt(chest, 5, 5)
@@ -472,8 +472,8 @@ fun World.createWorldPrototypeTwo()
     l1r2.addEntityAt(EnemyBat(), 8, 4)
     l1r2.addEntityAt(EnemyWizard(), 8, 8)
     l1r2.addEntityAt(EnemyTurret(), 5, 8)
-    l1r2.addEntityAt(EnemyDragon(), 3, 8)
-    l1r2.changeBaseAt(Base.water,3,2)
+    l1r2.addEntityAt(BossDragon(), 3, 8)
+    l1r2.changeBaseAt(Base.water, 3, 2)
     l1r2.addEntityAt(octopusTentacle1, 3, 2)
     l1r2.changeBaseAt(Base.water,4,2)
     l1r2.changeBaseAt(Base.water,5,2)
@@ -482,7 +482,7 @@ fun World.createWorldPrototypeTwo()
     l1r2.changeBaseAt(Base.water,6,2)
     l1r2.changeBaseAt(Base.water,7,2)
     l1r2.addEntityAt(octopusTentacle2, 7, 2)
-    l1r4.addEntityAt(WizardBoss(), 3, 3)
+    l1r4.addEntityAt(BossWizard(), 3, 3)
     
     // add to World
     addLevel(l1)

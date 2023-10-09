@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.bosses
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -13,7 +13,7 @@ import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 
-class EnemyDragon : Entity, Enemy
+class BossDragon : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50

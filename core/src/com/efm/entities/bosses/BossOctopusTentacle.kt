@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.bosses
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -11,7 +11,7 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class EnemyOctopusTentacle : Entity, Enemy
+class BossOctopusTentacle : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 5

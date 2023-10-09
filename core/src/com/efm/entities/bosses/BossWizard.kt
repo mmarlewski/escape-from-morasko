@@ -14,7 +14,7 @@ import com.efm.room.RoomPosition
 import com.efm.state.State
 import com.efm.state.getState
 
-class WizardBoss : Entity, Enemy
+class BossWizard : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 10

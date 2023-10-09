@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.bosses
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -14,7 +14,7 @@ import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 
-class EnemyOctopusHead : Entity, Enemy
+class BossOctopusHead : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50
@@ -29,9 +29,9 @@ class EnemyOctopusHead : Entity, Enemy
     var showHeadNextTurn = false
     var showHeadIndefinitely = false
     var currTentacleNum = 0
-    val tentacles = mutableListOf<EnemyOctopusTentacle>()
+    val tentacles = mutableListOf<BossOctopusTentacle>()
     
-    fun addTentacle(newTentacle : EnemyOctopusTentacle)
+    fun addTentacle(newTentacle : BossOctopusTentacle)
     {
         currTentacleNum++
         tentacles.add(newTentacle)
@@ -120,7 +120,7 @@ class EnemyOctopusHead : Entity, Enemy
     
     override fun performTurn()
     {
-        val tentaclesToRemove = mutableListOf<EnemyOctopusTentacle>()
+        val tentaclesToRemove = mutableListOf<BossOctopusTentacle>()
         for (tentacle in tentacles)
         {
             if (!tentacle.alive)
