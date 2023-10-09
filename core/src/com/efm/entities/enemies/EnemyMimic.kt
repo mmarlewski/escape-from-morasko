@@ -88,7 +88,7 @@ class EnemyMimic : Entity, Enemy
         val animations = mutableListOf<Animation>()
         
         animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
-        animations += Animation.action { playSoundOnce(Sounds.metalSword) }
+        animations += Animation.action { playSoundOnce(Sounds.mimicAttack) }
         animations += Animation.simultaneous(
                 listOf(
                         Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
