@@ -109,7 +109,9 @@ class EnemySkeleton : Entity, Enemy
                 }
             }
         }
-        
+    
         Animating.executeAnimations(animations)
     }
+    
+    override fun getCorpse() : EnemyCorpse = EnemySkeletonCorpse(this.position)
 }

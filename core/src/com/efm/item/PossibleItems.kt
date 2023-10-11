@@ -15,7 +15,7 @@ class PossibleItem(
                   )
 
 class PossibleItems(
-        val items : MutableList<PossibleItem> = mutableListOf(), private val maxItemsPossibleToDraw : Int = Int.MAX_VALUE
+        val items : MutableList<PossibleItem> = mutableListOf(), private val maxItemsPossibleToDraw : Int = items.size
                    )
 {
     fun drawItems(seed : Int = Random.nextInt()) : MutableList<Item>
@@ -79,7 +79,8 @@ class PossibleItems(
         {
             if (possibleItem.timesLeftPossibleToAdd > 0 && drawnItems.size < maxItemsPossibleToDraw)
             {
-                drawnItems.add(drawnItem)
+                // important to copy and not use drawnItem more than once
+                drawnItems.add(drawnItem.clone())
                 possibleItem.timesLeftPossibleToAdd--
             }
         }

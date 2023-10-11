@@ -108,7 +108,9 @@ class EnemyMushroom : Entity, Enemy
                 }
             }
         }
-        
+    
         Animating.executeAnimations(animations)
     }
+    
+    override fun getCorpse() : EnemyCorpse = EnemyMushroomCorpse(this.position)
 }

@@ -86,6 +86,7 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     fun removeKilledCharacters()
     {
         val killedCharacters = mutableListOf<Character>()
+        val corpsesToAdd = mutableListOf<EnemyCorpse>()
         for (character in characters)
         {
             if (!character.alive)
@@ -96,10 +97,7 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
                 {
                     character.healthBar.remove()
                     val corpse = character.getCorpse()
-                    if (corpse != null)
-                    {
-                        addEntityAt(corpse, character.position)
-                    }
+                    if (corpse != null) corpsesToAdd.add(corpse)
                     Map.changeTile(MapLayer.outline, character.position, null)
                 }
             }
@@ -107,6 +105,7 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         enemies.removeAll(killedCharacters)
         characters.removeAll(killedCharacters)
         entities.removeAll(killedCharacters)
+        for (corpse in corpsesToAdd) addEntityAt(corpse, corpse.position)
     }
     
     fun getSpace(x : Int, y : Int) : Space?
