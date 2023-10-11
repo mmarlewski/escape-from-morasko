@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.bosses.slime
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -14,8 +14,8 @@ import com.efm.room.RoomPosition
 class BossSlime : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 70
-    override var healthPoints = 70
+    override var maxHealthPoints = 100
+    override var healthPoints = 100
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
@@ -104,11 +104,12 @@ class BossSlime : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(2)
+                    attackedEntity.damageCharacter(40)
                 }
             }
         }
         
         Animating.executeAnimations(animations)
     }
+    
 }
