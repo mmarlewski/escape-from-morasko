@@ -1,7 +1,9 @@
 package com.efm.entity
 
 /**
- * Character has its own turn.
+ * Character has its own turn. // old idea
+ * Now only Enemy has turns.
+ * Character has health and can be killed.
  */
 interface Character : Entity
 {
@@ -30,10 +32,5 @@ interface Character : Entity
     fun killCharacter()
     {
         this.alive = false
-    }
-    
-    fun getCorpse() : Entity?
-    {
-        return null
     }
 }

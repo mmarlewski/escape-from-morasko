@@ -65,10 +65,7 @@ class EnemyBoar(
     
     private fun getAttackSound() : Sound = Sounds.boarAttack
     
-    override fun getCorpse() : Entity
-    {
-        return EnemyBoarCorpse(this.position)
-    }
+    override fun getCorpse() : EnemyCorpse = EnemyBoarCorpse(this.position)
     
     override fun enemyAttack()
     {
@@ -98,13 +95,11 @@ class EnemyBoar(
         for (pos in getSquareAreaPositions(position, attackRange))
         {
             // boar attacks only in a straight line
-            if ((pos.x == position.x || pos.y == position.y) && (pos == World.hero.position))
-                decision = 0
+            if ((pos.x == position.x || pos.y == position.y) && (pos == World.hero.position)) decision = 0
         }
         if (decision != 0)
         {
-            if (pathSpaces != null)
-                decision = 1
+            if (pathSpaces != null) decision = 1
         }
         
         when (decision)
@@ -113,6 +108,7 @@ class EnemyBoar(
             
             1 ->
             {
+                // move
                 val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
                 if (!stepsSpaces.isNullOrEmpty())
                 {
@@ -139,17 +135,13 @@ class EnemyBoar(
     }
 }
 
-class EnemyBoarCorpse(
-        override val position : RoomPosition = RoomPosition()
-                     ) : EnemyCorpse
+class EnemyBoarCorpse(position : RoomPosition) : EnemyCorpse(position)
 {
-    override var loot = PossibleItems()
-    override val items : MutableList<Item> = loot.drawItems()
     override var maxItems : Int = 2
+    override val loot : PossibleItems = PossibleItems()
+    override val items : MutableList<Item> = loot.drawItems()
     
     override fun getTile() : TiledMapTile = Tiles.boarCorpse
-    
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.boarCorpseOutlineYellow
-    
     override fun getOutlineTealTile() : TiledMapTile? = null
 }

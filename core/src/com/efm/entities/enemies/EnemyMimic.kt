@@ -105,8 +105,7 @@ class EnemyMimic : Entity, Enemy
         animations += Animation.action { playSoundOnce(Sounds.mimicAttack) }
         animations += Animation.simultaneous(
                 listOf(
-                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
-                        Animation.cameraShake(1, 0.5f)
+                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f), Animation.cameraShake(1, 0.5f)
                       )
                                             )
         animations += Animation.action {
@@ -122,7 +121,9 @@ class EnemyMimic : Entity, Enemy
                 }
             }
         }
-        
+    
         Animating.executeAnimations(animations)
     }
+    
+    override fun getCorpse() : EnemyCorpse = EnemyMimicCorpse(this.position)
 }

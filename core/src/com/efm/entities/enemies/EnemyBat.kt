@@ -91,7 +91,7 @@ class EnemyBat : Entity, Enemy
         animations += Animation.action { playSoundOnce(Sounds.woodenSword) }
         animations += Animation.showTile(Tiles.impact, heroPosition.copy(), 0.1f)
         animations += Animation.action {
-        
+    
             val attackedPosition = World.hero.position
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
@@ -105,4 +105,6 @@ class EnemyBat : Entity, Enemy
         }
         Animating.executeAnimations(animations)
     }
+    
+    override fun getCorpse() : EnemyCorpse = EnemyBatCorpse(this.position)
 }

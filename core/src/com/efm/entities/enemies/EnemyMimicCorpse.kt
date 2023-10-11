@@ -4,34 +4,20 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.EnemyCorpse
 import com.efm.item.*
+import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.RoomPosition
-import com.efm.stackableSelfItems.Mushroom
 
-class EnemyMimicCorpse : EnemyCorpse
+class EnemyMimicCorpse(position : RoomPosition = RoomPosition()) : EnemyCorpse(position)
 {
-    override val position = RoomPosition()
-    
+    override var maxItems : Int = 4
     override var loot = PossibleItems(
             mutableListOf(
-                    PossibleItem(Mushroom(), 0.8f, IntRange(0, 4))
+                    PossibleItem(WoodenSword(), 0.8f, IntRange(1, 1))
                          )
                                      )
     override val items : MutableList<Item> = loot.drawItems()
-    override var maxItems : Int = 4
     
-    override fun getTile() : TiledMapTile
-    {
-        return Tiles.mimicCorpse
-    }
-    
-    override fun getOutlineYellowTile(n : Int) : TiledMapTile
-    {
-        return Tiles.mimicCorpseOutlineYellow
-    }
-    
-    // kiedy uzywany jest Teal Outline ?
-    override fun getOutlineTealTile() : TiledMapTile?
-    {
-        return null
-    }
+    override fun getTile() : TiledMapTile = Tiles.mimicCorpse
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.mimicCorpseOutlineYellow
+    override fun getOutlineTealTile() : TiledMapTile? = null
 }

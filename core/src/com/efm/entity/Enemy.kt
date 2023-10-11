@@ -101,8 +101,7 @@ interface Enemy : Character
     
     fun createOwnHealthBar()
     {
-        healthBar =
-                ProgressBars.createBar(5f, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
+        healthBar = ProgressBars.createBar(5f, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
 //        GameScreen.gameStage.addActor(healthBar)
         val healthLabel = ProgressBars.createLabel(this.healthPoints, this.maxHealthPoints)
         healthLabel.isVisible = true
@@ -134,4 +133,8 @@ interface Enemy : Character
         healthStack.isVisible = false
     }
     
+    fun getCorpse() : EnemyCorpse?
+    {
+        return null
+    }
 }
