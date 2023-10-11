@@ -27,7 +27,9 @@ class EnemyMimic : Entity, Enemy
     {
         return Tiles.mimicIdle1
     }
-    
+    //    override fun getOutlineIdleYellowTile() : TiledMapTile{
+//        return Tiles.chestOutlineYellow
+//    }
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
@@ -47,15 +49,19 @@ class EnemyMimic : Entity, Enemy
     
     override fun getIdleTile(n : Int) : TiledMapTile?
     {
-        return when (n)
-        {
-            1    -> Tiles.mimicIdle1
-            2    -> Tiles.mimicIdle2
-            3    -> Tiles.mimicIdle1
-            4    -> Tiles.mimicIdle2
-            else -> Tiles.mimicIdle1
-        }
+        return Tiles.chest
     }
+//    override fun getIdleAfterDetectionTile(n : Int) : TiledMapTile?
+//    {
+//        return when (n)
+//        {
+//            1    -> Tiles.mimicIdle1
+//            2    -> Tiles.mimicIdle2
+//            3    -> Tiles.mimicIdle1
+//            4    -> Tiles.mimicIdle2
+//            else -> Tiles.mimicIdle1
+//        }
+//    }
     
     override fun getMoveTile(n : Int) : TiledMapTile?
     {

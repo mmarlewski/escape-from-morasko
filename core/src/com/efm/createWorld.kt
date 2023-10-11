@@ -3,6 +3,7 @@ package com.efm
 import com.efm.entities.Chest
 import com.efm.entities.ExplodingBarrel
 import com.efm.entities.bosses.*
+import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entities.enemies.*
 import com.efm.entities.exits.StoneExit
 import com.efm.entities.exits.StoneExitActiveWhenNoEnemiesAreInRoom
