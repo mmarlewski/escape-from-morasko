@@ -27,18 +27,26 @@ class EnemyMimic : Entity, Enemy
     {
         return Tiles.mimicIdle1
     }
-    //    override fun getOutlineIdleYellowTile() : TiledMapTile{
-//        return Tiles.chestOutlineYellow
+    //    override fun getOutlineYellowTileAfterDetection(n : Int) : TiledMapTile
+//    {
+//        return when (n)
+//        {
+//            1    -> Tiles.mimicIdle1OutlineYellow
+//            2    -> Tiles.mimicIdle2OutlineYellow
+//            3    -> Tiles.mimicIdle1OutlineYellow
+//            4    -> Tiles.mimicIdle2OutlineYellow
+//            else -> Tiles.mimicIdle1OutlineYellow
+//        }
 //    }
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
-            1    -> Tiles.mimicIdle1OutlineYellow
-            2    -> Tiles.mimicIdle2OutlineYellow
-            3    -> Tiles.mimicIdle1OutlineYellow
-            4    -> Tiles.mimicIdle2OutlineYellow
-            else -> Tiles.mimicIdle1OutlineYellow
+            1    -> Tiles.chestOutlineYellow
+            2    -> Tiles.chestOutlineYellow
+            3    -> Tiles.chestOutlineYellow
+            4    -> Tiles.chestOutlineYellow
+            else -> Tiles.chestOutlineYellow
         }
     }
     
@@ -51,7 +59,7 @@ class EnemyMimic : Entity, Enemy
     {
         return Tiles.chest
     }
-//    override fun getIdleAfterDetectionTile(n : Int) : TiledMapTile?
+//    override fun getIdleTileAfterDetection(n : Int) : TiledMapTile?
 //    {
 //        return when (n)
 //        {
