@@ -4,6 +4,7 @@ import com.efm.entities.Chest
 import com.efm.entities.ExplodingBarrel
 import com.efm.entities.bosses.*
 import com.efm.entities.enemies.*
+import com.efm.entities.enemies.Boar.Boar
 import com.efm.entities.exits.StoneExit
 import com.efm.entities.exits.StoneExitActiveWhenNoEnemiesAreInRoom
 import com.efm.entities.walls.*
@@ -646,4 +647,58 @@ fun World.createWorldPrototypeTwo()
     for (passage in levelPassages) passage.originRoom.replaceEntityAt(
             StoneExitActiveWhenNoEnemiesAreInRoom(passage.originDirection, passage), passage.originPosition
                                                                      )
+}
+
+fun World.createWorldBoarTest()
+{
+    //
+    // level 1
+    //
+    
+    // rooms
+    
+    // l1r1
+    val l1r1 = Room("1", 11, 11)
+    // change base
+    for (y in 1 until l1r1.heightInSpaces) for (x in 1 until l1r1.widthInSpaces) l1r1.changeBaseAt(
+            Base.values()[y % 4], x, y
+                                                                                                  )
+    // add lava
+    for (y in 4 until 6) for (x in 4 until 6) l1r1.changeBaseAt(Base.lava, x, y)
+    // add walls on left side (facing right)
+    for (y in 1 until l1r1.heightInSpaces) l1r1.addEntityAt(StoneWall(Direction4.right), 0, y)
+    // add walls on top side (facing down)
+    for (x in 1 until l1r1.widthInSpaces) l1r1.addEntityAt(StoneWall(Direction4.down), x, 0)
+    
+    // room list
+    val l1_rooms = mutableListOf<Room>(l1r1)
+    
+    // room passages
+    val l1_roomPassages = mutableListOf<RoomPassage>()
+    
+    // add room exits
+    
+    // level with starting point
+    val l1 = Level("1", l1_rooms, l1_roomPassages)
+    l1.changeStartingRoom(l1r1)
+    l1.changeStartingPosition(7, 5)
+    
+    // entities
+    val chest = Chest()
+    chest.addItem(Bomb(4))
+    chest.addItem(Fish(15))
+    chest.addItem(Apple(16))
+    chest.addItem(Mushroom(14))
+    l1r1.addEntityAt(chest, 5, 5)
+    val boar = Boar()
+    l1r1.addEntityAt(boar, 8, 8)
+    
+    // add to World
+    addLevel(l1)
+    
+    // level passages
+    val levelPassages = mutableListOf<LevelPassage>()
+    
+    // add level exits
+    
 }
