@@ -3,6 +3,7 @@ package com.efm
 import com.efm.entities.Chest
 import com.efm.entities.ExplodingBarrel
 import com.efm.entities.bosses.*
+import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.Boar
 import com.efm.entities.exits.StoneExit
@@ -474,6 +475,7 @@ fun World.createWorldPrototypeTwo()
     l1r2.addEntityAt(EnemyWizard(), 8, 8)
     l1r2.addEntityAt(EnemyTurret(), 5, 8)
     l1r2.addEntityAt(BossDragon(), 3, 8)
+    l1r2.addEntityAt(BossSlime(), 3, 7)
     l1r2.changeBaseAt(Base.water, 3, 2)
     l1r2.addEntityAt(octopusTentacle1, 3, 2)
     l1r2.changeBaseAt(Base.water,4,2)
