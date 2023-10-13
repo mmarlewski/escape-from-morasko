@@ -9,6 +9,7 @@ import com.efm.Map
 import com.efm.assets.Textures
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.room.Space
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
 
@@ -68,20 +69,26 @@ interface Enemy : Character
             
             1 ->
             {
-                val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
-                if (!stepsSpaces.isNullOrEmpty())
-                {
-                    val stepsIndex = if (stepsSpaces.size == pathSpaces.size)
-                    {
-                        stepsSpaces.size - 1
-                    }
-                    else stepsSpaces.size
-                    getMoveSound()?.let { playSoundOnce(it) }
-                    moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
-                }
+                moveTowardsHero(pathSpaces)
             }
         }
     }
+    
+    fun moveTowardsHero(pathSpaces : List<Space>?)
+    {
+        val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
+        if (!stepsSpaces.isNullOrEmpty())
+        {
+            val stepsIndex = if (stepsSpaces.size == pathSpaces.size)
+            {
+                stepsSpaces.size - 1
+            }
+            else stepsSpaces.size
+            getMoveSound()?.let { playSoundOnce(it) }
+            moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
+        }
+    }
+    
     
     fun enemyAttack()
     
