@@ -7,7 +7,7 @@ import com.efm.item.Item
 import com.efm.item.PossibleItems
 import com.efm.room.RoomPosition
 
-class BoarCorpse(position : RoomPosition) : EnemyCorpse(position)
+class EnemyBoarCorpse(position : RoomPosition) : EnemyCorpse(position)
 {
     override var maxItems : Int = 2
     override val loot : PossibleItems = PossibleItems()

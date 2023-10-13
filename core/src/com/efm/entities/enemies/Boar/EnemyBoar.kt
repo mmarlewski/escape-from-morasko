@@ -13,11 +13,11 @@ import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 
-class Boar(
+class EnemyBoar(
         override val position : RoomPosition = RoomPosition(),
         override var maxHealthPoints : Int = 20,
         override var healthPoints : Int = maxHealthPoints
-          ) : Enemy
+               ) : Enemy
 {
     override var alive : Boolean = true
     
@@ -65,146 +65,156 @@ class Boar(
     
     private fun getAttackSound() : Sound = Sounds.boarAttack
     
-    override fun getCorpse() : EnemyCorpse = BoarCorpse(this.position)
-    
-    override fun enemyAttack()
-    {
-        Gdx.app.log("Boar", "only attack")
-        val heroPosition = World.hero.position.copy()
-        val heroDirection = getDirection8(position, heroPosition)
-        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
-        
-        val animations = mutableListOf<Animation>()
-        
-        animations += Animation.action { playSoundOnce(getAttackSound()) }
-        animations += Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
-        animations += Animation.action {
-            
-            val attackedSpace = World.currentRoom.getSpace(heroPosition)
-            when (val attackedEntity = attackedSpace?.getEntity())
-            {
-                is Character ->
-                {
-                    attackedEntity.damageCharacter(6)
-                }
-            }
-        }
-        Animating.executeAnimations(animations)
-    }
-    
-    fun chargeThenAttack()
-    {
-        Gdx.app.log("Boar", "charge then attack")
-        val animations = mutableListOf<Animation>()
-        var endPosition = position
-        Gdx.app.log("Boar", "charge")
-        val pathSpaces2 = PathFinding.findPathWithGivenRoom(endPosition, World.hero.position, World.currentRoom)
-        // move
-        val stepsSpaces2 = pathSpaces2?.take(attackRange)
-        if (!stepsSpaces2.isNullOrEmpty())
-        {
-            val stepsIndex2 = if (stepsSpaces2.size == pathSpaces2.size)
-            {
-                stepsSpaces2.size - 1
-            }
-            else stepsSpaces2.size
-            playSoundOnce(getMoveSound())
-            // move Enemy
-            val startPosition2 = endPosition
-            val endPosition2 = pathSpaces2[stepsIndex2].position
-            val path2 = stepsSpaces2
-            val enemy2 = this
-            val action2 = {
-                enemy2.position.set(endPosition2)
-                World.currentRoom.updateSpacesEntities()
-                GameScreen.updateMapBaseLayer()
-                GameScreen.updateMapEntityLayer()
-            }
-            animations += Animation.action { enemy2.hideOwnHealthBar() }
-            animations += Animation.action { com.efm.Map.changeTile(MapLayer.entity, endPosition, null) }
-            val prevMovePosition2 = startPosition2.copy()
-            path2.forEachIndexed { index, space ->
-                
-                val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
-                val moveTile = enemy2.getMoveTile(n)
-                
-                animations += Animation.moveTileWithCameraFocus(
-                        moveTile, prevMovePosition2.copy(), space.position.copy(), 0.1f
-                                                               )
-                animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
-                prevMovePosition2.set(space.position)
-            }
-            animations += Animation.moveTileWithCameraFocus(
-                    enemy2.getTile(), prevMovePosition2, endPosition2, 0.1f
-                                                           )
-            animations += Animation.action(action2)
-            
-            endPosition = endPosition2
-        }
-        
-        Gdx.app.log("Boar", "attack")
-        val heroPosition = World.hero.position.copy()
-        val heroDirection = getDirection8(endPosition, heroPosition)
-        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
-        
-        //val animations = mutableListOf<Animation>()
-        
-        animations += Animation.action { playSoundOnce(getAttackSound()) }
-        animations += Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
-        animations += Animation.action {
-            
-            val attackedSpace = World.currentRoom.getSpace(heroPosition)
-            when (val attackedEntity = attackedSpace?.getEntity())
-            {
-                is Character ->
-                {
-                    attackedEntity.damageCharacter(6)
-                }
-            }
-        }
-        
-        animations += Animation.action { this.displayOwnHealthBar() }
-        Animating.executeAnimations(animations)
-    }
+    override fun getCorpse() : EnemyCorpse = EnemyBoarCorpse(this.position)
     
     override fun performTurn()
     {
-        Gdx.app.log("Boar", "perform turn")
-        var decision = -1
+        Gdx.app.log("EnemyBoar", "perform turn")
+    
+        val doNothing = -1
+        val justAttack = 0
+        val chargeThenAttack = 1
+        val moveThenAttack = 2
+    
+        var decision = doNothing
+    
         val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
         for (pos in getSquareAreaPositions(position, attackRange))
         {
             // boar attacks only in a straight line
             if ((pos.x == position.x || pos.y == position.y) && (pos == World.hero.position))
             {
+                // there are spaces to charge
                 if (kotlin.math.abs(pos.x - position.x) > 1 || kotlin.math.abs(pos.y - position.y) > 1)
                 {
-                    decision = 2
+                    decision = chargeThenAttack
                 }
+                // Boar is standing next to Hero
                 else
                 {
-                    decision = 0
+                    decision = justAttack
                 }
             }
         }
-        if (decision == -1)
+        if (decision == doNothing && pathSpaces != null)
         {
-            if (pathSpaces != null) decision = 1
+            decision = moveThenAttack
         }
-        
+    
         when (decision)
         {
-            0 -> enemyAttack()
-            1 -> moveThenAttack()
-            2 -> chargeThenAttack()
+            justAttack       -> enemyAttack()
+            chargeThenAttack -> chargeThenAttack()
+            moveThenAttack   -> moveThenAttack()
         }
     }
     
-    fun moveThenAttack()
+    override fun enemyAttack()
     {
-        Gdx.app.log("Boar", "move then attack")
-        val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        // just attack when standing next to Hero
+        Gdx.app.log("EnemyBoar", "only attack")
+        
+        val heroPosition = World.hero.position.copy()
+        val heroDirection = getDirection8(position, heroPosition)
+        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
+        
+        val animations = mutableListOf<Animation>()
+        animations += Animation.action { playSoundOnce(getAttackSound()) }
+        animations += Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
+        animations += Animation.action {
+            val attackedSpace = World.currentRoom.getSpace(heroPosition)
+            when (val attackedEntity = attackedSpace?.getEntity())
+            {
+                is Character -> attackedEntity.damageCharacter(20)
+            }
+        }
+        Animating.executeAnimations(animations)
+    }
+    
+    private fun chargeThenAttack()
+    {
+        // charge than attack if Hero is in range
+        Gdx.app.log("EnemyBoar", "charge then attack")
+        val animations = mutableListOf<Animation>()
+        
+        // charge
+        
+        Gdx.app.log("EnemyBoar", "charge")
+        // position before charging
+        var initialPosition = position
+        val pathSpaces = PathFinding.findPathWithGivenRoom(initialPosition, World.hero.position, World.currentRoom)
+        val stepsSpaces = pathSpaces?.take(attackRange)
+        if (!stepsSpaces.isNullOrEmpty())
+        {
+            val stepsIndex = if (stepsSpaces.size == pathSpaces.size)
+            {
+                stepsSpaces.size - 1
+            }
+            else stepsSpaces.size
+            playSoundOnce(getMoveSound())
+            val startPosition = initialPosition
+            val endPosition = pathSpaces[stepsIndex].position
+            val path = stepsSpaces
+            val enemy = this
+            val action = {
+                enemy.position.set(endPosition)
+                World.currentRoom.updateSpacesEntities()
+                GameScreen.updateMapBaseLayer()
+                GameScreen.updateMapEntityLayer()
+            }
+            animations += Animation.action { enemy.hideOwnHealthBar() }
+            animations += Animation.action { com.efm.Map.changeTile(MapLayer.entity, initialPosition, null) }
+            val prevMovePosition = startPosition.copy()
+            path.forEachIndexed { index, space ->
+                val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
+                val moveTile = enemy.getMoveTile(n)
+                animations += Animation.moveTileWithCameraFocus(
+                        moveTile, prevMovePosition.copy(), space.position.copy(), 0.1f
+                                                               )
+                animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
+                prevMovePosition.set(space.position)
+            }
+            animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
+            animations += Animation.action(action)
+            // position before attacking
+            initialPosition = endPosition
+        }
+        
+        // attack
+        
+        Gdx.app.log("EnemyBoar", "attack")
+        val heroPosition = World.hero.position.copy()
+        val heroDirection = getDirection8(initialPosition, heroPosition)
+        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
+        animations += Animation.action { playSoundOnce(getAttackSound()) }
+        animations += Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
+        animations += Animation.action {
+            val attackedSpace = World.currentRoom.getSpace(heroPosition)
+            when (val attackedEntity = attackedSpace?.getEntity())
+            {
+                is Character ->
+                {
+                    // the longer the charge, the stronger the attack
+                    attackedEntity.damageCharacter(20 + (stepsSpaces?.size?.times(10) ?: 0))
+                }
+            }
+        }
+        
+        // conclude animation
+        
+        animations += Animation.action { this.displayOwnHealthBar() }
+        Animating.executeAnimations(animations)
+    }
+    
+    private fun moveThenAttack()
+    {
+        // Boar can attack after moving
+        Gdx.app.log("EnemyBoar", "move then attack")
+        val animations = mutableListOf<Animation>()
+        
         // move
+        
+        val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
         val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
         if (!stepsSpaces.isNullOrEmpty())
         {
@@ -214,8 +224,8 @@ class Boar(
             }
             else stepsSpaces.size
             playSoundOnce(getMoveSound())
-            // move Enemy
             val startPosition = position
+            // position after moving and before attacking/charging
             var endPosition = pathSpaces[stepsIndex].position
             val path = stepsSpaces
             val enemy = this
@@ -225,15 +235,12 @@ class Boar(
                 GameScreen.updateMapBaseLayer()
                 GameScreen.updateMapEntityLayer()
             }
-            val animations = mutableListOf<Animation>()
             animations += Animation.action { enemy.hideOwnHealthBar() }
             animations += Animation.action { com.efm.Map.changeTile(MapLayer.entity, enemy.position, null) }
             val prevMovePosition = startPosition.copy()
             path.forEachIndexed { index, space ->
-                
                 val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
                 val moveTile = enemy.getMoveTile(n)
-                
                 animations += Animation.moveTileWithCameraFocus(
                         moveTile, prevMovePosition.copy(), space.position.copy(), 0.1f
                                                                )
@@ -242,29 +249,22 @@ class Boar(
             }
             animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
             animations += Animation.action(action)
-            //animations += Animation.action { enemy.displayOwnHealthBar() }
-            
-            /*
-            Gdx.app.log("Boar", "moved")
-            Gdx.app.log(
-                    "MyTag",
-                    endPosition.x.toString() + " " + endPosition.y.toString() + " " + World.hero.position.x.toString() + " " + World.hero.position.y.toString()
-                       )
-            */
             
             // attack after moving
+            
             for (pos in getSquareAreaPositions(endPosition, attackRange))
             {
                 // boar attacks only in a straight line
                 if ((pos.x == endPosition.x || pos.y == endPosition.y) && (pos == World.hero.position))
                 {
-                    Gdx.app.log("Boar", "in range in line")
+                    // there are spaces to charge
                     if (kotlin.math.abs(pos.x - endPosition.x) > 1 || kotlin.math.abs(pos.y - endPosition.y) > 1)
                     {
-                        Gdx.app.log("Boar", "charge")
+                        // charge
+    
+                        Gdx.app.log("EnemyBoar", "charge")
                         val pathSpaces2 =
                                 PathFinding.findPathWithGivenRoom(endPosition, World.hero.position, World.currentRoom)
-                        // move
                         val stepsSpaces2 = pathSpaces2?.take(attackRange)
                         if (!stepsSpaces2.isNullOrEmpty())
                         {
@@ -274,7 +274,6 @@ class Boar(
                             }
                             else stepsSpaces2.size
                             playSoundOnce(getMoveSound())
-                            // move Enemy
                             val startPosition2 = endPosition
                             val endPosition2 = pathSpaces2[stepsIndex2].position
                             val path2 = stepsSpaces2
@@ -285,14 +284,11 @@ class Boar(
                                 GameScreen.updateMapBaseLayer()
                                 GameScreen.updateMapEntityLayer()
                             }
-                            //animations += Animation.action { enemy2.hideOwnHealthBar() }
                             animations += Animation.action { com.efm.Map.changeTile(MapLayer.entity, endPosition, null) }
                             val prevMovePosition2 = startPosition2.copy()
                             path2.forEachIndexed { index, space ->
-                                
                                 val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
                                 val moveTile = enemy2.getMoveTile(n)
-                                
                                 animations += Animation.moveTileWithCameraFocus(
                                         moveTile, prevMovePosition2.copy(), space.position.copy(), 0.1f
                                                                                )
@@ -303,33 +299,37 @@ class Boar(
                                     enemy2.getTile(), prevMovePosition2, endPosition2, 0.1f
                                                                            )
                             animations += Animation.action(action2)
-                            
+                            // position after charging before attacking
                             endPosition = endPosition2
                         }
                     }
-                    Gdx.app.log("Boar", "attack")
+    
+                    // attack
+    
+                    Gdx.app.log("EnemyBoar", "attack")
                     val heroPosition = World.hero.position.copy()
                     val heroDirection = getDirection8(endPosition, heroPosition)
                     val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
-                    
-                    //val animations = mutableListOf<Animation>()
-                    
+    
                     animations += Animation.action { playSoundOnce(getAttackSound()) }
                     animations += Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
                     animations += Animation.action {
-                        
                         val attackedSpace = World.currentRoom.getSpace(heroPosition)
                         when (val attackedEntity = attackedSpace?.getEntity())
                         {
                             is Character ->
                             {
-                                attackedEntity.damageCharacter(6)
+                                // the longer the charge, the stronger the attack
+                                attackedEntity.damageCharacter(20 + stepsSpaces.size.times(10))
                             }
                         }
                     }
                     break
                 }
             }
+            
+            // conclude animation
+            
             animations += Animation.action { enemy.displayOwnHealthBar() }
             Animating.executeAnimations(animations)
         }
