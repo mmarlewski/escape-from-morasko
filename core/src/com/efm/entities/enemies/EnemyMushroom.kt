@@ -83,18 +83,17 @@ class EnemyMushroom : Entity, Enemy
     {
         val heroPosition = World.hero.position.copy()
         val heroDirection = getDirection8(this.position, heroPosition)
-        val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
+        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
-        animations += Animation.action { playSoundOnce(Sounds.metalSword) }
         animations += Animation.simultaneous(
                 listOf(
-                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
-                        Animation.cameraShake(1, 0.5f)
+                        Animation.cameraShake(3, 1.0f),
+                        Animation.action { playSoundOnce(Sounds.mushroomAttack) },
+                        Animation.showTile(impactTile, heroPosition.copy(), 1.0f)
                       )
-                                            )
+                                             )
         animations += Animation.action {
             
             val attackedPosition = World.hero.position

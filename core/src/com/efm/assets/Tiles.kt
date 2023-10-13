@@ -196,6 +196,7 @@ object Tiles
     val batAttack = load("batAttack.png")
     val batCorpse = load("batCorpse.png")
     val batCorpseOutlineYellow = load("batCorpseOutlineYellow.png")
+    val batTeeth = load("batTeeth.png")
     
     // boar
     

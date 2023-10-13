@@ -97,15 +97,15 @@ class EnemyMimic : Entity, Enemy
     {
         val heroPosition = World.hero.position.copy()
         val heroDirection = getDirection8(this.position, heroPosition)
-        val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
+        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
         
         val animations = mutableListOf<Animation>()
-        
-        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
-        animations += Animation.action { playSoundOnce(Sounds.mimicAttack) }
+    
         animations += Animation.simultaneous(
                 listOf(
-                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f), Animation.cameraShake(1, 0.5f)
+                        Animation.cameraShake(1, 0.5f),
+                        Animation.action { playSoundOnce(Sounds.mimicAttack) },
+                        Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
                       )
                                             )
         animations += Animation.action {
