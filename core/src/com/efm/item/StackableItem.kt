@@ -39,6 +39,13 @@ interface StackableItem : Item
         return maxAmount - amount
     }
     
+    override fun clone() : StackableItem
+    {
+        //return Class.forName(this::class.qualifiedName).getConstructor(Int::class.java).newInstance(amount) as StackableItem
+        val copy = Class.forName(this::class.qualifiedName).getConstructor().newInstance() as StackableItem
+        copy.amount = this.amount
+        return copy
+    }
 }
 
 class AmountOverflowException(message : String? = null, cause : Throwable? = null) : Exception(message, cause)
