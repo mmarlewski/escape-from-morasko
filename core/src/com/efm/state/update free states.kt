@@ -523,6 +523,7 @@ fun updateFreeMultiUseMapItemTargetSelectedOnce(currState : State.free.multiUseM
             return State.free.multiUseMapItemTargetSelectedTwice.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
+                this.chosenMultiUseItem = currState.chosenMultiUseItem
             }
         }
         else
@@ -566,6 +567,20 @@ fun updateFreeMultiUseMapItemTargetSelectedTwice(currState : State.free.multiUse
 {
     if (!Animating.isAnimating())
     {
+        val item = currState.chosenMultiUseItem
+        item?.lowerDurability()
+        if(item != null && item.durability < 1)
+        {
+            World.hero.inventory.removeItem(item)
+            GameScreen.fillItemsStructureWithItemsAndSkills()
+            
+            return State.free.heroSelected.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+        GameScreen.fillItemsStructureWithItemsAndSkills()
+        
         val targetPositions = State.free.multiUseMapItemChosen.targetPositions ?: emptyList()
         for (position in targetPositions)
         {
@@ -639,6 +654,7 @@ fun updateFreeStackableMapItemTargetSelectedOnce(currState : State.free.stackabl
             return State.free.stackableMapItemTargetSelectedTwice.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
+                this.chosenStackableMapItem = currState.chosenStackableMapItem
             }
         }
         else
@@ -681,6 +697,20 @@ fun updateFreeStackableMapItemTargetSelectedTwice(currState : State.free.stackab
 {
     if (!Animating.isAnimating())
     {
+        val item = currState.chosenStackableMapItem
+        item?.lowerAmountByOne()
+        if(item != null && item.amount < 1)
+        {
+            World.hero.inventory.removeItem(item)
+            GameScreen.fillItemsStructureWithItemsAndSkills()
+            
+            return State.free.heroSelected.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+        GameScreen.fillItemsStructureWithItemsAndSkills()
+        
         val targetPositions = State.free.stackableMapItemChosen.targetPositions ?: emptyList()
         for (position in targetPositions)
         {

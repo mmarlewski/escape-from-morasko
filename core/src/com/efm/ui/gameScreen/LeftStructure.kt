@@ -19,6 +19,12 @@ object LeftStructure
             "usableItemsButton" to Textures.itemUsable
                                       )
     
+    val menuButton = createButton("menuButton", isVisible = true)
+    val usableItemsButton = createButton("usableItemsButton", isVisible = true)
+    val skillsItemsButton = createButton("skillsItemsButton", isVisible = true)
+    val healingItemsButton = createButton("healingItemsButton", isVisible = true)
+    val weaponItemsButton = createButton("weaponItemsButton", isVisible = true)
+    
     fun createButton(buttonName : String, isVisible : Boolean) : ImageButton
     {
         val buttonTexture = buttonTextures[buttonName]
@@ -66,12 +72,6 @@ object LeftStructure
         button.isVisible = isVisible
         return button
     }
-    
-    val menuButton = createButton("menuButton", isVisible = true)
-    val usableItemsButton = createButton("usableItemsButton", isVisible = true)
-    val skillsItemsButton = createButton("skillsItemsButton", isVisible = true)
-    val healingItemsButton = createButton("healingItemsButton", isVisible = true)
-    val weaponItemsButton = createButton("weaponItemsButton", isVisible = true)
     
     fun setVisibility(visibility : Boolean)
     {

@@ -15,13 +15,14 @@ object PopUps
     fun setBackgroundVisibility(boolean : Boolean)
     {
         GameScreen.canBeInteractedWith = boolean
+        
         RightStructure.setVisibility(boolean)
+        
+        GameScreen.fillItemsStructureWithItemsAndSkills()
         ItemsStructure.setVisibility(boolean)
-        if (!boolean)
-        {
-            LeftStructure.setVisibility(boolean)
-        }
-    
+        if(boolean) ItemsStructure.setWeaponDisplay()
+        
+        LeftStructure.setVisibility(false)
     }
     
     fun endTurn() : com.badlogic.gdx.scenes.scene2d.ui.Window

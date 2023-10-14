@@ -90,6 +90,9 @@ sealed class State
         }
         
         object multiUseMapItemTargetSelectedTwice : free()
+        {
+            var chosenMultiUseItem : MultiUseMapItem? = null
+        }
         
         // StackableMapItem
         
@@ -108,6 +111,9 @@ sealed class State
         }
         
         object stackableMapItemTargetSelectedTwice : free()
+        {
+            var chosenStackableMapItem : StackableMapItem? = null
+        }
         
         // StackableSelfItem
         

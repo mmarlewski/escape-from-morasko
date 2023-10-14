@@ -17,70 +17,129 @@ import com.efm.state.*
 
 object ItemsStructure
 {
-    var swordButton : ImageButton
-    var axeButton : ImageButton
-    var hammerButton : ImageButton
-    var bowButton : ImageButton
-    var staffButton : ImageButton
-    var appleButton : ImageButton
-    var fishButton : ImageButton
-    var mushroomButton : ImageButton
-    var bombButton : ImageButton
-    var explosiveButton : ImageButton
-    var shurikenButton : ImageButton
-    val buttonsAssignment : MutableList<Pair<String, ImageButton>> = mutableListOf()
-    
-    init
-    {
-        // buttons now have 4 types: weapon, potion, usable and skill based on the category within equipment display
-        swordButton = createItemWithHealthbar( 100, 100, WoodenSword().getTexture(), { attack(WoodenSword()) })
-        buttonsAssignment.add(Pair("weapon", swordButton))
-        axeButton = createItemWithHealthbar( 100, 0, SmallAxe().getTexture(), { attack(SmallAxe()) })
-        buttonsAssignment.add(Pair("weapon", axeButton))
-        hammerButton = createItemWithHealthbar(100, 50, Sledgehammer().getTexture(), { attack(Sledgehammer()) })
-        buttonsAssignment.add(Pair("weapon", hammerButton))
-        bowButton = createItemWithHealthbar( 100, 75, Bow().getTexture(), { attack(Bow()) })
-        buttonsAssignment.add(Pair("weapon", bowButton))
-        staffButton = createItemWithHealthbar( 100, 25, Staff().getTexture(), { attack(Staff()) })
-        buttonsAssignment.add(Pair("weapon", staffButton))
-        appleButton = createItemWithLabel( 5, Apple().getTexture(), { attack(Apple()) })
-        buttonsAssignment.add(Pair("potion", appleButton))
-        fishButton = createItemWithLabel( 5, Fish().getTexture(), { attack(Fish()) })
-        buttonsAssignment.add(Pair("potion", fishButton))
-        mushroomButton = createItemWithLabel( 5, Mushroom().getTexture(), { attack(Mushroom()) })
-        buttonsAssignment.add(Pair("potion", mushroomButton))
-        bombButton = createItemWithLabel( 10, Bomb().getTexture(), { attack(Bomb()) })
-        buttonsAssignment.add(Pair("usable", bombButton))
-        explosiveButton = createItemWithLabel( 10, Explosive().getTexture(), { attack(Explosive()) })
-        buttonsAssignment.add(Pair("usable", explosiveButton))
-        shurikenButton = createItemWithLabel( 10, Shuriken().getTexture(), { attack(Shuriken()) })
-        buttonsAssignment.add(Pair("usable", shurikenButton))
+    val equipmentButton = imageButtonOf(
+            Textures.backpack,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                       ) {
+        playSoundOnce(Sounds.blop)
+        LeftStructure.setVisibility(!LeftStructure.healingItemsButton.isVisible)
     }
+    
+    val weaponDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
+    val potionDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
+    val usableDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
+    val skillDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
+    val equipmentDisplay = rowOf(equipmentButton).align(Align.bottomLeft)
     
     fun setVisibility(boolean : Boolean)
     {
-        for (item : Actor in weaponDisplay.children)
-        {
-            item.isVisible = boolean
-        }
-        
-        for (item : Actor in potionDisplay.children)
-        {
-            item.isVisible = boolean
-        }
-        
-        for (item : Actor in skillDisplay.children)
-        {
-            item.isVisible = boolean
-        }
-        
-        for (item : Actor in usableDisplay.children)
-        {
-            item.isVisible = boolean
-        }
-        
+        weaponDisplay.isVisible = boolean
+        potionDisplay.isVisible = boolean
+        usableDisplay.isVisible = boolean
+        skillDisplay.isVisible = boolean
         equipmentDisplay.isVisible = boolean
+    }
+    
+    fun createItemWithHealthbar(
+            currentHealth : Int,
+            maxHealth : Int,
+            texture : Texture?,
+            action : () -> Unit
+                               ) : ImageButton
+    {
+        val button = itemButtonWithHealthBar(
+                texture, maxHealth, currentHealth,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                            ) {
+            playSoundOnce(Sounds.blop)
+            action()
+        }
         
+        return button
+    }
+    
+    fun createItemWithLabel(
+            amountOfUses : Int,
+            texture : Texture?,
+            action : () -> Unit
+                           ) : ImageButton
+    {
+        val button = itemButtonWithLabel(
+                texture, "$amountOfUses",
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                        ) {
+            playSoundOnce(Sounds.blop)
+            action()
+        }
+        
+        return button
+    }
+    
+    fun setWeaponDisplay()
+    {
+        weaponDisplay.isVisible = true
+        potionDisplay.isVisible = false
+        usableDisplay.isVisible = false
+        skillDisplay.isVisible = false
+    }
+    
+    fun setPotionDisplay()
+    {
+        weaponDisplay.isVisible = false
+        potionDisplay.isVisible = true
+        usableDisplay.isVisible = false
+        skillDisplay.isVisible = false
+    }
+    
+    fun setUsableDisplay()
+    {
+        weaponDisplay.isVisible = false
+        potionDisplay.isVisible = false
+        usableDisplay.isVisible = true
+        skillDisplay.isVisible = false
+    }
+    
+    fun setSkillDisplay()
+    {
+        weaponDisplay.isVisible = false
+        potionDisplay.isVisible = false
+        usableDisplay.isVisible = false
+        skillDisplay.isVisible = true
+    }
+    
+    fun display()
+    {
+        equipmentDisplay.pad(16f)
+        weaponDisplay.pad(16f)
+        potionDisplay.pad(16f)
+        usableDisplay.pad(16f)
+        skillDisplay.pad(16f)
+        
+        equipmentDisplay.setFillParent(true)
+        weaponDisplay.setFillParent(true)
+        potionDisplay.setFillParent(true)
+        usableDisplay.setFillParent(true)
+        skillDisplay.setFillParent(true)
+        
+        GameScreen.stage.addActor(equipmentDisplay)
+        GameScreen.stage.addActor(weaponDisplay)
+        GameScreen.stage.addActor(potionDisplay)
+        GameScreen.stage.addActor(usableDisplay)
+        GameScreen.stage.addActor(skillDisplay)
+        
+        setWeaponDisplay()
     }
     
     fun attack(item : Item)
@@ -100,7 +159,16 @@ object ItemsStructure
         
         if (canBeUsed)
         {
-            if (item is StackableSelfItem) item.use()
+            if (item is StackableSelfItem)
+            {
+                item.use()
+                item.lowerAmountByOne()
+                if(item.amount < 1)
+                {
+                    World.hero.inventory.removeItem(item)
+                }
+                GameScreen.fillItemsStructureWithItemsAndSkills()
+            }
             
             val targetPositions = when (item)
             {
@@ -207,191 +275,4 @@ object ItemsStructure
             setState(newState)
         }
     }
-    
-    fun createItemWithHealthbar(
-            maxHealth : Int,
-            currentHealth : Int,
-            texture : Texture?,
-            action : () -> Unit
-                               ) : ImageButton
-    {
-        val button = itemButtonWithHealthBar(
-                texture, maxHealth, currentHealth,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                            ) {
-            playSoundOnce(Sounds.blop)
-            action()
-        }
-        
-        return button
-    }
-    
-    fun createItemWithLabel(amountOfUses : Int, texture : Texture?, action : () -> Unit) : ImageButton
-    {
-        val button = itemButtonWithLabel(
-                texture, "$amountOfUses",
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                        ) {
-            playSoundOnce(Sounds.blop)
-            action()
-        }
-        
-        return button
-    }
-    
-    val equipmentButton = imageButtonOf(
-            Textures.backpack,
-            Textures.upNinePatch,
-            Textures.downNinePatch,
-            Textures.overNinePatch,
-            Textures.disabledNinePatch,
-            Textures.focusedNinePatch
-                                       ) {
-        playSoundOnce(Sounds.blop)
-        LeftStructure.setVisibility(!LeftStructure.healingItemsButton.isVisible)
-    }
-    
-    init
-    {
-        buttonsAssignment.forEach { (category, button) ->
-            button.isVisible = category == "weapon"
-        }
-        
-    }
-    
-    val weaponButtons = buttonsAssignment.filter { (category, _) ->
-        category == "weapon"
-    }.map { (_, button) ->
-        button
-    }
-    
-    val potionButtons = buttonsAssignment.filter { (category, _) ->
-        category == "potion"
-    }.map { (_, button) ->
-        button
-    }
-    
-    val usableButtons = buttonsAssignment.filter { (category, _) ->
-        category == "usable"
-    }.map { (_, button) ->
-        button
-    }
-    
-    val skillButtons = buttonsAssignment.filter { (category, _) ->
-        category == "skill"
-    }.map { (_, button) ->
-        button
-    }
-    
-    fun setWeaponDisplay()
-    {
-        buttonsAssignment.forEach { (category, button) ->
-            button.isVisible = category == "weapon"
-        }
-    }
-    
-    fun setPotionDisplay()
-    {
-        buttonsAssignment.forEach { (category, button) ->
-            button.isVisible = category == "potion"
-        }
-    }
-    
-    fun setUsableDisplay()
-    {
-        buttonsAssignment.forEach { (category, button) ->
-            button.isVisible = category == "usable"
-        }
-    }
-    
-    fun setSkillDisplay()
-    {
-        buttonsAssignment.forEach { (category, button) ->
-            button.isVisible = category == "skill"
-        }
-    }
-    
-    val weaponDisplay = columnOf(rowOf(*weaponButtons.toTypedArray()).padLeft(112f)).align(Align.bottomLeft)
-    val potionDisplay = columnOf(rowOf(*potionButtons.toTypedArray()).padLeft(112f)).align(Align.bottomLeft)
-    val usableDisplay = columnOf(rowOf(*usableButtons.toTypedArray()).padLeft(112f)).align(Align.bottomLeft)
-    val skillDisplay = columnOf(rowOf(*usableButtons.toTypedArray()).padLeft(112f)).align(Align.bottomLeft)
-    
-    val equipmentDisplay = columnOf(
-            rowOf(equipmentButton)
-                                   ).align(Align.bottomLeft)
-    
-    fun display()
-    {
-        equipmentDisplay.pad(16f)
-        weaponDisplay.pad(16f)
-        potionDisplay.pad(16f)
-        usableDisplay.pad(16f)
-        skillDisplay.pad(16f)
-        
-        equipmentDisplay.setFillParent(true)
-        weaponDisplay.setFillParent(true)
-        potionDisplay.setFillParent(true)
-        usableDisplay.setFillParent(true)
-        skillDisplay.setFillParent(true)
-    
-        GameScreen.stage.addActor(equipmentDisplay)
-        GameScreen.stage.addActor(weaponDisplay)
-        GameScreen.stage.addActor(potionDisplay)
-        GameScreen.stage.addActor(usableDisplay)
-        GameScreen.stage.addActor(skillDisplay)
-    
-    }
-    
-    fun weaponEqDisplay() : HorizontalGroup
-    {
-        val swordButton = createItemWithHealthbar(100, 100, WoodenSword().getTexture()) { attack(WoodenSword()) }
-        val axeButton = createItemWithHealthbar( 100, 0, SmallAxe().getTexture()) { attack(SmallAxe()) }
-        val hammerButton = createItemWithHealthbar( 100, 50, Sledgehammer().getTexture()) { attack(Sledgehammer()) }
-        val bowButton = createItemWithHealthbar( 100, 75, Bow().getTexture()) { attack(Bow()) }
-        val staffButton = createItemWithHealthbar(100, 25, Staff().getTexture()) { attack(Staff()) }
-        
-        val buttons = listOf(swordButton, axeButton, hammerButton, bowButton, staffButton)
-        
-        return rowOf(*buttons.toTypedArray()).align(Align.left)
-    }
-    
-    fun potionEqDisplay() : HorizontalGroup
-    {
-        val appleButton = createItemWithLabel( 5, Apple().getTexture()) { attack(Apple()) }
-        val fishButton = createItemWithLabel(5, Fish().getTexture()) { attack(Fish()) }
-        val mushroomButton = createItemWithLabel( 5, Mushroom().getTexture()) { attack(Mushroom()) }
-        
-        val buttons = listOf(appleButton, fishButton, mushroomButton)
-        
-        return rowOf(*buttons.toTypedArray()).align(Align.left)
-    }
-    
-    fun usableEqDisplay() : HorizontalGroup
-    {
-        val bombButton = createItemWithLabel(10, Bomb().getTexture()) { attack(Bomb()) }
-        val explosiveButton = createItemWithLabel(10, Explosive().getTexture()) { attack(Explosive()) }
-        val shurikenButton = createItemWithLabel(10, Shuriken().getTexture()) { attack(Shuriken()) }
-        
-        val buttons = listOf(bombButton, explosiveButton, shurikenButton)
-        
-        return rowOf(*buttons.toTypedArray()).align(Align.left)
-    }
-    
-    fun equipmentDisplay() : VerticalGroup?
-    {
-        val weaponEqDisplay = weaponEqDisplay()
-        val potionEqDisplay = potionEqDisplay()
-        val usableEqDisplay = usableEqDisplay()
-        
-        return columnOf(rowOf(weaponEqDisplay), rowOf(potionEqDisplay), rowOf(usableEqDisplay))
-    }
-    
 }

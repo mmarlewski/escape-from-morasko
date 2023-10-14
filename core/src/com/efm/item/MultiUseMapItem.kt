@@ -9,6 +9,7 @@ import com.efm.room.RoomPosition
 interface MultiUseMapItem : Item
 {
     var durability : Int
+    var maxDurability : Int
     val durabilityUseCost : Int
     
     fun lowerDurability()

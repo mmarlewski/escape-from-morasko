@@ -56,7 +56,7 @@ object EquipmentStructure
             if (GameScreen.selectedItem != null)
             {
                 GameScreen.currEquipment?.items?.remove(GameScreen.selectedItem!!)
-                GameScreen.fillEquipmentWithItems(GameScreen.currEquipment!!)
+                GameScreen.fillEquipmentStructureWithItems(GameScreen.currEquipment!!)
         
                 GameScreen.selectedItem = null
                 GameScreen.selectedButton = null
@@ -97,8 +97,8 @@ object EquipmentStructure
             {
                 moveItem(selectedItem, currEquipment, otherEquipment)
         
-                GameScreen.fillEquipmentWithItems(currEquipment)
-                GameScreen.fillEquipmentWithItems(otherEquipment)
+                GameScreen.fillEquipmentStructureWithItems(currEquipment)
+                GameScreen.fillEquipmentStructureWithItems(otherEquipment)
             }
     
             deleteButton.isVisible = false
@@ -133,7 +133,7 @@ object EquipmentStructure
     
     fun display()
     {
-        val buttons = columnOf(returnButton, deleteButton, arrowButton)
+        val buttons = columnOf(returnButton, arrowButton, deleteButton)
         
         equipment = rowOf(heroOverlay, buttons, containerOverlay)
         
@@ -156,7 +156,7 @@ object EquipmentStructure
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
         // GameScreen.heroEquipment.sortItems()
-        GameScreen.fillEquipmentWithItems(GameScreen.heroEquipment)
+        GameScreen.fillEquipmentStructureWithItems(GameScreen.heroEquipment)
         GameScreen.isHeroEquipmentOnly = true
     }
     
@@ -174,10 +174,10 @@ object EquipmentStructure
         ProgressBars.setVisibilty(false)
         LeftStructure.menuButton.isVisible = false
         // GameScreen.heroEquipment.sortItems()
-        GameScreen.fillEquipmentWithItems(GameScreen.heroEquipment)
-        GameScreen.setNewContainerEquipment(containerEquipment)
+        GameScreen.fillEquipmentStructureWithItems(GameScreen.heroEquipment)
+        GameScreen.containerEquipment = containerEquipment
         // GameScreen.containerEquipment.sortItems()
-        GameScreen.fillEquipmentWithItems(GameScreen.containerEquipment)
+        GameScreen.fillEquipmentStructureWithItems(GameScreen.containerEquipment)
         GameScreen.isHeroEquipmentOnly = false
     }
 }

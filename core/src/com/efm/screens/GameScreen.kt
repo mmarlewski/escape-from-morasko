@@ -6,6 +6,7 @@ import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.input.GestureDetector.GestureListener
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
@@ -63,12 +64,50 @@ object GameScreen : BaseScreen(), GestureListener
     var selectedItem : Item? = null
     var selectedButton : ImageButton? = null
     
-    fun setNewContainerEquipment(newContainerEquipment : Container)
+    fun fillItemsStructureWithItemsAndSkills()
     {
-        containerEquipment = newContainerEquipment
+        val multiUseMapItemRow = ItemsStructure.weaponDisplay.children[0] as HorizontalGroup
+        val stackableMapItemRow = ItemsStructure.usableDisplay.children[0] as HorizontalGroup
+        val stackableSelfItemRow = ItemsStructure.potionDisplay.children[0] as HorizontalGroup
+        val skillRow = ItemsStructure.skillDisplay.children[0] as HorizontalGroup
+        
+        multiUseMapItemRow.clear()
+        stackableMapItemRow.clear()
+        stackableSelfItemRow.clear()
+        skillRow.clear()
+        
+        for (item in World.hero.inventory.items)
+        {
+            when (item)
+            {
+                is MultiUseMapItem   ->
+                {
+                    multiUseMapItemRow.addActor(
+                            ItemsStructure.createItemWithHealthbar(item.durability, item.maxDurability, item.getTexture())
+                            { ItemsStructure.attack(item) }
+                                               )
+                }
+                
+                is StackableMapItem  ->
+                {
+                    stackableMapItemRow.addActor(
+                            ItemsStructure.createItemWithLabel(item.amount, item.getTexture())
+                            { ItemsStructure.attack(item) }
+                                                )
+                }
+                
+                is StackableSelfItem ->
+                {
+                    stackableSelfItemRow.addActor(
+                            ItemsStructure.createItemWithLabel(item.amount, item.getTexture())
+                            { ItemsStructure.attack(item) }
+                                                 )
+                }
+            }
+        }
     }
     
-    fun fillEquipmentWithItems(equipment : Container)
+    fun fillEquipmentStructureWithItems(equipment : Container)
     {
         fun onClick(item : Item?, button : ImageButton?)
         {
@@ -93,15 +132,15 @@ object GameScreen : BaseScreen(), GestureListener
             
             EquipmentStructure.deleteButton.isVisible = (selectedButton != null)
             EquipmentStructure.arrowButton.isVisible = (selectedButton != null && !isHeroEquipmentOnly)
-            EquipmentStructure.arrowButton.style.imageUp = when(equipment === heroEquipment)
+            EquipmentStructure.arrowButton.style.imageUp = when (equipment === heroEquipment)
             {
-                true->TextureRegionDrawable(Textures.arrowRight)
-                false->TextureRegionDrawable(Textures.arrowLeft)
+                true  -> TextureRegionDrawable(Textures.arrowRight)
+                false -> TextureRegionDrawable(Textures.arrowLeft)
             }
-            EquipmentStructure.arrowButton.style.imageDown = when(equipment === heroEquipment)
+            EquipmentStructure.arrowButton.style.imageDown = when (equipment === heroEquipment)
             {
-                true->TextureRegionDrawable(Textures.arrowRight)
-                false->TextureRegionDrawable(Textures.arrowLeft)
+                true  -> TextureRegionDrawable(Textures.arrowRight)
+                false -> TextureRegionDrawable(Textures.arrowLeft)
             }
         }
         
@@ -125,7 +164,7 @@ object GameScreen : BaseScreen(), GestureListener
             {
                 is MultiUseMapItem   ->
                 {
-                    val button = ItemsStructure.createItemWithHealthbar(100, item.durability, item.getTexture()) {}
+                    val button = ItemsStructure.createItemWithHealthbar( item.durability, item.maxDurability, item.getTexture()) {}
                     button.addListener(object : ClickListener()
                                        {
                                            override fun clicked(event : InputEvent?, x : Float, y : Float)
@@ -165,13 +204,13 @@ object GameScreen : BaseScreen(), GestureListener
             
             itemCount++
         }
-    
+        
         for (i in itemCount until equipment.maxItems)
         {
             val image = imageOf(Textures.down, Scaling.fill)
             itemRows[i / EQUIPMENT_ROW_MAX].addActor(image)
         }
-    
+        
         for (i in equipment.maxItems until EQUIPMENT_ROWS * EQUIPMENT_ROW_MAX)
         {
             val image = imageOf(Textures.disabled, Scaling.fill)
@@ -209,6 +248,7 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.inventory.addItem(Apple())
         World.hero.inventory.addItem(Fish())
         World.hero.inventory.addItem(Mushroom())
+        fillItemsStructureWithItemsAndSkills()
         
         // state
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
