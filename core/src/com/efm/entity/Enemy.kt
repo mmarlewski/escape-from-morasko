@@ -43,7 +43,32 @@ interface Enemy : Character
     fun performTurn()
     {
         var decision = -1
-        val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        
+        val directPathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        
+        var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
+        var minPathSpaces = directPathSpaces
+        
+        if(minPathSpaces == null)
+        {
+            val squarePositions = getSquareAreaPositions(World.hero.position, 2)
+            for (squarePosition in squarePositions)
+            {
+                val squareSpace = World.currentRoom.getSpace(squarePosition)
+                
+                if(squareSpace!= null && squareSpace.isTraversable())
+                {
+                    val pathSpaces = PathFinding.findPathWithGivenRoom(position, squarePosition, World.currentRoom)
+                    
+                    if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                    {
+                        minPathLength = pathSpaces.size
+                        minPathSpaces = pathSpaces
+                    }
+                }
+            }
+        }
+        
         for (pos in getSquareAreaPositions(position, attackRange))
         {
             if (pos == World.hero.position)
@@ -53,7 +78,7 @@ interface Enemy : Character
         }
         if (decision != 0)
         {
-            if (pathSpaces != null)
+            if (minPathSpaces != null)
             {
                 decision = 1
             }
@@ -63,13 +88,12 @@ interface Enemy : Character
         {
             0 ->
             {
-                //attack
                 enemyAttack()
             }
             
             1 ->
             {
-                moveTowardsHero(pathSpaces)
+                moveTowardsHero(minPathSpaces)
             }
         }
     }
@@ -88,7 +112,6 @@ interface Enemy : Character
             moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
         }
     }
-    
     
     fun enemyAttack()
     

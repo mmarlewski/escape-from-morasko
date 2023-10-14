@@ -22,7 +22,8 @@ fun setState(newState : State)
     
     if (prevState != newState)
     {
-        println(currState)
+        println(currState.javaClass.canonicalName)
+        println()
     }
 }
 
