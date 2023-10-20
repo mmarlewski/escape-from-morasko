@@ -27,17 +27,19 @@ class EnemyMimic : Entity, Enemy
     {
         return Tiles.mimicIdle1
     }
-    //    override fun getOutlineYellowTileAfterDetection(n : Int) : TiledMapTile
-//    {
-//        return when (n)
-//        {
-//            1    -> Tiles.mimicIdle1OutlineYellow
-//            2    -> Tiles.mimicIdle2OutlineYellow
-//            3    -> Tiles.mimicIdle1OutlineYellow
-//            4    -> Tiles.mimicIdle2OutlineYellow
-//            else -> Tiles.mimicIdle1OutlineYellow
-//        }
-//    }
+    
+    fun getOutlineYellowTileAfterDetection(n : Int) : TiledMapTile
+    {
+        return when (n)
+        {
+            1    -> Tiles.mimicIdle1OutlineYellow
+            2    -> Tiles.mimicIdle2OutlineYellow
+            3    -> Tiles.mimicIdle1OutlineYellow
+            4    -> Tiles.mimicIdle2OutlineYellow
+            else -> Tiles.mimicIdle1OutlineYellow
+        }
+    }
+    
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
@@ -59,17 +61,18 @@ class EnemyMimic : Entity, Enemy
     {
         return Tiles.chest
     }
-//    override fun getIdleTileAfterDetection(n : Int) : TiledMapTile?
-//    {
-//        return when (n)
-//        {
-//            1    -> Tiles.mimicIdle1
-//            2    -> Tiles.mimicIdle2
-//            3    -> Tiles.mimicIdle1
-//            4    -> Tiles.mimicIdle2
-//            else -> Tiles.mimicIdle1
-//        }
-//    }
+    
+    fun getIdleTileAfterDetection(n : Int) : TiledMapTile?
+    {
+        return when (n)
+        {
+            1    -> Tiles.mimicIdle1
+            2    -> Tiles.mimicIdle2
+            3    -> Tiles.mimicIdle1
+            4    -> Tiles.mimicIdle2
+            else -> Tiles.mimicIdle1
+        }
+    }
     
     override fun getMoveTile(n : Int) : TiledMapTile?
     {
@@ -97,19 +100,19 @@ class EnemyMimic : Entity, Enemy
     {
         val heroPosition = World.hero.position.copy()
         val heroDirection = getDirection8(this.position, heroPosition)
-        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
-        
+        val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
+    
         val animations = mutableListOf<Animation>()
     
+        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
+        animations += Animation.action { playSoundOnce(Sounds.mimicAttack) }
         animations += Animation.simultaneous(
                 listOf(
-                        Animation.cameraShake(1, 0.5f),
-                        Animation.action { playSoundOnce(Sounds.mimicAttack) },
-                        Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
+                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f), Animation.cameraShake(1, 0.5f)
                       )
                                             )
         animations += Animation.action {
-            
+        
             val attackedPosition = World.hero.position
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
