@@ -10,12 +10,13 @@ import com.efm.assets.Tiles
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import kotlin.random.Random
 
-class BossSlimeHalf : Entity, Enemy
+class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50
-    override var healthPoints = 50
+    override var healthPoints = 5
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
@@ -25,7 +26,7 @@ class BossSlimeHalf : Entity, Enemy
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.slimeGreenIdle1
+        return Tiles.slimeYellowIdle1
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
@@ -110,6 +111,60 @@ class BossSlimeHalf : Entity, Enemy
         }
         
         Animating.executeAnimations(animations)
+    }
+    
+    fun adjacentTiles() : MutableList<RoomPosition>
+    {
+        var possibleSpawnPositions = mutableListOf<RoomPosition>()
+        
+        val currentRoom = World.currentRoom
+        
+        for (i in -1..1)
+        {
+            for (j in -1..1)
+            {
+                val posCardinal = ((position.positionOffsetBy(i, Direction4.up)).positionOffsetBy(j, Direction4.left))
+                if (World.currentRoom.getSpace(posCardinal)?.isTraversable() == true && World.currentRoom.getSpace(
+                                posCardinal
+                                                                                                                  )
+                                ?.getEntity() == null
+                )
+                {
+                    possibleSpawnPositions.add(posCardinal)
+                }
+            }
+        }
+        return possibleSpawnPositions
+    }
+    
+    fun onDeath()
+    {
+        val currentRoom = World.currentRoom
+        val adjacentTiles = adjacentTiles()
+        
+        
+        for (i in 0..1)
+        {
+            var position1 = Random.nextInt(0, adjacentTiles.size - 1)
+            val bossSlimeQuarter = BossSlimeQuarter()
+            bossSlimeQuarter.createOwnHealthBar()
+            currentRoom.addEntityAt(bossSlimeQuarter, adjacentTiles[position1].x, adjacentTiles[position1].y)
+            
+            adjacentTiles.removeAt(position1)
+        }
+        
+    }
+    
+    override fun killCharacter()
+    {
+        onDeath()
+        this.alive = false
+        
+    }
+    
+    override fun getCorpse() : EnemyCorpse?
+    {
+        return null
     }
     
 }

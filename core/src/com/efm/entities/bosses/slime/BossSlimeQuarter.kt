@@ -15,7 +15,7 @@ class BossSlimeQuarter : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 25
-    override var healthPoints = 25
+    override var healthPoints = 2
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
@@ -32,11 +32,11 @@ class BossSlimeQuarter : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.slimeRedIdle1OutlineYellow
-            2    -> Tiles.slimeRedIdle2OutlineYellow
-            3    -> Tiles.slimeRedIdle1OutlineYellow
-            4    -> Tiles.slimeRedIdle2OutlineYellow
-            else -> Tiles.slimeRedIdle1OutlineYellow
+            1    -> Tiles.slimeGreenIdle1OutlineYellow
+            2    -> Tiles.slimeGreenIdle2OutlineYellow
+            3    -> Tiles.slimeGreenIdle1OutlineYellow
+            4    -> Tiles.slimeGreenIdle2OutlineYellow
+            else -> Tiles.slimeGreenIdle1OutlineYellow
         }
     }
     
@@ -49,11 +49,11 @@ class BossSlimeQuarter : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.slimeRedIdle1
-            2    -> Tiles.slimeRedIdle2
-            3    -> Tiles.slimeRedIdle1
-            4    -> Tiles.slimeRedIdle2
-            else -> Tiles.slimeRedIdle1
+            1    -> Tiles.slimeGreenIdle1
+            2    -> Tiles.slimeGreenIdle2
+            3    -> Tiles.slimeGreenIdle1
+            4    -> Tiles.slimeGreenIdle2
+            else -> Tiles.slimeGreenIdle1
         }
     }
     
@@ -61,17 +61,17 @@ class BossSlimeQuarter : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.slimeRedIdle1
-            2    -> Tiles.slimeRedIdle2
-            3    -> Tiles.slimeRedIdle1
-            4    -> Tiles.slimeRedIdle2
-            else -> Tiles.slimeRedIdle1
+            1    -> Tiles.slimeGreenIdle1
+            2    -> Tiles.slimeGreenIdle2
+            3    -> Tiles.slimeGreenIdle1
+            4    -> Tiles.slimeGreenIdle2
+            else -> Tiles.slimeGreenIdle1
         }
     }
     
     override fun getAttackTile() : TiledMapTile?
     {
-        return Tiles.slimeRedAttack
+        return Tiles.slimeGreenAttack
     }
     
     override fun getMoveSound() : Sound?
