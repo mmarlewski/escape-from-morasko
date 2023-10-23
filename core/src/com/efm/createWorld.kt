@@ -487,6 +487,7 @@ fun World.createWorldPrototypeTwo()
     l1r2.changeBaseAt(Base.water,6,2)
     l1r2.changeBaseAt(Base.water,7,2)
     l1r2.addEntityAt(octopusTentacle2, 7, 2)
+    l1r2.addEntityAt(BossNatureGolem(), 3, 4)
     l1r4.addEntityAt(BossWizard(), 3, 3)
     
     // add to World
