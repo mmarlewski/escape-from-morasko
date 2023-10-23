@@ -12,6 +12,7 @@ fun endCurrentTurn()
         is State.constrained ->
         {
             World.hero.regainAllAP()
+            World.hero.setCanMoveToTrue()
         }
         
         is State.combat.hero ->
@@ -38,10 +39,12 @@ fun endCurrentTurn()
                 }
             }
             setState(newState)
+            World.hero.setCanMoveToTrue()
         }
         
         else                 ->
         {
+            World.hero.setCanMoveToTrue()
         }
     }
 }

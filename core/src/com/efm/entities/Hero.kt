@@ -22,6 +22,7 @@ class Hero(
     var abilityPoints : Int = 14
     
     var apDrainInNextTurn = 0
+    var canMoveNextTurn = true
     
     val inventory = HeroInventory()
     
@@ -103,6 +104,10 @@ class Hero(
     {
         super.killCharacter()
         getState().isHeroAlive = false
+    }
+    
+    fun setCanMoveToTrue() {
+        this.canMoveNextTurn = true
     }
 }
 

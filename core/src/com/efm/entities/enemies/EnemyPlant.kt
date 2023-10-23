@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.Hero
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
@@ -90,9 +91,9 @@ class EnemyPlant : Entity, Enemy
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
-                is Character ->
+                is Hero ->
                 {
-                    attackedEntity.damageCharacter(2)
+                    attackedEntity.canMoveNextTurn = false
                 }
             }
         }
