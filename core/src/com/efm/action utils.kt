@@ -59,6 +59,7 @@ fun getSquareAreaPositions(center : RoomPosition, radius : Int) : List<RoomPosit
     }
     
     val positions = mutableListOf<RoomPosition>()
+    positions.add(center)
     
     for (i in 0..radius)
     {
