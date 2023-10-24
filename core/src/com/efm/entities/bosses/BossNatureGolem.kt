@@ -24,7 +24,6 @@ class BossNatureGolem : Entity, Enemy
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
-    private var previousPosition : RoomPosition? = null
     
     override fun getTile() : TiledMapTile
     {
