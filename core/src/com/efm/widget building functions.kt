@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
-import com.efm.level.World
-import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
-import com.efm.ui.gameScreen.*
+import com.efm.settings.SettingsManager
+import com.efm.ui.gameScreen.EquipmentStructure
+import com.efm.ui.gameScreen.PopUps
 
 fun highlightSelection(imageButton : ImageButton, down : NinePatch, up : NinePatch)
 {
@@ -483,6 +483,60 @@ fun settingsPause(
         PopUps.setMenuVisibility(true)
     }
     
+    val settingsManager = SettingsManager.getInstance()
+    musicRadioButton.addListener(object : ChangeListener()
+                                 {
+                                     override fun changed(event : ChangeEvent, actor : Actor)
+                                     {
+                                         if (musicRadioButton.isChecked)
+                                         {
+                                             settingsManager.setMusicVolume(0f)
+                                         }
+                                         else
+                                         {
+                                             settingsManager.setMusicVolume(musicSlider.value)
+                                         }
+                                     }
+                                 })
+    
+    musicSlider.addListener(object : ChangeListener()
+                            {
+                                override fun changed(event : ChangeEvent, actor : Actor)
+                                {
+                                    if (!musicRadioButton.isChecked)
+                                    {
+                                        settingsManager.setMusicVolume(musicSlider.value)
+                                    }
+                                }
+                            })
+
+// And replace this code
+    soundEffectsRadioButton.addListener(object : ChangeListener()
+                                        {
+                                            override fun changed(event : ChangeEvent, actor : Actor)
+                                            {
+                                                if (soundEffectsRadioButton.isChecked)
+                                                {
+                                                    settingsManager.setSoundVolume(0f)
+                                                }
+                                                else
+                                                {
+                                                    settingsManager.setSoundVolume(soundEffectsmusicSlider.value)
+                                                }
+                                            }
+                                        })
+    
+    soundEffectsmusicSlider.addListener(object : ChangeListener()
+                                        {
+                                            override fun changed(event : ChangeEvent, actor : Actor)
+                                            {
+                                                if (!soundEffectsRadioButton.isChecked)
+                                                {
+                                                    settingsManager.setSoundVolume(soundEffectsmusicSlider.value)
+                                                }
+                                            }
+                                        })
+    
     val buttonTable = Table()
     buttonTable.add(
             columnOf(
@@ -589,7 +643,7 @@ fun menuPopup(
         PopUps.setBackgroundVisibility(true)
     }
     
-    window.add(columnOf(resumeButton, equipmentButton, /*settingsButton,*/ backToMenuButton)).pad(50f)
+    window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)
     
     return window
 }

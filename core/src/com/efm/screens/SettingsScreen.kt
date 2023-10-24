@@ -2,12 +2,10 @@ package com.efm.screens
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Slider
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
@@ -107,28 +105,64 @@ object SettingsScreen : BaseScreen()
                              )
         column.setFillParent(true)
         stage.addActor(column)
+        
+        musicRadioButton.addListener(object : ChangeListener()
+                                     {
+                                         override fun changed(event : ChangeEvent, actor : Actor)
+                                         {
+                                             if (musicRadioButton.isChecked)
+                                             {
+                                                 setMusicVolume(0f)
+                                             }
+                                             else
+                                             {
+                                                 setMusicVolume(musicSlider.value)
+                                             }
+                                         }
+                                     })
+        
+        musicSlider.addListener(object : ChangeListener()
+                                {
+                                    override fun changed(event : ChangeEvent, actor : Actor)
+                                    {
+                                        if (!musicRadioButton.isChecked)
+                                        {
+                                            setMusicVolume(musicSlider.value)
+                                        }
+                                    }
+                                })
+        
+        soundEffectsRadioButton.addListener(object : ChangeListener()
+                                            {
+                                                override fun changed(event : ChangeEvent, actor : Actor)
+                                                {
+                                                    if (soundEffectsRadioButton.isChecked)
+                                                    {
+                                                        setSoundVolume(0f)
+                                                    }
+                                                    else
+                                                    {
+                                                        setSoundVolume(soundEffectsmusicSlider.value)
+                                                    }
+                                                }
+                                            })
+        
+        soundEffectsmusicSlider.addListener(object : ChangeListener()
+                                            {
+                                                override fun changed(event : ChangeEvent, actor : Actor)
+                                                {
+                                                    if (!soundEffectsRadioButton.isChecked)
+                                                    {
+                                                        setSoundVolume(soundEffectsmusicSlider.value)
+                                                    }
+                                                }
+                                            })
+        
     }
     
     override fun render(delta : Float)
     {
-        // update based on input
-        if (musicRadioButton.isChecked)
-        {
-            setMusicVolume(0f)
-        }
-        else
-        {
-            setMusicVolume(musicSlider.value)
-        }
-        if (soundEffectsRadioButton.isChecked)
-        {
-            setSoundVolume(0f)
-        }
-        else
-        {
-            setSoundVolume(soundEffectsmusicSlider.value)
-        }
-        
+//
         // clear screen
         ScreenUtils.clear(Color.CLEAR)
         
