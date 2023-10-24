@@ -9,7 +9,9 @@ import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
 import com.efm.level.World
+import com.efm.room.Base
 import com.efm.room.RoomPosition
+import com.efm.screens.GameScreen
 
 class BossNatureGolem : Entity, Enemy
 {
@@ -22,6 +24,7 @@ class BossNatureGolem : Entity, Enemy
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    private var previousPosition : RoomPosition? = null
     
     override fun getTile() : TiledMapTile
     {
@@ -110,6 +113,79 @@ class BossNatureGolem : Entity, Enemy
         }
         
         Animating.executeAnimations(animations)
+    }
+    
+    override fun performTurn()
+    {
+        var decision = -1
+        
+        val directPathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        
+        var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
+        var minPathSpaces = directPathSpaces
+        
+        if (minPathSpaces == null)
+        {
+            val squarePositions = getSquareAreaPositions(World.hero.position, 2)
+            for (squarePosition in squarePositions)
+            {
+                val squareSpace = World.currentRoom.getSpace(squarePosition)
+                
+                if (squareSpace != null && squareSpace.isTraversable())
+                {
+                    val pathSpaces = PathFinding.findPathWithGivenRoom(position, squarePosition, World.currentRoom)
+                    
+                    if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                    {
+                        minPathLength = pathSpaces.size
+                        minPathSpaces = pathSpaces
+                    }
+                }
+            }
+        }
+        
+        for (pos in getSquareAreaPositions(position, attackRange))
+        {
+            if (pos == World.hero.position)
+            {
+                decision = 0
+            }
+        }
+        
+        if (decision != 0)
+        {
+            if (minPathSpaces != null)
+            {
+                val pathForThisTurn = minPathSpaces.take(stepsInOneTurn + 1)
+                decision = 1
+                
+                // Replace the tiles that golem goes through in this turn
+                for (space in pathForThisTurn)
+                {
+                    replaceTileWithGrass(space.position)
+                }
+            }
+        }
+        
+        when (decision)
+        {
+            0 ->
+            {
+                enemyAttack()
+            }
+            
+            1 ->
+            {
+                moveTowardsHero(minPathSpaces)
+            }
+        }
+    }
+    
+    private fun replaceTileWithGrass(tilePosition : RoomPosition)
+    {
+        val currentPosition = World.currentRoom.getSpace(tilePosition)
+        currentPosition?.changeBase(Base.grass)
+        GameScreen.updateMapBaseLayer()
     }
     
 }
