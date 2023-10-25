@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.*
+import com.efm.settings.SettingsManager
 
 object SettingsScreen : BaseScreen()
 {
@@ -26,6 +27,7 @@ object SettingsScreen : BaseScreen()
     var soundEffectsRadioButton : CheckBox
     var soundEffectsmusicSlider : Slider
     var backButton : TextButton
+    val settingsManager = SettingsManager.getInstance()
     
     init
     {
@@ -113,10 +115,12 @@ object SettingsScreen : BaseScreen()
                                              if (musicRadioButton.isChecked)
                                              {
                                                  setMusicVolume(0f)
+                                                 settingsManager.setMusicVolume(0f)
                                              }
                                              else
                                              {
                                                  setMusicVolume(musicSlider.value)
+                                                 settingsManager.setMusicVolume(musicSlider.value)
                                              }
                                          }
                                      })
@@ -128,6 +132,7 @@ object SettingsScreen : BaseScreen()
                                         if (!musicRadioButton.isChecked)
                                         {
                                             setMusicVolume(musicSlider.value)
+                                            settingsManager.setMusicVolume(musicSlider.value)
                                         }
                                     }
                                 })
@@ -139,10 +144,12 @@ object SettingsScreen : BaseScreen()
                                                     if (soundEffectsRadioButton.isChecked)
                                                     {
                                                         setSoundVolume(0f)
+                                                        settingsManager.setSoundVolume(0f)
                                                     }
                                                     else
                                                     {
                                                         setSoundVolume(soundEffectsmusicSlider.value)
+                                                        settingsManager.setSoundVolume(soundEffectsmusicSlider.value)
                                                     }
                                                 }
                                             })
@@ -154,6 +161,7 @@ object SettingsScreen : BaseScreen()
                                                     if (!soundEffectsRadioButton.isChecked)
                                                     {
                                                         setSoundVolume(soundEffectsmusicSlider.value)
+                                                        settingsManager.setSoundVolume(soundEffectsmusicSlider.value)
                                                     }
                                                 }
                                             })
@@ -182,5 +190,12 @@ object SettingsScreen : BaseScreen()
     override fun dispose()
     {
         stage.dispose()
+    }
+    
+    fun updateCheckboxAndSliderValues() {
+        musicRadioButton.isChecked = settingsManager.getMusicVolume() != 0f
+        musicSlider.value = settingsManager.getMusicVolume()
+        soundEffectsRadioButton.isChecked = settingsManager.getSoundVolume() != 0f
+        soundEffectsmusicSlider.value = settingsManager.getSoundVolume()
     }
 }
