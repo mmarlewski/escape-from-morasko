@@ -6,6 +6,7 @@ import com.efm.entities.bosses.*
 import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
+import com.efm.entities.enemies.Boar.EnemyGhost
 import com.efm.entities.exits.StoneExit
 import com.efm.entities.exits.StoneExitActiveWhenNoEnemiesAreInRoom
 import com.efm.entities.walls.*
@@ -697,6 +698,8 @@ fun World.createWorldBoarTest()
     l1r1.addEntityAt(chest, 5, 5)
     val boar = EnemyBoar()
     l1r1.addEntityAt(boar, 8, 8)
+    val ghost = EnemyGhost()
+    l1r1.addEntityAt(ghost, 2, 2)
     
     // add to World
     addLevel(l1)
