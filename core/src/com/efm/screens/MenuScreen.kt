@@ -99,16 +99,6 @@ object MenuScreen : BaseScreen()
             SettingsScreen.setScreen()
         }
         
-        settingsButton.addListener(object : ChangeListener()
-                                   {
-                                       override fun changed(event : ChangeEvent?, actor : Actor?)
-                                       {
-                                           SettingsScreen.updateCheckboxAndSliderValues()
-                                       }
-    
-                                   })
-        
-        
         val infoButton = imageButtonOf(
                 Textures.info,
                 Textures.upNinePatch,
