@@ -36,7 +36,10 @@ class EnemyGhost(
     
     private val maxTurnsUntilTryToDisappear : Int = 4
     private var turnsUntilTryToDisappear : Int = maxTurnsUntilTryToDisappear
-    var closestDisappear : RoomPosition? = null
+    
+    var room : Room? = null
+    var positionsWhereGhostCanDisappear : MutableList<RoomPosition>? = null
+    var closestDisappearPosition : RoomPosition? = null
     
     override fun getTile() : TiledMapTile = when
     {
@@ -177,9 +180,6 @@ class EnemyGhost(
         return false
     }
     
-    var room : Room? = null
-    var positionsWhereGhostCanDisappear : MutableList<RoomPosition>? = null
-    
     private fun findPositionsWhereGhostCanDisappear() : MutableList<RoomPosition>
     {
         // edges
@@ -284,7 +284,7 @@ class EnemyGhost(
             // if Ghost is not on the edge
             
             // can ghost go to closest position where it can disappear
-            val pom = closestDisappear
+            val pom = closestDisappearPosition
             val reachable = if (pom != null)
             {
                 !PathFinding.findPathWithGivenRoom(position, pom, World.currentRoom).isNullOrEmpty()
@@ -304,16 +304,16 @@ class EnemyGhost(
                         if (distance < maxDistance)
                         {
                             maxDistance = distance
-                            closestDisappear = pos
+                            closestDisappearPosition = pos
                         }
                     }
                 }
             }
-            Gdx.app.log("EnemyGhost", "miejsce $closestDisappear")
-            
-            // move to closest disappear
-            
-            val pathSpaces = PathFinding.findPathWithGivenRoom(position, closestDisappear!!, World.currentRoom)
+            Gdx.app.log("EnemyGhost", "miejsce $closestDisappearPosition")
+    
+            // move to closest disappear position
+    
+            val pathSpaces = PathFinding.findPathWithGivenRoom(position, closestDisappearPosition!!, World.currentRoom)
             // move slower when disappearing
             val stepsSpaces = pathSpaces?.take((0.75 * stepsInOneTurn).roundToInt())
             if (!stepsSpaces.isNullOrEmpty())
