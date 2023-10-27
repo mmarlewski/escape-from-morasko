@@ -564,7 +564,12 @@ object GameScreen : BaseScreen(), GestureListener
         if (canBeInteractedWith)
         {
             val zoomChange = initialDistance / distance
-            changeCameraZoom(currZoom * zoomChange)
+            val zoomAfterChange = currZoom * zoomChange
+            if (zoomAfterChange in 0.25..0.5)
+            {
+                changeCameraZoom(currZoom * zoomChange)
+            }
+            
             
             return true
         }
