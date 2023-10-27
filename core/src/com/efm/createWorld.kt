@@ -687,7 +687,7 @@ fun World.createWorldBoarTest()
     // level with starting point
     val l1 = Level("1", l1_rooms, l1_roomPassages)
     l1.changeStartingRoom(l1r1)
-    l1.changeStartingPosition(7, 5)
+    l1.changeStartingPosition(5, 6)
     
     // entities
     val chest = Chest()
@@ -697,9 +697,9 @@ fun World.createWorldBoarTest()
     chest.addItem(Mushroom(14))
     l1r1.addEntityAt(chest, 5, 5)
     val boar = EnemyBoar()
-    l1r1.addEntityAt(boar, 8, 8)
+    //l1r1.addEntityAt(boar, 8, 8)
     val ghost = EnemyGhost()
-    l1r1.addEntityAt(ghost, 2, 2)
+    l1r1.addEntityAt(ghost, 1, 10)
     
     // add to World
     addLevel(l1)
