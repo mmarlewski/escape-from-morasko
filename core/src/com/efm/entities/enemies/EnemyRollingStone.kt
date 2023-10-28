@@ -1,6 +1,5 @@
 package com.efm.entities.enemies
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
@@ -83,7 +82,7 @@ class EnemyRollingStone : Entity, Enemy
     
         // position before charging
         var initialPosition = position
-        val pathSpaces = PathFinding.findPathWithGivenRoom(initialPosition, World.hero.position, World.currentRoom)
+        val pathSpaces = PathFinding.findPathInRoomForEntity(initialPosition, World.hero.position, World.currentRoom,this)
         val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
         if (!stepsSpaces.isNullOrEmpty())
         {
@@ -149,7 +148,7 @@ class EnemyRollingStone : Entity, Enemy
     
     override fun performTurn()
     {
-        val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
         if (checkIfHeroHasSameXorY(pathSpaces))
         {
             this.stepsInOneTurn = 100

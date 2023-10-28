@@ -30,7 +30,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         
             null    ->
             {
-                if (endBase == null || !endBase.isTreadable)
+                if (endBase == null || !endBase.isTreadableFor(World.hero))
                 {
                     val lastSpace = path.lastOrNull()
                     newPosition = lastSpace?.position ?: startPosition

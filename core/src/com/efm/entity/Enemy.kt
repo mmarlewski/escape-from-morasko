@@ -44,7 +44,7 @@ interface Enemy : Character
     {
         var decision = -1
         
-        val directPathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        val directPathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
         
         var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
         var minPathSpaces = directPathSpaces
@@ -56,9 +56,9 @@ interface Enemy : Character
             {
                 val squareSpace = World.currentRoom.getSpace(squarePosition)
                 
-                if(squareSpace!= null && squareSpace.isTraversable())
+                if(squareSpace!= null && squareSpace.isTraversableFor(this))
                 {
-                    val pathSpaces = PathFinding.findPathWithGivenRoom(position, squarePosition, World.currentRoom)
+                    val pathSpaces = PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom,this)
                     
                     if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
                     {

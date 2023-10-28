@@ -1,7 +1,9 @@
 import com.efm.entities.Hero
+import com.efm.item.ContainerFullException
 import com.efm.multiUseMapItems.Bow
 import com.efm.stackableMapItems.Bomb
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -9,38 +11,57 @@ import org.junit.runner.RunWith
 {
     val hero = Hero()
     
-    @Test fun `add item to empty equipment`()
+    @Before fun `set up`()
     {
         hero.inventory.items.clear()
+    }
+    
+    @Test fun `add item to empty equipment`()
+    {
         hero.inventory.addItem(Bomb())
         assertTrue(hero.inventory.items.size == 1)
     }
     
     @Test fun `add item to full equipment`()
     {
-        hero.inventory.items.clear()
         for (i in 0 until hero.inventory.maxItems)
         {
             hero.inventory.addItem(Bow())
         }
         assertTrue(hero.inventory.items.size == hero.inventory.maxItems)
-    
-        hero.inventory.addItem(Bow())
+        
+        try
+        {
+            hero.inventory.addItem(Bow())
+            assertFalse(true)
+        } catch (e : ContainerFullException)
+        {
+            assertTrue(true)
+        }
         assertTrue(hero.inventory.items.size == hero.inventory.maxItems)
     }
     
     @Test fun `remove item from equipment`()
     {
-        val bomb = Bomb()
+        // addItem adds a copy
+        val bombExistingNowhere = Bomb()
+        hero.inventory.addItem(bombExistingNowhere)
     
-        hero.inventory.items.clear()
-        hero.inventory.addItem(bomb)
-        assertTrue(hero.inventory.items.size == 1)
+        // findAllStacks finds one stack of Bomb
+        assertTrue(hero.inventory.findAllStacks(Bomb()).size == 1)
+        val bombInInventory = hero.inventory.findAllStacks(Bomb()).first()
+        // inventory contains the copy and not he original
+        assertFalse(hero.inventory.items.contains(bombExistingNowhere))
+        assertTrue(hero.inventory.items.contains(bombInInventory))
     
-        hero.inventory.removeItem(bomb)
-        assertTrue(hero.inventory.items.size == 0)
+        // removing the original does nothing
+        hero.inventory.removeItem(bombExistingNowhere)
+        assertFalse(hero.inventory.items.contains(bombExistingNowhere))
+        assertTrue(hero.inventory.items.contains(bombInInventory))
     
-        hero.inventory.removeItem(bomb)
-        assertTrue(hero.inventory.items.size == 0)
+        // removing the copy
+        hero.inventory.removeItem(bombInInventory)
+        assertFalse(hero.inventory.items.contains(bombExistingNowhere))
+        assertFalse(hero.inventory.items.contains(bombInInventory))
     }
 }

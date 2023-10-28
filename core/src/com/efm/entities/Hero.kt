@@ -6,6 +6,8 @@ import com.efm.entity.Character
 import com.efm.item.Container
 import com.efm.item.Item
 import com.efm.room.RoomPosition
+import com.efm.skill.BodyPart
+import com.efm.skill.Skill
 import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
 
@@ -25,6 +27,8 @@ class Hero(
     var canMoveNextTurn = true
     
     val inventory = HeroInventory()
+    
+    val bodyPartMap = mutableMapOf<BodyPart, Skill?>().apply { BodyPart.values().forEach { this[it] = null } }
     
     override fun getTile() : TiledMapTile
     {
@@ -106,8 +110,38 @@ class Hero(
         getState().isHeroAlive = false
     }
     
-    fun setCanMoveToTrue() {
+    fun setCanMoveToTrue()
+    {
         this.canMoveNextTurn = true
+    }
+    
+    fun getSkillOnBodyPart(bodyPart : BodyPart) : Skill?
+    {
+        return bodyPartMap[bodyPart]
+    }
+    
+    fun setSkillOnBodyPart(bodyPart : BodyPart, skill : Skill)
+    {
+        bodyPartMap[bodyPart] = skill
+    }
+    
+    fun addSkill(skill : Skill)
+    {
+        bodyPartMap[skill.bodyPart] = skill
+    }
+    
+    fun removeSkill(skill : Skill)
+    {
+        bodyPartMap[skill.bodyPart] = null
+    }
+    
+    fun hasSkill(skill : Skill) : Boolean
+    {
+        for ((bp, s) in bodyPartMap.iterator())
+        {
+            if (s == skill) return true
+        }
+        return false
     }
 }
 

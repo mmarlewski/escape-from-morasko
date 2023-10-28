@@ -1,5 +1,6 @@
 import com.efm.PathFinding
 import com.efm.entities.StoneColumn
+import com.efm.entities.enemies.EnemySkeleton
 import com.efm.room.*
 import org.junit.Assert.*
 import org.junit.Test
@@ -14,7 +15,7 @@ class `pathfinding`
         val start = RoomPosition(6, 6)
         val end = RoomPosition(1, 1)
         
-        val path = PathFinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathInRoomForEntity(start, end, room, EnemySkeleton())
         
         assertNull(path)
     }
@@ -25,7 +26,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(6, 6)
         
-        val path = PathFinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathInRoomForEntity(start, end, room, EnemySkeleton())
         
         assertNull(path)
     }
@@ -45,7 +46,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = PathFinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathInRoomForEntity(start, end, room, EnemySkeleton())
         
         assertNotNull(path)
     }
@@ -65,7 +66,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = PathFinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathInRoomForEntity(start, end, room, EnemySkeleton())
         
         assertNotNull(path)
     }
@@ -89,7 +90,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = PathFinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathInRoomForEntity(start, end, room, EnemySkeleton())
         
         assertNull(path)
     }
@@ -112,7 +113,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = PathFinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathInRoomForEntity(start, end, room, EnemySkeleton())
         
         assertNotNull(path)
     }
@@ -137,7 +138,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = PathFinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathInRoomForEntity(start, end, room, EnemySkeleton())
         
         assertNull(path)
     }
@@ -161,7 +162,7 @@ class `pathfinding`
         val start = RoomPosition(1, 1)
         val end = RoomPosition(3, 3)
         
-        val path = PathFinding.findPathWithGivenRoom(start, end, room)
+        val path = PathFinding.findPathInRoomForEntity(start, end, room, EnemySkeleton())
         
         assertNotNull(path)
     }

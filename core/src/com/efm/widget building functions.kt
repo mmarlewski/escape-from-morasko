@@ -11,16 +11,12 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
 import com.efm.screens.MenuScreen
-import com.efm.screens.SettingsScreen
-import com.efm.settings.SettingsManager
 import com.efm.ui.gameScreen.EquipmentStructure
 import com.efm.ui.gameScreen.PopUps
 
-
-lateinit var musicRadioButton : CheckBox
 lateinit var musicSlider : Slider
-lateinit var soundEffectsRadioButton : CheckBox
-lateinit var soundEffectsmusicSlider : Slider
+lateinit var soundSlider : Slider
+
 fun highlightSelection(imageButton : ImageButton, down : NinePatch, up : NinePatch)
 {
     imageButton.addListener(object : ChangeListener()
@@ -431,17 +427,8 @@ fun settingsPause(
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
     
     val musicLabel = labelOf("music", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
-    val soundEffectsLabel = labelOf("sound effects", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
+    val soundEffectsLabel = labelOf("sound", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
     
-    musicRadioButton = checkBoxOf(
-            "", Fonts.pixeloid10, Colors.black,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff
-                                     )
     musicSlider = sliderOf(
             0.0f,
             1.0f,
@@ -453,16 +440,7 @@ fun settingsPause(
             Textures.materialKnobNinePatch
                               )
     
-    soundEffectsRadioButton = checkBoxOf(
-            "", Fonts.pixeloid10, Colors.black,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff
-                                            )
-    soundEffectsmusicSlider = sliderOf(
+    soundSlider = sliderOf(
             0.0f,
             1.0f,
             0.1f,
@@ -471,7 +449,7 @@ fun settingsPause(
             Textures.materialKnobNinePatchAfter,
             Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatch
-                                          )
+                          )
     
     val backButton = textButtonOf(
             "back",
@@ -488,75 +466,28 @@ fun settingsPause(
         Sounds.blop.playOnce()
         PopUps.setMenuVisibility(true)
     }
-    val settingsManager = SettingsManager.getInstance()
-    musicRadioButton.addListener(object : ChangeListener()
-                                 {
-                                     override fun changed(event : ChangeEvent, actor : Actor)
-                                     {
-                                         if (musicRadioButton.isChecked)
-                                         {
-                                             setMusicVolume(0f)
-                                             settingsManager.setMusicVolume(0f)
-                                         }
-                                         else
-                                         {
-                                             setMusicVolume(musicSlider.value)
-                                             settingsManager.setMusicVolume(musicSlider.value)
-                                         }
-                                     }
-                                 })
     
     musicSlider.addListener(object : ChangeListener()
                             {
                                 override fun changed(event : ChangeEvent, actor : Actor)
                                 {
-                                    if (!musicRadioButton.isChecked)
-                                    {
-                                        setMusicVolume(musicSlider.value)
-                                        settingsManager.setMusicVolume(musicSlider.value)
-                                    }
+                                    setMusicVolume(musicSlider.value)
                                 }
                             })
-
-// And replace this code
-    soundEffectsRadioButton.addListener(object : ChangeListener()
-                                        {
-                                            override fun changed(event : ChangeEvent, actor : Actor)
-                                            {
-                                                if (soundEffectsRadioButton.isChecked)
-                                                {
-                                                    setSoundVolume(0f)
-                                                    settingsManager.setSoundVolume(0f)
-                                                }
-                                                else
-                                                {
-                                                    setSoundVolume(soundEffectsmusicSlider.value)
-                                                    settingsManager.setSoundVolume(soundEffectsmusicSlider.value)
-                                                }
-                                            }
-                                        })
     
-    soundEffectsmusicSlider.addListener(object : ChangeListener()
+    soundSlider.addListener(object : ChangeListener()
                                         {
                                             override fun changed(event : ChangeEvent, actor : Actor)
                                             {
-                                                if (!soundEffectsRadioButton.isChecked)
-                                                {
-                                                    setSoundVolume(soundEffectsmusicSlider.value)
-                                                    settingsManager.setSoundVolume(soundEffectsmusicSlider.value)
-                                                }
+                                                setSoundVolume(soundSlider.value)
                                             }
                                         })
     
     val buttonTable = Table()
     buttonTable.add(
             columnOf(
-                    rowOf(
-                            musicLabel,
-                            musicRadioButton,
-                            musicSlider
-                         ),
-                    rowOf(soundEffectsLabel, soundEffectsRadioButton, soundEffectsmusicSlider, columnOf().padLeft(75f)),
+                    rowOf( musicLabel,musicSlider),
+                    rowOf(soundEffectsLabel, soundSlider),
                     rowOf(backButton)
                     )
                    )
@@ -635,7 +566,8 @@ fun menuPopup(
         window.isVisible = false
         PopUps.setSettingsVisibility(true)
         PopUps.setBackgroundVisibility(true)
-        updateMusicValues()
+        musicSlider.value = getMusicVolume()
+        soundSlider.value = getSoundVolume()
     }
     
     val backToMenuButton = textButtonOf(
@@ -658,15 +590,6 @@ fun menuPopup(
     window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)
     
     return window
-}
-
-fun updateMusicValues()
-{
-    val settingsManager = SettingsManager.getInstance()
-    musicRadioButton.isChecked = settingsManager.getMusicVolume() != 0f
-    musicSlider.value = settingsManager.getMusicVolume()
-    soundEffectsRadioButton.isChecked = settingsManager.getSoundVolume() != 0f
-    soundEffectsmusicSlider.value = settingsManager.getSoundVolume()
 }
 
 val itemButtonWithHealthBarGroup = ButtonGroup<ImageButton>()

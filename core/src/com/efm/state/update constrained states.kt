@@ -426,7 +426,7 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
             }
             else    ->
             {
-                val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
+                val pathSpaces = PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom, World.hero)
                 if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
                 {
                     val detectionPathPositions = mutableListOf<RoomPosition>()
@@ -554,7 +554,7 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
         }
         else if (selectedPosition != World.hero.position)
         {
-            val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom,World.hero)
             if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
             {
                 val detectionPathPositions = mutableListOf<RoomPosition>()

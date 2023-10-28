@@ -78,7 +78,7 @@ class EnemyBoar(
     
         var decision = doNothing
     
-        val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
         for (pos in getSquareAreaPositions(position, attackRange))
         {
             // boar attacks only in a straight line
@@ -142,7 +142,7 @@ class EnemyBoar(
         Gdx.app.log("EnemyBoar", "charge")
         // position before charging
         var initialPosition = position
-        val pathSpaces = PathFinding.findPathWithGivenRoom(initialPosition, World.hero.position, World.currentRoom)
+        val pathSpaces = PathFinding.findPathInRoomForEntity(initialPosition, World.hero.position, World.currentRoom,this)
         val stepsSpaces = pathSpaces?.take(attackRange)
         if (!stepsSpaces.isNullOrEmpty())
         {
@@ -224,7 +224,7 @@ class EnemyBoar(
         
         // move
         
-        val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
         val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
         if (!stepsSpaces.isNullOrEmpty())
         {
@@ -288,7 +288,7 @@ class EnemyBoar(
                 
                         Gdx.app.log("EnemyBoar", "charge")
                         val pathSpaces2 =
-                                PathFinding.findPathWithGivenRoom(endPosition, World.hero.position, World.currentRoom)
+                                PathFinding.findPathInRoomForEntity(endPosition, World.hero.position, World.currentRoom,this)
                         val stepsSpaces2 = pathSpaces2?.take(attackRange)
                         if (!stepsSpaces2.isNullOrEmpty())
                         {

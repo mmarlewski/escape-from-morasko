@@ -75,7 +75,7 @@ class BossWizard : Entity, Enemy
     
     override fun performTurn()
     {
-        val pathToHero = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        val pathToHero = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
         if(pathToHero != null && pathToHero.size < 4)
         {
             areaOfEffectAttack()
@@ -158,7 +158,7 @@ class BossWizard : Entity, Enemy
             val posX = (0 until World.currentRoom.heightInSpaces - 2).random()
             val posY = (0 until World.currentRoom.widthInSpaces - 2).random()
             if (World.currentRoom.isPositionWithinBounds(posX, posY) && World.currentRoom.getSpace(posX, posY)?.getEntity() == null
-                    && World.currentRoom.getSpace(posX, posY)?.isTraversable() != false)
+                    && World.currentRoom.getSpace(posX, posY)?.isTraversableFor(this) != false)
             {
                 val minion = EnemyBat()
                 minion.createOwnHealthBar()

@@ -263,7 +263,7 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
             }
             else    ->
             {
-                val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
+                val pathSpaces = PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom, World.hero)
                 if (pathSpaces != null)
                 {
                     Map.clearLayer(MapLayer.select)
@@ -347,7 +347,7 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
         }
         else if (selectedPosition != World.hero.position)
         {
-            val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom, World.hero)
             if (pathSpaces != null)
             {
                 Map.clearLayer(MapLayer.select)

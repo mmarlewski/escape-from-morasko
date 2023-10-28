@@ -200,6 +200,8 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     fun removeEntity(entity : Entity)
     {
         entities.remove(entity)
+        if (entity is Character) characters.remove(entity)
+        if (entity is Enemy) enemies.remove(entity)
         getSpace(entity.position)?.clearEntity()
     }
     

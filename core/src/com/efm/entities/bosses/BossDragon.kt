@@ -283,7 +283,7 @@ class BossDragon : Entity, Enemy
                 }
                 else
                 {
-                    val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+                    val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
                     
                     val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
                     if (!stepsSpaces.isNullOrEmpty())
