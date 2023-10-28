@@ -8,7 +8,6 @@ import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.passage.Exit
-import com.efm.room.Space
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
 import com.efm.ui.gameScreen.RightStructure
@@ -392,7 +391,7 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
             }
             else    ->
             {
-                val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
+                val pathSpaces = PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom,World.hero)
                 if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
                 {
                     Map.clearLayer(MapLayer.select)
@@ -475,7 +474,7 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         }
         else if (selectedPosition != World.hero.position)
         {
-            val pathSpaces = PathFinding.findPathWithGivenRoom(World.hero.position, selectedPosition, World.currentRoom)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom, World.hero)
             if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
             {
                 Map.clearLayer(MapLayer.select)

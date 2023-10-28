@@ -124,7 +124,7 @@ class BossSlime : Entity, Enemy
             for (j in -1..1)
             {
                 val posCardinal = ((position.positionOffsetBy(i, Direction4.up)).positionOffsetBy(j, Direction4.left))
-                if (currentRoom.getSpace(posCardinal)?.isTraversable() == true && currentRoom.getSpace(posCardinal)
+                if (currentRoom.getSpace(posCardinal)?.isTraversableFor(this) == true && currentRoom.getSpace(posCardinal)
                                 ?.getEntity() == null
                 )
                 {

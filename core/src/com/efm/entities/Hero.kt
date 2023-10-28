@@ -6,6 +6,7 @@ import com.efm.entity.Character
 import com.efm.item.Container
 import com.efm.item.Item
 import com.efm.room.RoomPosition
+import com.efm.skill.Skill
 import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
 
@@ -25,6 +26,8 @@ class Hero(
     var canMoveNextTurn = true
     
     val inventory = HeroInventory()
+    
+    val skillMap = mutableMapOf<Skill,Boolean>().apply { Skill.values().forEach { this[it] = false } }
     
     override fun getTile() : TiledMapTile
     {
@@ -108,6 +111,16 @@ class Hero(
     
     fun setCanMoveToTrue() {
         this.canMoveNextTurn = true
+    }
+    
+    fun hasSkill(skill:Skill) : Boolean
+    {
+        return skillMap[skill] ?: false
+    }
+    
+    fun setSkill(skill:Skill, boolean:Boolean)
+    {
+        skillMap[skill] = boolean
     }
 }
 

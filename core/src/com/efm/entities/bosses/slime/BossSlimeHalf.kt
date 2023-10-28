@@ -124,7 +124,7 @@ class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
             for (j in -1..1)
             {
                 val posCardinal = ((position.positionOffsetBy(i, Direction4.up)).positionOffsetBy(j, Direction4.left))
-                if (World.currentRoom.getSpace(posCardinal)?.isTraversable() == true && World.currentRoom.getSpace(
+                if (World.currentRoom.getSpace(posCardinal)?.isTraversableFor(this) == true && World.currentRoom.getSpace(
                                 posCardinal
                                                                                                                   )
                                 ?.getEntity() == null

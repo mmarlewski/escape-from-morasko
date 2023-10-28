@@ -1,5 +1,6 @@
 package com.efm
 
+import com.efm.entity.Entity
 import com.efm.room.*
 import kotlin.math.abs
 
@@ -90,7 +91,12 @@ object PathFinding
      * Path does not include Spaces on start and end.
      * If there is no path between start and end returns null.
      */
-    fun findPathWithGivenRoom(startPosition : RoomPosition, endPosition : RoomPosition, room : Room) : List<Space>?
+    fun findPathInRoomForEntity(
+            startPosition : RoomPosition,
+            endPosition : RoomPosition,
+            room : Room,
+            entity : Entity
+                               ) : List<Space>?
     {
         val nodeArray = createNodeArrayFromRoom(room)
         addNeighboursToNodeArray(nodeArray)
@@ -140,7 +146,7 @@ object PathFinding
                     break
                 }
                 
-                if (node !in closedNodes && node.space.isTraversable())
+                if (node !in closedNodes && node.space.isTraversableFor(entity))
                 {
                     val distance = getDistanceBetweenNodes(currentNode, node)
                     
