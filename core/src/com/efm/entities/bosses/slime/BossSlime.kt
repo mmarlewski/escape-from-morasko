@@ -84,15 +84,14 @@ class BossSlime : Entity, Enemy
     {
         val heroPosition = World.hero.position.copy()
         val heroDirection = getDirection8(this.position, heroPosition)
-        val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
+        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
         animations += Animation.action { playSoundOnce(Sounds.slimeAttack) }
         animations += Animation.simultaneous(
                 listOf(
-                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
+                        Animation.showTile(impactTile, heroPosition.copy(), 0.2f),
                         Animation.cameraShake(1, 0.5f)
                       )
                                             )
@@ -113,51 +112,57 @@ class BossSlime : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    fun adjacentTiles() : MutableList<RoomPosition>
+    override fun onDeath()
     {
-        var possibleSpawnPositions = mutableListOf<RoomPosition>()
+        val slimeHalf1 = BossSlimeHalf()
+        val slimeHalf2 = BossSlimeHalf()
         
-        val currentRoom = World.currentRoom
+        var spawnPosition1 : RoomPosition? = null
+        var spawnPosition2 : RoomPosition? = null
         
-        for (i in -1..1)
+        var radius = 1
+        while (radius < 5 && (spawnPosition1 == null || spawnPosition2 == null))
         {
-            for (j in -1..1)
+            val squarePerimeterPositions = getSquarePerimeterPositions(this.position, radius)
+            val possibleSpawnPositions = squarePerimeterPositions.filter {
+                World.currentRoom.getSpace(it)?.isTraversableFor(slimeHalf1) ?: false
+            }
+            
+            when (possibleSpawnPositions.size)
             {
-                val posCardinal = ((position.positionOffsetBy(i, Direction4.up)).positionOffsetBy(j, Direction4.left))
-                if (currentRoom.getSpace(posCardinal)?.isTraversableFor(this) == true && currentRoom.getSpace(posCardinal)
-                                ?.getEntity() == null
-                )
+                0    ->
                 {
-                    possibleSpawnPositions.add(posCardinal)
+                }
+                
+                1    ->
+                {
+                    if (spawnPosition1 == null) spawnPosition1 = possibleSpawnPositions.first()
+                    else spawnPosition2 = possibleSpawnPositions.first()
+                }
+                
+                else ->
+                {
+                    if (spawnPosition1 == null) spawnPosition1 = possibleSpawnPositions.random()
+                    spawnPosition2 = possibleSpawnPositions.filter { it != spawnPosition1 }.random()
                 }
             }
-        }
-        return possibleSpawnPositions
-    }
-    
-    fun onDeath()
-    {
-        val currentRoom = World.currentRoom
-        val adjacentTiles = adjacentTiles()
-        
-        
-        for (i in 0..1)
-        {
-            var position1 = Random.nextInt(0, adjacentTiles.size - 1)
-            val bossSlimeHalf = BossSlimeHalf()
-            bossSlimeHalf.createOwnHealthBar()
-            currentRoom.addEntityAt(bossSlimeHalf, adjacentTiles[position1].x, adjacentTiles[position1].y)
             
-            adjacentTiles.removeAt(position1)
+            radius++
         }
         
-    }
-    
-    override fun killCharacter()
-    {
-        onDeath()
-        this.alive = false
-        
+        if (spawnPosition1 != null)
+        {
+            slimeHalf1.position.set(spawnPosition1)
+            slimeHalf1.createOwnHealthBar()
+            World.currentRoom.addEntityToBeAddedEntities(slimeHalf1)
+        }
+        if (spawnPosition2 != null)
+        {
+            slimeHalf2.position.set(spawnPosition2)
+            slimeHalf2.createOwnHealthBar()
+            World.currentRoom.addEntityToBeAddedEntities(slimeHalf2)
+        }
+        World.currentRoom.updateSpacesEntities()
     }
     
     override fun getCorpse() : EnemyCorpse?

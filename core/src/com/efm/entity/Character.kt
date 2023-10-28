@@ -16,7 +16,7 @@ interface Character : Entity
         this.healthPoints -= dmgAmount
         if (this.healthPoints <= 0)
         {
-            killCharacter()
+            this.alive = false
         }
     }
     
@@ -29,8 +29,7 @@ interface Character : Entity
         }
     }
     
-    fun killCharacter()
+    fun onDeath()
     {
-        this.alive = false
     }
 }

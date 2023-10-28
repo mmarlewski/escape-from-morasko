@@ -735,6 +735,7 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
         GameScreen.fillItemsStructureWithItemsAndSkills()
         
         World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         
@@ -905,6 +906,7 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
         GameScreen.fillItemsStructureWithItemsAndSkills()
         
         World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
     

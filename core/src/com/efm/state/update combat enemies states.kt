@@ -66,6 +66,7 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
     if (!Animating.isAnimating())
     {
         World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         

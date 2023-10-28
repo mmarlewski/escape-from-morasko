@@ -170,7 +170,7 @@ class BossOctopusHead : Entity, Enemy
             this.healthPoints -= dmgAmount
             if (this.healthPoints <= 0)
             {
-                killCharacter()
+                this.alive = false
             }
         }
     }

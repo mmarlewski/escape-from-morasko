@@ -2,7 +2,7 @@ package com.efm
 
 import com.badlogic.gdx.audio.Sound
 
-private var soundVolume = 1f
+private var soundVolume = 1.0f
 
 /**
  * newVolume in range 0f .. 1f
