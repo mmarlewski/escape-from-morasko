@@ -63,11 +63,11 @@ class BossNatureGolem : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.golemIdle1
-            2    -> Tiles.golemIdle2
-            3    -> Tiles.golemIdle1
-            4    -> Tiles.golemIdle2
-            else -> Tiles.golemIdle1
+            1    -> Tiles.golemMove1
+            2    -> Tiles.golemMove1
+            3    -> Tiles.golemMove2
+            4    -> Tiles.golemMove2
+            else -> Tiles.golemMove1
         }
     }
     

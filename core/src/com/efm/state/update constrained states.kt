@@ -839,6 +839,7 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
         GameScreen.fillItemsStructureWithItemsAndSkills()
         
         World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         
@@ -1062,6 +1063,7 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
         GameScreen.fillItemsStructureWithItemsAndSkills()
         
         World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         

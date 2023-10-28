@@ -27,6 +27,8 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     private val enemies = mutableListOf<Enemy>()
     private val passages = mutableListOf<Passage>()
     
+    private val entitiesToBeAdded = mutableListOf<Entity>()
+    
     init
     {
         for (i in 0 until heightInSpaces)
@@ -92,6 +94,7 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
             if (!character.alive)
             {
                 println(character)
+                character.onDeath()
                 killedCharacters.add(character)
                 if (character is Enemy)
                 {
@@ -106,6 +109,33 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         characters.removeAll(killedCharacters)
         entities.removeAll(killedCharacters)
         for (corpse in corpsesToAdd) addEntityAt(corpse, corpse.position)
+    }
+    
+    /** adding entities to room can mess things up, so it happens in its own time **/
+    fun addEntityToBeAddedEntities(entity : Entity)
+    {
+        entitiesToBeAdded.add(entity)
+    }
+    
+    /** adding entities to room can mess things up, so it happens in its own time **/
+    fun addToBeAddedEntitiesToRoom()
+    {
+        for(entityToBeAdded in entitiesToBeAdded)
+        {
+            var isEntityAlreadyInPosition = false
+            for(entityAlreadyInRoom in entities)
+            {
+                if(entityAlreadyInRoom.position == entityToBeAdded.position)
+                {
+                    isEntityAlreadyInPosition = true
+                }
+            }
+            if(!isEntityAlreadyInPosition)
+            {
+                addEntity(entityToBeAdded)
+            }
+        }
+        entitiesToBeAdded.clear()
     }
     
     fun getSpace(x : Int, y : Int) : Space?

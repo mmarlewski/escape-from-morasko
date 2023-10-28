@@ -104,9 +104,8 @@ class Hero(
         ProgressBars.abilityBarLabel.setText("$abilityPoints / $maxAbilityPoints")
     }
     
-    override fun killCharacter()
+    override fun onDeath()
     {
-        super.killCharacter()
         getState().isHeroAlive = false
     }
     
