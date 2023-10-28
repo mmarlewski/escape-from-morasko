@@ -7,6 +7,7 @@ import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost
+import com.efm.entities.enemies.chess.spawnChessSet
 import com.efm.entities.exits.StoneExit
 import com.efm.entities.exits.StoneExitActiveWhenNoEnemiesAreInRoom
 import com.efm.entities.walls.*
@@ -385,7 +386,7 @@ fun World.createWorldPrototypeTwo()
     for (y in 1 until l1r1.heightInSpaces) l1r1.addEntityAt(StoneWall(Direction4.right), 0, y)
     // add walls on top side (facing down)
     for (x in 1 until l1r1.widthInSpaces) l1r1.addEntityAt(StoneWall(Direction4.down), x, 0)
-    
+    spawnChessSet(4, 9, Direction4.up, l1r1)
     // l1r1
     val l1r2 = Room("2", 16, 16)
     // change base

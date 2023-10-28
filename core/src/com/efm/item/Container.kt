@@ -17,12 +17,13 @@ interface Container
         return items.filter { it::class == item::class }
     }
     
+    /** If item is Stackable, adds max possible amount to Container and removes from item.
+     *  If still necessary and possible, adds a copy of item to a new slot and sets amount to 0 is item is Stackable.
+     * */
     fun addItem(item : Item)
     {
-        if (item is StackableItem)
-            addStackableItem(item)
-        else
-            addItemToNewSlot(item)
+        if (item is StackableItem) addStackableItem(item)
+        else addItemToNewSlot(item)
     }
     
     fun removeItem(item : Item)
@@ -46,8 +47,7 @@ interface Container
             sortItems()
             // added all of item to new slot
             // means original should have 0 amount
-            if (item is StackableItem)
-                item.amount = 0
+            if (item is StackableItem) item.amount = 0
         }
         else throw ContainerFullException("Cannot add any more items to container.")
     }
