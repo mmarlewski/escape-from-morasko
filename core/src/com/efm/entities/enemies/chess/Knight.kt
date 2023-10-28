@@ -81,7 +81,7 @@ class Knight: Entity, Enemy
                 {
                     var space = World.currentRoom.getSpace(pos)
                     if (space != null) {
-                        if (space.getEntity() == null && space.isTraversable())
+                        if (space.getEntity() == null && space.isTraversableFor(this))
                         {
                             val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(pos))
                             moveEnemy(position, space.position, path, this)
