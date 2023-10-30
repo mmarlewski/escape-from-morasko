@@ -1,18 +1,14 @@
 package com.efm.ui.gameScreen
 
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
 import com.efm.item.*
 import com.efm.level.World
-import com.efm.multiUseMapItems.*
 import com.efm.screens.GameScreen
-import com.efm.stackableMapItems.*
-import com.efm.stackableSelfItems.*
 import com.efm.state.*
 
 object ItemsStructure
@@ -121,7 +117,7 @@ object ItemsStructure
     
     fun display()
     {
-        equipmentDisplay.pad(16f)
+        equipmentDisplay.pad(24f)
         weaponDisplay.pad(16f)
         potionDisplay.pad(16f)
         usableDisplay.pad(16f)
