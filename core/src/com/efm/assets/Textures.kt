@@ -136,6 +136,21 @@ object Textures
     val potionSmall = load("items/potion1.png")
     val potionBig = load("items/potion1.png")
     
+    // skills
+    
+    val barrel = load("abilities/barrel.png")
+    val freeze = load("abilities/freeze.png")
+    val grassHealing = load("abilities/grassHealing.png")
+    val invisibility = load("abilities/invisibility.png")
+    val jump = load("abilities/jump.png")
+    val lavawalking = load("abilities/lavawalking.png")
+    val pockets = load("abilities/pockets.png")
+    val pull = load("abilities/pull.png")
+    val push = load("abilities/push.png")
+    val shield = load("abilities/shield.png")
+    val swap = load("abilities/swapPlaces.png")
+    val waterwalking = load("abilities/waterwalking.png")
+    
     private fun load(name : String) : Texture
     {
         val filePath = "textures/$name"
