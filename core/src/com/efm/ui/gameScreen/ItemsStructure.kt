@@ -40,6 +40,23 @@ object ItemsStructure
         equipmentDisplay.isVisible = boolean
     }
     
+    fun createSkill(texture : Texture?) : ImageButton
+    {
+        val button = imageButtonOf(
+                Textures.barrel,
+                Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                  )
+        {
+        
+        }
+        
+        return button
+    }
+    
     fun createItemWithHealthbar(
             currentHealth : Int,
             maxHealth : Int,
