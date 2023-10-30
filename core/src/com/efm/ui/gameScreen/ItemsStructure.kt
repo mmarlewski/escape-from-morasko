@@ -40,11 +40,29 @@ object ItemsStructure
         equipmentDisplay.isVisible = boolean
     }
     
-    fun createSkill(texture : Texture?) : ImageButton
+    fun createActiveSkill(texture : Texture, action : () -> Unit) : ImageButton
     {
         val button = imageButtonOf(
-                Textures.barrel,
+                texture,
                 Textures.upNinePatch,
+                Textures.downNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                  )
+        {
+            playSoundOnce(Sounds.blop)
+            action()
+        }
+        
+        return button
+    }
+    
+    fun createPassiveSkill(texture : Texture) : ImageButton
+    {
+        val button = imageButtonOf(
+                texture,
+                Textures.downNinePatch,
                 Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
@@ -53,7 +71,6 @@ object ItemsStructure
         {
         
         }
-        
         return button
     }
     
