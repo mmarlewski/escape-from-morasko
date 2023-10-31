@@ -6,27 +6,17 @@ import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.input.GestureDetector.GestureListener
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Colors
-import com.efm.assets.Textures
 import com.efm.entity.Enemy
-import com.efm.item.*
-import com.efm.item.Container
 import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
-import com.efm.skill.Skill
+import com.efm.skills.*
 import com.efm.stackableMapItems.*
 import com.efm.stackableSelfItems.*
 import com.efm.state.*
@@ -90,9 +80,9 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.inventory.addItem(Apple())
         World.hero.inventory.addItem(Fish())
         World.hero.inventory.addItem(Mushroom())
-        World.hero.addSkill(Skill.lavaWalking)
-        World.hero.addSkill(Skill.pull)
-        World.hero.addSkill(Skill.invisibility)
+        World.hero.addSkill(LavaWalking)
+        World.hero.addSkill(Pull)
+        World.hero.addSkill(Invisibility)
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         // state

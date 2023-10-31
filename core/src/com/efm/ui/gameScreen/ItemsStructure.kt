@@ -10,6 +10,7 @@ import com.efm.assets.*
 import com.efm.item.*
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.skill.ActiveSkill
 import com.efm.skill.Skill
 import com.efm.state.*
 
@@ -195,7 +196,7 @@ object ItemsStructure
             {
                 item.use()
                 item.lowerAmountByOne()
-                if(item.amount < 1)
+                if (item.amount < 1)
                 {
                     World.hero.inventory.removeItem(item)
                 }
@@ -308,6 +309,64 @@ object ItemsStructure
         }
     }
     
+    fun attack(activeSkill : ActiveSkill)
+    {
+        val currState = getState()
+        
+        val canBeUsed = when (currState)
+        {
+            is State.free                              -> true
+            is State.constrained, is State.combat.hero ->
+            {
+                World.hero.abilityPoints >= 1
+            }
+            
+            else                                       -> false
+        }
+        
+        if (canBeUsed)
+        {
+            val targetPositions = activeSkill.getTargetPositions(World.hero.position)
+            
+            Map.clearLayer(MapLayer.select)
+            Map.clearLayer(MapLayer.outline)
+            for (position in targetPositions)
+            {
+                Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
+            }
+            
+            val newState = when (currState)
+            {
+                is State.free -> State.free.activeSkillChosen.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.chosenActiveSkill = activeSkill
+                    this.targetPositions = targetPositions
+                }
+                
+                is State.constrained -> State.constrained.activeSkillChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.isHeroDetected = currState.isHeroDetected
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenActiveSkill = activeSkill
+                        this.targetPositions = targetPositions
+                    }
+                
+                is State.combat.hero -> State.combat.hero.activeSkillChosen.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.chosenActiveSkill = activeSkill
+                        this.targetPositions = targetPositions
+                    }
+                
+                else          -> currState
+            }
+            setState(newState)
+        }
+    }
+    
     fun fillItemsStructureWithItemsAndSkills()
     {
         val multiUseMapItemRow = weaponDisplay.children[0] as HorizontalGroup
@@ -347,17 +406,21 @@ object ItemsStructure
             }
         }
         
-        for (skill in Skill.values())
+        for ((bodyPart, skill) in World.hero.bodyPartMap.entries)
         {
-            if (World.hero.hasSkill(skill))
+            when (skill)
             {
-                if (skill.isPassive)
+                null                 ->
+                {
+                
+                }
+                is ActiveSkill ->
+                {
+                    skillRow.addActor(createActiveSkill(skill.texture) { attack(skill) })
+                }
+                else                 ->
                 {
                     skillRow.addActor(createPassiveSkill(skill.texture))
-                }
-                else
-                {
-                    skillRow.addActor(createActiveSkill(skill.texture) {})
                 }
             }
         }

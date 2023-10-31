@@ -6,6 +6,8 @@ import com.efm.item.*
 import com.efm.passage.Exit
 import com.efm.room.RoomPosition
 import com.efm.room.Space
+import com.efm.skill.ActiveSkill
+import com.efm.skill.Skill
 
 private var prevState : State = State.free.noSelection
 private var currState : State = State.free.noSelection
@@ -122,6 +124,27 @@ sealed class State
         {
             var chosenStackableSelfItem : StackableSelfItem? = null
         }
+    
+        // ActiveSkill
+    
+        object activeSkillChosen : free()
+        {
+            var chosenActiveSkill : ActiveSkill? = null
+            var targetPositions : List<RoomPosition>? = null
+        }
+    
+        object activeSkillTargetSelectedOnce : free()
+        {
+            var chosenActiveSkill : ActiveSkill? = null
+            var targetPositions : List<RoomPosition>? = null
+            var selectedPosition = RoomPosition()
+            var effectPositions : List<RoomPosition>? = null
+        }
+    
+        object activeSkillTargetSelectedTwice : free()
+        {
+            var chosenActiveSkill : ActiveSkill? = null
+        }
     }
     
     sealed class constrained : State()
@@ -222,6 +245,27 @@ sealed class State
         object stackableSelfItemChosen : constrained()
         {
             var chosenStackableSelfItem : StackableSelfItem? = null
+        }
+    
+        // ActiveSkill
+    
+        object activeSkillChosen : constrained()
+        {
+            var chosenActiveSkill : ActiveSkill? = null
+            var targetPositions : List<RoomPosition>? = null
+        }
+    
+        object activeSkillTargetSelectedOnce : constrained()
+        {
+            var chosenActiveSkill : ActiveSkill? = null
+            var targetPositions : List<RoomPosition>? = null
+            var selectedPosition = RoomPosition()
+            var effectPositions : List<RoomPosition>? = null
+        }
+    
+        object activeSkillTargetSelectedTwice : constrained()
+        {
+            var chosenActiveSkill : ActiveSkill? = null
         }
         
         // turn
@@ -334,6 +378,27 @@ sealed class State
             object stackableSelfItemChosen : hero()
             {
                 var chosenStackableSelfItem : StackableSelfItem? = null
+            }
+    
+            // ActiveSkill
+    
+            object activeSkillChosen : hero()
+            {
+                var chosenActiveSkill : ActiveSkill? = null
+                var targetPositions : List<RoomPosition>? = null
+            }
+    
+            object activeSkillTargetSelectedOnce : hero()
+            {
+                var chosenActiveSkill : ActiveSkill? = null
+                var targetPositions : List<RoomPosition>? = null
+                var selectedPosition = RoomPosition()
+                var effectPositions : List<RoomPosition>? = null
+            }
+    
+            object activeSkillTargetSelectedTwice : hero()
+            {
+                var chosenActiveSkill : ActiveSkill? = null
             }
             
             // turn

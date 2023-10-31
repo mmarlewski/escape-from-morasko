@@ -105,8 +105,6 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
                 }
             }
         }
-        println("killed characters:")
-        print(killedCharacters)
         enemies.removeAll(killedCharacters)
         characters.removeAll(killedCharacters)
         entities.removeAll(killedCharacters)

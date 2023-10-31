@@ -30,6 +30,10 @@ fun updateState()
             is State.free.stackableMapItemTargetSelectedTwice    -> updateFreeStackableMapItemTargetSelectedTwice(currState)
             
             is State.free.stackableSelfItemChosen                -> updateFreeStackableSelfItemChosen(currState)
+            
+            is State.free.activeSkillChosen                      -> updateFreeActiveSkillChosen(currState)
+            is State.free.activeSkillTargetSelectedOnce          -> updateFreeActiveSkillTargetSelectedOnce(currState)
+            is State.free.activeSkillTargetSelectedTwice         -> updateFreeActiveSkillTargetSelectedTwice(currState)
         }
         
         is State.constrained    -> when (currState)
@@ -71,6 +75,10 @@ fun updateState()
             is State.constrained.stackableSelfItemChosen                 -> updateConstrainedStackableSelfItemChosen(
                     currState
                                                                                                                     )
+    
+            is State.constrained.activeSkillChosen                      -> updateConstrainedActiveSkillChosen(currState)
+            is State.constrained.activeSkillTargetSelectedOnce          -> updateConstrainedActiveSkillTargetSelectedOnce(currState)
+            is State.constrained.activeSkillTargetSelectedTwice         -> updateConstrainedActiveSkillTargetSelectedTwice(currState)
             
             is State.constrained.turnEnded                               -> updateConstrainedTurnEnded(currState)
             is State.constrained.turnEndedWithActionPointsLeft.waiting   -> updateConstrainedTurnEndedWithActionPointsLeftWaiting(
@@ -123,6 +131,10 @@ fun updateState()
             is State.combat.hero.stackableSelfItemChosen                 -> updateCombatHeroStackableSelfItemChosen(
                     currState
                                                                                                                    )
+    
+            is State.combat.hero.activeSkillChosen                      -> updateCombatHeroActiveSkillChosen(currState)
+            is State.combat.hero.activeSkillTargetSelectedOnce          -> updateCombatHeroActiveSkillTargetSelectedOnce(currState)
+            is State.combat.hero.activeSkillTargetSelectedTwice         -> updateCombatHeroActiveSkillTargetSelectedTwice(currState)
             
             is State.combat.hero.turnEnded                               -> updateCombatHeroTurnEnded(currState)
             is State.combat.hero.turnEndedWithActionPointsLeft.waiting   -> updateCombatHeroTurnEndedWithActionPointsLeftWaiting(
