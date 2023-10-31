@@ -9,8 +9,7 @@ import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.passage.Exit
 import com.efm.screens.GameScreen
-import com.efm.ui.gameScreen.ProgressBars
-import com.efm.ui.gameScreen.RightStructure
+import com.efm.ui.gameScreen.*
 
 fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : State
 {
@@ -667,7 +666,7 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedOnce(currState : State.combat.h
         if (selectedPosition == currState.selectedPosition)
         {
             multiUseMapItem.use(World.currentRoom, selectedPosition)
-            GameScreen.fillItemsStructureWithItemsAndSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             return State.combat.hero.multiUseMapItemTargetSelectedTwice.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -718,13 +717,18 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
     if (!Animating.isAnimating())
     {
         World.hero.spendAP(currState.chosenMultiUseItem?.baseAPUseCost ?: 0)
+    
+        World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
+        World.currentRoom.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
         
         val item = currState.chosenMultiUseItem
         item?.lowerDurability()
         if(item != null && item.durability < 1)
         {
             World.hero.inventory.removeItem(item)
-            GameScreen.fillItemsStructureWithItemsAndSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             return State.combat.hero.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -732,12 +736,7 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
             }
         }
-        GameScreen.fillItemsStructureWithItemsAndSkills()
-        
-        World.currentRoom.removeKilledCharacters()
-        World.currentRoom.addToBeAddedEntitiesToRoom()
-        World.currentRoom.updateSpacesEntities()
-        GameScreen.updateMapEntityLayer()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
         
@@ -889,13 +888,18 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
     if (!Animating.isAnimating())
     {
         World.hero.spendAP(currState.chosenStackableMapItem?.baseAPUseCost ?: 0)
+    
+        World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
+        World.currentRoom.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
         
         val item = currState.chosenStackableMapItem
         item?.lowerAmountByOne()
         if(item != null && item.amount < 1)
         {
             World.hero.inventory.removeItem(item)
-            GameScreen.fillItemsStructureWithItemsAndSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             return State.combat.hero.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -903,12 +907,7 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
             }
         }
-        GameScreen.fillItemsStructureWithItemsAndSkills()
-        
-        World.currentRoom.removeKilledCharacters()
-        World.currentRoom.addToBeAddedEntitiesToRoom()
-        World.currentRoom.updateSpacesEntities()
-        GameScreen.updateMapEntityLayer()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
     
         currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
         

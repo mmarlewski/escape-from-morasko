@@ -26,6 +26,7 @@ import com.efm.item.Container
 import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
+import com.efm.skill.Skill
 import com.efm.stackableMapItems.*
 import com.efm.stackableSelfItems.*
 import com.efm.state.*
@@ -56,168 +57,6 @@ object GameScreen : BaseScreen(), GestureListener
     var worldTouchPosition = Vector2()
     val roomTouchPosition = RoomPosition()
     
-    // equipment
-    var isHeroEquipmentOnly = true
-    var currEquipment : Container? = null
-    var heroEquipment : Container = World.hero.inventory
-    lateinit var containerEquipment : Container
-    var selectedItem : Item? = null
-    var selectedButton : ImageButton? = null
-    
-    fun fillItemsStructureWithItemsAndSkills()
-    {
-        val multiUseMapItemRow = ItemsStructure.weaponDisplay.children[0] as HorizontalGroup
-        val stackableMapItemRow = ItemsStructure.usableDisplay.children[0] as HorizontalGroup
-        val stackableSelfItemRow = ItemsStructure.potionDisplay.children[0] as HorizontalGroup
-        val skillRow = ItemsStructure.skillDisplay.children[0] as HorizontalGroup
-        
-        multiUseMapItemRow.clear()
-        stackableMapItemRow.clear()
-        stackableSelfItemRow.clear()
-        skillRow.clear()
-        
-        for (item in World.hero.inventory.items)
-        {
-            when (item)
-            {
-                is MultiUseMapItem   ->
-                {
-                    multiUseMapItemRow.addActor(
-                            ItemsStructure.createItemWithHealthbar(item.durability, item.maxDurability, item.getTexture())
-                            { ItemsStructure.attack(item) }
-                                               )
-                }
-                
-                is StackableMapItem  ->
-                {
-                    stackableMapItemRow.addActor(
-                            ItemsStructure.createItemWithLabel(item.amount, item.getTexture())
-                            { ItemsStructure.attack(item) }
-                                                )
-                }
-                
-                is StackableSelfItem ->
-                {
-                    stackableSelfItemRow.addActor(
-                            ItemsStructure.createItemWithLabel(item.amount, item.getTexture())
-                            { ItemsStructure.attack(item) }
-                                                 )
-                }
-            }
-        }
-    }
-    
-    fun fillEquipmentStructureWithItems(equipment : Container)
-    {
-        fun onClick(item : Item?, button : ImageButton?)
-        {
-            selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
-            
-            EquipmentStructure.deleteButton.isVisible = true
-            
-            if (selectedButton === button)
-            {
-                selectedItem = null
-                selectedButton = null
-                currEquipment = null
-            }
-            else
-            {
-                selectedItem = item
-                selectedButton = button
-                currEquipment = equipment
-            }
-            
-            selectedButton?.style?.up = NinePatchDrawable(Textures.downNinePatch)
-            
-            EquipmentStructure.deleteButton.isVisible = (selectedButton != null)
-            EquipmentStructure.arrowButton.isVisible = (selectedButton != null && !isHeroEquipmentOnly)
-            EquipmentStructure.arrowButton.style.imageUp = when (equipment === heroEquipment)
-            {
-                true  -> TextureRegionDrawable(Textures.arrowRight)
-                false -> TextureRegionDrawable(Textures.arrowLeft)
-            }
-            EquipmentStructure.arrowButton.style.imageDown = when (equipment === heroEquipment)
-            {
-                true  -> TextureRegionDrawable(Textures.arrowRight)
-                false -> TextureRegionDrawable(Textures.arrowLeft)
-            }
-        }
-        
-        val table = if (equipment === heroEquipment) EquipmentStructure.heroOverlay
-        else EquipmentStructure.containerOverlay
-        
-        val itemRows = mutableListOf<HorizontalGroup>()
-        
-        for (i in 0 until EQUIPMENT_ROWS)
-        {
-            val itemRow = table.getChild(1 + i) as HorizontalGroup
-            itemRow.clear()
-            itemRows.add(itemRow)
-        }
-        
-        var itemCount = 0
-        
-        for (item in equipment.items)
-        {
-            when (item)
-            {
-                is MultiUseMapItem   ->
-                {
-                    val button = ItemsStructure.createItemWithHealthbar( item.durability, item.maxDurability, item.getTexture()) {}
-                    button.addListener(object : ClickListener()
-                                       {
-                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
-                                           {
-                                               onClick(item, button)
-                                           }
-                                       })
-                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
-                }
-                
-                is StackableMapItem  ->
-                {
-                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
-                    button.addListener(object : ClickListener()
-                                       {
-                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
-                                           {
-                                               onClick(item, button)
-                                           }
-                                       })
-                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
-                }
-                
-                is StackableSelfItem ->
-                {
-                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
-                    button.addListener(object : ClickListener()
-                                       {
-                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
-                                           {
-                                               onClick(item, button)
-                                           }
-                                       })
-                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
-                }
-            }
-            
-            itemCount++
-        }
-        
-        for (i in itemCount until equipment.maxItems)
-        {
-            val image = imageOf(Textures.down, Scaling.fill)
-            itemRows[i / EQUIPMENT_ROW_MAX].addActor(image)
-        }
-        
-        for (i in equipment.maxItems until EQUIPMENT_ROWS * EQUIPMENT_ROW_MAX)
-        {
-            val image = imageOf(Textures.disabled, Scaling.fill)
-            itemRows[i / EQUIPMENT_ROW_MAX].addActor(image)
-        }
-    }
-    
     init
     {
         // input processor
@@ -245,10 +84,16 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.inventory.addItem(Bow())
         World.hero.inventory.addItem(Staff())
         World.hero.inventory.addItem(Bomb())
+        World.hero.inventory.addItem(Explosive())
+        World.hero.inventory.addItem(Explosive())
+        World.hero.inventory.addItem(Explosive())
         World.hero.inventory.addItem(Apple())
         World.hero.inventory.addItem(Fish())
         World.hero.inventory.addItem(Mushroom())
-        fillItemsStructureWithItemsAndSkills()
+        World.hero.addSkill(Skill.lavaWalking)
+        World.hero.addSkill(Skill.pull)
+        World.hero.addSkill(Skill.invisibility)
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         // state
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()

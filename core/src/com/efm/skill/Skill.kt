@@ -1,22 +1,25 @@
 package com.efm.skill
 
+import com.badlogic.gdx.graphics.Texture
+import com.efm.assets.Textures
+
 enum class BodyPart
 {
     head, torso, leftHand, rightHand, leftLeg, rightLeg
 }
 
-enum class Skill(val isPassive : Boolean, val bodyPart : BodyPart)
+enum class Skill(val isPassive : Boolean, val bodyPart : BodyPart, val texture:Texture)
 {
-    swap(true, BodyPart.head),
-    freeze(true, BodyPart.head),
-    grassHealing(true, BodyPart.torso),
-    invisibility(true, BodyPart.torso),
-    pull(true, BodyPart.leftHand),
-    push(true, BodyPart.leftHand),
-    barrelThrowing(true, BodyPart.rightHand),
-    shield(true, BodyPart.rightHand),
-    jump(true, BodyPart.leftLeg),
-    pockets(true, BodyPart.leftLeg),
-    waterWalking(true, BodyPart.rightLeg),
-    lavaWalking(true, BodyPart.rightLeg)
+    swap(false, BodyPart.head, Textures.swap),
+    freeze(false, BodyPart.head, Textures.freeze),
+    grassHealing(true, BodyPart.torso, Textures.grassHealing),
+    invisibility(false, BodyPart.torso, Textures.invisibility),
+    pull(false, BodyPart.leftHand, Textures.pull),
+    push(false, BodyPart.leftHand, Textures.push ),
+    barrelThrowing(false, BodyPart.rightHand, Textures.barrel),
+    shield(false, BodyPart.rightHand, Textures.shield),
+    jump(false, BodyPart.leftLeg, Textures.jump),
+    pockets(true, BodyPart.leftLeg, Textures.pockets),
+    waterWalking(true, BodyPart.rightLeg, Textures.waterwalking),
+    lavaWalking(true, BodyPart.rightLeg, Textures.lavawalking)
 }

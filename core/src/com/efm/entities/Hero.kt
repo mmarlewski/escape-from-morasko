@@ -10,6 +10,7 @@ import com.efm.skill.BodyPart
 import com.efm.skill.Skill
 import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
+import kotlin.random.Random
 
 /**
  * Hero has its own turn and is controlled by the player.

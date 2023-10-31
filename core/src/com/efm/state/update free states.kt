@@ -9,8 +9,7 @@ import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.passage.Exit
 import com.efm.screens.GameScreen
-import com.efm.ui.gameScreen.ProgressBars
-import com.efm.ui.gameScreen.RightStructure
+import com.efm.ui.gameScreen.*
 
 fun updateFreeNoSelection(currState : State.free.noSelection) : State
 {
@@ -572,14 +571,14 @@ fun updateFreeMultiUseMapItemTargetSelectedTwice(currState : State.free.multiUse
         if(item != null && item.durability < 1)
         {
             World.hero.inventory.removeItem(item)
-            GameScreen.fillItemsStructureWithItemsAndSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             return State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
             }
         }
-        GameScreen.fillItemsStructureWithItemsAndSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         val targetPositions = State.free.multiUseMapItemChosen.targetPositions ?: emptyList()
         for (position in targetPositions)
@@ -702,14 +701,14 @@ fun updateFreeStackableMapItemTargetSelectedTwice(currState : State.free.stackab
         if(item != null && item.amount < 1)
         {
             World.hero.inventory.removeItem(item)
-            GameScreen.fillItemsStructureWithItemsAndSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             return State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
             }
         }
-        GameScreen.fillItemsStructureWithItemsAndSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         val targetPositions = State.free.stackableMapItemChosen.targetPositions ?: emptyList()
         for (position in targetPositions)

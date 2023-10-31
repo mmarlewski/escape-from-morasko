@@ -1,6 +1,7 @@
 package com.efm.ui.gameScreen
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.utils.Align
 import com.efm.*
@@ -9,6 +10,7 @@ import com.efm.assets.*
 import com.efm.item.*
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.skill.Skill
 import com.efm.state.*
 
 object ItemsStructure
@@ -197,7 +199,7 @@ object ItemsStructure
                 {
                     World.hero.inventory.removeItem(item)
                 }
-                GameScreen.fillItemsStructureWithItemsAndSkills()
+                fillItemsStructureWithItemsAndSkills()
             }
             
             val targetPositions = when (item)
@@ -303,6 +305,61 @@ object ItemsStructure
                 else                 -> currState
             }
             setState(newState)
+        }
+    }
+    
+    fun fillItemsStructureWithItemsAndSkills()
+    {
+        val multiUseMapItemRow = weaponDisplay.children[0] as HorizontalGroup
+        val stackableMapItemRow = usableDisplay.children[0] as HorizontalGroup
+        val stackableSelfItemRow = potionDisplay.children[0] as HorizontalGroup
+        val skillRow = skillDisplay.children[0] as HorizontalGroup
+        
+        multiUseMapItemRow.clear()
+        stackableMapItemRow.clear()
+        stackableSelfItemRow.clear()
+        skillRow.clear()
+        
+        for (item in World.hero.inventory.items)
+        {
+            when (item)
+            {
+                is MultiUseMapItem   ->
+                {
+                    multiUseMapItemRow.addActor(
+                            createItemWithHealthbar(item.durability, item.maxDurability, item.getTexture()) { attack(item) }
+                                               )
+                }
+                
+                is StackableMapItem  ->
+                {
+                    stackableMapItemRow.addActor(
+                            createItemWithLabel(item.amount, item.getTexture()) { attack(item) }
+                                                )
+                }
+                
+                is StackableSelfItem ->
+                {
+                    stackableSelfItemRow.addActor(
+                            createItemWithLabel(item.amount, item.getTexture()) { attack(item) }
+                                                 )
+                }
+            }
+        }
+        
+        for (skill in Skill.values())
+        {
+            if (World.hero.hasSkill(skill))
+            {
+                if (skill.isPassive)
+                {
+                    skillRow.addActor(createPassiveSkill(skill.texture))
+                }
+                else
+                {
+                    skillRow.addActor(createActiveSkill(skill.texture) {})
+                }
+            }
         }
     }
 }

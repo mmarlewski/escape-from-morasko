@@ -11,8 +11,7 @@ import com.efm.passage.Exit
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.screens.GameScreen
-import com.efm.ui.gameScreen.ProgressBars
-import com.efm.ui.gameScreen.RightStructure
+import com.efm.ui.gameScreen.*
 
 fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : State
 {
@@ -828,7 +827,7 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
         if(item != null && item.durability < 1)
         {
             World.hero.inventory.removeItem(item)
-            GameScreen.fillItemsStructureWithItemsAndSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             return State.constrained.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -836,7 +835,7 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
             }
         }
-        GameScreen.fillItemsStructureWithItemsAndSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         World.currentRoom.removeKilledCharacters()
         World.currentRoom.addToBeAddedEntitiesToRoom()
@@ -1052,7 +1051,7 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
         if(item != null && item.amount < 1)
         {
             World.hero.inventory.removeItem(item)
-            GameScreen.fillItemsStructureWithItemsAndSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             return State.constrained.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -1060,7 +1059,7 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
             }
         }
-        GameScreen.fillItemsStructureWithItemsAndSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         World.currentRoom.removeKilledCharacters()
         World.currentRoom.addToBeAddedEntitiesToRoom()

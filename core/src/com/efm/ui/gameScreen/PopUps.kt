@@ -18,8 +18,8 @@ object PopUps
         GameScreen.canBeInteractedWith = boolean
         
         RightStructure.setVisibility(boolean)
-        
-        GameScreen.fillItemsStructureWithItemsAndSkills()
+    
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         ItemsStructure.setVisibility(boolean)
         if(boolean) ItemsStructure.setWeaponDisplay()
         
