@@ -87,7 +87,7 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
                 World.hero.regainAllAP()
                 GameScreen.focusCameraOnRoomPosition(World.hero.position)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-                Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
+                Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
                 
                 RightStructure.xButtonVisibility(true)
                 

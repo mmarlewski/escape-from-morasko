@@ -58,7 +58,7 @@ class BossWizard : Entity, Enemy
         {
             1->Tiles.skeletonMove1
             2->Tiles.skeletonMove2
-            3->Tiles.skeletonMove3
+            3->Tiles.skeletonMove1
             else->null
         }
     }

@@ -772,7 +772,7 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
         else
         {
             Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-            Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
+            Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
             
             return State.combat.hero.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -944,7 +944,7 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
         else
         {
             Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-            Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
+            Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
             
             return State.combat.hero.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -1085,7 +1085,7 @@ fun updateCombatHeroActiveSkillTargetSelectedTwice(currState : State.combat.hero
         currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
         
         Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-        Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
+        Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
         
         return State.combat.hero.heroSelected.apply {
             this.isHeroAlive = currState.isHeroAlive

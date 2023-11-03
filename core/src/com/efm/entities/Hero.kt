@@ -1,6 +1,7 @@
 package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.efm.IdleAnimation
 import com.efm.assets.Tiles
 import com.efm.entity.Character
 import com.efm.item.Container
@@ -25,7 +26,7 @@ class Hero(
     var abilityPoints : Int = 14
     
     var apDrainInNextTurn = 0
-    var canMoveNextTurn = true
+    var canMoveNextTurn = false
     
     val inventory = HeroInventory()
     
@@ -33,17 +34,34 @@ class Hero(
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.hero
+        return if(canMoveNextTurn) Tiles.heroIdle1 else Tiles.heroVines
+    }
+    
+    fun getIdleTile() : TiledMapTile?
+    {
+        return if(canMoveNextTurn) Tiles.heroIdle1 else Tiles.heroVines
+    }
+    
+    fun getMoveTile(n : Int) : TiledMapTile?
+    {
+        return when (n)
+        {
+            1    -> Tiles.heroMove1
+            2    -> Tiles.heroMove2
+            3    -> Tiles.heroMove3
+            4    -> Tiles.heroMove4
+            else -> Tiles.heroMove1
+        }
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
-        return Tiles.heroOutlineYellow
+        return Tiles.heroIdle1OutlineYellow
     }
     
     fun getOutlineGreenTile() : TiledMapTile
     {
-        return Tiles.heroOutlineGreen
+        return Tiles.heroIdle1OutlineGreen
     }
     
     override fun damageCharacter(dmgAmount : Int)

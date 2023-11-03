@@ -914,7 +914,7 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
         else
         {
             Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-            Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
+            Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
             
             return if (wasEnemyAttacked)
             {
@@ -1138,7 +1138,7 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
         else
         {
             Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-            Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
+            Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
             
             return if (wasEnemyAttacked)
             {
@@ -1315,7 +1315,7 @@ fun updateConstrainedActiveSkillTargetSelectedTwice(currState : State.constraine
         }
         
         Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-        Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
+        Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
         
         return if (wasEnemyAttacked)
         {

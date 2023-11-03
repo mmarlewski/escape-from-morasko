@@ -147,9 +147,14 @@ object Tiles
     
     // hero
     
-    val hero = load("hero.png")
-    val heroOutlineYellow = load("heroOutlineYellow.png")
-    val heroOutlineGreen = load("heroOutlineGreen.png")
+    val heroIdle1 = load("heroIdle1.png")
+    val heroVines = load("heroVines.png")
+    val heroIdle1OutlineYellow = load("heroIdle1OutlineYellow.png")
+    val heroIdle1OutlineGreen = load("heroIdle1OutlineGreen.png")
+    val heroMove1 = load("heroMove1.png")
+    val heroMove2 = load("heroMove2.png")
+    val heroMove3 = load("heroMove3.png")
+    val heroMove4 = load("heroMove4.png")
     val heroCorpse = load("heroCorpse.png")
     val heroCorpseOutlineYellow = load("heroCorpseOutlineYellow.png")
     

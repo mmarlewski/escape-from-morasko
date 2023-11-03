@@ -56,14 +56,17 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         val animations = mutableListOf<Animation>()
         animations += Animation.action { Map.changeTile(MapLayer.entity, World.hero.position, null) }
         val prevMovePosition = startPosition.copy()
-        for (space in path)
-        {
-            animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition.copy(), space.position.copy(), 0.1f)
-            animations += Animation.showTileWithCameraFocus(Tiles.hero, space.position.copy(), 0.01f)
+        path.forEachIndexed { index, space ->
+        
+            val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
+            val moveTile = World.hero.getMoveTile(n)
+            
+            animations += Animation.moveTileWithCameraFocus(moveTile, prevMovePosition.copy(), space.position.copy(), 0.1f)
+            animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
             prevMovePosition.set(space.position)
         }
         if (animateToEndSpace) animations += Animation.moveTileWithCameraFocus(
-                Tiles.hero,
+                Tiles.heroIdle1,
                 prevMovePosition,
                 endPosition,
                 0.1f
