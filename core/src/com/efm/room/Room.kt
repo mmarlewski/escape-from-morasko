@@ -54,6 +54,14 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         }
     }
     
+    fun addSpaceAt(x : Int, y : Int, space : Space = Space(x, y))
+    {
+        if (isPositionWithinBounds(x, y))
+        {
+            spaceArray[y][x] = space
+        }
+    }
+    
     fun updateSpaceList()
     {
         spaceList.clear()
