@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile
+import com.efm.Direction4
 import com.efm.Direction8
 
 object Tiles
@@ -710,6 +711,39 @@ object Tiles
     val smoke = load("smoke.png")
     val shuriken = load("shuriken.png")
     val bloodSplatter = load("blood_splatter_32x32.png")
+    
+    // pull
+    
+    val tentacleHookUp = load("tentacleHookUp.png")
+    val tentacleHookEndUp = load("tentacleHookEndUp.png")
+    val tentacleHookRight = load("tentacleHookRight.png")
+    val tentacleHookEndRight = load("tentacleHookEndRight.png")
+    val tentacleHookDown = load("tentacleHookDown.png")
+    val tentacleHookEndDown = load("tentacleHookEndDown.png")
+    val tentacleHookLeft = load("tentacleHookLeft.png")
+    val tentacleHookEndLeft = load("tentacleHookEndLeft.png")
+    
+    fun getTentacleHookTile(direction : Direction4) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction4.up    -> tentacleHookUp
+            Direction4.right -> tentacleHookRight
+            Direction4.down  -> tentacleHookDown
+            Direction4.left  -> tentacleHookLeft
+        }
+    }
+    
+    fun getTentacleHookEndTile(direction : Direction4) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction4.up    -> tentacleHookEndUp
+            Direction4.right -> tentacleHookEndRight
+            Direction4.down  -> tentacleHookEndDown
+            Direction4.left  -> tentacleHookEndLeft
+        }
+    }
     
     // new walls
     val walls_folder_name = "new_walls/"
