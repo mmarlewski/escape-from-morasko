@@ -26,7 +26,7 @@ class Hero(
     var abilityPoints : Int = 14
     
     var apDrainInNextTurn = 0
-    var canMoveNextTurn = false
+    var canMoveNextTurn = true
     
     val inventory = HeroInventory()
     
