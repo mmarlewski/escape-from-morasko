@@ -6,7 +6,7 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Swap : ActiveSkill(BodyPart.head, Textures.swap)
+object Swap : ActiveSkill(BodyPart.head, 1, 3, Textures.swap)
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {

@@ -318,7 +318,7 @@ object ItemsStructure
             is State.free                              -> true
             is State.constrained, is State.combat.hero ->
             {
-                World.hero.abilityPoints >= 1
+                World.hero.abilityPoints >= activeSkill.apCost && !activeSkill.isInCoolDown
             }
             
             else                                       -> false
@@ -337,7 +337,7 @@ object ItemsStructure
             
             val newState = when (currState)
             {
-                is State.free -> State.free.activeSkillChosen.apply {
+                is State.free        -> State.free.activeSkillChosen.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.chosenActiveSkill = activeSkill
@@ -345,23 +345,23 @@ object ItemsStructure
                 }
                 
                 is State.constrained -> State.constrained.activeSkillChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.isHeroDetected = currState.isHeroDetected
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.chosenActiveSkill = activeSkill
-                        this.targetPositions = targetPositions
-                    }
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenActiveSkill = activeSkill
+                    this.targetPositions = targetPositions
+                }
                 
                 is State.combat.hero -> State.combat.hero.activeSkillChosen.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.chosenActiveSkill = activeSkill
-                        this.targetPositions = targetPositions
-                    }
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.chosenActiveSkill = activeSkill
+                    this.targetPositions = targetPositions
+                }
                 
-                else          -> currState
+                else                 -> currState
             }
             setState(newState)
         }
@@ -410,7 +410,7 @@ object ItemsStructure
         {
             when (skill)
             {
-                null                 ->
+                null           ->
                 {
                 
                 }
@@ -418,7 +418,7 @@ object ItemsStructure
                 {
                     skillRow.addActor(createActiveSkill(skill.texture) { attack(skill) })
                 }
-                else                 ->
+                else           ->
                 {
                     skillRow.addActor(createPassiveSkill(skill.texture))
                 }

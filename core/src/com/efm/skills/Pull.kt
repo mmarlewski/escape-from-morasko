@@ -11,7 +11,7 @@ import com.efm.screens.GameScreen
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Pull : ActiveSkill(BodyPart.leftHand, Textures.pull)
+object Pull : ActiveSkill(BodyPart.leftHand, 1, 3, Textures.pull)
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {

@@ -6,7 +6,7 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Freeze : ActiveSkill(BodyPart.head, Textures.freeze)
+object Freeze : ActiveSkill(BodyPart.head, 1, 3, Textures.freeze)
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {

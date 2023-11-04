@@ -8,7 +8,7 @@ import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 import com.efm.state.*
 
-object Invisibility : ActiveSkill(BodyPart.torso, Textures.invisibility)
+object Invisibility : ActiveSkill(BodyPart.torso, 1, 3, Textures.invisibility)
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {

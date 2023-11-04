@@ -6,7 +6,7 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Push : ActiveSkill(BodyPart.rightHand, Textures.barrel)
+object Push : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.barrel)
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {

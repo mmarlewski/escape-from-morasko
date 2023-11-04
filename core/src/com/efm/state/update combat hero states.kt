@@ -975,9 +975,10 @@ fun updateCombatHeroActiveSkillChosen(currState : State.combat.hero.activeSkillC
     {
         val selectedPosition = GameScreen.roomTouchPosition
         val targetPositions = currState.targetPositions ?: emptyList()
-        if (1 <= World.hero.abilityPoints)
+        if ((currState.chosenActiveSkill?.apCost ?: 0) <= World.hero.abilityPoints)
         {
-            ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - 1
+            ProgressBars.abilityBarForFlashing.value =
+                    ProgressBars.abilityBar.value - (currState.chosenActiveSkill?.apCost ?: 0)
             if (selectedPosition in targetPositions)
             {
                 val affectedPositions = activeSkill.getAffectedPositions(selectedPosition)
@@ -1017,7 +1018,8 @@ fun updateCombatHeroActiveSkillTargetSelectedOnce(currState : State.combat.hero.
     {
         val selectedPosition = GameScreen.roomTouchPosition
         Map.clearLayer(MapLayer.select)
-        ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - 1
+        ProgressBars.abilityBarForFlashing.value =
+                ProgressBars.abilityBar.value - (currState.chosenActiveSkill?.apCost ?: 0)
         
         if (selectedPosition == currState.selectedPosition)
         {
@@ -1071,7 +1073,7 @@ fun updateCombatHeroActiveSkillTargetSelectedTwice(currState : State.combat.hero
 {
     if (!Animating.isAnimating())
     {
-        World.hero.spendAP(1)
+        World.hero.spendAP(currState.chosenActiveSkill?.apCost ?: 0)
         
         World.currentRoom.removeKilledCharacters()
         World.currentRoom.addToBeAddedEntitiesToRoom()

@@ -11,9 +11,23 @@ enum class BodyPart
     head, torso, leftHand, rightHand, leftLeg, rightLeg
 }
 
-abstract class Skill(open val bodyPart : BodyPart, open val texture : Texture)
+abstract class Skill(
+        open val bodyPart : BodyPart,
+        open val apCost : Int,
+        open val coolDown : Int,
+        open val texture : Texture
+                    )
+{
+    var isInCoolDown = false
+    var currCoolDown = 0
+}
 
-abstract class ActiveSkill(override val bodyPart : BodyPart, override val texture : Texture) : Skill(bodyPart, texture)
+abstract class ActiveSkill(
+        override val bodyPart : BodyPart,
+        override val apCost : Int,
+        override val coolDown : Int,
+        override val texture : Texture
+                          ) : Skill(bodyPart, apCost, coolDown, texture)
 {
     abstract fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     abstract fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
