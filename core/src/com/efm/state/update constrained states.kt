@@ -543,6 +543,10 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
                     }
                 }
             }
+            if (!World.hero.isVisible)
+            {
+                isHeroMovingThroughDetectionPosition = false
+            }
             
             return State.constrained.moveSelectedTwice.apply {
                 this.isHeroAlive = currState.isHeroAlive

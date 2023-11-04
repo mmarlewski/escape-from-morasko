@@ -27,30 +27,59 @@ class Hero(
     
     var apDrainInNextTurn = 0
     var canMoveNextTurn = true
+    var isVisible = true
     
     val inventory = HeroInventory()
     
     val bodyPartMap = mutableMapOf<BodyPart, Skill?>().apply { BodyPart.values().forEach { this[it] = null } }
     
-    override fun getTile() : TiledMapTile
+    override fun getTile() : TiledMapTile?
     {
-        return if(canMoveNextTurn) Tiles.heroIdle1 else Tiles.heroVines
+        return when
+        {
+            !canMoveNextTurn && !isVisible -> Tiles.heroVinesInvisible
+            !canMoveNextTurn && isVisible  -> Tiles.heroVines
+            canMoveNextTurn && !isVisible  -> Tiles.heroIdle1Invisible
+            canMoveNextTurn && isVisible   -> Tiles.heroIdle1
+            else                           -> null
+        }
     }
     
     fun getIdleTile() : TiledMapTile?
     {
-        return if(canMoveNextTurn) Tiles.heroIdle1 else Tiles.heroVines
+        return when
+        {
+            !canMoveNextTurn && !isVisible -> Tiles.heroVinesInvisible
+            !canMoveNextTurn && isVisible  -> Tiles.heroVines
+            canMoveNextTurn && !isVisible  -> Tiles.heroIdle1Invisible
+            canMoveNextTurn && isVisible   -> Tiles.heroIdle1
+            else                           -> null
+        }
     }
     
     fun getMoveTile(n : Int) : TiledMapTile?
     {
-        return when (n)
+        if (isVisible)
         {
-            1    -> Tiles.heroMove1
-            2    -> Tiles.heroMove2
-            3    -> Tiles.heroMove3
-            4    -> Tiles.heroMove4
-            else -> Tiles.heroMove1
+            return when (n)
+            {
+                1    -> Tiles.heroMove1
+                2    -> Tiles.heroMove2
+                3    -> Tiles.heroMove3
+                4    -> Tiles.heroMove4
+                else -> Tiles.heroMove1
+            }
+        }
+        else
+        {
+            return when (n)
+            {
+                1    -> Tiles.heroMove1Invisible
+                2    -> Tiles.heroMove2Invisible
+                3    -> Tiles.heroMove3Invisible
+                4    -> Tiles.heroMove4Invisible
+                else -> Tiles.heroMove1Invisible
+            }
         }
     }
     
