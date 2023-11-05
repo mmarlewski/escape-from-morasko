@@ -75,21 +75,37 @@ fun checkIfAreaIsAvailable(posX : Int, posY : Int, direction : Direction4, room 
 
 fun placeEnemies(kingPosX : Int, kingPosY : Int, direction : Direction4, room : Room)
 {
+    val king = King()
+    king.setChessPieceDirection(direction)
+    val queen = Queen()
+    queen.setChessPieceDirection(direction)
+    val bishop1 = Bishop()
+    bishop1.setChessPieceDirection(direction)
+    val bishop2 = Bishop()
+    bishop2.setChessPieceDirection(direction)
+    val knight1 = Knight()
+    knight1.setChessPieceDirection(direction)
+    val knight2 = Knight()
+    knight2.setChessPieceDirection(direction)
+    val rook1 = Rook()
+    rook1.setChessPieceDirection(direction)
+    val rook2 = Rook()
+    rook2.setChessPieceDirection(direction)
     when (direction) {
         Direction4.up ->
         {
-            room.addEntityAt(King(), kingPosX, kingPosY)
+            room.addEntityAt(king, kingPosX, kingPosY)
             //queen
-            room.addEntityAt(Queen(), kingPosX + 1, kingPosY)
+            room.addEntityAt(queen, kingPosX + 1, kingPosY)
             //bishops
-            room.addEntityAt(Bishop(), kingPosX + 2, kingPosY)
-            room.addEntityAt(Bishop(), kingPosX - 1, kingPosY)
+            room.addEntityAt(bishop1, kingPosX + 2, kingPosY)
+            room.addEntityAt(bishop2, kingPosX - 1, kingPosY)
             //knights
-            room.addEntityAt(Knight(), kingPosX + 3, kingPosY)
-            room.addEntityAt(Knight(), kingPosX - 2, kingPosY)
+            room.addEntityAt(knight1, kingPosX + 3, kingPosY)
+            room.addEntityAt(knight2, kingPosX - 2, kingPosY)
             //rooks
-            room.addEntityAt(Rook(), kingPosX + 4, kingPosY)
-            room.addEntityAt(Rook(), kingPosX - 3, kingPosY)
+            room.addEntityAt(rook1, kingPosX + 4, kingPosY)
+            room.addEntityAt(rook2, kingPosX - 3, kingPosY)
             //pawns
             for (i in -3..4)
             {
@@ -100,18 +116,18 @@ fun placeEnemies(kingPosX : Int, kingPosY : Int, direction : Direction4, room : 
         }
         Direction4.down ->
         {
-            room.addEntityAt(King(), kingPosX, kingPosY)
+            room.addEntityAt(king, kingPosX, kingPosY)
             //queen
-            room.addEntityAt(Queen(), kingPosX - 1, kingPosY)
+            room.addEntityAt(queen, kingPosX - 1, kingPosY)
             //bishops
-            room.addEntityAt(Bishop(), kingPosX - 2, kingPosY)
-            room.addEntityAt(Bishop(), kingPosX + 1, kingPosY)
+            room.addEntityAt(bishop1, kingPosX - 2, kingPosY)
+            room.addEntityAt(bishop2, kingPosX + 1, kingPosY)
             //knights
-            room.addEntityAt(Knight(), kingPosX - 3, kingPosY)
-            room.addEntityAt(Knight(), kingPosX + 2, kingPosY)
+            room.addEntityAt(knight1, kingPosX - 3, kingPosY)
+            room.addEntityAt(knight2, kingPosX + 2, kingPosY)
             //rooks
-            room.addEntityAt(Rook(), kingPosX - 4, kingPosY)
-            room.addEntityAt(Rook(), kingPosX + 3, kingPosY)
+            room.addEntityAt(rook1, kingPosX - 4, kingPosY)
+            room.addEntityAt(rook2, kingPosX + 3, kingPosY)
             //pawns
             for (i in -4..3)
             {
@@ -122,18 +138,18 @@ fun placeEnemies(kingPosX : Int, kingPosY : Int, direction : Direction4, room : 
         }
         Direction4.left ->
         {
-            room.addEntityAt(King(), kingPosX, kingPosY)
+            room.addEntityAt(king, kingPosX, kingPosY)
             //queen
-            room.addEntityAt(Queen(), kingPosX, kingPosY - 1)
+            room.addEntityAt(queen, kingPosX, kingPosY - 1)
             //bishops
-            room.addEntityAt(Bishop(), kingPosX, kingPosY + 1)
-            room.addEntityAt(Bishop(), kingPosX, kingPosY - 2)
+            room.addEntityAt(bishop1, kingPosX, kingPosY + 1)
+            room.addEntityAt(bishop2, kingPosX, kingPosY - 2)
             //knights
-            room.addEntityAt(Knight(), kingPosX, kingPosY + 2)
-            room.addEntityAt(Knight(), kingPosX, kingPosY - 3)
+            room.addEntityAt(knight1, kingPosX, kingPosY + 2)
+            room.addEntityAt(knight2, kingPosX, kingPosY - 3)
             //rooks
-            room.addEntityAt(Rook(), kingPosX, kingPosY + 3)
-            room.addEntityAt(Rook(), kingPosX, kingPosY - 4)
+            room.addEntityAt(rook1, kingPosX, kingPosY + 3)
+            room.addEntityAt(rook2, kingPosX, kingPosY - 4)
             //pawns
             for (i in -4..3)
             {
@@ -144,18 +160,18 @@ fun placeEnemies(kingPosX : Int, kingPosY : Int, direction : Direction4, room : 
         }
         Direction4.right ->
         {
-            room.addEntityAt(King(), kingPosX, kingPosY)
+            room.addEntityAt(king, kingPosX, kingPosY)
             //queen
-            room.addEntityAt(Queen(), kingPosX, kingPosY + 1)
+            room.addEntityAt(queen, kingPosX, kingPosY + 1)
             //bishops
-            room.addEntityAt(Bishop(), kingPosX, kingPosY - 1)
-            room.addEntityAt(Bishop(), kingPosX, kingPosY + 2)
+            room.addEntityAt(bishop1, kingPosX, kingPosY - 1)
+            room.addEntityAt(bishop2, kingPosX, kingPosY + 2)
             //knights
-            room.addEntityAt(Knight(), kingPosX, kingPosY - 2)
-            room.addEntityAt(Knight(), kingPosX, kingPosY + 3)
+            room.addEntityAt(knight1, kingPosX, kingPosY - 2)
+            room.addEntityAt(knight2, kingPosX, kingPosY + 3)
             //rooks
-            room.addEntityAt(Rook(), kingPosX, kingPosY - 3)
-            room.addEntityAt(Rook(), kingPosX, kingPosY + 4)
+            room.addEntityAt(rook1, kingPosX, kingPosY - 3)
+            room.addEntityAt(rook2, kingPosX, kingPosY + 4)
             //pawns
             for (i in -3..4)
             {
