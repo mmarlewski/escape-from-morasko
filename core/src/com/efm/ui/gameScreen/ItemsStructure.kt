@@ -1,8 +1,7 @@
 package com.efm.ui.gameScreen
 
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
@@ -11,7 +10,6 @@ import com.efm.item.*
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.skill.ActiveSkill
-import com.efm.skill.Skill
 import com.efm.state.*
 
 object ItemsStructure
@@ -43,22 +41,40 @@ object ItemsStructure
         equipmentDisplay.isVisible = boolean
     }
     
-    fun createActiveSkill(texture : Texture, action : () -> Unit) : ImageButton
+    fun createActiveSkill(currentCooldown : Int, texture : Texture, action : () -> Unit) : Button
     {
-        val button = imageButtonOf(
-                texture,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                  )
+        if (currentCooldown == 0)
         {
-            playSoundOnce(Sounds.blop)
-            action()
+            val imageButton = imageButtonOf(
+                    texture,
+                    Textures.upNinePatch,
+                    Textures.downNinePatch,
+                    Textures.overNinePatch,
+                    Textures.disabledNinePatch,
+                    Textures.focusedNinePatch
+                                           ) {
+                playSoundOnce(Sounds.blop)
+                action()
+            }
+            return imageButton
         }
-        
-        return button
+        else
+        {
+            val textButton = textButtonOf(
+                    currentCooldown.toString(),
+                    Fonts.inconsolata30,
+                    Colors.black,
+                    Textures.downNinePatch,
+                    Textures.downNinePatch,
+                    Textures.overNinePatch,
+                    Textures.disabledNinePatch,
+                    Textures.focusedNinePatch
+                                         )
+            {
+            
+            }
+            return textButton
+        }
     }
     
     fun createPassiveSkill(texture : Texture) : ImageButton
@@ -416,7 +432,8 @@ object ItemsStructure
                 }
                 is ActiveSkill ->
                 {
-                    skillRow.addActor(createActiveSkill(skill.texture) { attack(skill) })
+                    // if turn ends refresh drawing
+                    skillRow.addActor(createActiveSkill(skill.currCoolDown, skill.texture) { attack(skill) })
                 }
                 else           ->
                 {
