@@ -5,6 +5,8 @@ import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.skill.ActiveSkill
+import com.efm.ui.gameScreen.ItemsStructure
 import com.efm.ui.gameScreen.RightStructure
 
 fun updateCombatEnemiesEnemyUnselected(currState : State.combat.enemies.enemyUnselected) : State

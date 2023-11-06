@@ -23,6 +23,9 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -130,6 +133,9 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -206,6 +212,9 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -285,6 +294,9 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -367,6 +379,9 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
         
         Map.clearLayer(MapLayer.select)
         Map.clearLayer(MapLayer.outline)
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -447,6 +462,9 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -573,6 +591,9 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
                 ProgressBars.abilityBar.isVisible = false
                 ProgressBars.abilityBarForFlashing.isVisible = false
                 ProgressBars.abilityBarLabel.isVisible = false
+    
+                World.hero.removeCoolDownFromAllActiveSkills()
+                ItemsStructure.fillItemsStructureWithItemsAndSkills()
                 
                 return State.free.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
@@ -1081,6 +1102,11 @@ fun updateCombatHeroActiveSkillTargetSelectedTwice(currState : State.combat.hero
         GameScreen.updateMapEntityLayer()
         
         val activeSkill = currState.chosenActiveSkill
+        if (activeSkill != null)
+        {
+            activeSkill.isInCoolDown = true
+            activeSkill.currCoolDown = activeSkill.coolDown
+        }
         
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         

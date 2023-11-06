@@ -3,6 +3,7 @@ package com.efm
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
+import com.efm.ui.gameScreen.ItemsStructure
 
 fun endCurrentTurn()
 {
@@ -14,6 +15,8 @@ fun endCurrentTurn()
         is State.constrained ->
         {
             World.hero.regainAllAP()
+            World.hero.updateActiveSkillCoolDown()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             if (!isHeroVisible)
             {
@@ -26,6 +29,9 @@ fun endCurrentTurn()
         
         is State.combat.hero ->
         {
+            World.hero.updateActiveSkillCoolDown()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+            
             Map.clearLayer(MapLayer.select)
             Map.clearLayer(MapLayer.outline)
             

@@ -26,6 +26,9 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
         
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
+        
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -142,6 +145,9 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -227,6 +233,9 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -315,6 +324,9 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -402,6 +414,9 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -502,6 +517,9 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
+    
+        World.hero.removeCoolDownFromAllActiveSkills()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         return State.free.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
@@ -664,6 +682,9 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
                 ProgressBars.abilityBar.isVisible = false
                 ProgressBars.abilityBarForFlashing.isVisible = false
                 ProgressBars.abilityBarLabel.isVisible = false
+    
+                World.hero.removeCoolDownFromAllActiveSkills()
+                ItemsStructure.fillItemsStructureWithItemsAndSkills()
             }
         }
         
@@ -1288,7 +1309,11 @@ fun updateConstrainedActiveSkillTargetSelectedTwice(currState : State.constraine
         World.hero.spendAP(currState.chosenActiveSkill?.apCost ?: 0)
         
         val activeSkill = currState.chosenActiveSkill
-        
+        if (activeSkill != null)
+        {
+            activeSkill.isInCoolDown = true
+            activeSkill.currCoolDown = activeSkill.coolDown
+        }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         World.currentRoom.removeKilledCharacters()
