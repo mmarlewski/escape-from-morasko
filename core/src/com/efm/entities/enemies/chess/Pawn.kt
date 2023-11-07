@@ -83,7 +83,7 @@ class Pawn: Entity, Enemy
                     var space = World.currentRoom.getSpace(pos)
                     if (space != null) {
                         var entity = space.getEntity()
-                        if (!space.isTraversableFor(this))
+                        if (!space.isTreadableFor(this))
                         {
                             val queen = Queen()
                             queen.setChessPieceDirection(direction)
