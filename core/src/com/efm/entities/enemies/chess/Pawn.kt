@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.walls.*
 import com.efm.entity.Character
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
@@ -81,10 +82,20 @@ class Pawn: Entity, Enemy
                 {
                     var space = World.currentRoom.getSpace(pos)
                     if (space != null) {
-                        if (space.getEntity() == null && space.isTraversableFor(this))
+                        var entity = space.getEntity()
+                        if (!space.isTraversableFor(this))
+                        {
+                            val queen = Queen()
+                            queen.setChessPieceDirection(direction)
+                            queen.createOwnHealthBar()
+                            World.currentRoom.replaceEntityAt(queen, position)
+                            break
+                        }
+                        else if (entity == null && space.isTraversableFor(this))
                         {
                             val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(pos))
                             moveEnemy(position, space.position, path, this)
+                            break
                         }
                     }
                 }
