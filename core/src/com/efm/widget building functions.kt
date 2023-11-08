@@ -651,9 +651,9 @@ fun itemButtonWithHealthBar(
     }
     healthBar.color = color
     
-    val barWidth = 64f
+    val barWidth = 58f
     val barStack = Stack()
-    val barContainer : Container<ProgressBar> = Container(healthBar)
+    val barContainer : Container<ProgressBar> = Container(healthBar).padLeft(4f)
     barContainer.width(barWidth)
     barStack.add(barContainer)
     
@@ -735,6 +735,8 @@ fun buttonWithTextOverlay(
     stack.add(backgroundButton)
     stack.add(background)
     stack.add(table)
+    table.addListener(object : ClickListener()
+                      {})
     
     return stack
 }
