@@ -3,20 +3,19 @@ package com.efm
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.efm.entities.Chest
-import com.efm.entities.ExplodingBarrel
 import com.efm.entities.bosses.*
-import com.efm.entities.bosses.slime.BossSlime
-import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost
+import com.efm.entities.enemies.EnemyMushroom
 import com.efm.entities.enemies.chess.spawnChessSet
 import com.efm.entities.exits.StoneExit
 import com.efm.entities.exits.StoneExitActiveWhenNoEnemiesAreInRoom
 import com.efm.entities.walls.*
+import com.efm.entity.Entity
 import com.efm.level.Level
 import com.efm.level.World
-import com.efm.passage.LevelPassage
-import com.efm.passage.RoomPassage
+import com.efm.multiUseMapItems.WoodenSword
+import com.efm.passage.*
 import com.efm.room.*
 import com.efm.stackableMapItems.Bomb
 import com.efm.stackableSelfItems.*
@@ -485,12 +484,12 @@ fun World.createWorldPrototypeTwo()
 //    l1r2.addEntityAt(BossSlime(), 3, 7)
     l1r2.changeBaseAt(Base.water, 3, 2)
     l1r2.addEntityAt(octopusTentacle1, 3, 2)
-    l1r2.changeBaseAt(Base.water,4,2)
-    l1r2.changeBaseAt(Base.water,5,2)
-    l1r2.changeBaseAt(Base.waterOctopus,5,2)
+    l1r2.changeBaseAt(Base.water, 4, 2)
+    l1r2.changeBaseAt(Base.water, 5, 2)
+    l1r2.changeBaseAt(Base.waterOctopus, 5, 2)
     l1r2.addEntityAt(octopusHead, 5, 2)
-    l1r2.changeBaseAt(Base.water,6,2)
-    l1r2.changeBaseAt(Base.water,7,2)
+    l1r2.changeBaseAt(Base.water, 6, 2)
+    l1r2.changeBaseAt(Base.water, 7, 2)
     l1r2.addEntityAt(octopusTentacle2, 7, 2)
     l1r4.addEntityAt(BossWizard(), 3, 3)
     
@@ -667,57 +666,22 @@ fun World.createWorldBoarTest()
     // rooms
     
     // l1r1
-    /*
-    val l1r1 = Room("1", 11, 11)
-    // change base
-    for (y in 1 until l1r1.heightInSpaces) for (x in 1 until l1r1.widthInSpaces) l1r1.changeBaseAt(
-            Base.values()[y % 4], x, y
-                                                                                                  )
-    // add lava
-    for (y in 4 until 6) for (x in 4 until 6) l1r1.changeBaseAt(Base.lava, x, y)
-    */
     val file = Gdx.files.local("testRoomFile1.txt")
-    val string = "11 11\n" +
-            "x x x x x x x x x x x\n" +
-            "x x x x x 0 x x x x x\n" +
-            "x x x x x 1 1 x x x x\n" +
-            "x x x x x 2 2 2 x x x\n" +
-            "x x x x 4 4 3 3 3 x x\n" +
-            "x x x 0 4 4 0 0 0 x x\n" +
-            "x x x 1 1 1 1 1 x x x\n" +
-            "x x x 2 2 2 2 2 x x x\n" +
-            "x x x 3 3 3 3 3 3 x x\n" +
-            "x x 0 0 0 0 0 0 0 0 x\n" +
-            "x 1 1 1 1 1 1 1 1 1 1"
+    val string =
+            "11 11\n" + "x x x x x x x x x x x\n" + "x x x x x 0 x x x x x\n" + "x x x x x 1 1 x x x x\n" + "x x x x x 2 2 2 x x x\n" + "x x x x 4 4 3 3 3 x x\n" + "x x x 0 4 4 0 0 0 x x\n" + "x x x 1 1 1 1 1 x x x\n" + "x x x 2 2 2 2 2 x x x\n" + "x x x 3 3 3 3 3 3 x x\n" + "x x 0 0 0 0 0 0 0 0 x\n" + "x 1 1 1 1 1 1 1 1 1 1"
     file.writeString(string, false)
     val l1r1 = createRoomFromFile(file)
-    // add walls
-    addLeftWalls(l1r1)
-    /*
-    // add walls on left side (facing right)
-    for (y in 1 until l1r1.heightInSpaces)
-    {
-        l1r1.addSpaceAt(0, y)
-        l1r1.addEntityAt(StoneWall(Direction4.right), 0, y)
-    }
-    // add walls on top side (facing down)
-    for (x in 1 until l1r1.widthInSpaces)
-    {
-        l1r1.addSpaceAt(x, 0)
-        l1r1.addEntityAt(StoneWall(Direction4.down), x, 0)
-    }
-    */
     
     // room list
-    val l1_rooms = mutableListOf<Room>(l1r1)
+    val l1Rooms = mutableListOf<Room>(l1r1)
     
     // room passages
-    val l1_roomPassages = mutableListOf<RoomPassage>()
+    val l1RoomPassages = mutableListOf<RoomPassage>()
     
     // add room exits
     
     // level with starting point
-    val l1 = Level("1", l1_rooms, l1_roomPassages)
+    val l1 = Level("1", l1Rooms, l1RoomPassages)
     l1.changeStartingRoom(l1r1)
     l1.changeStartingPosition(6, 2)
     
@@ -729,18 +693,62 @@ fun World.createWorldBoarTest()
     chest.addItem(Mushroom(14))
     l1r1.addEntityAt(chest, 5, 5)
     val boar = EnemyBoar()
-    //l1r1.addEntityAt(boar, 8, 8)
+    l1r1.addEntityAt(boar, 8, 8)
     val ghost = EnemyGhost()
     l1r1.addEntityAt(ghost, 1, 10)
     
     // add to World
     addLevel(l1)
+}
+
+fun World.createWorldPrototypeThree()
+{
+    // not sure yet how files will work
+    pom()
     
-    // level passages
-    val levelPassages = mutableListOf<LevelPassage>()
+    //
+    // level 1
+    //
+    val l1 = Level("1")
     
-    // add level exits
+    // room 1
+    //
+    val l1r1 = createRoomFromFile(Gdx.files.local("l1r1.txt"))
+    // entities
+    val chest = Chest()
+    chest.addItem(WoodenSword())
+    chest.addItem(Fish(2))
+    l1r1.addEntityAt(chest, 4, 5)
+    // add room to level
+    l1.addRoom(l1r1)
     
+    // room 2
+    //
+    val l1r2 = createRoomFromFile(Gdx.files.local("l1r2.txt"))
+    // entities
+    l1r2.addEntityAt(EnemyMushroom(), 6, 4)
+    // add room to level
+    l1.addRoom(l1r2)
+    
+    // add room passages
+    l1.addRoomPassage(
+            l1r1,
+            RoomPosition(6, 3),
+            Direction4.left,
+            l1r2,
+            RoomPosition(0, 7),
+            StoneExit::class.qualifiedName,
+            exitBBase = Base.stone
+                     )
+    
+    // add level to World
+    l1.changeStartingRoom(l1r1)
+    l1.changeStartingPosition(2, 3)
+    this.addLevel(l1)
+    
+    //
+    // level 2
+    //
 }
 
 private fun createRoomFromFile(fileHandle : FileHandle) : Room
@@ -748,21 +756,19 @@ private fun createRoomFromFile(fileHandle : FileHandle) : Room
     val reader = fileHandle.reader().buffered()
     // first line contains room dimensions
     val (height : Int, width : Int) = reader.buffered().readLine().split(" ").map { it.toInt() }
-    // Gdx.app.log("file", "$height $width")
+    // room bases
     val roomBasesArray : Array<Array<Int?>> = Array(height) { Array(width) { null } }
-    var y = 0
-    reader.forEachLine { it ->
-        val pom = it.split(" ").map { it.toIntOrNull() }
-        for (x in pom.indices) roomBasesArray[y][x] = pom[x]
-        y++
+    reader.run {
+        var y = 0
+        this.forEachLine { line ->
+            val bases = line.split(" ").map { it.toIntOrNull() }
+            for (x in bases.indices) roomBasesArray[y][x] = bases[x]
+            y++
+        }
     }
-    /*
-    roomBasesArray.forEach {
-        Gdx.app.log("file", it.contentToString().replace("null","x"))
-    }*/
     // create Room
     val room = Room("name", height, width)
-    // base
+    // change bases
     for (y in roomBasesArray.indices)
     {
         for (x in roomBasesArray[y].indices)
@@ -781,64 +787,88 @@ private fun createRoomFromFile(fileHandle : FileHandle) : Room
             }
         }
     }
+    // add walls
+    room.addWalls()
     return room
 }
 
-private fun addLeftWalls(room : Room)
+private fun Room.addWalls(wallClassName : String? = StoneWall::class.qualifiedName)
 {
     // edges
     val upEdge = 0
-    val downEdge = room.heightInSpaces
+    val downEdge = this.heightInSpaces
     val leftEdge = 0
-    val rightEdge = room.widthInSpaces
-    
-    val wallsLeft = Array<Int?>(room.heightInSpaces) { null }
-    for (x in leftEdge until rightEdge)
-    {
-        for (y in upEdge until downEdge)
-        {
-            if (room.getSpace(x, y) != null && wallsLeft[y] == null
-            ) wallsLeft[y] = x - 1
-        }
-    }
-    val wallsUp = Array<Int?>(room.widthInSpaces) { null }
+    val rightEdge = this.widthInSpaces
+    // find wall positions
+    val leftSideWallPositions = mutableListOf<RoomPosition>()
     for (y in upEdge until downEdge)
     {
         for (x in leftEdge until rightEdge)
         {
-            if (room.getSpace(x, y) != null && wallsUp[x] == null
-            ) wallsUp[x] = y - 1
+            if (this.getSpace(x, y) != null)
+            {
+                leftSideWallPositions.add(RoomPosition(x - 1, y))
+                break
+            }
         }
     }
-    /*
-    Gdx.app.log("EnemyGhost",disappearSpacesLeft.contentToString())
-    Gdx.app.log("EnemyGhost",disappearSpacesUp.contentToString())
-    */
-    val disappearSpacesLeft = mutableListOf<RoomPosition>()
-    for (y in 0 until room.heightInSpaces)
+    val upSideWallPositions = mutableListOf<RoomPosition>()
+    for (x in leftEdge until rightEdge)
     {
-        val x = wallsLeft[y]
-        if (x != null) disappearSpacesLeft.add(RoomPosition(x, y))
-    }
-    val disappearSpacesUp = mutableListOf<RoomPosition>()
-    for (x in 0 until room.widthInSpaces)
-    {
-        val y = wallsUp[x]
-        if (y != null) disappearSpacesUp.add(RoomPosition(x, y))
-    }
-    
-    for (pos in disappearSpacesLeft)
-    {
-        room.addSpaceAt(pos.x, pos.y)
-        room.addEntityAt(StoneWall(Direction4.right), pos)
-    }
-    for (pos in disappearSpacesUp)
-    {
-        room.addSpaceAt(pos.x, pos.y)
-        room.addEntityAt(StoneWall(Direction4.down), pos)
-        if (pos in disappearSpacesLeft)
+        for (y in upEdge until downEdge)
         {
-            room.replaceEntityAt(StoneWall(Direction4.down, Direction4.right), pos)
+            if (this.getSpace(x, y) != null)
+            {
+                upSideWallPositions.add(RoomPosition(x, y - 1))
+                break
+            }
         }
     }
+    // add walls
+    for (pos in leftSideWallPositions)
+    {
+        this.addSpaceAt(pos.x, pos.y)
+        val wall = Class.forName(wallClassName)
+                .getConstructor(Array<out Direction4>::class.java)
+                .newInstance(arrayOf(Direction4.right)) as Entity
+        this.addEntityAt(wall, pos)
+    }
+    for (pos in upSideWallPositions)
+    {
+        this.addSpaceAt(pos.x, pos.y)
+        if (pos in leftSideWallPositions)
+        {
+            val wall = Class.forName(wallClassName)
+                    .getConstructor(Array<out Direction4>::class.java)
+                    .newInstance(arrayOf(Direction4.down, Direction4.right)) as Entity
+            this.replaceEntityAt(wall, pos)
+        }
+        else
+        {
+            val wall = Class.forName(wallClassName)
+                    .getConstructor(Array<out Direction4>::class.java)
+                    .newInstance(arrayOf(Direction4.down)) as Entity
+            this.addEntityAt(wall, pos)
+        }
+    }
+}
+
+fun pom()
+{
+    // l1
+    val l1r1 =
+            "7 7\n" + "x x x x x x x\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0"
+    Gdx.files.local("l1r1.txt").writeString(l1r1, false)
+    val l1r2 =
+            "11 11\n" + "x x x x x x x x x x x\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0"
+    Gdx.files.local("l1r2.txt").writeString(l1r2, false)
+    val l1r3 =
+            "7 6\n" + "x x x x x x\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0"
+    Gdx.files.local("l1r3.txt").writeString(l1r3, false)
+    val l1r4 =
+            "11 11\n" + "x x x x x x x x x x x\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0"
+    Gdx.files.local("l1r4.txt").writeString(l1r4, false)
+    val l1r5 =
+            "11 14\n" + "x x x x x x x x x x x x x x\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0"
+    Gdx.files.local("l1r5.txt").writeString(l1r5, false)
 }
