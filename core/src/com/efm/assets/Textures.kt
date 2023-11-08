@@ -22,6 +22,7 @@ object Textures
     val translucentQuarter = load("/backgrounds/translucent25percent.png")
     val translucentHalf = load("/backgrounds/translucent50percent.png")
     val translucentThreeQuarters = load("/backgrounds/translucent75percent.png")
+    val translucentThreeQuartersBlack = load("/backgrounds/translucent75percentBlack.png")
     val pauseBackground = load("/backgrounds/pauseBackground.png")
     
     val upNinePatch = NinePatch(up, 5, 5, 5, 5)
