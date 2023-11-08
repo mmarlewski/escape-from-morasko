@@ -713,6 +713,32 @@ fun itemButtonWithLabel(
     return imageButton
 }
 
+fun buttonWithTextOverlay(
+        image : Texture,
+        text : String,
+        up : NinePatch,
+        down : NinePatch,
+        over : NinePatch,
+        disabled : NinePatch,
+        focused : NinePatch,
+        onClicked : () -> Unit
+                         ) : Stack
+{
+    val backgroundButton = imageButtonOf(image, up, down, over, disabled, focused, onClicked)
+    val background = imageOf(Textures.translucentThreeQuartersBlack, Scaling.none)
+    val foreground = labelOf(text, Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+    
+    val table = Table()
+    table.add(foreground).expand().center()
+    
+    val stack = Stack()
+    stack.add(backgroundButton)
+    stack.add(background)
+    stack.add(table)
+    
+    return stack
+}
+
 fun equipmentOverlay(
         title : String
                     ) : Table

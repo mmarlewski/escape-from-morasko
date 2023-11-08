@@ -41,7 +41,7 @@ object ItemsStructure
         equipmentDisplay.isVisible = boolean
     }
     
-    fun createActiveSkill(currentCooldown : Int, texture : Texture, action : () -> Unit) : Button
+    fun createActiveSkill(currentCooldown : Int, texture : Texture, action : () -> Unit) : WidgetGroup
     {
         if (currentCooldown == 0)
         {
@@ -60,20 +60,19 @@ object ItemsStructure
         }
         else
         {
-            val textButton = textButtonOf(
+            val cooldownButton = buttonWithTextOverlay(
+                    texture,
                     currentCooldown.toString(),
-                    Fonts.inconsolata30,
-                    Colors.black,
                     Textures.downNinePatch,
                     Textures.downNinePatch,
-                    Textures.overNinePatch,
-                    Textures.disabledNinePatch,
-                    Textures.focusedNinePatch
-                                         )
+                    Textures.downNinePatch,
+                    Textures.downNinePatch,
+                    Textures.downNinePatch
+                                                      )
             {
             
             }
-            return textButton
+            return cooldownButton
         }
     }
     
