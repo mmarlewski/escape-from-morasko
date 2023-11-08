@@ -39,4 +39,9 @@ class Space(x : Int, y : Int, private var base : Base? = null)
     {
         return base?.isTreadableFor?.invoke(e) == true && entity == null
     }
+    
+    fun isTreadableFor(e: Entity) : Boolean
+    {
+        return base?.isTreadableFor?.invoke(e) == true
+    }
 }

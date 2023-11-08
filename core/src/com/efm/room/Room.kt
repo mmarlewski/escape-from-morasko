@@ -19,6 +19,11 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         return x in 0 until widthInSpaces && y in 0 until heightInSpaces
     }
     
+    fun isPositionWithinBounds(pos : RoomPosition) : Boolean
+    {
+        return pos.x in 0 until widthInSpaces && pos.y in 0 until heightInSpaces
+    }
+    
     private var spaceArray = arrayOf<Array<Space?>>()
     private val spaceList = mutableListOf<Space>()
     
