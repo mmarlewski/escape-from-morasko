@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Textures
+import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -37,6 +38,11 @@ interface Enemy : Character
     fun getMoveTile(n : Int) : TiledMapTile?
     
     fun getAttackTile() : TiledMapTile?
+    
+    fun getFreezeTile() : TiledMapTile?
+    {
+        return Tiles.fire
+    }
     
     fun getMoveSound() : Sound?
     

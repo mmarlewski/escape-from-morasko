@@ -43,7 +43,7 @@ fun updateCombatEnemiesEnemySelected(currState : State.combat.enemies.enemySelec
     if (!Animating.isAnimating())
     {
         val currEnemy = currState.currEnemy
-        if (currEnemy != null)
+        if (currEnemy != null && !World.currentRoom.getFrozenEnemies().contains(currEnemy))
         {
             Map.clearLayer(MapLayer.select)
             Map.clearLayer(MapLayer.outline)

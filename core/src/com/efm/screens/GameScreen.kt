@@ -83,6 +83,7 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.addSkill(LavaWalking)
         World.hero.addSkill(Pull)
         World.hero.addSkill(Invisibility)
+        World.hero.addSkill(Freeze)
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         // state
@@ -165,9 +166,16 @@ object GameScreen : BaseScreen(), GestureListener
                                 !(state is State.combat.enemies.enemyAction && State.combat.enemies.enemyAction.currEnemy == entity)
                         )
                         {
-                            val tile = entity.getIdleTile()
+                            if (World.currentRoom.getFrozenEnemies().contains(entity))
+                            {
+                                Map.changeTile(MapLayer.entity, j, i, entity.getFreezeTile())
+                            } else
+                            {
+                                val tile = entity.getIdleTile()
+    
+                                Map.changeTile(MapLayer.entity, j, i, tile)
+                            }
                             
-                            Map.changeTile(MapLayer.entity, j, i, tile)
                         }
                     }
                 }
