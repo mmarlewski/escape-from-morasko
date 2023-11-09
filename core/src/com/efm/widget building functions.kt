@@ -651,9 +651,9 @@ fun itemButtonWithHealthBar(
     }
     healthBar.color = color
     
-    val barWidth = 64f
+    val barWidth = 58f
     val barStack = Stack()
-    val barContainer : Container<ProgressBar> = Container(healthBar)
+    val barContainer : Container<ProgressBar> = Container(healthBar).padLeft(4f)
     barContainer.width(barWidth)
     barStack.add(barContainer)
     
@@ -711,6 +711,34 @@ fun itemButtonWithLabel(
     
     imageButton.add(stack)
     return imageButton
+}
+
+fun buttonWithTextOverlay(
+        image : Texture,
+        text : String,
+        up : NinePatch,
+        down : NinePatch,
+        over : NinePatch,
+        disabled : NinePatch,
+        focused : NinePatch,
+        onClicked : () -> Unit
+                         ) : Stack
+{
+    val backgroundButton = imageButtonOf(image, up, down, over, disabled, focused, onClicked)
+    val background = imageOf(Textures.translucentThreeQuartersBlack, Scaling.none)
+    val foreground = labelOf(text, Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+    
+    val table = Table()
+    table.add(foreground).expand().center()
+    
+    val stack = Stack()
+    stack.add(backgroundButton)
+    stack.add(background)
+    stack.add(table)
+    table.addListener(object : ClickListener()
+                      {})
+    
+    return stack
 }
 
 fun equipmentOverlay(

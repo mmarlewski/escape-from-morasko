@@ -13,8 +13,9 @@ object EscapeFromMorasko : Game()
     {
         spriteBatch = SpriteBatch()
     
-         World.createWorldPrototypeTwo()
-//        World.createWorldBoarTest()
+        //World.createWorldPrototypeTwo()
+        //World.createWorldBoarTest()
+        World.createWorldPrototypeThree()
         val startingLevel = World.getLevels().find { it.name == "1" }
         if (startingLevel != null)
         {

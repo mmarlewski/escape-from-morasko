@@ -29,7 +29,7 @@ object ItemsStructure
     val weaponDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
     val potionDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
     val usableDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
-    val skillDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
+    val skillDisplay = rowOf(rowOf().padLeft(102f)).align(Align.bottomLeft)
     val equipmentDisplay = rowOf(equipmentButton).align(Align.bottomLeft)
     
     fun setVisibility(boolean : Boolean)
@@ -41,7 +41,7 @@ object ItemsStructure
         equipmentDisplay.isVisible = boolean
     }
     
-    fun createActiveSkill(currentCooldown : Int, texture : Texture, action : () -> Unit) : Button
+    fun createActiveSkill(currentCooldown : Int, texture : Texture, action : () -> Unit) : WidgetGroup
     {
         if (currentCooldown == 0)
         {
@@ -60,20 +60,19 @@ object ItemsStructure
         }
         else
         {
-            val textButton = textButtonOf(
+            val cooldownButton = buttonWithTextOverlay(
+                    texture,
                     currentCooldown.toString(),
-                    Fonts.inconsolata30,
-                    Colors.black,
                     Textures.downNinePatch,
                     Textures.downNinePatch,
-                    Textures.overNinePatch,
-                    Textures.disabledNinePatch,
-                    Textures.focusedNinePatch
-                                         )
+                    Textures.downNinePatch,
+                    Textures.downNinePatch,
+                    Textures.downNinePatch
+                                                      )
             {
             
             }
-            return textButton
+            return cooldownButton
         }
     }
     
@@ -174,7 +173,7 @@ object ItemsStructure
         weaponDisplay.pad(16f)
         potionDisplay.pad(16f)
         usableDisplay.pad(16f)
-        skillDisplay.pad(16f)
+        skillDisplay.pad(14f)
         
         equipmentDisplay.setFillParent(true)
         weaponDisplay.setFillParent(true)
