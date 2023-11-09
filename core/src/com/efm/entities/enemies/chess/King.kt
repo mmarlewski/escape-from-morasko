@@ -75,6 +75,7 @@ class King : Entity, Enemy
         }
         if (!attacked)
         {
+            var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
             for (pos in getPossibleMovePositions())
             {
                 if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
@@ -83,12 +84,16 @@ class King : Entity, Enemy
                     if (space != null) {
                         if (space.getEntity() == null && space.isTraversableFor(this))
                         {
-                            val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(pos))
-                            moveEnemy(position, space.position, path, this)
+                            if (checkNbrOfPiecesAround(pos) < checkNbrOfPiecesAround(bestMovePosition))
+                            {
+                                bestMovePosition = pos
+                            }
                         }
                     }
                 }
             }
+            val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+            moveEnemy(position, bestMovePosition, path, this)
         }
     }
     
@@ -123,44 +128,35 @@ class King : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    fun getPossibleAttackPositions() : MutableList<RoomPosition>
+    fun getPossibleAttackPositions() : List<RoomPosition>
     {
-        when (direction)
-        {
-            Direction4.up    ->
-            {
-                val attackPos1 = position.positionOffsetBy(1, Direction8.upLeft)
-                val attackPos2= position.positionOffsetBy(1, Direction8.upRight)
-                return mutableListOf(attackPos1, attackPos2)
-            }
-            Direction4.down  ->
-            {
-                val attackPos1 = position.positionOffsetBy(1, Direction8.downLeft)
-                val attackPos2= position.positionOffsetBy(1, Direction8.downRight)
-                return mutableListOf(attackPos1, attackPos2)
-            }
-            Direction4.left  ->
-            {
-                val attackPos1 = position.positionOffsetBy(1, Direction8.upLeft)
-                val attackPos2= position.positionOffsetBy(1, Direction8.downLeft)
-                return mutableListOf(attackPos1, attackPos2)
-            }
-            Direction4.right ->
-            {
-                val attackPos1 = position.positionOffsetBy(1, Direction8.downRight)
-                val attackPos2= position.positionOffsetBy(1, Direction8.upRight)
-                return mutableListOf(attackPos1, attackPos2)
-            }
-        }
+        return position.surroundingPositions(1)
     }
     
-    fun getPossibleMovePositions() : MutableList<RoomPosition>
+    fun getPossibleMovePositions() : List<RoomPosition>
     {
-        return mutableListOf(position.positionOffsetBy(1, direction))
+        return position.surroundingPositions(1)
     }
     
     fun setChessPieceDirection(direction4 : Direction4)
     {
         direction = direction4
     }
+    
+    fun checkNbrOfPiecesAround(pos : RoomPosition) : Int
+    {
+        var count = 0
+        for (currPosBeingChecked in pos.surroundingPositions(2))
+        {
+            if (World.currentRoom.isPositionWithinBounds(currPosBeingChecked))
+            {
+                if (World.currentRoom.getSpace(currPosBeingChecked)?.getEntity() != null)
+                {
+                    count += 1
+                }
+            }
+        }
+        return count
+    }
+    
 }
