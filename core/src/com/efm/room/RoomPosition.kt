@@ -57,6 +57,19 @@ data class RoomPosition(var x : Int = 0, var y : Int = 0)
     {
         return positionOffsetBy(1, direction)
     }
+    
+    fun surroundingPositions(radius : Int) : List<RoomPosition>
+    {
+        var result = mutableListOf<RoomPosition>()
+        for (i in -radius..radius)
+        {
+            for (j in -radius..radius)
+            {
+                result.add(RoomPosition(x + i, y + j))
+            }
+        }
+        return result
+    }
 }
 
 fun RoomPosition.toVector2() : Vector2

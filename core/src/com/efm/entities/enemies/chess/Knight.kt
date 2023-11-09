@@ -93,7 +93,6 @@ class Knight: Entity, Enemy
                     }
                 }
             }
-            val space = World.currentRoom.getSpace(bestMovePosition)
             val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
             moveEnemy(position, bestMovePosition, path, this)
         }

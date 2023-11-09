@@ -11,8 +11,8 @@ import com.efm.entity.Character
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.level.World
-import com.efm.room.RoomPosition
-import com.efm.room.Space
+import com.efm.room.*
+import kotlin.math.pow
 
 class Rook: Entity, Enemy
 {
@@ -75,6 +75,7 @@ class Rook: Entity, Enemy
         }
         if (!attacked)
         {
+            var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
             for (pos in getPossibleMovePositions())
             {
                 if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
@@ -83,12 +84,16 @@ class Rook: Entity, Enemy
                     if (space != null) {
                         if (space.getEntity() == null && space.isTraversableFor(this))
                         {
-                            val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(pos))
-                            moveEnemy(position, space.position, path, this)
+                            if (checkPositionDistanceFromHero(pos) < checkPositionDistanceFromHero(bestMovePosition))
+                            {
+                                bestMovePosition = pos
+                            }
                         }
                     }
                 }
             }
+            val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+            moveEnemy(position, bestMovePosition, path, this)
         }
     }
     
@@ -123,44 +128,83 @@ class Rook: Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    fun getPossibleAttackPositions() : MutableList<RoomPosition>
+    fun getPossibleAttackPositions() : List<RoomPosition>
     {
-        when (direction)
-        {
-            Direction4.up    ->
-            {
-                val attackPos1 = position.positionOffsetBy(1, Direction8.upLeft)
-                val attackPos2= position.positionOffsetBy(1, Direction8.upRight)
-                return mutableListOf(attackPos1, attackPos2)
-            }
-            Direction4.down  ->
-            {
-                val attackPos1 = position.positionOffsetBy(1, Direction8.downLeft)
-                val attackPos2= position.positionOffsetBy(1, Direction8.downRight)
-                return mutableListOf(attackPos1, attackPos2)
-            }
-            Direction4.left  ->
-            {
-                val attackPos1 = position.positionOffsetBy(1, Direction8.upLeft)
-                val attackPos2= position.positionOffsetBy(1, Direction8.downLeft)
-                return mutableListOf(attackPos1, attackPos2)
-            }
-            Direction4.right ->
-            {
-                val attackPos1 = position.positionOffsetBy(1, Direction8.downRight)
-                val attackPos2= position.positionOffsetBy(1, Direction8.upRight)
-                return mutableListOf(attackPos1, attackPos2)
-            }
-        }
+        return position.surroundingPositions(1)
     }
     
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
-        return mutableListOf(position.positionOffsetBy(1, direction))
+        val result = mutableListOf<RoomPosition>()
+        for (posX in position.x - 1 downTo 1)
+        {
+            var space = World.currentRoom.getSpace(RoomPosition(posX, position.y))
+            if (space != null)
+            {
+                if (space.getEntity() == null && space.isTraversableFor(this))
+                {
+                    result.add(RoomPosition(posX, position.y))
+                } else
+                {
+                    break
+                }
+            }
+        }
+        for (posX in position.x + 1 until  World.currentRoom.widthInSpaces)
+        {
+            var space = World.currentRoom.getSpace(RoomPosition(posX, position.y))
+            if (space != null)
+            {
+                if (space.getEntity() == null && space.isTraversableFor(this))
+                {
+                    result.add(RoomPosition(posX, position.y))
+                } else
+                {
+                    break
+                }
+            }
+        }
+        for (posY in position.y - 1 downTo 1)
+        {
+            var space = World.currentRoom.getSpace(RoomPosition(position.x, posY))
+            if (space != null)
+            {
+                if (space.getEntity() == null && space.isTraversableFor(this))
+                {
+                    result.add(RoomPosition(position.x, posY))
+                } else
+                {
+                    break
+                }
+            }
+        }
+        for (posY in position.y + 1 until World.currentRoom.heightInSpaces)
+        {
+            var space = World.currentRoom.getSpace(RoomPosition(position.x, posY))
+            if (space != null)
+            {
+                if (space.getEntity() == null && space.isTraversableFor(this))
+                {
+                    result.add(RoomPosition(position.x, posY))
+                } else
+                {
+                    break
+                }
+            }
+        }
+        return result
     }
     
     fun setChessPieceDirection(direction4 : Direction4)
     {
         direction = direction4
+    }
+    
+    fun checkPositionDistanceFromHero(pos : RoomPosition) : Double
+    {
+        return kotlin.math.sqrt(
+                (kotlin.math.abs(pos.x - World.hero.position.x)
+                        .toDouble()).pow(2.0) + (kotlin.math.abs(pos.y - World.hero.position.y).toDouble().pow(2.0)
+                        ))
     }
 }
