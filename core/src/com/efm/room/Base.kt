@@ -16,5 +16,11 @@ enum class Base(val tile : TiledMapTile, val isTreadableFor : (Entity) -> Boolea
     grass(Tiles.grassFloor, { true }),
     lava(Tiles.lavaFloor, { entity -> entity is EnemyBat || (entity is Hero && entity.hasSkill(LavaWalking)) }),
     water(Tiles.waterFloor, { entity -> entity is EnemyBat || (entity is Hero && entity.hasSkill(WaterWalking)) }),
-    waterOctopus(Tiles.waterFloorOctopus, { false })
+    waterOctopus(Tiles.waterFloorOctopus, { false });
+    
+    companion object
+    {
+        fun getOrdinal(base : Base) : Int = base.ordinal
+        fun getBase(baseNumber : Int) = values()[baseNumber]
+    }
 }

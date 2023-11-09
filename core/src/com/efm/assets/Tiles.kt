@@ -1,3 +1,5 @@
+// @file:Suppress("unused")
+
 package com.efm.assets
 
 import com.badlogic.gdx.assets.AssetManager
@@ -163,6 +165,8 @@ object Tiles
     val heroMove4Invisible = load("heroMove4Invisible.png")
     val heroCorpse = load("heroCorpse.png")
     val heroCorpseOutlineYellow = load("heroCorpseOutlineYellow.png")
+    // for `map` tests
+    val hero = heroIdle1
     
     // mushroom
     

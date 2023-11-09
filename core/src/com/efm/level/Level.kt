@@ -1,7 +1,10 @@
 package com.efm.level
 
 import com.efm.Direction4
-import com.efm.passage.*
+import com.efm.entities.exits.ExitImplementation
+import com.efm.entities.exits.ExitStyle
+import com.efm.passage.LevelPassage
+import com.efm.passage.RoomPassage
 import com.efm.room.*
 
 /**
@@ -64,19 +67,15 @@ class Level(
             directionA : Direction4,
             roomB : Room,
             positionB : RoomPosition,
-            exitClassName : String?,
+            exitStyle : ExitStyle = ExitStyle.stone,
             isActive : Boolean = true,
             exitABase : Base? = null,
             exitBBase : Base? = null
                       )
     {
         val passage = RoomPassage(roomA, positionA, directionA, roomB, positionB, isActive = isActive)
-        val exitA = Class.forName(exitClassName)
-                .getConstructor(Direction4::class.java, Passage::class.java)
-                .newInstance(passage.directionA, passage) as Exit
-        val exitB = Class.forName(exitClassName)
-                .getConstructor(Direction4::class.java, Passage::class.java)
-                .newInstance(passage.directionB, passage) as Exit
+        val exitA = ExitImplementation(exitStyle, passage, passage.directionA)
+        val exitB = ExitImplementation(exitStyle, passage, passage.directionB)
         if (exitABase != null) passage.roomA.changeBaseAt(exitABase, passage.positionA)
         passage.roomA.replaceEntityAt(exitA, passage.positionA)
         if (exitBBase != null) passage.roomB.changeBaseAt(exitBBase, passage.positionB)
