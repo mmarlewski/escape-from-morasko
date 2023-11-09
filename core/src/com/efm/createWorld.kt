@@ -6,14 +6,18 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.efm.entities.Chest
 import com.efm.entities.bosses.*
+import com.efm.entities.bosses.slime.BossSlime
+import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost
-import com.efm.entities.enemies.EnemyMushroom
 import com.efm.entities.enemies.chess.spawnChessSet
 import com.efm.entities.exits.*
 import com.efm.entities.walls.*
+import com.efm.item.PossibleItem
+import com.efm.item.PossibleItems
 import com.efm.level.Level
 import com.efm.level.World
+import com.efm.multiUseMapItems.Bow
 import com.efm.multiUseMapItems.WoodenSword
 import com.efm.passage.LevelPassage
 import com.efm.passage.RoomPassage
@@ -706,7 +710,8 @@ fun World.createWorldPrototypeThree()
 {
     // not sure yet how files will work
     pom()
-    
+    this.hero.inventory.items.clear()
+    // this.hero.bodyPartMap.clear()
     //
     // level 1
     //
@@ -715,7 +720,7 @@ fun World.createWorldPrototypeThree()
         //
         val l1r1 = createRoomFromFile(Gdx.files.local("l1r1.txt")).apply {
             // walls
-            addWalls(WallStyle.stone)
+            addWalls(WallStyle.metal)
             // entities
             val chest = Chest()
             chest.addItem(WoodenSword())
@@ -729,25 +734,80 @@ fun World.createWorldPrototypeThree()
         //
         val l1r2 = createRoomFromFile(Gdx.files.local("l1r2.txt")).apply {
             // walls
-            addWalls(WallStyle.metal)
+            addWalls(WallStyle.cobblestoneDarkTall)
             // entities
             addEntityAt(EnemyMushroom(), 6, 4)
         }
         // add room to level
         addRoom(l1r2)
         
+        // room 3
+        //
+        val l1r3 = createRoomFromFile(Gdx.files.local("l1r3.txt")).apply {
+            // walls
+            addWalls(WallStyle.brickOrangeLight)
+            // entities
+            addEntityAt(EnemyBat(), 2, 1)
+            addEntityAt(EnemyBat(), 5, 6)
+            val chest = Chest(
+                    PossibleItems(
+                            mutableListOf(
+                                    PossibleItem(PotionSmall(), 1f, IntRange(1, 3)),
+                                    PossibleItem(Mushroom(), 1f, IntRange(2, 4)),
+                                    PossibleItem(Bow(), 1f, IntRange(1, 1))
+                                         )
+                                 )
+                             )
+            addEntityAt(chest, 3, 4)
+        }
+        // add room to level
+        addRoom(l1r3)
+        
+        // room 4
+        //
+        val l1r4 = createRoomFromFile(Gdx.files.local("l1r4.txt")).apply {
+            // walls
+            addWalls(WallStyle.cobblestoneLight)
+            // entities
+            addEntityAt(EnemyGhost(), 4, 8)
+            addEntityAt(EnemySkeleton(), 7, 5)
+        }
+        // add room to level
+        addRoom(l1r4)
+        
+        // room 5
+        //
+        val l1r5 = createRoomFromFile(Gdx.files.local("l1r5.txt")).apply {
+            // walls
+            addWalls(WallStyle.brickRedDarkTall)
+            // entities
+            addEntityAt(BossSlime(), 6, 6)
+        }
+        // add room to level
+        addRoom(l1r5)
+        
         // add room passages
         //
         addRoomPassage(
-                l1r1,
-                RoomPosition(6, 3),
-                Direction4.left,
-                l1r2,
-                RoomPosition(0, 7),
-                ExitStyle.stone,
-                exitBBase = Base.stone
+                l1r1, RoomPosition(6, 3), Direction4.left, l1r2, RoomPosition(0, 7), ExitStyle.metal, exitBBase = Base.stone
                       )
-        
+        addRoomPassage(
+                l1r2, RoomPosition(l1r2.widthInSpaces - 1, 3), Direction4.left, l1r3, RoomPosition(0, 3), ExitStyle.stone
+                      )
+        addRoomPassage(
+                l1r2, RoomPosition(l1r2.widthInSpaces - 1, 9), Direction4.left, l1r4, RoomPosition(0, 9), ExitStyle.stone
+                      )
+        addRoomPassage(
+                l1r3,
+                RoomPosition(l1r3.widthInSpaces - 1, 3),
+                Direction4.left,
+                l1r4,
+                RoomPosition(l1r3.widthInSpaces - 1, 3),
+                ExitStyle.stone
+                      )
+        addRoomPassage(
+                l1r4, RoomPosition(l1r4.widthInSpaces - 1, 7), Direction4.left, l1r5, RoomPosition(0, 7), ExitStyle.stone
+                      )
         // starting position
         //
         changeStartingRoom(l1r1)
@@ -755,10 +815,6 @@ fun World.createWorldPrototypeThree()
     }
     // add level to World
     this.addLevel(l1)
-    
-    //
-    // level 2
-    //
 }
 
 private fun createRoomFromFile(fileHandle : FileHandle) : Room
@@ -859,18 +915,65 @@ fun pom()
 {
     // l1
     val l1r1 =
-            "7 7\n" + "x x x x x x x\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0"
+            "7 7\n" +
+                    "x x x x x x x\n" +
+                    "x 22 13 23 26 13 15\n" +
+                    "x 15 23 25 15 23 14\n" +
+                    "x 14 16 17 13 15 23\n" +
+                    "x 13 17 18 27 14 25\n" +
+                    "x 14 24 27 15 23 13\n" +
+                    "x 22 14 13 25 26 24"
     Gdx.files.local("l1r1.txt").writeString(l1r1, false)
     val l1r2 =
-            "11 11\n" + "x x x x x x x x x x x\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0"
+            "11 11\n" +
+                    "x x x x x x x x x x x\n" +
+                    "x 12 10 12 12 11 11 12 10 10 11\n" +
+                    "x 10 11 10 12 11 12 10 10 12 11\n" +
+                    "x 12 11 10 12 12 10 12 11 10 10\n" +
+                    "x 12 12 12 10 11 12 10 12 11 12\n" +
+                    "x 10 11 10 11 12 12 10 12 12 10\n" +
+                    "x 12 10 11 11 10 12 11 10 11 11\n" +
+                    "x 11 10 11 11 10 12 12 11 12 10\n" +
+                    "x 12 10 10 10 11 11 12 10 11 12\n" +
+                    "x 11 11 12 12 10 11 10 12 10 11\n" +
+                    "x 10 11 10 12 11 12 12 10 12 12"
     Gdx.files.local("l1r2.txt").writeString(l1r2, false)
     val l1r3 =
-            "7 6\n" + "x x x x x x\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0\n" + "x 0 0 0 0 0"
+            "7 6\n" +
+                    "x x x x x x\n" +
+                    "x 20 20 20 21 20\n" +
+                    "x 20 19 20 20 21\n" +
+                    "x 19 21 20 19 19\n" +
+                    "x 20 20 20 21 20\n" +
+                    "x 21 20 19 20 21\n" +
+                    "x 19 20 21 20 19"
     Gdx.files.local("l1r3.txt").writeString(l1r3, false)
     val l1r4 =
-            "11 11\n" + "x x x x x x x x x x x\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x x x x x x 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0"
+            "11 11\n" +
+                    "x x x x x x x x x x x\n" +
+                    "x x x x x x 10 11 10 12 7\n" +
+                    "x x x x x x 11 8 10 10 11\n" +
+                    "x x x x x x 10 11 7 7 10\n" +
+                    "x x x x x x 11 8 12 8 8\n" +
+                    "x x x x x x 10 8 7 8 7\n" +
+                    "x x x x x x 8 7 11 7 7\n" +
+                    "x 10 10 7 8 10 12 9 9 9 9\n" +
+                    "x 11 8 7 10 9 9 9 5 5 5\n" +
+                    "x 10 8 11 9 9 5 5 5 5 5\n" +
+                    "x 7 8 9 9 5 5 5 5 5 5"
     Gdx.files.local("l1r4.txt").writeString(l1r4, false)
     val l1r5 =
-            "11 14\n" + "x x x x x x x x x x x x x x\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0\n" + "x 0 0 0 0 0 0 0 0 0 0 0 0 0"
+            "11 14\n" +
+                    "x x x x x x x x x x x x x x\n" +
+                    "x 2 2 2 4 4 4 4 4 2 2 2 2 2\n" +
+                    "x 2 2 2 2 4 4 4 2 2 2 2 2 2\n" +
+                    "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" +
+                    "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" +
+                    "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" +
+                    "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" +
+                    "x 2 2 4 4 2 2 2 2 4 4 4 2 2\n" +
+                    "x 2 2 4 4 4 4 4 4 4 4 4 2 2\n" +
+                    "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" +
+                    "x x x x x x x x x x x x x x\n"
     Gdx.files.local("l1r5.txt").writeString(l1r5, false)
 }

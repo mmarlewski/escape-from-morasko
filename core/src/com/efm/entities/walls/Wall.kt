@@ -34,7 +34,25 @@ enum class WallStyle(internal val tiles : WallTiles)
 {
     stone(WallTiles(Tiles.stoneWallRight, Tiles.stoneWallDown, Tiles.stoneWallRightDown)),
     metal(WallTiles(Tiles.metalWallRight, Tiles.metalWallDown, Tiles.metalWallRightDown)),
-    rock(WallTiles(Tiles.rockWallRight, Tiles.rockWallDown, Tiles.rockWallRightDown));
+    rock(WallTiles(Tiles.rockWallRight, Tiles.rockWallDown, Tiles.rockWallRightDown)),
+    cobblestoneDark(WallTiles(Tiles.cobblestoneDarkWallRight, Tiles.cobblestoneDarkWallDown, null)),
+    cobblestoneLight(
+            WallTiles(
+                    Tiles.cobblestoneLightWallRight,
+                    Tiles.cobblestoneLightWallDown,
+                    Tiles.cobblestoneLightWallRightDown
+                     )
+                    ),
+    cobblestoneDarkTall(WallTiles(Tiles.cobblestoneDarkTallWallRight, Tiles.cobblestoneDarkTallWallDown, null)),
+    cobblestoneLightTall(WallTiles(Tiles.cobblestoneLightTallWallRight, Tiles.cobblestoneLightTallWallDown, null)),
+    brickOrangeDark(WallTiles(Tiles.brickOrangeDarkWallRight, Tiles.brickOrangeDarkWallDown, null)),
+    brickOrangeLight(WallTiles(Tiles.brickOrangeLightWallRight, Tiles.brickOrangeLightWallDown, null)),
+    brickOrangeDarkTall(WallTiles(Tiles.brickOrangeDarkTallWallRight, Tiles.brickOrangeDarkTallWallDown, null)),
+    brickOrangeLightTall(WallTiles(Tiles.brickOrangeLightTallWallRight, Tiles.brickOrangeLightTallWallDown, null)),
+    brickRedDark(WallTiles(Tiles.brickRedDarkWallRight, Tiles.brickRedDarkWallDown, null)),
+    brickRedLight(WallTiles(Tiles.brickRedLightWallRight, Tiles.brickRedLightWallDown, null)),
+    brickRedDarkTall(WallTiles(Tiles.brickRedDarkTallWallRight, Tiles.brickRedDarkTallWallDown, null)),
+    brickRedLightTall(WallTiles(Tiles.brickRedLightTallWallRight, Tiles.brickRedLightTallWallDown, null));
     
     companion object
     {

@@ -768,6 +768,7 @@ object Tiles
     // cobblestoneLightWall
     val cobblestoneLightWallDown = load(walls_folder_name + "cobblestoneLightWallDown.png")
     val cobblestoneLightWallRight = load(walls_folder_name + "cobblestoneLightWallRight.png")
+    val cobblestoneLightWallRightDown = load(walls_folder_name + "cobblestoneLightWallRightDown.png")
     // cobblestoneDarkWall
     val cobblestoneDarkWallDown = load(walls_folder_name + "cobblestoneDarkWallDown.png")
     val cobblestoneDarkWallRight = load(walls_folder_name + "cobblestoneDarkWallRight.png")
@@ -826,7 +827,13 @@ object Tiles
     val tiledFloor1Blood2 = load(tiled_floor_tiles_folder_name + "tiled_floor_1_blood_2.png")
     val tiledFloor1Blood3 = load(tiled_floor_tiles_folder_name + "tiled_floor_1_blood_3.png")
     val tiledFloor2 = load(tiled_floor_tiles_folder_name + "tiled_floor_2.png")
+    val tiledFloor2x = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_2.png", x = true)
+    val tiledFloor2y = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_2.png", y = true)
+    val tiledFloor2xy = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_2.png", true, true)
     val tiledFloor3 = load(tiled_floor_tiles_folder_name + "tiled_floor_3.png")
+    val tiledFloor3x = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_3.png", x = true)
+    val tiledFloor3y = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_3.png", y = true)
+    val tiledFloor3xy = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_3.png", x = true, y = true)
     
     // wooden floor tiles
     val wooden_floor_tiles_folder_name = "new_floor_tiles/wooden/"
@@ -892,5 +899,12 @@ object Tiles
         val texture = assetManager.get(filePath, Texture::class.java)
         val tile = StaticTiledMapTile(TextureRegion(texture))
         return tile
+    }
+    
+    fun loadFlipped(name : String, x : Boolean = false, y : Boolean = false) : StaticTiledMapTile
+    {
+        val filePath = "tiles/$name"
+        val texture = assetManager.get(filePath, Texture::class.java)
+        return StaticTiledMapTile(TextureRegion(texture).apply { flip(x, y) })
     }
 }
