@@ -1,13 +1,16 @@
 package com.efm.entity
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Textures
+import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.room.Space
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
 
@@ -36,10 +39,42 @@ interface Enemy : Character
     
     fun getAttackTile() : TiledMapTile?
     
+    fun getFreezeTile() : TiledMapTile?
+    {
+        return Tiles.fire
+    }
+    
+    fun getMoveSound() : Sound?
+    
     fun performTurn()
     {
         var decision = -1
-        val pathSpaces = PathFinding.findPathWithGivenRoom(position, World.hero.position, World.currentRoom)
+        
+        val directPathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
+        
+        var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
+        var minPathSpaces = directPathSpaces
+        
+        if(minPathSpaces == null)
+        {
+            val squarePositions = getSquareAreaPositions(World.hero.position, 2)
+            for (squarePosition in squarePositions)
+            {
+                val squareSpace = World.currentRoom.getSpace(squarePosition)
+                
+                if(squareSpace!= null && squareSpace.isTraversableFor(this))
+                {
+                    val pathSpaces = PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom,this)
+                    
+                    if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                    {
+                        minPathLength = pathSpaces.size
+                        minPathSpaces = pathSpaces
+                    }
+                }
+            }
+        }
+        
         for (pos in getSquareAreaPositions(position, attackRange))
         {
             if (pos == World.hero.position)
@@ -49,7 +84,7 @@ interface Enemy : Character
         }
         if (decision != 0)
         {
-            if (pathSpaces != null)
+            if (minPathSpaces != null)
             {
                 decision = 1
             }
@@ -59,25 +94,29 @@ interface Enemy : Character
         {
             0 ->
             {
-                //attack
                 enemyAttack()
             }
             
             1 ->
             {
-                val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
-                if (stepsSpaces != null)
-                {
-                    val stepsIndex = if (stepsSpaces.size == pathSpaces.size)
-                    {
-                        stepsSpaces.size - 1
-                    }
-                    else stepsSpaces.size
-                    moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
-                }
+                moveTowardsHero(minPathSpaces)
             }
         }
-        
+    }
+    
+    fun moveTowardsHero(pathSpaces : List<Space>?)
+    {
+        val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
+        if (!stepsSpaces.isNullOrEmpty())
+        {
+            val stepsIndex = if (stepsSpaces.size == pathSpaces.size)
+            {
+                stepsSpaces.size - 1
+            }
+            else stepsSpaces.size
+            getMoveSound()?.let { playSoundOnce(it) }
+            moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
+        }
     }
     
     fun enemyAttack()
@@ -98,8 +137,7 @@ interface Enemy : Character
     
     fun createOwnHealthBar()
     {
-        healthBar =
-                ProgressBars.createBar(5f, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
+        healthBar = ProgressBars.createBar(5f, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
 //        GameScreen.gameStage.addActor(healthBar)
         val healthLabel = ProgressBars.createLabel(this.healthPoints, this.maxHealthPoints)
         healthLabel.isVisible = true
@@ -131,4 +169,8 @@ interface Enemy : Character
         healthStack.isVisible = false
     }
     
+    fun getCorpse() : EnemyCorpse?
+    {
+        return null
+    }
 }

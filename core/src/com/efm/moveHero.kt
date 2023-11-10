@@ -20,50 +20,60 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
     val endEntity = endSpace?.getEntity()
     val endBase = endSpace?.getBase()
     
-    when (endEntity)
+    if (World.hero.canMoveNextTurn)
     {
-        is Hero ->
+        when (endEntity)
         {
-        }
+            is Hero ->
+            {
+            }
         
-        null    ->
-        {
-            if (endBase == null || !endBase.isTreadable)
+            null    ->
+            {
+                if (endBase == null || !endBase.isTreadableFor(World.hero))
+                {
+                    val lastSpace = path.lastOrNull()
+                    newPosition = lastSpace?.position ?: startPosition
+                    animateToEndSpace = false
+                }
+            }
+        
+            else    ->
             {
                 val lastSpace = path.lastOrNull()
                 newPosition = lastSpace?.position ?: startPosition
                 animateToEndSpace = false
             }
         }
-        
-        else    ->
-        {
-            val lastSpace = path.lastOrNull()
-            newPosition = lastSpace?.position ?: startPosition
-            animateToEndSpace = false
+    
+        val action = {
+            World.currentRoom.removeEntity(World.hero)
+            World.currentRoom.addEntityAt(World.hero, newPosition)
+            adjustCameraAfterMoving()
+            adjustMapLayersAfterMoving()
         }
-    }
     
-    val action = {
-        World.currentRoom.removeEntity(World.hero)
-        World.currentRoom.addEntityAt(World.hero, newPosition)
-        adjustCameraAfterMoving()
-        adjustMapLayersAfterMoving()
+        val animations = mutableListOf<Animation>()
+        animations += Animation.action { Map.changeTile(MapLayer.entity, World.hero.position, null) }
+        val prevMovePosition = startPosition.copy()
+        path.forEachIndexed { index, space ->
+        
+            val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
+            val moveTile = World.hero.getMoveTile(n)
+            
+            animations += Animation.moveTileWithCameraFocus(moveTile, prevMovePosition.copy(), space.position.copy(), 0.1f)
+            animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
+            prevMovePosition.set(space.position)
+        }
+        if (animateToEndSpace) animations += Animation.moveTileWithCameraFocus(
+                Tiles.heroIdle1,
+                prevMovePosition,
+                endPosition,
+                0.1f
+                                                                              )
+        animations += Animation.action(action)
+        Animating.executeAnimations(animations)
     }
-    
-    val animations = mutableListOf<Animation>()
-    animations += Animation.action { Map.changeTile(MapLayer.entity, World.hero.position, null) }
-    val prevMovePosition = startPosition.copy()
-    for (space in path)
-    {
-        animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition.copy(), space.position.copy(), 0.1f)
-        animations += Animation.showTileWithCameraFocus(Tiles.hero, space.position.copy(), 0.01f)
-        prevMovePosition.set(space.position)
-    }
-    if (animateToEndSpace) animations += Animation.moveTileWithCameraFocus(Tiles.hero, prevMovePosition, endPosition, 0.1f)
-    animations += Animation.action(action)
-    Animating.executeAnimations(animations)
-    
 }
 
 fun adjustMapLayersAfterMoving()

@@ -14,6 +14,7 @@ class Staff : MultiUseMapItem
     override val name : String = "Staff"
     override var baseAPUseCost : Int = 1
     override var durability : Int = 10
+    override var maxDurability : Int = 10
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
     

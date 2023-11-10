@@ -10,10 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
-import com.efm.level.World
-import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
-import com.efm.ui.gameScreen.*
+import com.efm.ui.gameScreen.EquipmentStructure
+import com.efm.ui.gameScreen.PopUps
+
+lateinit var musicSlider : Slider
+lateinit var soundSlider : Slider
 
 fun highlightSelection(imageButton : ImageButton, down : NinePatch, up : NinePatch)
 {
@@ -425,18 +427,9 @@ fun settingsPause(
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
     
     val musicLabel = labelOf("music", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
-    val soundEffectsLabel = labelOf("sound effects", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
+    val soundEffectsLabel = labelOf("sound", Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
     
-    val musicRadioButton = checkBoxOf(
-            "", Fonts.pixeloid10, Colors.black,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff
-                                     )
-    val musicSlider = sliderOf(
+    musicSlider = sliderOf(
             0.0f,
             1.0f,
             0.1f,
@@ -447,16 +440,7 @@ fun settingsPause(
             Textures.materialKnobNinePatch
                               )
     
-    val soundEffectsRadioButton = checkBoxOf(
-            "", Fonts.pixeloid10, Colors.black,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff,
-            Textures.materialCheckboxOn,
-            Textures.materialCheckboxOff
-                                            )
-    val soundEffectsmusicSlider = sliderOf(
+    soundSlider = sliderOf(
             0.0f,
             1.0f,
             0.1f,
@@ -465,7 +449,7 @@ fun settingsPause(
             Textures.materialKnobNinePatchAfter,
             Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatch
-                                          )
+                          )
     
     val backButton = textButtonOf(
             "back",
@@ -483,15 +467,27 @@ fun settingsPause(
         PopUps.setMenuVisibility(true)
     }
     
+    musicSlider.addListener(object : ChangeListener()
+                            {
+                                override fun changed(event : ChangeEvent, actor : Actor)
+                                {
+                                    setMusicVolume(musicSlider.value)
+                                }
+                            })
+    
+    soundSlider.addListener(object : ChangeListener()
+                                        {
+                                            override fun changed(event : ChangeEvent, actor : Actor)
+                                            {
+                                                setSoundVolume(soundSlider.value)
+                                            }
+                                        })
+    
     val buttonTable = Table()
     buttonTable.add(
             columnOf(
-                    rowOf(
-                            musicLabel,
-                            musicRadioButton,
-                            musicSlider
-                         ),
-                    rowOf(soundEffectsLabel, soundEffectsRadioButton, soundEffectsmusicSlider, columnOf().padLeft(75f)),
+                    rowOf( musicLabel,musicSlider),
+                    rowOf(soundEffectsLabel, soundSlider),
                     rowOf(backButton)
                     )
                    )
@@ -570,6 +566,8 @@ fun menuPopup(
         window.isVisible = false
         PopUps.setSettingsVisibility(true)
         PopUps.setBackgroundVisibility(true)
+        musicSlider.value = getMusicVolume()
+        soundSlider.value = getSoundVolume()
     }
     
     val backToMenuButton = textButtonOf(
@@ -589,7 +587,7 @@ fun menuPopup(
         PopUps.setBackgroundVisibility(true)
     }
     
-    window.add(columnOf(resumeButton, equipmentButton, /*settingsButton,*/ backToMenuButton)).pad(50f)
+    window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)
     
     return window
 }
@@ -653,9 +651,9 @@ fun itemButtonWithHealthBar(
     }
     healthBar.color = color
     
-    val barWidth = 64f
+    val barWidth = 58f
     val barStack = Stack()
-    val barContainer : Container<ProgressBar> = Container(healthBar)
+    val barContainer : Container<ProgressBar> = Container(healthBar).padLeft(4f)
     barContainer.width(barWidth)
     barStack.add(barContainer)
     
@@ -713,6 +711,34 @@ fun itemButtonWithLabel(
     
     imageButton.add(stack)
     return imageButton
+}
+
+fun buttonWithTextOverlay(
+        image : Texture,
+        text : String,
+        up : NinePatch,
+        down : NinePatch,
+        over : NinePatch,
+        disabled : NinePatch,
+        focused : NinePatch,
+        onClicked : () -> Unit
+                         ) : Stack
+{
+    val backgroundButton = imageButtonOf(image, up, down, over, disabled, focused, onClicked)
+    val background = imageOf(Textures.translucentThreeQuartersBlack, Scaling.none)
+    val foreground = labelOf(text, Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+    
+    val table = Table()
+    table.add(foreground).expand().center()
+    
+    val stack = Stack()
+    stack.add(backgroundButton)
+    stack.add(background)
+    stack.add(table)
+    table.addListener(object : ClickListener()
+                      {})
+    
+    return stack
 }
 
 fun equipmentOverlay(

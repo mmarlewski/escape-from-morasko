@@ -6,25 +6,17 @@ import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.input.GestureDetector.GestureListener
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Colors
-import com.efm.assets.Textures
 import com.efm.entity.Enemy
-import com.efm.item.*
-import com.efm.item.Container
 import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
+import com.efm.skills.*
 import com.efm.stackableMapItems.*
 import com.efm.stackableSelfItems.*
 import com.efm.state.*
@@ -55,130 +47,6 @@ object GameScreen : BaseScreen(), GestureListener
     var worldTouchPosition = Vector2()
     val roomTouchPosition = RoomPosition()
     
-    // equipment
-    var isHeroEquipmentOnly = true
-    var currEquipment : Container? = null
-    var heroEquipment : Container = World.hero.inventory
-    lateinit var containerEquipment : Container
-    var selectedItem : Item? = null
-    var selectedButton : ImageButton? = null
-    
-    fun setNewContainerEquipment(newContainerEquipment : Container)
-    {
-        containerEquipment = newContainerEquipment
-    }
-    
-    fun fillEquipmentWithItems(equipment : Container)
-    {
-        fun onClick(item : Item?, button : ImageButton?)
-        {
-            selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
-            
-            EquipmentStructure.deleteButton.isVisible = true
-            
-            if (selectedButton === button)
-            {
-                selectedItem = null
-                selectedButton = null
-                currEquipment = null
-            }
-            else
-            {
-                selectedItem = item
-                selectedButton = button
-                currEquipment = equipment
-            }
-            
-            selectedButton?.style?.up = NinePatchDrawable(Textures.downNinePatch)
-            
-            EquipmentStructure.deleteButton.isVisible = (selectedButton != null)
-            EquipmentStructure.arrowButton.isVisible = (selectedButton != null && !isHeroEquipmentOnly)
-            EquipmentStructure.arrowButton.style.imageUp = when(equipment === heroEquipment)
-            {
-                true->TextureRegionDrawable(Textures.arrowRight)
-                false->TextureRegionDrawable(Textures.arrowLeft)
-            }
-            EquipmentStructure.arrowButton.style.imageDown = when(equipment === heroEquipment)
-            {
-                true->TextureRegionDrawable(Textures.arrowRight)
-                false->TextureRegionDrawable(Textures.arrowLeft)
-            }
-        }
-        
-        val table = if (equipment === heroEquipment) EquipmentStructure.heroOverlay
-        else EquipmentStructure.containerOverlay
-        
-        val itemRows = mutableListOf<HorizontalGroup>()
-        
-        for (i in 0 until EQUIPMENT_ROWS)
-        {
-            val itemRow = table.getChild(1 + i) as HorizontalGroup
-            itemRow.clear()
-            itemRows.add(itemRow)
-        }
-        
-        var itemCount = 0
-        
-        for (item in equipment.items)
-        {
-            when (item)
-            {
-                is MultiUseMapItem   ->
-                {
-                    val button = ItemsStructure.createItemWithHealthbar(100, item.durability, item.getTexture()) {}
-                    button.addListener(object : ClickListener()
-                                       {
-                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
-                                           {
-                                               onClick(item, button)
-                                           }
-                                       })
-                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
-                }
-                
-                is StackableMapItem  ->
-                {
-                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
-                    button.addListener(object : ClickListener()
-                                       {
-                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
-                                           {
-                                               onClick(item, button)
-                                           }
-                                       })
-                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
-                }
-                
-                is StackableSelfItem ->
-                {
-                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
-                    button.addListener(object : ClickListener()
-                                       {
-                                           override fun clicked(event : InputEvent?, x : Float, y : Float)
-                                           {
-                                               onClick(item, button)
-                                           }
-                                       })
-                    itemRows[itemCount / EQUIPMENT_ROW_MAX].addActor(button)
-                }
-            }
-            
-            itemCount++
-        }
-    
-        for (i in itemCount until equipment.maxItems)
-        {
-            val image = imageOf(Textures.down, Scaling.fill)
-            itemRows[i / EQUIPMENT_ROW_MAX].addActor(image)
-        }
-    
-        for (i in equipment.maxItems until EQUIPMENT_ROWS * EQUIPMENT_ROW_MAX)
-        {
-            val image = imageOf(Textures.disabled, Scaling.fill)
-            itemRows[i / EQUIPMENT_ROW_MAX].addActor(image)
-        }
-    }
-    
     init
     {
         // input processor
@@ -206,9 +74,18 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.inventory.addItem(Bow())
         World.hero.inventory.addItem(Staff())
         World.hero.inventory.addItem(Bomb())
+        World.hero.inventory.addItem(Explosive())
+        World.hero.inventory.addItem(Explosive())
+        World.hero.inventory.addItem(Explosive())
         World.hero.inventory.addItem(Apple())
         World.hero.inventory.addItem(Fish())
         World.hero.inventory.addItem(Mushroom())
+        World.hero.addSkill(LavaWalking)
+        World.hero.addSkill(Pull)
+        World.hero.addSkill(Invisibility)
+        World.hero.addSkill(Freeze)
+        World.hero.addSkill(Swap)
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         // state
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
@@ -290,9 +167,16 @@ object GameScreen : BaseScreen(), GestureListener
                                 !(state is State.combat.enemies.enemyAction && State.combat.enemies.enemyAction.currEnemy == entity)
                         )
                         {
-                            val tile = entity.getIdleTile()
+                            if (World.currentRoom.getFrozenEnemies().contains(entity))
+                            {
+                                Map.changeTile(MapLayer.entity, j, i, entity.getFreezeTile())
+                            } else
+                            {
+                                val tile = entity.getIdleTile()
+    
+                                Map.changeTile(MapLayer.entity, j, i, tile)
+                            }
                             
-                            Map.changeTile(MapLayer.entity, j, i, tile)
                         }
                     }
                 }
@@ -524,7 +408,12 @@ object GameScreen : BaseScreen(), GestureListener
         if (canBeInteractedWith)
         {
             val zoomChange = initialDistance / distance
-            changeCameraZoom(currZoom * zoomChange)
+            val zoomAfterChange = currZoom * zoomChange
+            if (zoomAfterChange in 0.25..0.5)
+            {
+                changeCameraZoom(currZoom * zoomChange)
+            }
+            
             
             return true
         }

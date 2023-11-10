@@ -2,14 +2,14 @@ package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
-import com.efm.entity.Entity
 import com.efm.entity.Interactive
 import com.efm.item.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.ui.gameScreen.EquipmentStructure
+import kotlin.random.Random
 
-class Chest : Entity, Interactive, Container
+class Chest(possibleItems : PossibleItems? = null, seed : Int = Random.nextInt()) : Interactive, Container
 {
     override val position = RoomPosition()
     override val items : MutableList<Item> = mutableListOf<Item>()
@@ -37,14 +37,18 @@ class Chest : Entity, Interactive, Container
     
     fun takeItemFromChest(item : Item)
     {
-        World.hero.inventory.addItem(item)
-        if (item is StackableItem && item.amount > 0)
+        moveItem(item, this, World.hero.inventory)
+    }
+    
+    init
+    {
+        if (possibleItems != null)
         {
-            // zostalo troche przedmiotu w skrzyni
-        }
-        else
-        {
-            items.remove(item)
+            val drawnItems = possibleItems.drawItems(seed)
+            for (item in drawnItems)
+            {
+                addItem(item)
+            }
         }
     }
 }

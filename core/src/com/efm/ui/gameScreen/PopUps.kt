@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.*
 import com.efm.screens.GameScreen
+import javax.swing.event.ChangeListener
 
 object PopUps
 {
@@ -15,13 +16,14 @@ object PopUps
     fun setBackgroundVisibility(boolean : Boolean)
     {
         GameScreen.canBeInteractedWith = boolean
+        
         RightStructure.setVisibility(boolean)
-        ItemsStructure.setVisibility(boolean)
-        if (!boolean)
-        {
-            LeftStructure.setVisibility(boolean)
-        }
     
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
+        ItemsStructure.setVisibility(boolean)
+        if(boolean) ItemsStructure.setWeaponDisplay()
+        
+        LeftStructure.setVisibility(false)
     }
     
     fun endTurn() : com.badlogic.gdx.scenes.scene2d.ui.Window

@@ -1,10 +1,9 @@
 package com.efm.room
 
 import com.badlogic.gdx.Gdx
-import com.efm.entity.*
-import com.efm.level.World
 import com.efm.Map
 import com.efm.MapLayer
+import com.efm.entity.*
 import com.efm.passage.Passage
 
 /**
@@ -20,6 +19,11 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         return x in 0 until widthInSpaces && y in 0 until heightInSpaces
     }
     
+    fun isPositionWithinBounds(pos : RoomPosition) : Boolean
+    {
+        return pos.x in 0 until widthInSpaces && pos.y in 0 until heightInSpaces
+    }
+    
     private var spaceArray = arrayOf<Array<Space?>>()
     private val spaceList = mutableListOf<Space>()
     
@@ -27,6 +31,9 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     private val characters = mutableListOf<Character>()
     private val enemies = mutableListOf<Enemy>()
     private val passages = mutableListOf<Passage>()
+    
+    private val entitiesToBeAdded = mutableListOf<Entity>()
+    private var enemiesThatCannotMove = mutableListOf<Enemy>()
     
     init
     {
@@ -50,6 +57,14 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         if (isPositionWithinBounds(x, y))
         {
             spaceArray[y][x] = null
+        }
+    }
+    
+    fun addSpaceAt(x : Int, y : Int, space : Space = Space(x, y))
+    {
+        if (isPositionWithinBounds(x, y))
+        {
+            spaceArray[y][x] = space
         }
     }
     
@@ -83,18 +98,23 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         }
     }
     
+    /** remove killed characters or replace them with corpses **/
     fun removeKilledCharacters()
     {
         val killedCharacters = mutableListOf<Character>()
+        val corpsesToAdd = mutableListOf<EnemyCorpse>()
         for (character in characters)
         {
             if (!character.alive)
             {
                 println(character)
+                character.onDeath()
                 killedCharacters.add(character)
                 if (character is Enemy)
                 {
                     character.healthBar.remove()
+                    val corpse = character.getCorpse()
+                    if (corpse != null) corpsesToAdd.add(corpse)
                     Map.changeTile(MapLayer.outline, character.position, null)
                 }
             }
@@ -102,6 +122,34 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         enemies.removeAll(killedCharacters)
         characters.removeAll(killedCharacters)
         entities.removeAll(killedCharacters)
+        for (corpse in corpsesToAdd) addEntityAt(corpse, corpse.position)
+    }
+    
+    /** adding entities to room can mess things up, so it happens in its own time **/
+    fun addEntityToBeAddedEntities(entity : Entity)
+    {
+        entitiesToBeAdded.add(entity)
+    }
+    
+    /** adding entities to room can mess things up, so it happens in its own time **/
+    fun addToBeAddedEntitiesToRoom()
+    {
+        for(entityToBeAdded in entitiesToBeAdded)
+        {
+            var isEntityAlreadyInPosition = false
+            for(entityAlreadyInRoom in entities)
+            {
+                if(entityAlreadyInRoom.position == entityToBeAdded.position)
+                {
+                    isEntityAlreadyInPosition = true
+                }
+            }
+            if(!isEntityAlreadyInPosition)
+            {
+                addEntity(entityToBeAdded)
+            }
+        }
+        entitiesToBeAdded.clear()
     }
     
     fun getSpace(x : Int, y : Int) : Space?
@@ -196,6 +244,8 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     fun removeEntity(entity : Entity)
     {
         entities.remove(entity)
+        if (entity is Character) characters.remove(entity)
+        if (entity is Enemy) enemies.remove(entity)
         getSpace(entity.position)?.clearEntity()
     }
     
@@ -203,5 +253,26 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     {
         enemies.forEach { if (it is Enemy) return true }
         return false
+    }
+    
+    fun freezeEnemy(enemy : Enemy)
+    {
+        for (entity in getEntities())
+        {
+            if (entity == enemy)
+            {
+                enemiesThatCannotMove.add(enemy)
+            }
+        }
+    }
+    
+    fun getFrozenEnemies() : MutableList<Enemy>
+    {
+        return enemiesThatCannotMove
+    }
+    
+    fun clearFrozenEnemiesList()
+    {
+        enemiesThatCannotMove.clear()
     }
 }

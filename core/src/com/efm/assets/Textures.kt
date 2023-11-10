@@ -22,6 +22,7 @@ object Textures
     val translucentQuarter = load("/backgrounds/translucent25percent.png")
     val translucentHalf = load("/backgrounds/translucent50percent.png")
     val translucentThreeQuarters = load("/backgrounds/translucent75percent.png")
+    val translucentThreeQuartersBlack = load("/backgrounds/translucent75percentBlack.png")
     val pauseBackground = load("/backgrounds/pauseBackground.png")
     
     val upNinePatch = NinePatch(up, 5, 5, 5, 5)
@@ -135,6 +136,21 @@ object Textures
     val mushroom = load("items/mushroom2.png")
     val potionSmall = load("items/potion1.png")
     val potionBig = load("items/potion1.png")
+    
+    // skills
+    
+    val barrel = load("abilities/barrel.png")
+    val freeze = load("abilities/freeze.png")
+    val grassHealing = load("abilities/grassHealing.png")
+    val invisibility = load("abilities/invisibility.png")
+    val jump = load("abilities/jump.png")
+    val lavawalking = load("abilities/lavawalking.png")
+    val pockets = load("abilities/pockets.png")
+    val pull = load("abilities/pull.png")
+    val push = load("abilities/push.png")
+    val shield = load("abilities/shield.png")
+    val swap = load("abilities/swapPlaces.png")
+    val waterwalking = load("abilities/waterwalking.png")
     
     private fun load(name : String) : Texture
     {

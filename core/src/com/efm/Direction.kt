@@ -27,6 +27,28 @@ enum class Direction4
         }
     }
     
+    fun nextInClockwise():Direction4
+    {
+        return when (this)
+        {
+            up    -> right
+            right -> down
+            down  -> left
+            left  -> up
+        }
+    }
+    
+    fun nextInCounterclockwise():Direction4
+    {
+        return when (this)
+        {
+            up    -> left
+            right -> up
+            down  -> right
+            left  -> down
+        }
+    }
+    
     fun toDirection8() : Direction8
     {
         return when (this)
@@ -55,6 +77,36 @@ enum class Direction8
             downLeft  -> upRight
             left      -> right
             upLeft    -> downRight
+        }
+    }
+    
+    fun nextInClockwise() : Direction8
+    {
+        return when (this)
+        {
+            up        -> upRight
+            upRight   -> right
+            right     -> downRight
+            downRight -> down
+            down      -> downLeft
+            downLeft  -> left
+            left      -> upLeft
+            upLeft    -> up
+        }
+    }
+    
+    fun nextInCounterclockwise() : Direction8
+    {
+        return when (this)
+        {
+            up        -> upLeft
+            upRight   -> up
+            right     -> upRight
+            downRight -> right
+            down      -> downRight
+            downLeft  -> down
+            left      -> downLeft
+            upLeft    -> left
         }
     }
     

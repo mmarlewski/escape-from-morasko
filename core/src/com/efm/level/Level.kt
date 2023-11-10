@@ -1,9 +1,11 @@
 package com.efm.level
 
+import com.efm.Direction4
+import com.efm.entities.exits.ExitImplementation
+import com.efm.entities.exits.ExitStyle
 import com.efm.passage.LevelPassage
 import com.efm.passage.RoomPassage
-import com.efm.room.Room
-import com.efm.room.RoomPosition
+import com.efm.room.*
 
 /**
  * Consists of Rooms connected with Passages. Part of a world.
@@ -57,5 +59,27 @@ class Level(
     fun changeStartingPosition(position : RoomPosition)
     {
         startingPosition.set(position)
+    }
+    
+    fun addRoomPassage(
+            roomA : Room,
+            positionA : RoomPosition,
+            directionA : Direction4,
+            roomB : Room,
+            positionB : RoomPosition,
+            exitStyle : ExitStyle = ExitStyle.stone,
+            isActive : Boolean = true,
+            exitABase : Base? = null,
+            exitBBase : Base? = null
+                      )
+    {
+        val passage = RoomPassage(roomA, positionA, directionA, roomB, positionB, isActive = isActive)
+        val exitA = ExitImplementation(exitStyle, passage, passage.directionA)
+        val exitB = ExitImplementation(exitStyle, passage, passage.directionB)
+        if (exitABase != null) passage.roomA.changeBaseAt(exitABase, passage.positionA)
+        passage.roomA.replaceEntityAt(exitA, passage.positionA)
+        if (exitBBase != null) passage.roomB.changeBaseAt(exitBBase, passage.positionB)
+        passage.roomB.replaceEntityAt(exitB, passage.positionB)
+        this.roomPassages.add(passage)
     }
 }

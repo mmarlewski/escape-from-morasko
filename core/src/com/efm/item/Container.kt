@@ -1,7 +1,12 @@
 package com.efm.item
 
+import com.badlogic.gdx.Gdx
 import kotlin.math.min
 
+/**
+ * Holds items.
+ * Sorting items is done automatically after adding or removing item from items
+ */
 interface Container
 {
     val items : MutableList<Item>
@@ -12,30 +17,22 @@ interface Container
         return items.filter { it::class == item::class }
     }
     
+    /** If item is Stackable, adds max possible amount to Container and removes from item.
+     *  If still necessary and possible, adds a copy of item to a new slot and sets amount to 0 is item is Stackable.
+     * */
     fun addItem(item : Item)
     {
-        if (item is StackableItem)
-        {
-            addStackableItem(item)
-        }
-        else
-        {
-            try
-            {
-                addItemToNewSlot(item)
-            } catch (e : ContainerFullException)
-            {
-                // nie mozna zabrac dodac przedmiotu
-            }
-        }
+        if (item is StackableItem) addStackableItem(item)
+        else addItemToNewSlot(item)
     }
     
     fun removeItem(item : Item)
     {
         items.remove(item)
+        sortItems()
     }
     
-    fun sortItems()
+    private fun sortItems()
     {
         items.sortBy { it.javaClass.canonicalName }
     }
@@ -44,37 +41,60 @@ interface Container
     {
         if (items.size < maxItems)
         {
-            items.add(item)
+            // add a copy
+            val copiedItem = item.clone()
+            items.add(copiedItem)
+            sortItems()
+            // added all of item to new slot
+            // means original should have 0 amount
+            if (item is StackableItem) item.amount = 0
         }
         else throw ContainerFullException("Cannot add any more items to container.")
     }
     
     private fun addStackableItem(item : StackableItem)
     {
-        // jezeli sa niepelne stacki w skrzynce
+        // check all stacks in container
         val stacksInContainer = findAllStacks(item)
         for (stackInContainer in stacksInContainer)
         {
+            // if you can add to stack
             if (stackInContainer is StackableItem && stackInContainer.amountPossibleToAdd() > 0)
             {
-                // dopelnij stack
+                // fill stack
                 val amountToAdd = min(stackInContainer.amountPossibleToAdd(), item.amount)
                 stackInContainer.add(amountToAdd)
-                // zmniejsz liczbe przedmiotow do dodania
+                // lower amount of item to be added
                 item.remove(amountToAdd)
             }
         }
-        // jezeli dalej sa przedmioty do dodania sproboj dodac do nowego slotu
+        // if there are still items to be added add them to new slot
         if (item.amount > 0)
         {
-            try
-            {
-                addItemToNewSlot(item)
-            } catch (e : ContainerFullException)
-            {
-                // nie mozna zabrac dodac przedmiotu
-            }
+            addItemToNewSlot(item)
         }
+    }
+}
+
+fun moveItem(item : Item, from : Container, to : Container)
+{
+    try
+    {
+        to.addItem(item)
+        if (item is StackableItem && item.amount > 0)
+        {
+            // some of item is left in container "from"
+            // do not remove item from container "from"
+        }
+        else
+        {
+            // all of item has been moved to container "to"
+            // remove item from container "from"
+            from.removeItem(item)
+        }
+    } catch (e : ContainerFullException)
+    {
+        Gdx.app.log("moveItem", "Container \"to\" is full. Some of item is left in container \"from\"")
     }
 }
 

@@ -5,6 +5,8 @@ import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.skill.ActiveSkill
+import com.efm.ui.gameScreen.ItemsStructure
 import com.efm.ui.gameScreen.RightStructure
 
 fun updateCombatEnemiesEnemyUnselected(currState : State.combat.enemies.enemyUnselected) : State
@@ -41,7 +43,7 @@ fun updateCombatEnemiesEnemySelected(currState : State.combat.enemies.enemySelec
     if (!Animating.isAnimating())
     {
         val currEnemy = currState.currEnemy
-        if (currEnemy != null)
+        if (currEnemy != null && !World.currentRoom.getFrozenEnemies().contains(currEnemy))
         {
             Map.clearLayer(MapLayer.select)
             Map.clearLayer(MapLayer.outline)
@@ -66,6 +68,7 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
     if (!Animating.isAnimating())
     {
         World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         
@@ -86,7 +89,7 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
                 World.hero.regainAllAP()
                 GameScreen.focusCameraOnRoomPosition(World.hero.position)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
-                Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroOutlineGreen)
+                Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
                 
                 RightStructure.xButtonVisibility(true)
                 

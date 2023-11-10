@@ -1,9 +1,12 @@
+// @file:Suppress("unused")
+
 package com.efm.assets
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile
+import com.efm.Direction4
 import com.efm.Direction8
 
 object Tiles
@@ -16,9 +19,9 @@ object Tiles
     val metalFloor = load("metalFloor.png")
     val rockFloor = load("rockFloor.png")
     val grassFloor = load("grassFloor.png")
-    val lavaPool = load("lavaPool.png")
-    val waterPool = load("waterPool.png")
-    val waterOctopus = load("waterOctopus.png")
+    val lavaFloor = load("lavaFloor.png")
+    val waterFloor = load("waterFloor.png")
+    val waterFloorOctopus = load("waterFloorOctopus.png")
     
     // select
     
@@ -146,11 +149,24 @@ object Tiles
     
     // hero
     
-    val hero = load("hero.png")
-    val heroOutlineYellow = load("heroOutlineYellow.png")
-    val heroOutlineGreen = load("heroOutlineGreen.png")
+    val heroIdle1 = load("heroIdle1.png")
+    val heroIdle1Invisible = load("heroIdle1Invisible.png")
+    val heroVines = load("heroVines.png")
+    val heroVinesInvisible = load("heroVinesInvisible.png")
+    val heroIdle1OutlineYellow = load("heroIdle1OutlineYellow.png")
+    val heroIdle1OutlineGreen = load("heroIdle1OutlineGreen.png")
+    val heroMove1 = load("heroMove1.png")
+    val heroMove1Invisible = load("heroMove1Invisible.png")
+    val heroMove2 = load("heroMove2.png")
+    val heroMove2Invisible = load("heroMove2Invisible.png")
+    val heroMove3 = load("heroMove3.png")
+    val heroMove3Invisible = load("heroMove3Invisible.png")
+    val heroMove4 = load("heroMove4.png")
+    val heroMove4Invisible = load("heroMove4Invisible.png")
     val heroCorpse = load("heroCorpse.png")
     val heroCorpseOutlineYellow = load("heroCorpseOutlineYellow.png")
+    // for `map` tests
+    val hero = heroIdle1
     
     // mushroom
     
@@ -196,6 +212,7 @@ object Tiles
     val batAttack = load("batAttack.png")
     val batCorpse = load("batCorpse.png")
     val batCorpseOutlineYellow = load("batCorpseOutlineYellow.png")
+    val batTeeth = load("batTeeth.png")
     
     // boar
     
@@ -329,8 +346,16 @@ object Tiles
     val dragonMove1 = load("dragonMove1.png")
     val dragonMove2 = load("dragonMove2.png")
     val dragonAttack = load("dragonAttack.png")
+    val dragonProjectile = load("dragonProjectile.png")
     val dragonCorpse = load("dragonCorpse.png")
     val dragonCorpseOutlineYellow = load("dragonCorpseOutlineYellow.png")
+    
+    val dragonSittingIdle1 = load("dragonSittingIdle1.png")
+    val dragonSittingIdle1OutlineYellow = load("dragonSittingIdle1OutlineYellow.png")
+    val dragonSittingIdle1OutlineRed = load("dragonSittingIdle1OutlineRed.png")
+    val dragonSittingIdle2 = load("dragonSittingIdle2.png")
+    val dragonSittingIdle2OutlineYellow = load("dragonSittingIdle2OutlineYellow.png")
+    val dragonSittingAttack = load("dragonSittingAttack.png")
     
     // goblin
     
@@ -656,6 +681,32 @@ object Tiles
         }
     }
     
+    // fire
+    
+    val fireUp = load("fireUp.png")
+    val fireUpRight = load("fireUpRight.png")
+    val fireRight = load("fireRight.png")
+    val fireDownRight = load("fireDownRight.png")
+    val fireDown = load("fireDown.png")
+    val fireDownLeft = load("fireDownLeft.png")
+    val fireLeft = load("fireLeft.png")
+    val fireUpLeft = load("fireUpLeft.png")
+    
+    fun getFireTile(direction : Direction8) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction8.up        -> fireUp
+            Direction8.upRight   -> fireUpRight
+            Direction8.right     -> fireRight
+            Direction8.downRight -> fireDownRight
+            Direction8.down      -> fireDown
+            Direction8.downLeft  -> fireDownLeft
+            Direction8.left      -> fireLeft
+            Direction8.upLeft    -> fireUpLeft
+        }
+    }
+    
     // beam
     
     val beamVertical1 = load("beamVertical1.png")
@@ -676,6 +727,39 @@ object Tiles
     val shuriken = load("shuriken.png")
     val bloodSplatter = load("blood_splatter_32x32.png")
     
+    // pull
+    
+    val tentacleHookUp = load("tentacleHookUp.png")
+    val tentacleHookEndUp = load("tentacleHookEndUp.png")
+    val tentacleHookRight = load("tentacleHookRight.png")
+    val tentacleHookEndRight = load("tentacleHookEndRight.png")
+    val tentacleHookDown = load("tentacleHookDown.png")
+    val tentacleHookEndDown = load("tentacleHookEndDown.png")
+    val tentacleHookLeft = load("tentacleHookLeft.png")
+    val tentacleHookEndLeft = load("tentacleHookEndLeft.png")
+    
+    fun getTentacleHookTile(direction : Direction4) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction4.up    -> tentacleHookUp
+            Direction4.right -> tentacleHookRight
+            Direction4.down  -> tentacleHookDown
+            Direction4.left  -> tentacleHookLeft
+        }
+    }
+    
+    fun getTentacleHookEndTile(direction : Direction4) : StaticTiledMapTile
+    {
+        return when (direction)
+        {
+            Direction4.up    -> tentacleHookEndUp
+            Direction4.right -> tentacleHookEndRight
+            Direction4.down  -> tentacleHookEndDown
+            Direction4.left  -> tentacleHookEndLeft
+        }
+    }
+    
     // new walls
     val walls_folder_name = "new_walls/"
     
@@ -684,6 +768,7 @@ object Tiles
     // cobblestoneLightWall
     val cobblestoneLightWallDown = load(walls_folder_name + "cobblestoneLightWallDown.png")
     val cobblestoneLightWallRight = load(walls_folder_name + "cobblestoneLightWallRight.png")
+    val cobblestoneLightWallRightDown = load(walls_folder_name + "cobblestoneLightWallRightDown.png")
     // cobblestoneDarkWall
     val cobblestoneDarkWallDown = load(walls_folder_name + "cobblestoneDarkWallDown.png")
     val cobblestoneDarkWallRight = load(walls_folder_name + "cobblestoneDarkWallRight.png")
@@ -742,7 +827,13 @@ object Tiles
     val tiledFloor1Blood2 = load(tiled_floor_tiles_folder_name + "tiled_floor_1_blood_2.png")
     val tiledFloor1Blood3 = load(tiled_floor_tiles_folder_name + "tiled_floor_1_blood_3.png")
     val tiledFloor2 = load(tiled_floor_tiles_folder_name + "tiled_floor_2.png")
+    val tiledFloor2x = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_2.png", x = true)
+    val tiledFloor2y = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_2.png", y = true)
+    val tiledFloor2xy = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_2.png", true, true)
     val tiledFloor3 = load(tiled_floor_tiles_folder_name + "tiled_floor_3.png")
+    val tiledFloor3x = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_3.png", x = true)
+    val tiledFloor3y = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_3.png", y = true)
+    val tiledFloor3xy = loadFlipped(tiled_floor_tiles_folder_name + "tiled_floor_3.png", x = true, y = true)
     
     // wooden floor tiles
     val wooden_floor_tiles_folder_name = "new_floor_tiles/wooden/"
@@ -808,5 +899,12 @@ object Tiles
         val texture = assetManager.get(filePath, Texture::class.java)
         val tile = StaticTiledMapTile(TextureRegion(texture))
         return tile
+    }
+    
+    fun loadFlipped(name : String, x : Boolean = false, y : Boolean = false) : StaticTiledMapTile
+    {
+        val filePath = "tiles/$name"
+        val texture = assetManager.get(filePath, Texture::class.java)
+        return StaticTiledMapTile(TextureRegion(texture).apply { flip(x, y) })
     }
 }

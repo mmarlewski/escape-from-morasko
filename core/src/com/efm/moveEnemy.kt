@@ -6,7 +6,7 @@ import com.efm.room.Space
 import com.efm.screens.GameScreen
 import com.efm.entity.Enemy
 
-fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : List<Space>, enemy : Enemy)
+fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : List<Space?>, enemy : Enemy)
 {
     val action = {
         enemy.position.set(endPosition)
@@ -23,14 +23,17 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
         val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
         val moveTile = enemy.getMoveTile(n)
         
-        animations += Animation.moveTileWithCameraFocus(
-                moveTile,
-                prevMovePosition.copy(),
-                space.position.copy(),
-                0.1f
-                                                       )
-        animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
-        prevMovePosition.set(space.position)
+        if (space != null)
+        {
+            animations += Animation.moveTileWithCameraFocus(
+                    moveTile,
+                    prevMovePosition.copy(),
+                    space.position.copy(),
+                    0.1f
+                                                           )
+            animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
+            prevMovePosition.set(space.position)
+        }
     }
     animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)

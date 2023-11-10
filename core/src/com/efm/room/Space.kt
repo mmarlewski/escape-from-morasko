@@ -35,8 +35,13 @@ class Space(x : Int, y : Int, private var base : Base? = null)
         base = newBase
     }
     
-    fun isTraversable() : Boolean
+    fun isTraversableFor(e: Entity) : Boolean
     {
-        return base?.isTreadable == true && entity == null
+        return base?.isTreadableFor?.invoke(e) == true && entity == null
+    }
+    
+    fun isTreadableFor(e: Entity) : Boolean
+    {
+        return base?.isTreadableFor?.invoke(e) == true
     }
 }

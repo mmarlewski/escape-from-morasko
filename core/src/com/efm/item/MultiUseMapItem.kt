@@ -9,6 +9,7 @@ import com.efm.room.RoomPosition
 interface MultiUseMapItem : Item
 {
     var durability : Int
+    var maxDurability : Int
     val durabilityUseCost : Int
     
     fun lowerDurability()
@@ -24,4 +25,11 @@ interface MultiUseMapItem : Item
     fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
     /** Logic executed after the use of Item has been confirmed */
     fun use(room : Room, targetPosition : RoomPosition)
+    
+    override fun clone() : MultiUseMapItem
+    {
+        val copy = Class.forName(this::class.qualifiedName).getConstructor().newInstance() as MultiUseMapItem
+        copy.durability = this.durability
+        return copy
+    }
 }

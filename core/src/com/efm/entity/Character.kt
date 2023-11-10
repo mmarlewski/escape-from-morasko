@@ -1,7 +1,9 @@
 package com.efm.entity
 
 /**
- * Character has its own turn.
+ * Character has its own turn. // old idea
+ * Now only Enemy has turns.
+ * Character has health and can be killed.
  */
 interface Character : Entity
 {
@@ -14,7 +16,7 @@ interface Character : Entity
         this.healthPoints -= dmgAmount
         if (this.healthPoints <= 0)
         {
-            killCharacter()
+            this.alive = false
         }
     }
     
@@ -27,8 +29,7 @@ interface Character : Entity
         }
     }
     
-    fun killCharacter()
+    fun onDeath()
     {
-        this.alive = false
     }
 }
