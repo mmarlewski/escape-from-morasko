@@ -9,8 +9,7 @@ import com.efm.Map
 import com.efm.assets.Textures
 import com.efm.assets.Tiles
 import com.efm.level.World
-import com.efm.room.RoomPosition
-import com.efm.room.Space
+import com.efm.room.*
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
 
@@ -195,4 +194,55 @@ interface Enemy : Character
     {
         isFrozen = value
     }
+    
+    fun roam()
+    {
+        for (i in 0..stepsInOneTurn)
+        {
+            val moveTo = randomWalk()
+            val path = PathFinding.findPathInRoomForEntity(position, moveTo, World.currentRoom, this)
+            if (path != null) {
+                moveEnemy(position, moveTo, path, this)
+            }
+        }
+    }
+    
+    fun randomWalk() : RoomPosition
+    {
+        var possibleSteps = mutableListOf<RoomPosition>()
+        var pos = RoomPosition(position.x - 1, position.y - 1)
+        var space = World.currentRoom.getSpace(pos)
+        if (space != null) {
+            if (space.isTraversableFor(this) && space.getEntity() == null)
+            {
+                possibleSteps.add(pos)
+            }
+        }
+        pos = RoomPosition(position.x - 1, position.y + 1)
+        space = World.currentRoom.getSpace(pos)
+        if (space != null) {
+            if (space.isTraversableFor(this) && space.getEntity() == null)
+            {
+                possibleSteps.add(pos)
+            }
+        }
+        pos = RoomPosition(position.x + 1, position.y - 1)
+        space = World.currentRoom.getSpace(pos)
+        if (space != null) {
+            if (space.isTraversableFor(this) && space.getEntity() == null)
+            {
+                possibleSteps.add(pos)
+            }
+        }
+        pos = RoomPosition(position.x + 1, position.y + 1)
+        space = World.currentRoom.getSpace(pos)
+        if (space != null) {
+            if (space.isTraversableFor(this) && space.getEntity() == null)
+            {
+                possibleSteps.add(pos)
+            }
+        }
+        return possibleSteps.random()
+    }
+    
 }

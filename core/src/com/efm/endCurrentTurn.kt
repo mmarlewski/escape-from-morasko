@@ -25,6 +25,10 @@ fun endCurrentTurn()
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                 })
             }
+            for (enemy in World.currentRoom.getEnemies())
+            {
+                enemy.roam()
+            }
         }
         
         is State.combat.hero ->
