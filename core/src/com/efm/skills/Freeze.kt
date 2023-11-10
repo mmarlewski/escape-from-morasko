@@ -44,7 +44,7 @@ object Freeze : ActiveSkill(BodyPart.head, 1, 3, Textures.freeze)
             {
                 if (entity is Enemy)
                 {
-                    room.freezeEnemy(entity)
+                    entity.setIsFrozen(true)
                 }
             }
         }

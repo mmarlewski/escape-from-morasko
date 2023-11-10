@@ -33,7 +33,6 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     private val passages = mutableListOf<Passage>()
     
     private val entitiesToBeAdded = mutableListOf<Entity>()
-    private var enemiesThatCannotMove = mutableListOf<Enemy>()
     
     init
     {
@@ -253,26 +252,5 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     {
         enemies.forEach { if (it is Enemy) return true }
         return false
-    }
-    
-    fun freezeEnemy(enemy : Enemy)
-    {
-        for (entity in getEntities())
-        {
-            if (entity == enemy)
-            {
-                enemiesThatCannotMove.add(enemy)
-            }
-        }
-    }
-    
-    fun getFrozenEnemies() : MutableList<Enemy>
-    {
-        return enemiesThatCannotMove
-    }
-    
-    fun clearFrozenEnemiesList()
-    {
-        enemiesThatCannotMove.clear()
     }
 }

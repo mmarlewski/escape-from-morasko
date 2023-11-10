@@ -27,6 +27,7 @@ class BossDragon : Entity, Enemy
     override lateinit var healthStack : Stack
     var isSitting = true
     var count = 0
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -224,91 +225,99 @@ class BossDragon : Entity, Enemy
     
     override fun performTurn()
     {
-        val doNothing = 0
-        val turnTileIntoLava = 1
-        val attackHero = 2
-        val goSitting = 3
-        val goFlying = 4
-        
-        var decision = doNothing
-        
-        if (isSitting)
+        if (!isFrozen)
         {
-            if (count >= 5)
+            val doNothing = 0
+            val turnTileIntoLava = 1
+            val attackHero = 2
+            val goSitting = 3
+            val goFlying = 4
+    
+            var decision = doNothing
+    
+            if (isSitting)
             {
-                count = 0
-                decision = goFlying
-            }
-            else
-            {
-                count++
-                decision = turnTileIntoLava
-            }
-        }
-        else
-        {
-            if (count >= 5)
-            {
-                count = 0
-                decision = goSitting
-            }
-            else
-            {
-                count++
-                decision = attackHero
-            }
-        }
-        
-        when (decision)
-        {
-            turnTileIntoLava ->
-            {
-                val attackAreaPositions = getSquareAreaPositions(position, attackRange)
-                val validAttackAreaPositions = attackAreaPositions.filter {
-                    val space = World.currentRoom.getSpace(it)
-                    val entity = space?.getEntity()
-                    val base = space?.getBase()
-                    space != null && entity == null && base != Base.lava
-                }
-                val tilePosition = validAttackAreaPositions.random()
-                turnTileIntoLava(tilePosition)
-            }
-            
-            attackHero       ->
-            {
-                val attackAreaPositions = getSquareAreaPositions(position, attackRange)
-                
-                if (World.hero.position in attackAreaPositions)
+                if (count >= 5)
                 {
-                    breatheFire(World.hero.position)
+                    count = 0
+                    decision = goFlying
                 }
                 else
                 {
-                    val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-                    
-                    val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
-                    if (!stepsSpaces.isNullOrEmpty())
-                    {
-                        val stepsIndex = if (stepsSpaces.size == pathSpaces.size) stepsSpaces.size - 1 else stepsSpaces.size
-                        getMoveSound()?.let { playSoundOnce(it) }
-                        moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
-                    }
+                    count++
+                    decision = turnTileIntoLava
                 }
             }
-            
-            goSitting        ->
+            else
             {
-                isSitting = true
+                if (count >= 5)
+                {
+                    count = 0
+                    decision = goSitting
+                }
+                else
+                {
+                    count++
+                    decision = attackHero
+                }
             }
-            
-            goFlying         ->
+    
+            when (decision)
             {
-                isSitting = false
-            }
+                turnTileIntoLava ->
+                {
+                    val attackAreaPositions = getSquareAreaPositions(position, attackRange)
+                    val validAttackAreaPositions = attackAreaPositions.filter {
+                        val space = World.currentRoom.getSpace(it)
+                        val entity = space?.getEntity()
+                        val base = space?.getBase()
+                        space != null && entity == null && base != Base.lava
+                    }
+                    val tilePosition = validAttackAreaPositions.random()
+                    turnTileIntoLava(tilePosition)
+                }
+        
+                attackHero       ->
+                {
+                    val attackAreaPositions = getSquareAreaPositions(position, attackRange)
             
-            else             ->
-            {
+                    if (World.hero.position in attackAreaPositions)
+                    {
+                        breatheFire(World.hero.position)
+                    }
+                    else
+                    {
+                        val pathSpaces =
+                                PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+                
+                        val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
+                        if (!stepsSpaces.isNullOrEmpty())
+                        {
+                            val stepsIndex =
+                                    if (stepsSpaces.size == pathSpaces.size) stepsSpaces.size - 1 else stepsSpaces.size
+                            getMoveSound()?.let { playSoundOnce(it) }
+                            moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
+                        }
+                    }
+                }
+        
+                goSitting        ->
+                {
+                    isSitting = true
+                }
+        
+                goFlying         ->
+                {
+                    isSitting = false
+                }
+        
+                else             ->
+                {
+                }
             }
+        } else
+        {
+            isFrozen = false
         }
     }
     

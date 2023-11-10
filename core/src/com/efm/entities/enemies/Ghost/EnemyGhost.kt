@@ -33,6 +33,7 @@ class EnemyGhost(
     
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     private val maxTurnsUntilTryToDisappear : Int = 4
     private var turnsUntilTryToDisappear : Int = maxTurnsUntilTryToDisappear
@@ -130,35 +131,41 @@ class EnemyGhost(
     
     override fun performTurn()
     {
-        Gdx.app.log("EnemyGhost", "perform turn")
-        
-        val doNothing = -1
-        val tryToDisappear = 0
-        val attackThenRunAwayFromHero = 1
-        val runAwayFromHero = 2
-        val wanderAroundInAStraightLine = 3
-        
-        val decision = if (ghostsKnowsAboutHero())
+        if (!isFrozen)
         {
-            if (turnsUntilTryToDisappear <= 0) tryToDisappear
-            else if (heroIsInAttackRange()) attackThenRunAwayFromHero
-            else runAwayFromHero
-        }
-        else    // currently performTurn() is called only in combat, so this is not reachable
+            Gdx.app.log("EnemyGhost", "perform turn")
+    
+            val doNothing = -1
+            val tryToDisappear = 0
+            val attackThenRunAwayFromHero = 1
+            val runAwayFromHero = 2
+            val wanderAroundInAStraightLine = 3
+    
+            val decision = if (ghostsKnowsAboutHero())
+            {
+                if (turnsUntilTryToDisappear <= 0) tryToDisappear
+                else if (heroIsInAttackRange()) attackThenRunAwayFromHero
+                else runAwayFromHero
+            }
+            else    // currently performTurn() is called only in combat, so this is not reachable
+            {
+                if (generator.nextFloat() >= 0.5) wanderAroundInAStraightLine
+                else doNothing
+            }
+    
+            when (decision)
+            {
+                tryToDisappear              -> tryToDisappear()
+                attackThenRunAwayFromHero   -> attackThenRunAwayFromHero()
+                runAwayFromHero             -> runAwayFromHero()
+                wanderAroundInAStraightLine -> wanderAroundInAStraightLine()
+            }
+    
+            turnsUntilTryToDisappear--
+        } else
         {
-            if (generator.nextFloat() >= 0.5) wanderAroundInAStraightLine
-            else doNothing
+            isFrozen = false
         }
-        
-        when (decision)
-        {
-            tryToDisappear              -> tryToDisappear()
-            attackThenRunAwayFromHero   -> attackThenRunAwayFromHero()
-            runAwayFromHero             -> runAwayFromHero()
-            wanderAroundInAStraightLine -> wanderAroundInAStraightLine()
-        }
-        
-        turnsUntilTryToDisappear--
     }
     
     override fun enemyAttack()

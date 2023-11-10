@@ -23,6 +23,7 @@ class EnemyWizard : Enemy
     override val stepsInOneTurn = 5
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     val apDrain = 5
     
     override fun getTile() : TiledMapTile?

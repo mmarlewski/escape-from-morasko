@@ -84,7 +84,7 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.addSkill(Pull)
         World.hero.addSkill(Invisibility)
         World.hero.addSkill(Freeze)
-        World.hero.addSkill(Swap)
+        //World.hero.addSkill(Swap)
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         // state
@@ -167,15 +167,8 @@ object GameScreen : BaseScreen(), GestureListener
                                 !(state is State.combat.enemies.enemyAction && State.combat.enemies.enemyAction.currEnemy == entity)
                         )
                         {
-                            if (World.currentRoom.getFrozenEnemies().contains(entity))
-                            {
-                                Map.changeTile(MapLayer.entity, j, i, entity.getFreezeTile())
-                            } else
-                            {
-                                val tile = entity.getIdleTile()
-    
-                                Map.changeTile(MapLayer.entity, j, i, tile)
-                            }
+                            val tile = entity.getIdleTile()
+                            Map.changeTile(MapLayer.entity, j, i, tile)
                             
                         }
                     }

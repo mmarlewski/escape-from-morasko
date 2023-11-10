@@ -24,6 +24,7 @@ class BossNatureGolem : Entity, Enemy
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -116,67 +117,75 @@ class BossNatureGolem : Entity, Enemy
     
     override fun performTurn()
     {
-        var decision = -1
-        
-        val directPathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-        
-        var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
-        var minPathSpaces = directPathSpaces
-        
-        if (minPathSpaces == null)
+        if (!isFrozen)
         {
-            val squarePositions = getSquareAreaPositions(World.hero.position, 2)
-            for (squarePosition in squarePositions)
+            var decision = -1
+    
+            val directPathSpaces =
+                    PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+    
+            var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
+            var minPathSpaces = directPathSpaces
+    
+            if (minPathSpaces == null)
             {
-                val squareSpace = World.currentRoom.getSpace(squarePosition)
-                
-                if (squareSpace != null && squareSpace.isTraversableFor(this))
+                val squarePositions = getSquareAreaPositions(World.hero.position, 2)
+                for (squarePosition in squarePositions)
                 {
-                    val pathSpaces = PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom,this)
-                    
-                    if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                    val squareSpace = World.currentRoom.getSpace(squarePosition)
+            
+                    if (squareSpace != null && squareSpace.isTraversableFor(this))
                     {
-                        minPathLength = pathSpaces.size
-                        minPathSpaces = pathSpaces
+                        val pathSpaces =
+                                PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom, this)
+                
+                        if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                        {
+                            minPathLength = pathSpaces.size
+                            minPathSpaces = pathSpaces
+                        }
                     }
                 }
             }
-        }
-        
-        for (pos in getSquareAreaPositions(position, attackRange))
-        {
-            if (pos == World.hero.position)
+    
+            for (pos in getSquareAreaPositions(position, attackRange))
             {
-                decision = 0
-            }
-        }
-        
-        if (decision != 0)
-        {
-            if (minPathSpaces != null)
-            {
-                val pathForThisTurn = minPathSpaces.take(stepsInOneTurn + 1)
-                decision = 1
-                
-                // Replace the tiles that golem goes through in this turn
-                for (space in pathForThisTurn)
+                if (pos == World.hero.position)
                 {
-                    replaceTileWithGrass(space.position)
+                    decision = 0
                 }
             }
-        }
-        
-        when (decision)
-        {
-            0 ->
+    
+            if (decision != 0)
             {
-                enemyAttack()
-            }
+                if (minPathSpaces != null)
+                {
+                    val pathForThisTurn = minPathSpaces.take(stepsInOneTurn + 1)
+                    decision = 1
             
-            1 ->
-            {
-                moveTowardsHero(minPathSpaces)
+                    // Replace the tiles that golem goes through in this turn
+                    for (space in pathForThisTurn)
+                    {
+                        replaceTileWithGrass(space.position)
+                    }
+                }
             }
+    
+            when (decision)
+            {
+                0 ->
+                {
+                    enemyAttack()
+                }
+        
+                1 ->
+                {
+                    moveTowardsHero(minPathSpaces)
+                }
+            }
+        } else
+        {
+            isFrozen = false
         }
     }
     

@@ -27,6 +27,7 @@ class EnemyBoar(
     
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile = Tiles.boarIdle1
     
@@ -69,43 +70,49 @@ class EnemyBoar(
     
     override fun performTurn()
     {
-        Gdx.app.log("EnemyBoar", "perform turn")
-    
-        val doNothing = -1
-        val justAttack = 0
-        val chargeThenAttack = 1
-        val moveThenAttack = 2
-    
-        var decision = doNothing
-    
-        val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-        for (pos in getSquareAreaPositions(position, attackRange))
+        if (!isFrozen)
         {
-            // boar attacks only in a straight line
-            if ((pos.x == position.x || pos.y == position.y) && (pos == World.hero.position))
+            Gdx.app.log("EnemyBoar", "perform turn")
+    
+            val doNothing = -1
+            val justAttack = 0
+            val chargeThenAttack = 1
+            val moveThenAttack = 2
+    
+            var decision = doNothing
+    
+            val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+            for (pos in getSquareAreaPositions(position, attackRange))
             {
-                // there are spaces to charge
-                if (kotlin.math.abs(pos.x - position.x) > 1 || kotlin.math.abs(pos.y - position.y) > 1)
+                // boar attacks only in a straight line
+                if ((pos.x == position.x || pos.y == position.y) && (pos == World.hero.position))
                 {
-                    decision = chargeThenAttack
-                }
-                // Boar is standing next to Hero
-                else
-                {
-                    decision = justAttack
+                    // there are spaces to charge
+                    if (kotlin.math.abs(pos.x - position.x) > 1 || kotlin.math.abs(pos.y - position.y) > 1)
+                    {
+                        decision = chargeThenAttack
+                    }
+                    // Boar is standing next to Hero
+                    else
+                    {
+                        decision = justAttack
+                    }
                 }
             }
-        }
-        if (decision == doNothing && pathSpaces != null)
-        {
-            decision = moveThenAttack
-        }
+            if (decision == doNothing && pathSpaces != null)
+            {
+                decision = moveThenAttack
+            }
     
-        when (decision)
+            when (decision)
+            {
+                justAttack       -> enemyAttack()
+                chargeThenAttack -> chargeThenAttack()
+                moveThenAttack   -> moveThenAttack()
+            }
+        } else
         {
-            justAttack       -> enemyAttack()
-            chargeThenAttack -> chargeThenAttack()
-            moveThenAttack   -> moveThenAttack()
+            isFrozen = false
         }
     }
     

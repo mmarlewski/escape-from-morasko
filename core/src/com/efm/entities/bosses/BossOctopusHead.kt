@@ -30,6 +30,7 @@ class BossOctopusHead : Entity, Enemy
     var showHeadIndefinitely = false
     var currTentacleNum = 0
     val tentacles = mutableListOf<BossOctopusTentacle>()
+    override var isFrozen = false
     
     fun addTentacle(newTentacle : BossOctopusTentacle)
     {
@@ -120,46 +121,52 @@ class BossOctopusHead : Entity, Enemy
     
     override fun performTurn()
     {
-        val tentaclesToRemove = mutableListOf<BossOctopusTentacle>()
-        for (tentacle in tentacles)
+        if (!isFrozen)
         {
-            if (!tentacle.alive)
+            val tentaclesToRemove = mutableListOf<BossOctopusTentacle>()
+            for (tentacle in tentacles)
             {
-                tentaclesToRemove.add(tentacle)
+                if (!tentacle.alive)
+                {
+                    tentaclesToRemove.add(tentacle)
+                }
             }
-        }
-        tentacles.removeAll(tentaclesToRemove)
-        
-        if (currTentacleNum > tentacles.size)
+            tentacles.removeAll(tentaclesToRemove)
+    
+            if (currTentacleNum > tentacles.size)
+            {
+                currTentacleNum = tentacles.size
+                showHeadNextTurn = true
+                if (currTentacleNum == 0)
+                {
+                    showHeadIndefinitely = true
+                }
+            }
+    
+            if (isShowingHead)
+            {
+                if (!showHeadIndefinitely)
+                {
+                    playSoundOnce(Sounds.octopusHeadSubmerge)
+                    World.currentRoom.changeBaseAt(Base.waterOctopus, this.position)
+                    GameScreen.updateMapBaseLayer()
+                    isShowingHead = false
+                }
+            }
+            else
+            {
+                if (showHeadNextTurn)
+                {
+                    playSoundOnce(Sounds.octopusHeadEmerge)
+                    World.currentRoom.changeBaseAt(Base.water, this.position)
+                    GameScreen.updateMapBaseLayer()
+                    isShowingHead = true
+                    showHeadNextTurn = false
+                }
+            }
+        } else
         {
-            currTentacleNum = tentacles.size
-            showHeadNextTurn = true
-            if (currTentacleNum == 0)
-            {
-                showHeadIndefinitely = true
-            }
-        }
-        
-        if (isShowingHead)
-        {
-            if (!showHeadIndefinitely)
-            {
-                playSoundOnce(Sounds.octopusHeadSubmerge)
-                World.currentRoom.changeBaseAt(Base.waterOctopus, this.position)
-                GameScreen.updateMapBaseLayer()
-                isShowingHead = false
-            }
-        }
-        else
-        {
-            if (showHeadNextTurn)
-            {
-                playSoundOnce(Sounds.octopusHeadEmerge)
-                World.currentRoom.changeBaseAt(Base.water, this.position)
-                GameScreen.updateMapBaseLayer()
-                isShowingHead = true
-                showHeadNextTurn = false
-            }
+            isFrozen = false
         }
     }
     

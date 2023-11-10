@@ -498,6 +498,9 @@ object Tiles
     val explodingBarrelOutlineYellow = load("explodingBarrelOutlineYellow.png")
     val explodingBarrelExplosion = load("explodingBarrelExplosion.png")
     
+    // frozenEnemy
+    val frozenEnenmy = load("frozenEnemy.png")
+    
     // sword
     
     val swordUp = load("swordUp.png")

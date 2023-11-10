@@ -25,6 +25,7 @@ interface Enemy : Character
     val stepsInOneTurn : Int
     var healthBar : ProgressBar
     var healthStack : Stack
+    var isFrozen : Boolean
     
     fun getOutlineRedTile() : TiledMapTile?
     
@@ -32,7 +33,14 @@ interface Enemy : Character
     
     fun getIdleTile() : TiledMapTile?
     {
-        return getIdleTile(IdleAnimation.idleAnimationCount)
+        if (isFrozen)
+        {
+            return getFreezeTile()
+        } else
+        {
+            return getIdleTile(IdleAnimation.idleAnimationCount)
+        }
+        
     }
     
     fun getMoveTile(n : Int) : TiledMapTile?
@@ -41,66 +49,75 @@ interface Enemy : Character
     
     fun getFreezeTile() : TiledMapTile?
     {
-        return Tiles.fire
+        return Tiles.frozenEnenmy
     }
     
     fun getMoveSound() : Sound?
     
     fun performTurn()
     {
-        var decision = -1
-        
-        val directPathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-        
-        var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
-        var minPathSpaces = directPathSpaces
-        
-        if(minPathSpaces == null)
+        if (!isFrozen)
         {
-            val squarePositions = getSquareAreaPositions(World.hero.position, 2)
-            for (squarePosition in squarePositions)
+            var decision = -1
+    
+            val directPathSpaces =
+                    PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+    
+            var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
+            var minPathSpaces = directPathSpaces
+    
+            if (minPathSpaces == null)
             {
-                val squareSpace = World.currentRoom.getSpace(squarePosition)
-                
-                if(squareSpace!= null && squareSpace.isTraversableFor(this))
+                val squarePositions = getSquareAreaPositions(World.hero.position, 2)
+                for (squarePosition in squarePositions)
                 {
-                    val pathSpaces = PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom,this)
-                    
-                    if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                    val squareSpace = World.currentRoom.getSpace(squarePosition)
+            
+                    if (squareSpace != null && squareSpace.isTraversableFor(this))
                     {
-                        minPathLength = pathSpaces.size
-                        minPathSpaces = pathSpaces
+                        val pathSpaces =
+                                PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom, this)
+                
+                        if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                        {
+                            minPathLength = pathSpaces.size
+                            minPathSpaces = pathSpaces
+                        }
                     }
                 }
             }
-        }
+    
+            for (pos in getSquareAreaPositions(position, attackRange))
+            {
+                if (pos == World.hero.position)
+                {
+                    decision = 0
+                }
+            }
+            if (decision != 0)
+            {
+                if (minPathSpaces != null)
+                {
+                    decision = 1
+                }
+            }
+    
+            when (decision)
+            {
+                0 ->
+                {
+                    enemyAttack()
+                }
         
-        for (pos in getSquareAreaPositions(position, attackRange))
-        {
-            if (pos == World.hero.position)
-            {
-                decision = 0
+                1 ->
+                {
+                    moveTowardsHero(minPathSpaces)
+                }
             }
         }
-        if (decision != 0)
+        else
         {
-            if (minPathSpaces != null)
-            {
-                decision = 1
-            }
-        }
-        
-        when (decision)
-        {
-            0 ->
-            {
-                enemyAttack()
-            }
-            
-            1 ->
-            {
-                moveTowardsHero(minPathSpaces)
-            }
+            isFrozen = false
         }
     }
     
@@ -172,5 +189,10 @@ interface Enemy : Character
     fun getCorpse() : EnemyCorpse?
     {
         return null
+    }
+    
+    fun setIsFrozen(value : Boolean)
+    {
+        isFrozen = value
     }
 }

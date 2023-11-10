@@ -24,6 +24,7 @@ class EnemyRollingStone : Entity, Enemy
     override var stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     override fun getTile() : TiledMapTile?
     {
         return Tiles.rockIdle1
@@ -148,16 +149,22 @@ class EnemyRollingStone : Entity, Enemy
     
     override fun performTurn()
     {
-        val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-        if (checkIfHeroHasSameXorY(pathSpaces))
+        if (!isFrozen)
         {
-            this.stepsInOneTurn = 100
-            enemyAttack()
-            this.stepsInOneTurn = 3
-        }
-        else
+            val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+            if (checkIfHeroHasSameXorY(pathSpaces))
+            {
+                this.stepsInOneTurn = 100
+                enemyAttack()
+                this.stepsInOneTurn = 3
+            }
+            else
+            {
+                moveTowardsHero(pathSpaces)
+            }
+        } else
         {
-            moveTowardsHero(pathSpaces)
+            isFrozen = false
         }
     }
     

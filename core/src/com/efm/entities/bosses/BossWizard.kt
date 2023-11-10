@@ -25,6 +25,7 @@ class BossWizard : Entity, Enemy
     override val stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -75,18 +76,23 @@ class BossWizard : Entity, Enemy
     
     override fun performTurn()
     {
-        val pathToHero = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-        if(pathToHero != null && pathToHero.size < 4)
+        if (!isFrozen)
         {
-            areaOfEffectAttack()
-        }
-        else if (World.currentRoom.getEnemies().size <= 2)
-        {
-            summonMinions()
-        }
-        else
-        {
-            enemyAttack()
+            val pathToHero = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+            if (pathToHero != null && pathToHero.size < 4)
+            {
+                areaOfEffectAttack()
+            }
+            else if (World.currentRoom.getEnemies().size <= 2)
+            {
+                summonMinions()
+            }
+            else
+            {
+                enemyAttack()
+            }
+        } else {
+            isFrozen = false
         }
     }
     

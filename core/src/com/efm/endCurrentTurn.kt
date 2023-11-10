@@ -80,6 +80,5 @@ fun endCurrentTurn()
     
     World.hero.isVisible = true
     World.hero.setCanMoveToTrue()
-    World.currentRoom.clearFrozenEnemiesList()
     GameScreen.updateMapEntityLayer()
 }
