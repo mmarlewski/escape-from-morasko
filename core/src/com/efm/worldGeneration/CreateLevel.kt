@@ -1,7 +1,7 @@
 package com.efm.worldGeneration
 
 import com.efm.Direction4
-import com.efm.entities.StoneWall
+import com.efm.entities.walls.StoneWall
 import com.efm.level.Level
 import com.efm.room.*
 import kotlin.random.Random
