@@ -48,7 +48,7 @@ interface Enemy : Character
     
     fun getFreezeTile() : TiledMapTile?
     {
-        return Tiles.frozenEnenmy
+        return Tiles.frozenEnemy
     }
     
     fun getMoveSound() : Sound?

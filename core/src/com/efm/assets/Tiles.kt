@@ -503,7 +503,7 @@ object Tiles
     val explodingBarrelExplosion = load("explodingBarrelExplosion.png")
     
     // frozenEnemy
-    val frozenEnenmy = load("frozenEnemy.png")
+    val frozenEnemy = load("frozenEnemy.png")
     
     // sword
     
