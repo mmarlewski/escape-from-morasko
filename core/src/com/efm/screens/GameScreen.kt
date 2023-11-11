@@ -81,6 +81,7 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.inventory.addItem(Fish())
         World.hero.inventory.addItem(Mushroom())
         World.hero.addSkill(LavaWalking)
+        World.hero.addSkill(Push)
         World.hero.addSkill(Pull)
         World.hero.addSkill(Invisibility)
         World.hero.addSkill(Freeze)
