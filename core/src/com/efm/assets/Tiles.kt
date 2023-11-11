@@ -165,6 +165,10 @@ object Tiles
     val heroMove4Invisible = load("heroMove4Invisible.png")
     val heroCorpse = load("heroCorpse.png")
     val heroCorpseOutlineYellow = load("heroCorpseOutlineYellow.png")
+    val hpPlus = load("hpPlus.png")
+    val hpMinus = load("hpMinus.png")
+    val apPlus = load("apPlus.png")
+    val apMinus = load("apMinus.png")
     // for `map` tests
     val hero = heroIdle1
     

@@ -91,7 +91,7 @@ class EnemyWizard : Enemy
         
         animations += Animation.action { playSoundOnce(Sounds.wizardAttack) }
         animations += Animation.moveTileWithArch(projectileTile, position, World.hero.position, 1.0f, 1.0f)
-        animations += Animation.ascendTile(projectileTile, heroPosition.copy(), 0.5f, 0.1f)
+        animations += Animation.descendTile(Tiles.apMinus, heroPosition.copy(), 0.5f, 0.1f)
         animations += Animation.action {
             val attackedPosition = heroPosition
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)
