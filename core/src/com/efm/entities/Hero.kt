@@ -1,17 +1,14 @@
 package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
-import com.efm.IdleAnimation
 import com.efm.assets.Tiles
 import com.efm.entity.Character
 import com.efm.item.Container
 import com.efm.item.Item
-import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.skill.*
 import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
-import kotlin.random.Random
 
 /**
  * Hero has its own turn and is controlled by the player.

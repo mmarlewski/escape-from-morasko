@@ -1,6 +1,8 @@
 package com.efm.room
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.Map
 import com.efm.MapLayer
 import com.efm.entity.*
@@ -12,7 +14,7 @@ import com.efm.passage.Passage
  * @property spaceList List of all Spaces in the spacesArray.
  * @property characters List of Characters (Entities with a turn) inside the Room.
  */
-class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
+class Room(val name : String, var heightInSpaces : Int, var widthInSpaces : Int) : Json.Serializable
 {
     fun isPositionWithinBounds(x : Int, y : Int) : Boolean
     {
@@ -33,6 +35,8 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     private val passages = mutableListOf<Passage>()
     
     private val entitiesToBeAdded = mutableListOf<Entity>()
+    
+    constructor() : this("", 0, 0)
     
     init
     {
@@ -133,17 +137,17 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     /** adding entities to room can mess things up, so it happens in its own time **/
     fun addToBeAddedEntitiesToRoom()
     {
-        for(entityToBeAdded in entitiesToBeAdded)
+        for (entityToBeAdded in entitiesToBeAdded)
         {
             var isEntityAlreadyInPosition = false
-            for(entityAlreadyInRoom in entities)
+            for (entityAlreadyInRoom in entities)
             {
-                if(entityAlreadyInRoom.position == entityToBeAdded.position)
+                if (entityAlreadyInRoom.position == entityToBeAdded.position)
                 {
                     isEntityAlreadyInPosition = true
                 }
             }
-            if(!isEntityAlreadyInPosition)
+            if (!isEntityAlreadyInPosition)
             {
                 addEntity(entityToBeAdded)
             }
@@ -252,5 +256,70 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     {
         enemies.forEach { if (it is Enemy) return true }
         return false
+    }
+    
+    override fun write(json : Json?)
+    {
+        if (json != null)
+        {
+            json.writeValue("heightInSpaces", this.heightInSpaces)
+            json.writeValue("widthInSpaces", this.widthInSpaces)
+            json.writeValue("spaceList", this.spaceList)
+//            json.writeValue("entities", this.entities)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        if (json != null)
+        {
+            val jsonHeightInSpaces = json.readValue("heightInSpaces", Int::class.java, jsonData)
+            if (jsonHeightInSpaces != null) this.heightInSpaces = jsonHeightInSpaces
+            
+            val jsonWidthInSpaces = json.readValue("widthInSpaces", Int::class.java, jsonData)
+            if (jsonWidthInSpaces != null) this.widthInSpaces = jsonWidthInSpaces
+    
+            for (i in 0 until this.heightInSpaces)
+            {
+                var spaceRow = arrayOf<Space?>()
+        
+                for (j in 0 until this.widthInSpaces)
+                {
+                    spaceRow += Space(j, i)
+                }
+    
+                this.spaceArray += spaceRow
+            }
+            
+            val jsonSpaceList = json.readValue("spaceList", List::class.java, jsonData)
+            if (jsonSpaceList != null)
+            {
+                val spaceList = jsonSpaceList as? List<*>
+                if(spaceList != null)
+                {
+                    for(space in spaceList)
+                    {
+                        if(space is Space)
+                        {
+                            this.spaceList.add(space)
+                            this.spaceArray[space.position.y][space.position.x] = space
+                        }
+                    }
+                }
+            }
+    
+            val jsonEntities = json.readValue("entities", List::class.java, jsonData)
+            if (jsonEntities != null)
+            {
+                for (jsonEntity in jsonEntities)
+                {
+                    val entity = jsonEntity as? Entity
+                    if (entity != null) this.entities.add(entity)
+                }
+            }
+            
+            updateSpaceList()
+            updateSpacesEntities()
+        }
     }
 }

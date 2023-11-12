@@ -1,6 +1,7 @@
 package com.efm.level
 
 import com.efm.entities.Hero
+import com.efm.entity.Enemy
 import com.efm.passage.Passage
 import com.efm.room.Room
 
@@ -42,5 +43,40 @@ object World
         {
             currentRoom = newCurrentRoom
         }
+    }
+    
+    fun set(level :Level)
+    {
+        this.levels.clear()
+        this.levels.add(level)
+//        for(level in array)
+//        {
+//            this.levels.add(level)
+//        }
+        
+        for(lvl in this.levels)
+        {
+            for(room in lvl.getRooms())
+            {
+                for(entity in room.getEntities())
+                {
+                    when(entity)
+                    {
+                        is Enemy->
+                        {
+                            entity.createOwnHealthBar()
+                        }
+                    }
+                }
+                
+                room.updateSpacesEntities()
+            }
+        }
+        
+//        this.passages.clear()
+//        this.passages.addAll(newWorld.passages)
+//
+//        this.currentLevel = newWorld.currentLevel
+//        this.currentRoom = newWorld.currentRoom
     }
 }

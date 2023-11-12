@@ -12,19 +12,20 @@ object EscapeFromMorasko : Game()
     override fun create()
     {
         spriteBatch = SpriteBatch()
-    
-        //World.createWorldPrototypeTwo()
-        //World.createWorldBoarTest()
+
+//        World.createWorldPrototypeTwo()
+//        World.createWorldBoarTest()
+        
         World.createWorldPrototypeThree()
-        val startingLevel = World.getLevels().find { it.name == "1" }
-        if (startingLevel != null)
-        {
-            World.changeCurrentLevel(startingLevel)
-            World.changeCurrentRoom(startingLevel.getStartingRoom())
-            World.currentRoom.addEntityAt(World.hero, startingLevel.getStartingPosition())
-            World.currentRoom.updateSpacesEntities()
-        }
-    
+//        loadWorld()
+        val startingLevel = World.getLevels().find { it.name == "1" };startingLevel!!
+//        val startingLevel = World.getLevels().first()
+        
+        World.changeCurrentLevel(startingLevel)
+        World.changeCurrentRoom(startingLevel.getStartingRoom())
+        World.currentRoom.addEntityAt(World.hero, startingLevel.getStartingPosition())
+        World.currentRoom.updateSpacesEntities()
+        
         changeScreen(MenuScreen)
     }
     

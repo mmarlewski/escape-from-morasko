@@ -1,6 +1,8 @@
 package com.efm.room
 
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.Direction4
 import com.efm.Direction8
 
@@ -9,8 +11,10 @@ import com.efm.Direction8
  * @param x horizontal
  * @param y vertical
  */
-data class RoomPosition(var x : Int = 0, var y : Int = 0)
+data class RoomPosition(var x : Int = 0, var y : Int = 0) : Json.Serializable
 {
+    constructor() : this(0, 0)
+    
     fun set(newX : Int, newY : Int)
     {
         x = newX
@@ -69,6 +73,26 @@ data class RoomPosition(var x : Int = 0, var y : Int = 0)
             }
         }
         return result
+    }
+    
+    override fun write(json : Json?)
+    {
+        if (json != null)
+        {
+            json.writeValue("x", this.x)
+            json.writeValue("y", this.y)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        if (json != null)
+        {
+            val jsonX = json.readValue("x", Int::class.java, jsonData)
+            if (jsonX != null) this.x = jsonX
+            val jsonY = json.readValue("y", Int::class.java, jsonData)
+            if (jsonY != null) this.y = jsonY
+        }
     }
 }
 

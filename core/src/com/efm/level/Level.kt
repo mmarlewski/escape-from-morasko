@@ -1,5 +1,7 @@
 package com.efm.level
 
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.Direction4
 import com.efm.entities.exits.ExitImplementation
 import com.efm.entities.exits.ExitStyle
@@ -20,10 +22,12 @@ class Level(
         private val rooms : MutableList<Room> = mutableListOf(),
         private val roomPassages : MutableList<RoomPassage> = mutableListOf(),
         private val levelPassages : MutableList<LevelPassage> = mutableListOf()
-           )
+           ) : Json.Serializable
 {
     private lateinit var startingRoom : Room
     private val startingPosition = RoomPosition()
+    
+    constructor() : this("", mutableListOf(), mutableListOf(), mutableListOf())
     
     fun getRooms() : List<Room>
     {
@@ -81,5 +85,39 @@ class Level(
         if (exitBBase != null) passage.roomB.changeBaseAt(exitBBase, passage.positionB)
         passage.roomB.replaceEntityAt(exitB, passage.positionB)
         this.roomPassages.add(passage)
+    }
+    
+    override fun write(json : Json?)
+    {
+        if (json != null)
+        {
+            var startingRoomIndex = this.rooms.indexOf(this.startingRoom)
+            if (startingRoomIndex == -1) startingRoomIndex = 1
+            json.writeValue("startingRoomIndex", startingRoomIndex)
+            json.writeValue("startingPosition", this.startingPosition)
+            json.writeValue("rooms", this.rooms)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        if (json != null)
+        {
+            val jsonStartingPosition = json.readValue("startingPosition", RoomPosition::class.java, jsonData)
+            if (jsonStartingPosition is RoomPosition) this.startingPosition.set(jsonStartingPosition)
+            
+            val jsonRooms = json.readValue("rooms", List::class.java, jsonData)
+            if (jsonRooms != null)
+            {
+                for (jsonRoom in jsonRooms)
+                {
+                    val room = jsonRoom as? Room
+                    if (room != null) this.rooms.add(room)
+                }
+            }
+    
+            val jsonStartingRoomIndex = json.readValue("startingRoomIndex", Int::class.java, jsonData)
+            if (jsonStartingRoomIndex is Int) this.startingRoom = this.rooms[jsonStartingRoomIndex]
+        }
     }
 }
