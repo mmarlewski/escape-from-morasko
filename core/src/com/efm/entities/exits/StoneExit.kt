@@ -3,14 +3,12 @@ package com.efm.entities.exits
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.Direction4
 import com.efm.assets.Tiles
+import com.efm.entity.Entity
 import com.efm.passage.*
 import com.efm.room.RoomPosition
 
-class StoneExit(override val direction : Direction4, val passage : Passage) : Exit
+class StoneExit(dir : Direction4, pass : Passage?) : Exit(dir, pass)
 {
-    override val position = RoomPosition()
-    override val exitPassage = passage
-    
     override fun getTile() : TiledMapTile?
     {
         return when (passage)
@@ -34,7 +32,7 @@ class StoneExit(override val direction : Direction4, val passage : Passage) : Ex
             else            -> null
         }
     }
-
+    
     override fun getOutlineYellowTile(n : Int) : TiledMapTile?
     {
         return null
@@ -51,7 +49,7 @@ class StoneExit(override val direction : Direction4, val passage : Passage) : Ex
                 Direction4.down  -> Tiles.stoneExitDownOutlineTeal
                 Direction4.left  -> Tiles.stoneExitLeftOutlineTeal
             }
-        
+            
             is LevelPassage -> when (direction)
             {
                 Direction4.up    -> Tiles.stoneExitLevelUpOutlineTeal
@@ -59,18 +57,17 @@ class StoneExit(override val direction : Direction4, val passage : Passage) : Ex
                 Direction4.down  -> Tiles.stoneExitLevelDownOutlineTeal
                 Direction4.left  -> Tiles.stoneExitLevelLeftOutlineTeal
             }
-    
+            
             else            -> null
         }
     }
+    
+    // for serialization
+    constructor() : this(Direction4.up, null)
 }
 
-class StoneExitActiveWhenNoEnemiesAreInRoom(override val direction : Direction4, val passage : Passage) :
-        ExitActiveWhenNoEnemiesAreInRoom
+class StoneExitActiveWhenNoEnemiesAreInRoom(dir : Direction4, pass : Passage?) : ExitActiveWhenNoEnemiesAreInRoom(dir, pass)
 {
-    override val position = RoomPosition()
-    override val exitPassage = passage
-    
     override fun getTile() : TiledMapTile?
     {
         return when (passage)
@@ -123,4 +120,7 @@ class StoneExitActiveWhenNoEnemiesAreInRoom(override val direction : Direction4,
             else            -> null
         }
     }
+    
+    // for serialization
+    constructor() : this(Direction4.up, null)
 }

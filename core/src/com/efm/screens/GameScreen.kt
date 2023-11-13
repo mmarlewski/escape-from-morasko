@@ -97,7 +97,7 @@ object GameScreen : BaseScreen(), GestureListener
         }
         for (level in World.getLevels())
         {
-            for (room in level.getRooms())
+            for (room in level.rooms)
             {
                 for (enemy in room.getEnemies())
                 {

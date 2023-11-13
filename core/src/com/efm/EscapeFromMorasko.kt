@@ -12,14 +12,12 @@ object EscapeFromMorasko : Game()
     override fun create()
     {
         spriteBatch = SpriteBatch()
-
+        
 //        World.createWorldPrototypeTwo()
 //        World.createWorldBoarTest()
-        
         World.createWorldPrototypeThree()
 //        loadWorld()
-        val startingLevel = World.getLevels().find { it.name == "1" };startingLevel!!
-//        val startingLevel = World.getLevels().first()
+        val startingLevel = World.getLevels().first()
         
         World.changeCurrentLevel(startingLevel)
         World.changeCurrentRoom(startingLevel.getStartingRoom())

@@ -1,8 +1,10 @@
 package com.efm.passage
 
+import com.efm.Direction4
+import com.efm.entity.Entity
 import com.efm.level.World
 
-interface ExitActiveWhenNoEnemiesAreInRoom : Exit
+open class ExitActiveWhenNoEnemiesAreInRoom(dir : Direction4, pass : Passage?) : Exit(dir, pass)
 {
     override fun interact()
     {
@@ -11,4 +13,7 @@ interface ExitActiveWhenNoEnemiesAreInRoom : Exit
             super.interact()
         }
     }
+    
+    // for serialization
+    constructor() : this(Direction4.up, null)
 }

@@ -7,11 +7,8 @@ import com.efm.entity.Entity
 import com.efm.passage.*
 import com.efm.room.RoomPosition
 
-class RockExit(override val direction : Direction4, val passage : Passage) : Entity, Exit
+class RockExit(dir : Direction4, pass : Passage?) : Exit(dir, pass)
 {
-    override val position = RoomPosition()
-    override val exitPassage = passage
-    
     override fun getTile() : TiledMapTile?
     {
         return when (passage)
@@ -40,7 +37,7 @@ class RockExit(override val direction : Direction4, val passage : Passage) : Ent
     {
         return null
     }
-
+    
     override fun getOutlineTealTile() : TiledMapTile?
     {
         return when (passage)
@@ -52,7 +49,7 @@ class RockExit(override val direction : Direction4, val passage : Passage) : Ent
                 Direction4.down  -> Tiles.rockExitDownOutlineTeal
                 Direction4.left  -> Tiles.rockExitLeftOutlineTeal
             }
-
+            
             is LevelPassage -> when (direction)
             {
                 Direction4.up    -> Tiles.rockExitLevelUpOutlineTeal
@@ -60,8 +57,11 @@ class RockExit(override val direction : Direction4, val passage : Passage) : Ent
                 Direction4.down  -> Tiles.rockExitLevelDownOutlineTeal
                 Direction4.left  -> Tiles.rockExitLevelLeftOutlineTeal
             }
-
+            
             else            -> null
         }
     }
+    
+    // for serialization
+    constructor() : this(Direction4.up, null)
 }

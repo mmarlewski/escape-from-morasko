@@ -6,17 +6,18 @@ import com.efm.assets.Tiles
 import com.efm.entity.Entity
 import com.efm.room.RoomPosition
 
-class RockWall(vararg val directions : Direction4) : Entity
+class RockWall(vararg dirs : Direction4) : Entity
 {
     override val position = RoomPosition()
-    
-    val up = Direction4.up in directions
-    val right = Direction4.right in directions
-    val down = Direction4.down in directions
-    val left = Direction4.left in directions
+    val directions = mutableListOf(*dirs)
     
     override fun getTile() : TiledMapTile?
     {
+        val up = Direction4.up in directions
+        val right = Direction4.right in directions
+        val down = Direction4.down in directions
+        val left = Direction4.left in directions
+        
         return when
         {
             up && right && down && left     -> Tiles.rockWallUpRightDownLeft
@@ -43,4 +44,7 @@ class RockWall(vararg val directions : Direction4) : Entity
     {
         return null
     }
+    
+    // for serialization
+    constructor() : this(Direction4.up)
 }

@@ -1,5 +1,6 @@
 {
-startingRoomIndex: 0
+name: 1
+startingRoomName: 1
 startingPosition: {
 	x: 2
 	y: 3
@@ -7,6 +8,7 @@ startingPosition: {
 rooms: [
 	{
 		class: com.efm.room.Room
+		name: 1
 		heightInSpaces: 7
 		widthInSpaces: 7
 		spaceList: [
@@ -403,9 +405,222 @@ rooms: [
 				base: tiled2xy
 			}
 		]
+		entities: [
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 1
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 2
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 3
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 4
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 5
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 6
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 1
+					y: 0
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 2
+					y: 0
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 3
+					y: 0
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 4
+					y: 0
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 0
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 6
+					y: 0
+				}
+				style: metal
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.Chest
+				position: {
+					x: 4
+					y: 5
+				}
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 6
+					y: 3
+				}
+				style: metal
+				direction: left
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 1
+						positionA: {
+							x: 6
+							y: 3
+						}
+						directionA: left
+						roomBName: 2
+						positionB: {
+							x: 0
+							y: 7
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+			{
+				class: com.efm.entities.Herosaving
+				position: {
+					x: 2
+					y: 3
+				}
+			}
+		]
 	}
 	{
 		class: com.efm.room.Room
+		name: 2
 		heightInSpaces: 11
 		widthInSpaces: 11
 		spaceList: [
@@ -1378,9 +1593,369 @@ rooms: [
 				base: grassStone3
 			}
 		]
+		entities: [
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 1
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 2
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 3
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 4
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 5
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 6
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 8
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 9
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 10
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 1
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 2
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 3
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 4
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 6
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 7
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 8
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 9
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 10
+					y: 0
+				}
+				style: cobblestoneDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.enemies.EnemyMushroom
+				position: {
+					x: 6
+					y: 4
+				}
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 0
+					y: 7
+				}
+				style: metal
+				direction: right
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 1
+						positionA: {
+							x: 6
+							y: 3
+						}
+						directionA: left
+						roomBName: 2
+						positionB: {
+							x: 0
+							y: 7
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 10
+					y: 3
+				}
+				style: stone
+				direction: left
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 2
+						positionA: {
+							x: 10
+							y: 3
+						}
+						directionA: left
+						roomBName: 3
+						positionB: {
+							x: 0
+							y: 3
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 10
+					y: 9
+				}
+				style: stone
+				direction: left
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 2
+						positionA: {
+							x: 10
+							y: 9
+						}
+						directionA: left
+						roomBName: 4
+						positionB: {
+							x: 0
+							y: 9
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+		]
 	}
 	{
 		class: com.efm.room.Room
+		name: 3
 		heightInSpaces: 7
 		widthInSpaces: 6
 		spaceList: [
@@ -1721,9 +2296,229 @@ rooms: [
 				base: wooden1
 			}
 		]
+		entities: [
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 1
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 2
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 4
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 5
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 6
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 1
+					y: 0
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 2
+					y: 0
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 3
+					y: 0
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 4
+					y: 0
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 0
+				}
+				style: brickOrangeLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.enemies.EnemyBat
+				position: {
+					x: 2
+					y: 1
+				}
+			}
+			{
+				class: com.efm.entities.enemies.EnemyBat
+				position: {
+					x: 5
+					y: 6
+				}
+			}
+			{
+				class: com.efm.entities.Chest
+				position: {
+					x: 3
+					y: 4
+				}
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 0
+					y: 3
+				}
+				style: stone
+				direction: right
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 2
+						positionA: {
+							x: 10
+							y: 3
+						}
+						directionA: left
+						roomBName: 3
+						positionB: {
+							x: 0
+							y: 3
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 5
+					y: 3
+				}
+				style: stone
+				direction: left
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 3
+						positionA: {
+							x: 5
+							y: 3
+						}
+						directionA: left
+						roomBName: 4
+						positionB: {
+							x: 5
+							y: 3
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+		]
 	}
 	{
 		class: com.efm.room.Room
+		name: 4
 		heightInSpaces: 11
 		widthInSpaces: 11
 		spaceList: [
@@ -2696,9 +3491,366 @@ rooms: [
 				base: water
 			}
 		]
+		entities: [
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 1
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 2
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 4
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 5
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 6
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 7
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 8
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 10
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 1
+					y: 6
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 2
+					y: 6
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 3
+					y: 6
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 4
+					y: 6
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 6
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 6
+					y: 0
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 7
+					y: 0
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 8
+					y: 0
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 9
+					y: 0
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 10
+					y: 0
+				}
+				style: cobblestoneLight
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.enemies.Boar.EnemyGhost
+				position: {
+					x: 4
+					y: 8
+				}
+			}
+			{
+				class: com.efm.entities.enemies.EnemySkeleton
+				position: {
+					x: 7
+					y: 5
+				}
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 0
+					y: 9
+				}
+				style: stone
+				direction: right
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 2
+						positionA: {
+							x: 10
+							y: 9
+						}
+						directionA: left
+						roomBName: 4
+						positionB: {
+							x: 0
+							y: 9
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 5
+					y: 3
+				}
+				style: stone
+				direction: right
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 3
+						positionA: {
+							x: 5
+							y: 3
+						}
+						directionA: left
+						roomBName: 4
+						positionB: {
+							x: 5
+							y: 3
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 10
+					y: 7
+				}
+				style: stone
+				direction: left
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 4
+						positionA: {
+							x: 10
+							y: 7
+						}
+						directionA: left
+						roomBName: 5
+						positionB: {
+							x: 0
+							y: 7
+						}
+						directionB: right
+						isActive: true
+					}
+				]
+			}
+		]
 	}
 	{
 		class: com.efm.room.Room
+		name: 5
 		heightInSpaces: 11
 		widthInSpaces: 14
 		spaceList: [
@@ -3933,6 +5085,337 @@ rooms: [
 					y: 10
 				}
 				base: null
+			}
+		]
+		entities: [
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 1
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 2
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 3
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 4
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 5
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 6
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 8
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 0
+					y: 9
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: right
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 1
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 2
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 3
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 4
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 5
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 6
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 7
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 8
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 9
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 10
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 11
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 12
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.walls.Wall
+				position: {
+					x: 13
+					y: 0
+				}
+				style: brickRedDarkTall
+				directions: [
+					{
+						class: com.efm.Direction4
+						value: down
+					}
+				]
+			}
+			{
+				class: com.efm.entities.bosses.slime.BossSlime
+				position: {
+					x: 6
+					y: 6
+				}
+			}
+			{
+				class: com.efm.entities.exits.ExitImplementation
+				position: {
+					x: 0
+					y: 7
+				}
+				style: stone
+				direction: right
+				passage: [
+					{
+						class: com.efm.passage.RoomPassage
+						levelName: 1
+						roomAName: 4
+						positionA: {
+							x: 10
+							y: 7
+						}
+						directionA: left
+						roomBName: 5
+						positionB: {
+							x: 0
+							y: 7
+						}
+						directionB: right
+						isActive: true
+					}
+				]
 			}
 		]
 	}

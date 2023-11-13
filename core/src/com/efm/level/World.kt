@@ -10,7 +10,7 @@ object World
     private val levels = mutableListOf<Level>()
     private val passages = mutableListOf<Passage>()
     
-    val hero = Hero()
+    var hero = Hero()
     lateinit var currentLevel : Level
     lateinit var currentRoom : Room
     
@@ -39,7 +39,7 @@ object World
     
     fun changeCurrentRoom(newCurrentRoom : Room)
     {
-        if (newCurrentRoom in currentLevel.getRooms())
+        if (newCurrentRoom in currentLevel.rooms)
         {
             currentRoom = newCurrentRoom
         }
@@ -53,25 +53,6 @@ object World
 //        {
 //            this.levels.add(level)
 //        }
-        
-        for(lvl in this.levels)
-        {
-            for(room in lvl.getRooms())
-            {
-                for(entity in room.getEntities())
-                {
-                    when(entity)
-                    {
-                        is Enemy->
-                        {
-                            entity.createOwnHealthBar()
-                        }
-                    }
-                }
-                
-                room.updateSpacesEntities()
-            }
-        }
         
 //        this.passages.clear()
 //        this.passages.addAll(newWorld.passages)

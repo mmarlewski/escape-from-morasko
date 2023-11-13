@@ -1,20 +1,22 @@
 package com.efm.entities.exits
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.Direction4
 import com.efm.assets.Tiles
+import com.efm.entities.walls.WallStyle
+import com.efm.entity.Entity
 import com.efm.passage.*
 import com.efm.room.RoomPosition
 
-class ExitImplementation(
-        private val style : ExitStyle, override val exitPassage : Passage, override val direction : Direction4
-                        ) : Exit
+class ExitImplementation(var style : ExitStyle, dir : Direction4, pass : Passage?) : Exit(dir, pass)
 {
     override val position : RoomPosition = RoomPosition()
     
     override fun getTile() : TiledMapTile?
     {
-        return when (exitPassage)
+        return when (passage)
         {
             is RoomPassage  -> when (direction)
             {
@@ -23,6 +25,7 @@ class ExitImplementation(
                 Direction4.down  -> style.tiles.exitDown
                 Direction4.left  -> style.tiles.exitLeft
             }
+            
             is LevelPassage -> when (direction)
             {
                 Direction4.up    -> style.tiles.exitLevelUp
@@ -30,6 +33,7 @@ class ExitImplementation(
                 Direction4.down  -> style.tiles.exitLevelDown
                 Direction4.left  -> style.tiles.exitLevelLeft
             }
+            
             else            -> null
         }
     }
@@ -38,7 +42,7 @@ class ExitImplementation(
     
     override fun getOutlineTealTile() : TiledMapTile?
     {
-        return when (exitPassage)
+        return when (passage)
         {
             is RoomPassage  -> when (direction)
             {
@@ -47,6 +51,7 @@ class ExitImplementation(
                 Direction4.down  -> style.tiles.exitDownOutlineTeal
                 Direction4.left  -> style.tiles.exitLeftOutlineTeal
             }
+            
             is LevelPassage -> when (direction)
             {
                 Direction4.up    -> style.tiles.exitLevelUpOutlineTeal
@@ -54,7 +59,41 @@ class ExitImplementation(
                 Direction4.down  -> style.tiles.exitLevelDownOutlineTeal
                 Direction4.left  -> style.tiles.exitLevelLeftOutlineTeal
             }
+            
             else            -> null
+        }
+    }
+    
+    // for serialization
+    
+    constructor() : this(ExitStyle.stone, Direction4.up, null)
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("style", this.style.name)
+            json.writeValue("direction", this.direction)
+            json.writeValue("passage", listOf(this.passage))
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonStyle = json.readValue("style", String::class.java, jsonData)
+            if (jsonStyle != null) this.style = ExitStyle.valueOf(jsonStyle)
+            
+            val jsonDirection = json.readValue("direction", Direction4::class.java, jsonData)
+            if (jsonDirection != null) this.direction = jsonDirection
+            
+            val jsonPassage = json.readValue("passage", List::class.java, jsonData)
+            if (jsonPassage != null) this.passage = jsonPassage.first() as? Passage
         }
     }
 }

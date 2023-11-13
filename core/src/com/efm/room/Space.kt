@@ -12,8 +12,6 @@ class Space(x : Int, y : Int, private var base : Base? = null) : Json.Serializab
     val position = RoomPosition(x, y)
     private var entity : Entity? = null
     
-    constructor() : this(0, 0, null)
-    
     fun getEntity() : Entity?
     {
         return entity
@@ -48,6 +46,10 @@ class Space(x : Int, y : Int, private var base : Base? = null) : Json.Serializab
     {
         return base?.isTreadableFor?.invoke(e) == true
     }
+    
+    // for serializing
+    
+    constructor() : this(0, 0, null)
     
     override fun write(json : Json?)
     {

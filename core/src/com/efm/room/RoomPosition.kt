@@ -13,8 +13,6 @@ import com.efm.Direction8
  */
 data class RoomPosition(var x : Int = 0, var y : Int = 0) : Json.Serializable
 {
-    constructor() : this(0, 0)
-    
     fun set(newX : Int, newY : Int)
     {
         x = newX
@@ -74,6 +72,10 @@ data class RoomPosition(var x : Int = 0, var y : Int = 0) : Json.Serializable
         }
         return result
     }
+    
+    // for serializing
+    
+    constructor() : this(0, 0)
     
     override fun write(json : Json?)
     {

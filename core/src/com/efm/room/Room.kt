@@ -5,7 +5,9 @@ import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import com.efm.Map
 import com.efm.MapLayer
+import com.efm.entities.Hero
 import com.efm.entity.*
+import com.efm.level.World
 import com.efm.passage.Passage
 
 /**
@@ -14,7 +16,7 @@ import com.efm.passage.Passage
  * @property spaceList List of all Spaces in the spacesArray.
  * @property characters List of Characters (Entities with a turn) inside the Room.
  */
-class Room(val name : String, var heightInSpaces : Int, var widthInSpaces : Int) : Json.Serializable
+class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int) : Json.Serializable
 {
     fun isPositionWithinBounds(x : Int, y : Int) : Boolean
     {
@@ -35,8 +37,6 @@ class Room(val name : String, var heightInSpaces : Int, var widthInSpaces : Int)
     private val passages = mutableListOf<Passage>()
     
     private val entitiesToBeAdded = mutableListOf<Entity>()
-    
-    constructor() : this("", 0, 0)
     
     init
     {
@@ -110,7 +110,6 @@ class Room(val name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         {
             if (!character.alive)
             {
-                println(character)
                 character.onDeath()
                 killedCharacters.add(character)
                 if (character is Enemy)
@@ -258,14 +257,19 @@ class Room(val name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         return false
     }
     
+    // for serializing
+    
+    constructor() : this("", 0, 0)
+    
     override fun write(json : Json?)
     {
         if (json != null)
         {
+            json.writeValue("name", this.name)
             json.writeValue("heightInSpaces", this.heightInSpaces)
             json.writeValue("widthInSpaces", this.widthInSpaces)
             json.writeValue("spaceList", this.spaceList)
-//            json.writeValue("entities", this.entities)
+            json.writeValue("entities", this.entities)
         }
     }
     
@@ -273,48 +277,49 @@ class Room(val name : String, var heightInSpaces : Int, var widthInSpaces : Int)
     {
         if (json != null)
         {
+            val jsonName = json.readValue("name", String::class.java, jsonData)
+            if (jsonName != null) this.name = jsonName
+            
             val jsonHeightInSpaces = json.readValue("heightInSpaces", Int::class.java, jsonData)
             if (jsonHeightInSpaces != null) this.heightInSpaces = jsonHeightInSpaces
             
             val jsonWidthInSpaces = json.readValue("widthInSpaces", Int::class.java, jsonData)
             if (jsonWidthInSpaces != null) this.widthInSpaces = jsonWidthInSpaces
-    
+            
             for (i in 0 until this.heightInSpaces)
             {
                 var spaceRow = arrayOf<Space?>()
-        
+                
                 for (j in 0 until this.widthInSpaces)
                 {
                     spaceRow += Space(j, i)
                 }
-    
+                
                 this.spaceArray += spaceRow
             }
             
             val jsonSpaceList = json.readValue("spaceList", List::class.java, jsonData)
             if (jsonSpaceList != null)
             {
-                val spaceList = jsonSpaceList as? List<*>
-                if(spaceList != null)
+                for (jsonSpace in jsonSpaceList)
                 {
-                    for(space in spaceList)
+                    if (jsonSpace is Space)
                     {
-                        if(space is Space)
-                        {
-                            this.spaceList.add(space)
-                            this.spaceArray[space.position.y][space.position.x] = space
-                        }
+                        this.spaceList.add(jsonSpace)
+                        this.spaceArray[jsonSpace.position.y][jsonSpace.position.x] = jsonSpace
                     }
                 }
             }
-    
+            
             val jsonEntities = json.readValue("entities", List::class.java, jsonData)
             if (jsonEntities != null)
             {
                 for (jsonEntity in jsonEntities)
                 {
-                    val entity = jsonEntity as? Entity
-                    if (entity != null) this.entities.add(entity)
+                    if (jsonEntity is Entity && jsonEntity !is Hero)
+                    {
+                        this.entities.add(jsonEntity)
+                    }
                 }
             }
             

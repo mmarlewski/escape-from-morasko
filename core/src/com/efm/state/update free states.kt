@@ -401,7 +401,7 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
         for (level in World.getLevels())
         {
-            for (room in level.getRooms())
+            for (room in level.rooms)
             {
                 for (enemy in room.getEnemies())
                 {
