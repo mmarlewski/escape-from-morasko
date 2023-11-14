@@ -345,7 +345,8 @@ fun windowAreaOf(
         fontType : BitmapFont,
         fontColor : Color,
         background : NinePatch,
-        onYes : () -> Unit
+        onYes : () -> Unit,
+        onNo : () -> Unit
                 ) : Window
 {
     val windowStyle = Window.WindowStyle()
@@ -390,6 +391,7 @@ fun windowAreaOf(
     {
         window.isVisible = false
         Sounds.blop.playOnce()
+        onNo()
         PopUps.setBackgroundVisibility(true)
     }
     

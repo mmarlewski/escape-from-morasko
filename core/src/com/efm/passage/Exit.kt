@@ -142,8 +142,10 @@ open class LevelExit(
                 "You are about to leave this level\n\nAre you sure?",
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.pauseBackgroundNinePatch
-                                         ) { travelBetweenLevels() }
+                Textures.pauseBackgroundNinePatch,
+                { travelBetweenLevels() },
+                {}
+                                         )
         nextLevelPopUp.isVisible = false
         return nextLevelPopUp
     }
