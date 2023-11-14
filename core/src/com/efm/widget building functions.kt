@@ -11,8 +11,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
 import com.efm.screens.MenuScreen
-import com.efm.ui.gameScreen.EquipmentStructure
-import com.efm.ui.gameScreen.PopUps
+import com.efm.ui.gameScreen.*
 
 lateinit var musicSlider : Slider
 lateinit var soundSlider : Slider
@@ -467,6 +466,7 @@ fun settingsPause(
         window.isVisible = false
         Sounds.blop.playOnce()
         PopUps.setMenuVisibility(true)
+        LeftStructure.menuButton.isVisible = true
     }
     
     musicSlider.addListener(object : ChangeListener()
@@ -567,7 +567,7 @@ fun menuPopup(
         Sounds.blop.playOnce()
         window.isVisible = false
         PopUps.setSettingsVisibility(true)
-        PopUps.setBackgroundVisibility(true)
+        LeftStructure.menuButton.isVisible = false
         musicSlider.value = getMusicVolume()
         soundSlider.value = getSoundVolume()
     }
