@@ -4,8 +4,8 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
-import com.efm.entities.exits.Exit
-import com.efm.entities.exits.LevelExit
+import com.efm.exit.Exit
+import com.efm.exit.LevelExit
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.level.World

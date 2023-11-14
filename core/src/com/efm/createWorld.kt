@@ -12,8 +12,8 @@ import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost
 import com.efm.entities.enemies.chess.spawnChessSet
-import com.efm.entities.exits.*
 import com.efm.entities.walls.*
+import com.efm.exit.*
 import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
 import com.efm.level.Level
@@ -642,8 +642,8 @@ fun World.createWorldPrototypeTwo()
     addLevel(l2)
     
     // level passages
-    val l1tol2 = LevelExitActiveWhenNoEnemiesAreInRoom(
-            RoomPosition(l1r4.widthInSpaces - 1, l1r4.heightInSpaces - 1), Direction4.left, l2.name, ExitStyle.stone
+    val l1tol2 = LevelExit(
+            RoomPosition(l1r4.widthInSpaces - 1, l1r4.heightInSpaces - 1), Direction4.left, l2.name, ExitStyle.stone, activeWhenNoEnemiesAreInRoom = true
                                                       )
     l1r4.addEntity(l1tol2)
 }
@@ -810,6 +810,7 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(l1r3.widthInSpaces - 1, 3),
                 ExitStyle.stone
                       )
+        // one end of this one should be locked
         addRoomPassage(
                 this,
                 l1r4.name,
@@ -819,10 +820,16 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(0, 7),
                 ExitStyle.stone
                       )
+        (l1r5.getSpace(0, 7)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         // starting position
         //
         changeStartingRoom(l1r1)
         changeStartingPosition(2, 3)
+        // level exit
+        l1r5.replaceEntityAt(
+                LevelExit(RoomPosition(l1r5.widthInSpaces-1, 0), Direction4.down, "1",
+                          ExitStyle.stone, activeWhenNoEnemiesAreInRoom = true), RoomPosition(l1r5.widthInSpaces-1, 0)
+                      )
     }
     // add level to World
     this.addLevel(l1)

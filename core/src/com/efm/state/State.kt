@@ -1,8 +1,8 @@
 package com.efm.state
 
-import com.efm.entities.exits.Exit
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
+import com.efm.exit.Exit
 import com.efm.item.*
 import com.efm.room.RoomPosition
 import com.efm.room.Space
