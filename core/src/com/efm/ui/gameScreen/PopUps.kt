@@ -20,12 +20,11 @@ object PopUps
         GameScreen.canBeInteractedWith = boolean
         
         RightStructure.setVisibility(boolean)
-        
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         ItemsStructure.setVisibility(boolean)
         if (boolean) ItemsStructure.setWeaponDisplay()
-        
-        LeftStructure.setVisibility(false)
+        ProgressBars.setVisibilty(boolean)
+        LeftStructure.setVisibility(boolean)
     }
     
     fun overwriteSave() : com.badlogic.gdx.scenes.scene2d.ui.Window
@@ -51,8 +50,11 @@ object PopUps
                 Fonts.pixeloid20,
                 Colors.black,
                 Textures.pauseBackgroundNinePatch,
-                { endCurrentTurn() },
-                {}
+                {
+                    endCurrentTurn()
+                    LeftStructure.menuButton.isVisible = true
+                },
+                { LeftStructure.menuButton.isVisible = true }
                                        )
     
         endTurnPopUp.isVisible = false
