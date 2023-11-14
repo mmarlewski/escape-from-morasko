@@ -2,14 +2,13 @@ package com.efm.screens
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
-import com.efm.assets.*
+import com.efm.assets.Textures
+import com.efm.ui.gameScreen.PopUps
+import com.efm.ui.menuScreen.TitleAndButtons
 
 object MenuScreen : BaseScreen()
 {
@@ -22,126 +21,15 @@ object MenuScreen : BaseScreen()
         // input processor
         super.inputProcessor = stage
         
-        // hud
+        PopUps.display()
+        TitleAndButtons.display()
         
-        val gameTitle = imageOf(
-                Textures.title,
-                Scaling.none
-                               )
-        
-        val playTextButton = textButtonOf(
-                "continue",
-                Fonts.inconsolata30,
-                Colors.black,
-                Textures.upLongNinePatch,
-                Textures.downLongNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                         )
-        {
-            Sounds.blop.playOnce()
-            playMusicIfNotAlreadyPlaying(Musics.versaLifeAmbient)
-            GameScreen.setScreen()
-        }
-        
-        val startAgainTextButton = textButtonOf(
-                "start again",
-                Fonts.inconsolata30,
-                Colors.black,
-                Textures.upLongNinePatch,
-                Textures.downLongNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                               )
-        {
-            Sounds.blop.playOnce()
-        }
-        
-        val creditsTextButton = textButtonOf(
-                "credits",
-                Fonts.inconsolata30,
-                Colors.black,
-                Textures.upLongNinePatch,
-                Textures.downLongNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                            )
-        {
-            Sounds.blop.playOnce()
-            CreditsScreen.setScreen()
-        }
-        
-        val exitButton = imageButtonOf(
-                Textures.exit,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                      )
-        {
-            Sounds.blop.playOnce()
-            exitGame()
-        }
-        val settingsButton = imageButtonOf(
-                Textures.settings,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                          )
-        {
-            Sounds.blop.playOnce()
-            SettingsScreen.setScreen()
-        }
-        
-        val infoButton = imageButtonOf(
-                Textures.info,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                      )
-        {
-            Sounds.blop.playOnce()
-            AppInfoScreen.setScreen()
-        }
-
-        val column = columnOf(
-                rowOf(
-                        gameTitle
-                     ),
-                rowOf(
-                        playTextButton
-                     ),
-                
-                rowOf(
-                        startAgainTextButton
-                     ),
-                rowOf(
-                        creditsTextButton
-                     ),
-                
-                rowOf(
-                        columnOf(settingsButton),
-                        columnOf(infoButton).padLeft(20f).padRight(20f),
-                        columnOf(exitButton)
-                     )
-                             )
-        column.setFillParent(true)
-        stage.addActor(column)
     }
     
     override fun render(delta : Float)
     {
         ScreenUtils.clear(Color.CLEAR)
-    
-        // Draw the background texture region
+        
         EscapeFromMorasko.spriteBatch.begin()
         EscapeFromMorasko.spriteBatch.draw(Textures.mainMenuBackground, 0f, 0f, viewport.worldWidth, viewport.worldHeight)
         EscapeFromMorasko.spriteBatch.end()
