@@ -4,10 +4,11 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
+import com.efm.entities.exits.Exit
+import com.efm.entities.exits.LevelExit
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.level.World
-import com.efm.passage.Exit
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.*
 
@@ -285,7 +286,7 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
                     val isMoveToAnotherRoom = (selectedEntity is Exit)
                     val isMoveToAnotherLevel = when (selectedEntity)
                     {
-                        is Exit -> selectedEntity.isPassageToAnotherLevel()
+                        is Exit -> selectedEntity is LevelExit
                         else    -> false
                     }
                     
@@ -370,7 +371,7 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
                 val isMoveToAnotherRoom = (selectedEntity is Exit)
                 val isMoveToAnotherLevel = when (selectedEntity)
                 {
-                    is Exit -> selectedEntity.isPassageToAnotherLevel()
+                    is Exit -> selectedEntity is LevelExit
                     else    -> false
                 }
                 

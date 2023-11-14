@@ -1,13 +1,12 @@
 package com.efm.state
 
+import com.efm.entities.exits.Exit
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.item.*
-import com.efm.passage.Exit
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.skill.ActiveSkill
-import com.efm.skill.Skill
 
 private var prevState : State = State.free.noSelection
 private var currState : State = State.free.noSelection

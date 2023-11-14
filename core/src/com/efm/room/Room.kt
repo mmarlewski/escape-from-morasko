@@ -7,8 +7,6 @@ import com.efm.Map
 import com.efm.MapLayer
 import com.efm.entities.Hero
 import com.efm.entity.*
-import com.efm.level.World
-import com.efm.passage.Passage
 
 /**
  * Part of a level. Only one is displayed on screen at any given time.
@@ -34,7 +32,6 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
     private val entities = mutableListOf<Entity>()
     private val characters = mutableListOf<Character>()
     private val enemies = mutableListOf<Enemy>()
-    private val passages = mutableListOf<Passage>()
     
     private val entitiesToBeAdded = mutableListOf<Entity>()
     

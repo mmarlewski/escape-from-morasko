@@ -20,8 +20,6 @@ import com.efm.level.Level
 import com.efm.level.World
 import com.efm.multiUseMapItems.Bow
 import com.efm.multiUseMapItems.WoodenSword
-import com.efm.passage.LevelPassage
-import com.efm.passage.RoomPassage
 import com.efm.room.*
 import com.efm.stackableMapItems.Bomb
 import com.efm.stackableSelfItems.*
@@ -442,35 +440,14 @@ fun World.createWorldPrototypeTwo()
     // room list
     val l1_rooms = mutableListOf<Room>(l1r1, l1r2, l1r3, l1r4)
     
-    // room passages
-    val l1_roomPassages = mutableListOf<RoomPassage>(
-            RoomPassage(l1.name, l1r1.name, RoomPosition(10, 3), Direction4.left, l1r2.name, RoomPosition(0, 6)),
-            RoomPassage(l1.name, l1r2.name, RoomPosition(15, 4), Direction4.left, l1r3.name, RoomPosition(0, 4)),
-            RoomPassage(l1.name, l1r2.name, RoomPosition(15, 9), Direction4.left, l1r4.name, RoomPosition(0, 4)),
-            RoomPassage(
-                    l1.name,
-                    l1r3.name,
-                    RoomPosition(3, 5),
-                    Direction4.up,
-                    l1r4.name,
-                    RoomPosition(3, 0)
-                       )  //, isActive = false)
-                                                    )
-    
-    // add room exits
-    for (passage in l1_roomPassages)
-    {
-        // add in roomA
-        getLevels().find { it.name == passage.levelName }?.rooms?.find { it.name == passage.roomAName }
-                ?.replaceEntityAt(StoneExit(passage.directionA, passage), passage.positionA)
-        // add in roomB
-        getLevels().find { it.name == passage.levelName }?.rooms?.find { it.name == passage.roomBName }
-                ?.replaceEntityAt(StoneExit(passage.directionB, passage), passage.positionB)
-    }
+    // room passages (exits)
+    addRoomPassage(l1, l1r1.name, RoomPosition(10, 3), Direction4.left, l1r2.name, RoomPosition(0, 6))
+    addRoomPassage(l1, l1r2.name, RoomPosition(15, 4), Direction4.left, l1r3.name, RoomPosition(0, 4))
+    addRoomPassage(l1, l1r2.name, RoomPosition(15, 9), Direction4.left, l1r4.name, RoomPosition(0, 4))
+    addRoomPassage(l1, l1r3.name, RoomPosition(3, 5), Direction4.up, l1r4.name, RoomPosition(3, 0))
     
     // level with starting point
     l1.rooms.addAll(l1_rooms)
-    l1.roomPassages.addAll(l1_roomPassages)
     l1.changeStartingRoom(l1r2)
     l1.changeStartingPosition(1, 1)
     
@@ -633,65 +610,31 @@ fun World.createWorldPrototypeTwo()
     // room list
     val l2_rooms = mutableListOf<Room>(l2r1, l2r2, l2r3, l2r4, l2r5, l2r6)
     
-    // room passages
-    val l2_roomPassages = mutableListOf<RoomPassage>(
-            RoomPassage(
-                    l2.name,
-                    l2r1.name,
-                    RoomPosition(l2r1.widthInSpaces - 1, 2),
-                    Direction4.left,
-                    l2r2.name,
-                    RoomPosition(0, 4)
-                       ),
-            RoomPassage(
-                    l2.name,
-                    l2r2.name,
-                    RoomPosition(l2r2.widthInSpaces - 1, 3),
-                    Direction4.left,
-                    l2r3.name,
-                    RoomPosition(0, 3)
-                       ),
-            RoomPassage(
-                    l2.name,
-                    l2r3.name,
-                    RoomPosition(3, l2r3.heightInSpaces - 1),
-                    Direction4.up,
-                    l2r4.name,
-                    RoomPosition(14, 2)
-                       ),
-            RoomPassage(l2.name, l2r4.name, RoomPosition(4, 1), Direction4.left, l2r5.name, RoomPosition(0, 5)),
-            RoomPassage(
-                    l2.name,
-                    l2r4.name,
-                    RoomPosition(0, l2r4.heightInSpaces - 2),
-                    Direction4.right,
-                    l2r6.name,
-                    RoomPosition(l2r6.widthInSpaces - 1, l2r6.heightInSpaces - 2)
-                       ),
-            RoomPassage(
-                    l2.name,
-                    l2r6.name,
-                    RoomPosition(3, 0),
-                    Direction4.down,
-                    l2r1.name,
-                    RoomPosition(3, l2r1.heightInSpaces - 1)
-                       )
-                                                    )
-    
-    // add room exits
-    for (passage in l2_roomPassages)
-    {
-        // add in roomA
-        getLevels().find { it.name == passage.levelName }?.rooms?.find { it.name == passage.roomAName }
-                ?.replaceEntityAt(StoneExit(passage.directionA, passage), passage.positionA)
-        // add in roomB
-        getLevels().find { it.name == passage.levelName }?.rooms?.find { it.name == passage.roomBName }
-                ?.replaceEntityAt(StoneExit(passage.directionB, passage), passage.positionB)
-    }
+    // room passages (exits)
+    addRoomPassage(
+            l2, l2r1.name, RoomPosition(l2r1.widthInSpaces - 1, 2), Direction4.left, l2r2.name, RoomPosition(0, 4)
+                  )
+    addRoomPassage(
+            l2, l2r2.name, RoomPosition(l2r2.widthInSpaces - 1, 3), Direction4.left, l2r3.name, RoomPosition(0, 3)
+                  )
+    addRoomPassage(
+            l2, l2r3.name, RoomPosition(3, l2r3.heightInSpaces - 1), Direction4.up, l2r4.name, RoomPosition(14, 2)
+                  )
+    addRoomPassage(l2, l2r4.name, RoomPosition(4, 1), Direction4.left, l2r5.name, RoomPosition(0, 5))
+    addRoomPassage(
+            l2,
+            l2r4.name,
+            RoomPosition(0, l2r4.heightInSpaces - 2),
+            Direction4.right,
+            l2r6.name,
+            RoomPosition(l2r6.widthInSpaces - 1, l2r6.heightInSpaces - 2)
+                  )
+    addRoomPassage(
+            l2, l2r6.name, RoomPosition(3, 0), Direction4.down, l2r1.name, RoomPosition(3, l2r1.heightInSpaces - 1)
+                  )
     
     // level with starting point
     l2.rooms.addAll(l2_rooms)
-    l2.roomPassages.addAll(l2_roomPassages)
     l2.changeStartingRoom(l2r1)
     l2.changeStartingPosition(1, 2)
     
@@ -699,24 +642,10 @@ fun World.createWorldPrototypeTwo()
     addLevel(l2)
     
     // level passages
-    val levelPassages = mutableListOf<LevelPassage>(
-            LevelPassage(
-                    l1r4.name,
-                    RoomPosition(l1r4.widthInSpaces - 1, l1r4.heightInSpaces - 1),
-                    Direction4.left,
-                    l2.name,
-                    true
-                        )
-                                                   )
-    
-    // add level exits
-    for (passage in levelPassages)
-    {
-        getLevels().find { it.name == passage.targetLevelName }?.rooms?.find { it.name == passage.originRoomName }
-                ?.replaceEntityAt(
-                        StoneExitActiveWhenNoEnemiesAreInRoom(passage.originDirection, passage), passage.originPosition
-                                 )
-    }
+    val l1tol2 = LevelExitActiveWhenNoEnemiesAreInRoom(
+            RoomPosition(l1r4.widthInSpaces - 1, l1r4.heightInSpaces - 1), Direction4.left, l2.name, ExitStyle.stone
+                                                      )
+    l1r4.addEntity(l1tol2)
 }
 
 fun World.createWorldBoarTest()
@@ -739,14 +668,10 @@ fun World.createWorldBoarTest()
     // room list
     val l1Rooms = mutableListOf<Room>(l1r1)
     
-    // room passages
-    val l1RoomPassages = mutableListOf<RoomPassage>()
-    
     // add room exits
     
     // level with starting point
     l1.rooms.addAll(l1Rooms)
-    l1.roomPassages.addAll(l1RoomPassages)
     l1.changeStartingRoom(l1r1)
     l1.changeStartingPosition(6, 2)
     
@@ -849,24 +774,50 @@ fun World.createWorldPrototypeThree()
         // add room passages
         //
         addRoomPassage(
-                l1r1, RoomPosition(6, 3), Direction4.left, l1r2, RoomPosition(0, 7), ExitStyle.metal, exitBBase = Base.stone
+                this,
+                l1r1.name,
+                RoomPosition(6, 3),
+                Direction4.left,
+                l1r2.name,
+                RoomPosition(0, 7),
+                ExitStyle.metal,
+                exitBBase = Base.stone
                       )
         addRoomPassage(
-                l1r2, RoomPosition(l1r2.widthInSpaces - 1, 3), Direction4.left, l1r3, RoomPosition(0, 3), ExitStyle.stone
+                this,
+                l1r2.name,
+                RoomPosition(l1r2.widthInSpaces - 1, 3),
+                Direction4.left,
+                l1r3.name,
+                RoomPosition(0, 3),
+                ExitStyle.stone
                       )
         addRoomPassage(
-                l1r2, RoomPosition(l1r2.widthInSpaces - 1, 9), Direction4.left, l1r4, RoomPosition(0, 9), ExitStyle.stone
+                this,
+                l1r2.name,
+                RoomPosition(l1r2.widthInSpaces - 1, 9),
+                Direction4.left,
+                l1r4.name,
+                RoomPosition(0, 9),
+                ExitStyle.stone
                       )
         addRoomPassage(
-                l1r3,
+                this,
+                l1r3.name,
                 RoomPosition(l1r3.widthInSpaces - 1, 3),
                 Direction4.left,
-                l1r4,
+                l1r4.name,
                 RoomPosition(l1r3.widthInSpaces - 1, 3),
                 ExitStyle.stone
                       )
         addRoomPassage(
-                l1r4, RoomPosition(l1r4.widthInSpaces - 1, 7), Direction4.left, l1r5, RoomPosition(0, 7), ExitStyle.stone
+                this,
+                l1r4.name,
+                RoomPosition(l1r4.widthInSpaces - 1, 7),
+                Direction4.left,
+                l1r5.name,
+                RoomPosition(0, 7),
+                ExitStyle.stone
                       )
         // starting position
         //
@@ -975,65 +926,41 @@ fun pom()
 {
     // l1
     val l1r1 =
-            "7 7\n" +
-                    "x x x x x x x\n" +
-                    "x 22 13 23 26 13 15\n" +
-                    "x 15 23 25 15 23 14\n" +
-                    "x 14 16 17 13 15 23\n" +
-                    "x 13 17 18 27 14 25\n" +
-                    "x 14 24 27 15 23 13\n" +
-                    "x 22 14 13 25 26 24"
+            "7 7\n" + "x x x x x x x\n" + "x 22 13 23 26 13 15\n" + "x 15 23 25 15 23 14\n" + "x 14 16 17 13 15 23\n" + "x 13 17 18 27 14 25\n" + "x 14 24 27 15 23 13\n" + "x 22 14 13 25 26 24"
     Gdx.files.local("l1r1.txt").writeString(l1r1, false)
     val l1r2 =
-            "11 11\n" +
-                    "x x x x x x x x x x x\n" +
-                    "x 12 10 12 12 11 11 12 10 10 11\n" +
-                    "x 10 11 10 12 11 12 10 10 12 11\n" +
-                    "x 12 11 10 12 12 10 12 11 10 10\n" +
-                    "x 12 12 12 10 11 12 10 12 11 12\n" +
-                    "x 10 11 10 11 12 12 10 12 12 10\n" +
-                    "x 12 10 11 11 10 12 11 10 11 11\n" +
-                    "x 11 10 11 11 10 12 12 11 12 10\n" +
-                    "x 12 10 10 10 11 11 12 10 11 12\n" +
-                    "x 11 11 12 12 10 11 10 12 10 11\n" +
-                    "x 10 11 10 12 11 12 12 10 12 12"
+            "11 11\n" + "x x x x x x x x x x x\n" + "x 12 10 12 12 11 11 12 10 10 11\n" + "x 10 11 10 12 11 12 10 10 12 11\n" + "x 12 11 10 12 12 10 12 11 10 10\n" + "x 12 12 12 10 11 12 10 12 11 12\n" + "x 10 11 10 11 12 12 10 12 12 10\n" + "x 12 10 11 11 10 12 11 10 11 11\n" + "x 11 10 11 11 10 12 12 11 12 10\n" + "x 12 10 10 10 11 11 12 10 11 12\n" + "x 11 11 12 12 10 11 10 12 10 11\n" + "x 10 11 10 12 11 12 12 10 12 12"
     Gdx.files.local("l1r2.txt").writeString(l1r2, false)
     val l1r3 =
-            "7 6\n" +
-                    "x x x x x x\n" +
-                    "x 20 20 20 21 20\n" +
-                    "x 20 19 20 20 21\n" +
-                    "x 19 21 20 19 19\n" +
-                    "x 20 20 20 21 20\n" +
-                    "x 21 20 19 20 21\n" +
-                    "x 19 20 21 20 19"
+            "7 6\n" + "x x x x x x\n" + "x 20 20 20 21 20\n" + "x 20 19 20 20 21\n" + "x 19 21 20 19 19\n" + "x 20 20 20 21 20\n" + "x 21 20 19 20 21\n" + "x 19 20 21 20 19"
     Gdx.files.local("l1r3.txt").writeString(l1r3, false)
     val l1r4 =
-            "11 11\n" +
-                    "x x x x x x x x x x x\n" +
-                    "x x x x x x 10 11 10 12 7\n" +
-                    "x x x x x x 11 8 10 10 11\n" +
-                    "x x x x x x 10 11 7 7 10\n" +
-                    "x x x x x x 11 8 12 8 8\n" +
-                    "x x x x x x 10 8 7 8 7\n" +
-                    "x x x x x x 8 7 11 7 7\n" +
-                    "x 10 10 7 8 10 12 9 9 9 9\n" +
-                    "x 11 8 7 10 9 9 9 5 5 5\n" +
-                    "x 10 8 11 9 9 5 5 5 5 5\n" +
-                    "x 7 8 9 9 5 5 5 5 5 5"
+            "11 11\n" + "x x x x x x x x x x x\n" + "x x x x x x 10 11 10 12 7\n" + "x x x x x x 11 8 10 10 11\n" + "x x x x x x 10 11 7 7 10\n" + "x x x x x x 11 8 12 8 8\n" + "x x x x x x 10 8 7 8 7\n" + "x x x x x x 8 7 11 7 7\n" + "x 10 10 7 8 10 12 9 9 9 9\n" + "x 11 8 7 10 9 9 9 5 5 5\n" + "x 10 8 11 9 9 5 5 5 5 5\n" + "x 7 8 9 9 5 5 5 5 5 5"
     Gdx.files.local("l1r4.txt").writeString(l1r4, false)
     val l1r5 =
-            "11 14\n" +
-                    "x x x x x x x x x x x x x x\n" +
-                    "x 2 2 2 4 4 4 4 4 2 2 2 2 2\n" +
-                    "x 2 2 2 2 4 4 4 2 2 2 2 2 2\n" +
-                    "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" +
-                    "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" +
-                    "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" +
-                    "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" +
-                    "x 2 2 4 4 2 2 2 2 4 4 4 2 2\n" +
-                    "x 2 2 4 4 4 4 4 4 4 4 4 2 2\n" +
-                    "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" +
-                    "x x x x x x x x x x x x x x\n"
+            "11 14\n" + "x x x x x x x x x x x x x x\n" + "x 2 2 2 4 4 4 4 4 2 2 2 2 2\n" + "x 2 2 2 2 4 4 4 2 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" + "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" + "x 2 2 4 4 2 2 2 2 4 4 4 2 2\n" + "x 2 2 4 4 4 4 4 4 4 4 4 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x x x x x x x x x x x x x x\n"
     Gdx.files.local("l1r5.txt").writeString(l1r5, false)
+}
+
+fun addRoomPassage(
+        level : Level,
+        roomAName : String,
+        positionA : RoomPosition,
+        directionA : Direction4,
+        roomBName : String,
+        positionB : RoomPosition,
+        exitStyle : ExitStyle = ExitStyle.stone,
+        exitABase : Base? = null,
+        exitBBase : Base? = null
+                  )
+{
+    val directionB = directionA.opposite()
+    
+    val exitA = RoomExit(positionA, directionA, roomBName, positionB, exitStyle)
+    if (exitABase != null) level.rooms.find { it.name == roomAName }?.changeBaseAt(exitABase, positionA)
+    level.rooms.find { it.name == roomAName }?.replaceEntityAt(exitA, positionA)
+    
+    val exitB = RoomExit(positionB, directionB, roomAName, positionA, exitStyle)
+    if (exitBBase != null) level.rooms.find { it.name == roomBName }?.changeBaseAt(exitBBase, positionB)
+    level.rooms.find { it.name == roomBName }?.replaceEntityAt(exitB, positionB)
 }

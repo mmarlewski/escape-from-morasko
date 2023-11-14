@@ -582,7 +582,7 @@ rooms: [
 				}
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 6
 					y: 3
@@ -1868,7 +1868,7 @@ rooms: [
 				}
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 0
 					y: 7
@@ -1896,7 +1896,7 @@ rooms: [
 				]
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 10
 					y: 3
@@ -1924,7 +1924,7 @@ rooms: [
 				]
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 10
 					y: 9
@@ -2459,7 +2459,7 @@ rooms: [
 				}
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 0
 					y: 3
@@ -2487,7 +2487,7 @@ rooms: [
 				]
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 5
 					y: 3
@@ -3763,7 +3763,7 @@ rooms: [
 				}
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 0
 					y: 9
@@ -3791,7 +3791,7 @@ rooms: [
 				]
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 5
 					y: 3
@@ -3819,7 +3819,7 @@ rooms: [
 				]
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 10
 					y: 7
@@ -5390,7 +5390,7 @@ rooms: [
 				}
 			}
 			{
-				class: com.efm.entities.exits.ExitImplementation
+				class: com.efm.entities.exits.Exit
 				position: {
 					x: 0
 					y: 7

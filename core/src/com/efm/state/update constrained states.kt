@@ -4,10 +4,11 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
+import com.efm.entities.exits.Exit
+import com.efm.entities.exits.LevelExit
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.level.World
-import com.efm.passage.Exit
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.screens.GameScreen
@@ -483,7 +484,7 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
                     val isMoveToAnotherRoom = (selectedEntity is Exit)
                     val isMoveToAnotherLevel = when (selectedEntity)
                     {
-                        is Exit -> selectedEntity.isPassageToAnotherLevel()
+                        is Exit -> selectedEntity is LevelExit
                         else    -> false
                     }
                     
@@ -619,7 +620,7 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
                 val isMoveToAnotherRoom = (selectedEntity is Exit)
                 val isMoveToAnotherLevel = when (selectedEntity)
                 {
-                    is Exit -> selectedEntity.isPassageToAnotherLevel()
+                    is Exit -> selectedEntity is LevelExit
                     else    -> false
                 }
                 

@@ -1,14 +1,11 @@
 package com.efm.level
 
 import com.efm.entities.Hero
-import com.efm.entity.Enemy
-import com.efm.passage.Passage
 import com.efm.room.Room
 
 object World
 {
     private val levels = mutableListOf<Level>()
-    private val passages = mutableListOf<Passage>()
     
     var hero = Hero()
     lateinit var currentLevel : Level
