@@ -54,4 +54,9 @@ object Swap : ActiveSkill(BodyPart.head, 1, 3, Textures.swap)
         return "Swap places with enemy unit"
     }
     
+    fun getName() : String
+    {
+        return "Swap"
+    }
+    
 }

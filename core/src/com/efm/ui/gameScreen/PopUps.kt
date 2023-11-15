@@ -1,10 +1,12 @@
 package com.efm.ui.gameScreen
 
+import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.*
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
+import com.efm.skills.*
 import com.efm.ui.menuScreen.TitleAndButtons
 
 object PopUps
@@ -14,6 +16,7 @@ object PopUps
     lateinit var menuPause : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var settings : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var overwriteSave : com.badlogic.gdx.scenes.scene2d.ui.Window
+    lateinit var skillAssignment : Window
     
     fun setBackgroundVisibility(boolean : Boolean)
     {
@@ -25,6 +28,13 @@ object PopUps
         if (boolean) ItemsStructure.setWeaponDisplay()
         ProgressBars.setVisibilty(boolean)
         LeftStructure.setVisibility(boolean)
+    }
+    
+    fun skillAssignment() : Window
+    {
+        val skillAssignmentPopup = skillsAssignmentOverlay(Freeze, Invisibility, Jump)
+        
+        return skillAssignmentPopup
     }
     
     fun overwriteSave() : com.badlogic.gdx.scenes.scene2d.ui.Window
@@ -84,8 +94,8 @@ object PopUps
                 Textures.pauseBackgroundNinePatch
                                       )
         menuPausePopUp.isVisible = false
-    
-    
+        
+        
         return menuPausePopUp
     }
     
@@ -95,6 +105,12 @@ object PopUps
         menuPause = menuPause()
         settings = settings()
         overwriteSave = overwriteSave()
+        skillAssignment = skillAssignment()
+    }
+    
+    fun setSkillAssignmentVisibility(visibility : Boolean)
+    {
+        skillAssignment.isVisible = visibility
     }
     
     fun setOverwriteSaveVisibility(visibility : Boolean)
@@ -123,17 +139,20 @@ object PopUps
         val pauseWindow = columnOf(rowOf(menuPause)).align(Align.center)
         val settingsWindow = columnOf(rowOf(settings)).align(Align.center)
         val overwriteSaveWindow = columnOf(rowOf(overwriteSave)).align(Align.center)
+        val skillAssignmentWindow = columnOf(rowOf(skillAssignment)).align(Align.center)
         
         
         settingsWindow.setFillParent(true)
         endTurnWindow.setFillParent(true)
         pauseWindow.setFillParent(true)
         overwriteSaveWindow.setFillParent(true)
+        skillAssignmentWindow.setFillParent(true)
         
         GameScreen.stage.addActor(endTurnWindow)
         GameScreen.stage.addActor(settingsWindow)
         GameScreen.stage.addActor(pauseWindow)
         MenuScreen.stage.addActor(overwriteSaveWindow)
+        GameScreen.stage.addActor(skillAssignmentWindow)
         
     }
 }

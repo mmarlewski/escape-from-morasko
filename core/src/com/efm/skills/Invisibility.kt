@@ -28,4 +28,9 @@ object Invisibility : ActiveSkill(BodyPart.torso, 1, 3, Textures.invisibility)
     {
         return "Allows to be undetectable for enemy units"
     }
+    
+    fun getName() : String
+    {
+        return "Invisibility"
+    }
 }

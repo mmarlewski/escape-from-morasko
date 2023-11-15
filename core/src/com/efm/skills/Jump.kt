@@ -26,4 +26,9 @@ object Jump : ActiveSkill(BodyPart.leftLeg, 1, 3, Textures.jump)
     {
         return "Allows to jump over not traversable fields"
     }
+    
+    fun getName() : String
+    {
+        return "Jump"
+    }
 }

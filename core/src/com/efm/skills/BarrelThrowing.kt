@@ -26,4 +26,9 @@ object BarrelThrowing : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.barrel)
     {
         return "Throw an explosive barrel that will explode next round"
     }
+    
+    fun getName() : String
+    {
+        return "Barrel Throwing"
+    }
 }

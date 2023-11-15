@@ -26,4 +26,9 @@ object Shield : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.shield)
     {
         return "Invincibility for one turn"
     }
+    
+    fun getName() : String
+    {
+        return "Shield"
+    }
 }

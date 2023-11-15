@@ -112,4 +112,9 @@ object Push : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.push)
         return "Pushes an enemy away from you"
     }
     
+    fun getName() : String
+    {
+        return "Push"
+    }
+    
 }

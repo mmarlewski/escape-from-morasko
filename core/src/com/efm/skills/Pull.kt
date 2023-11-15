@@ -154,4 +154,8 @@ object Pull : ActiveSkill(BodyPart.leftHand, 1, 3, Textures.pull)
         return "Pulls an enemy towards you"
     }
     
+    fun getName() : String
+    {
+        return "Pull"
+    }
 }

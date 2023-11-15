@@ -54,4 +54,9 @@ object Freeze : ActiveSkill(BodyPart.head, 1, 3, Textures.freeze)
     {
         return "Freezes an opponent, preventing them from performing a turn"
     }
+    
+    fun getName() : String
+    {
+        return "Freeze"
+    }
 }
