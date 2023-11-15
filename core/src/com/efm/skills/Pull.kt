@@ -1,12 +1,13 @@
 package com.efm.skills
 
 import com.efm.*
-import com.efm.Map
 import com.efm.assets.Textures
 import com.efm.assets.Tiles
-import com.efm.entity.*
+import com.efm.entity.Character
+import com.efm.entity.Entity
 import com.efm.level.World
-import com.efm.room.*
+import com.efm.room.Room
+import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
@@ -147,4 +148,10 @@ object Pull : ActiveSkill(BodyPart.leftHand, 1, 3, Textures.pull)
         
         Animating.executeAnimations(animations)
     }
+    
+    fun getDescription() : String
+    {
+        return "Pulls an enemy towards you"
+    }
+    
 }

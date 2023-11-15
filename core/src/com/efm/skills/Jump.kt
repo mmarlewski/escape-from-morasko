@@ -21,4 +21,9 @@ object Jump : ActiveSkill(BodyPart.leftLeg, 1, 3, Textures.jump)
     override fun use(room : Room, targetPosition : RoomPosition)
     {
     }
+    
+    fun getDescription() : String
+    {
+        return "Allows to jump over not traversable fields"
+    }
 }

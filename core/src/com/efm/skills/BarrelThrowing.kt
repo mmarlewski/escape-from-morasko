@@ -21,4 +21,9 @@ object BarrelThrowing : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.barrel)
     override fun use(room : Room, targetPosition : RoomPosition)
     {
     }
+    
+    fun getDescription() : String
+    {
+        return "Throw an explosive barrel that will explode next round"
+    }
 }

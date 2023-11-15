@@ -48,4 +48,10 @@ object Swap : ActiveSkill(BodyPart.head, 1, 3, Textures.swap)
             World.currentRoom.addEntityAt(World.hero, targetPosition)
         }
     }
+    
+    fun getDescription() : String
+    {
+        return "Swap places with enemy unit"
+    }
+    
 }

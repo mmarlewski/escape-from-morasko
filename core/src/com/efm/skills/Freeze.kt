@@ -49,4 +49,9 @@ object Freeze : ActiveSkill(BodyPart.head, 1, 3, Textures.freeze)
             }
         }
     }
+    
+    fun getDescription() : String
+    {
+        return "Freezes an opponent, preventing them from performing a turn"
+    }
 }

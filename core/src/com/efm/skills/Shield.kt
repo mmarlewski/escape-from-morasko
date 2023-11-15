@@ -21,4 +21,9 @@ object Shield : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.shield)
     override fun use(room : Room, targetPosition : RoomPosition)
     {
     }
+    
+    fun getDescription() : String
+    {
+        return "Invincibility for one turn"
+    }
 }

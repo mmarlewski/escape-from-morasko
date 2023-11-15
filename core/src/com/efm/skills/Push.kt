@@ -106,4 +106,10 @@ object Push : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.push)
         
         Animating.executeAnimations(animations)
     }
+    
+    fun getDescription() : String
+    {
+        return "Pushes an enemy away from you"
+    }
+    
 }
