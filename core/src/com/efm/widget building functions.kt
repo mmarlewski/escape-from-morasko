@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
 import com.efm.screens.MenuScreen
+import com.efm.skill.Skill
 import com.efm.ui.gameScreen.*
 
 lateinit var musicSlider : Slider
@@ -709,7 +710,6 @@ fun itemButtonWithLabel(
                                     onClicked()
                                 }
                             })
-//    highlightSelection(imageButton, down, up)
     
     imageButton.add(stack)
     return imageButton
@@ -765,3 +765,56 @@ fun equipmentOverlay(
 
 const val EQUIPMENT_ROW_MAX = 5
 const val EQUIPMENT_ROWS = 5
+
+fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : VerticalGroup
+{
+    val skillIcon = imageOf(skill.texture, Scaling.none)
+    val bodyPartIcon = imageOf(Textures.check, Scaling.none)
+    val skillName = labelOf(skill.name, Fonts.inconsolata20, Colors.gray, Textures.translucentNinePatch)
+    val skillDescription = labelOf(skill.description, Fonts.inconsolata10, Colors.black, Textures.translucentNinePatch)
+    val assignButton = textButtonOf(
+            "Assign", Fonts.pixeloid20, Colors.black,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch,
+                                   )
+    {
+        onClicked
+        PopUps.setSkillAssignmentVisibility(false)
+    }
+    val column =
+            columnOf(rowOf(bodyPartIcon), rowOf(skillIcon), rowOf(skillName), rowOf(skillDescription), rowOf(assignButton))
+    
+    return column
+}
+
+fun skillsAssignmentOverlay(
+        skillLeft : Skill,
+        onLeftClicked : () -> Unit,
+        skillMiddle : Skill,
+        onMiddleClicked : () -> Unit,
+        skillRight : Skill,
+        onRightClicked : () -> Unit
+                           ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid30
+    windowStyle.titleFontColor = Colors.black
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundNinePatch)
+    
+    val window = Window("Congratulations! You defeated a boss", windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
+    window.add(
+            rowOf(
+                    skillAssignDisplay(skillLeft, onLeftClicked),
+                    skillAssignDisplay(skillMiddle, onMiddleClicked),
+                    skillAssignDisplay(skillRight, onRightClicked)
+                 )
+              )
+    return window
+    // dodac potem skillLeft.bodyPart i skillLeft.description
+}
