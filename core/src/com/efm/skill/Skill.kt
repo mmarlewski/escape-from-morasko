@@ -1,8 +1,6 @@
 package com.efm.skill
 
 import com.badlogic.gdx.graphics.Texture
-import com.efm.assets.Textures
-import com.efm.getSquareAreaPositions
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 
@@ -15,7 +13,9 @@ abstract class Skill(
         open val bodyPart : BodyPart,
         open val apCost : Int,
         open val coolDown : Int,
-        open val texture : Texture
+        open val texture : Texture,
+        open val name : String,
+        open val description : String
                     )
 {
     var isInCoolDown = false
@@ -26,8 +26,10 @@ abstract class ActiveSkill(
         override val bodyPart : BodyPart,
         override val apCost : Int,
         override val coolDown : Int,
-        override val texture : Texture
-                          ) : Skill(bodyPart, apCost, coolDown, texture)
+        override val texture : Texture,
+        override val name : String,
+        override val description : String
+                          ) : Skill(bodyPart, apCost, coolDown, texture, name, description)
 {
     abstract fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     abstract fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>

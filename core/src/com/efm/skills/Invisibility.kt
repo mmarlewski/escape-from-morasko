@@ -7,7 +7,14 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Invisibility : ActiveSkill(BodyPart.torso, 1, 3, Textures.invisibility)
+object Invisibility : ActiveSkill(
+        BodyPart.torso,
+        1,
+        3,
+        Textures.invisibility,
+        "Invisibility",
+        "Become undetectable for enemy units"
+                                 )
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
@@ -22,15 +29,5 @@ object Invisibility : ActiveSkill(BodyPart.torso, 1, 3, Textures.invisibility)
     override fun use(room : Room, targetPosition : RoomPosition)
     {
         World.hero.isVisible = false
-    }
-    
-    fun getDescription() : String
-    {
-        return "Allows to be undetectable for enemy units"
-    }
-    
-    fun getName() : String
-    {
-        return "Invisibility"
     }
 }

@@ -6,7 +6,14 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object BarrelThrowing : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.barrel)
+object BarrelThrowing : ActiveSkill(
+        BodyPart.rightHand,
+        1,
+        3,
+        Textures.barrel,
+        "Barrel Throwing",
+        "Throw an explosive barrel that will explode next round"
+                                   )
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
@@ -20,15 +27,5 @@ object BarrelThrowing : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.barrel)
     
     override fun use(room : Room, targetPosition : RoomPosition)
     {
-    }
-    
-    fun getDescription() : String
-    {
-        return "Throw an explosive barrel that will explode next round"
-    }
-    
-    fun getName() : String
-    {
-        return "Barrel Throwing"
     }
 }

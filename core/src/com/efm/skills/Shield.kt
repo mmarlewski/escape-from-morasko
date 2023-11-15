@@ -6,7 +6,7 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Shield : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.shield)
+object Shield : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.shield, "Shield", "Grants invincibility for one turn")
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
@@ -20,15 +20,5 @@ object Shield : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.shield)
     
     override fun use(room : Room, targetPosition : RoomPosition)
     {
-    }
-    
-    fun getDescription() : String
-    {
-        return "Invincibility for one turn"
-    }
-    
-    fun getName() : String
-    {
-        return "Shield"
     }
 }

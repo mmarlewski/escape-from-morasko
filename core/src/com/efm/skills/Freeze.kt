@@ -10,12 +10,19 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Freeze : ActiveSkill(BodyPart.head, 1, 3, Textures.freeze)
+object Freeze : ActiveSkill(
+        BodyPart.head,
+        1,
+        3,
+        Textures.freeze,
+        "Freeze",
+        "Freezes an opponent, preventing them from performing a turn"
+                           )
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
         val targetPositions = mutableListOf<RoomPosition>()
-    
+        
         val squarePositions = getSquareAreaPositions(source, 10)
         for (squarePosition in squarePositions)
         {
@@ -48,15 +55,5 @@ object Freeze : ActiveSkill(BodyPart.head, 1, 3, Textures.freeze)
                 }
             }
         }
-    }
-    
-    fun getDescription() : String
-    {
-        return "Freezes an opponent, preventing them from performing a turn"
-    }
-    
-    fun getName() : String
-    {
-        return "Freeze"
     }
 }

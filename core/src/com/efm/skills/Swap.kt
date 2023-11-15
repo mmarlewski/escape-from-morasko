@@ -10,12 +10,12 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Swap : ActiveSkill(BodyPart.head, 1, 3, Textures.swap)
+object Swap : ActiveSkill(BodyPart.head, 1, 3, Textures.swap, "Swap", "Swap places with enemy unit")
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
         val targetPositions = mutableListOf<RoomPosition>()
-    
+        
         val squarePositions = getSquareAreaPositions(source, 10)
         for (squarePosition in squarePositions)
         {
@@ -48,15 +48,4 @@ object Swap : ActiveSkill(BodyPart.head, 1, 3, Textures.swap)
             World.currentRoom.addEntityAt(World.hero, targetPosition)
         }
     }
-    
-    fun getDescription() : String
-    {
-        return "Swap places with enemy unit"
-    }
-    
-    fun getName() : String
-    {
-        return "Swap"
-    }
-    
 }

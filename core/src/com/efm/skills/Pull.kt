@@ -12,7 +12,7 @@ import com.efm.screens.GameScreen
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Pull : ActiveSkill(BodyPart.leftHand, 1, 3, Textures.pull)
+object Pull : ActiveSkill(BodyPart.leftHand, 1, 3, Textures.pull, "Pull", "Pulls an enemy towards you")
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
@@ -147,15 +147,5 @@ object Pull : ActiveSkill(BodyPart.leftHand, 1, 3, Textures.pull)
         }
         
         Animating.executeAnimations(animations)
-    }
-    
-    fun getDescription() : String
-    {
-        return "Pulls an enemy towards you"
-    }
-    
-    fun getName() : String
-    {
-        return "Pull"
     }
 }
