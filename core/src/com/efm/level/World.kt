@@ -1,5 +1,6 @@
 package com.efm.level
 
+import com.badlogic.gdx.utils.Array
 import com.efm.entities.Hero
 import com.efm.room.Room
 
@@ -42,19 +43,19 @@ object World
         }
     }
     
-    fun set(level :Level)
+    fun set(saveList : List<*>)
     {
+        val saveCurrentLevelName = saveList[0] as String
+        val saveCurrentRoomName = saveList[1] as String
+        val saveHero = saveList[2] as Hero
+        val saveLevels = saveList[3] as Array<*>
+        this.hero = saveHero
         this.levels.clear()
-        this.levels.add(level)
-//        for(level in array)
-//        {
-//            this.levels.add(level)
-//        }
-        
-//        this.passages.clear()
-//        this.passages.addAll(newWorld.passages)
-//
-//        this.currentLevel = newWorld.currentLevel
-//        this.currentRoom = newWorld.currentRoom
+        for (level in saveLevels)
+        {
+            this.levels.add(level as Level)
+        }
+        this.currentLevel = this.levels.find { it.name == saveCurrentLevelName }!!
+        this.currentRoom = this.currentLevel.rooms.find { it.name == saveCurrentRoomName }!!
     }
 }

@@ -1,6 +1,5 @@
 package com.efm.entities.exits
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.*
@@ -23,9 +22,12 @@ interface Exit : Interactive
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile? = null
     
+    // for serializing
+    
     override fun write(json : Json?)
     {
         super.write(json)
+        
         if (json != null)
         {
             json.writeValue("direction", this.direction)
@@ -36,6 +38,7 @@ interface Exit : Interactive
     override fun read(json : Json?, jsonData : JsonValue?)
     {
         super.read(json, jsonData)
+        
         if (json != null)
         {
             val jsonDirection = json.readValue("direction", Direction4::class.java, jsonData)
@@ -50,7 +53,7 @@ open class RoomExit(
         override val position : RoomPosition,
         override var direction : Direction4,
         var endRoomName : String,
-        var endPosition : RoomPosition,
+        val endPosition : RoomPosition,
         override var style : ExitStyle
                    ) : Exit
 {
@@ -73,7 +76,6 @@ open class RoomExit(
     override fun interact()
     {
         travelBetweenRooms()
-        Gdx.app.log("Exit", "adjusting camera")
         adjustCameraAfterMoving()
         adjustMapLayersAfterMoving()
     }
@@ -83,10 +85,6 @@ open class RoomExit(
         val newRoom : Room? = World.currentLevel.rooms.find { it.name == endRoomName }
         val newPosition : RoomPosition = endPosition
         
-        println("endRoomName : $endRoomName")
-        println("newRoom : $newRoom")
-        println("World.currentRoom.name : ${World.currentRoom.name}")
-        
         if (newRoom == null) throw Exception("Cannot find the Room that the Exit leads to.")
         
         World.currentRoom.removeEntity(World.hero)
@@ -94,6 +92,33 @@ open class RoomExit(
         World.currentRoom.addEntityAt(World.hero, newPosition)
     }
     
+    // for serializing
+    
+    constructor() : this(RoomPosition(-1, -1), Direction4.up, "", RoomPosition(-1, -1), ExitStyle.stone)
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("endRoomName", this.endRoomName)
+            json.writeValue("endPosition", this.endPosition)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonEndRoomName = json.readValue("endRoomName", String::class.java, jsonData)
+            if (jsonEndRoomName != null) this.endRoomName = jsonEndRoomName
+            val jsonEndPosition = json.readValue("endPosition", RoomPosition::class.java, jsonData)
+            if (jsonEndPosition != null) this.endPosition.set(jsonEndPosition)
+        }
+    }
 }
 
 open class LevelExit(
@@ -122,7 +147,6 @@ open class LevelExit(
     override fun interact()
     {
         showNextLevelPopup()
-        Gdx.app.log("Exit", "adjusting camera")
         adjustCameraAfterMoving()
         adjustMapLayersAfterMoving()
     }
@@ -155,15 +179,37 @@ open class LevelExit(
         val newLevel = World.getLevels().find { it.name == endLevelName }
         val newPosition = newLevel?.getStartingPosition()
         val newRoom = newLevel?.getStartingRoom()
-        Gdx.app.log("Exit", "travelling...")
         World.currentRoom.removeEntity(World.hero)
         if (newLevel != null) World.changeCurrentLevel(newLevel)
         if (newRoom != null) World.changeCurrentRoom(newRoom)
         if (newPosition != null) World.currentRoom.addEntityAt(World.hero, newPosition)
-        Gdx.app.log("Exit", "travelled")
-        Gdx.app.log("Exit", "adjusting camera again")
         adjustCameraAfterMoving()
         adjustMapLayersAfterMoving()
+    }
+    
+    // for serializing
+    
+    constructor() : this(RoomPosition(-1, -1), Direction4.up, "", ExitStyle.stone)
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("endLevelName", this.endLevelName)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonEndLevelName = json.readValue("endLevelName", String::class.java, jsonData)
+            if (jsonEndLevelName != null) this.endLevelName = jsonEndLevelName
+        }
     }
 }
 
@@ -267,6 +313,20 @@ class RoomExitActiveWhenNoEnemiesAreInRoom(
             super.interact()
         }
     }
+    
+    // for serializing
+    
+    constructor() : this(RoomPosition(-1, -1), Direction4.up, "", RoomPosition(-1, -1), ExitStyle.stone)
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+    }
 }
 
 class LevelExitActiveWhenNoEnemiesAreInRoom(
@@ -279,5 +339,19 @@ class LevelExitActiveWhenNoEnemiesAreInRoom(
         {
             super.interact()
         }
+    }
+    
+    // for serializing
+    
+    constructor() : this(RoomPosition(-1, -1), Direction4.up, "", ExitStyle.stone)
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
     }
 }

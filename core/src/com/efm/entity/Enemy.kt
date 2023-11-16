@@ -4,10 +4,13 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Textures
 import com.efm.assets.Tiles
+import com.efm.entities.exits.ExitStyle
 import com.efm.level.World
 import com.efm.room.*
 import com.efm.screens.GameScreen
@@ -245,4 +248,26 @@ interface Enemy : Character
         return possibleSteps.random()
     }
     
+    // for serializing
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("isFrozen", this.isFrozen)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonIsFrozen = json.readValue("isFrozen", Boolean::class.java, jsonData)
+            if (jsonIsFrozen != null) this.isFrozen = jsonIsFrozen
+        }
+    }
 }
