@@ -858,7 +858,6 @@ fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
 
 fun isAnySkillAssgined(skill : Skill) : Boolean
 {
-    val aa = World.hero.bodyPartMap
     return World.hero.bodyPartMap[skill.bodyPart] != null
 }
 
