@@ -6,7 +6,7 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Jump : ActiveSkill(BodyPart.leftLeg, 1, 3, Textures.jump)
+object Jump : ActiveSkill(BodyPart.leftLeg, 1, 3, Textures.jump, "Jump", "Jump over non-traversable fields")
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {

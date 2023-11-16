@@ -90,11 +90,13 @@ object RightStructure
             {
                 PopUps.setEndTurnVisibility(false)
                 PopUps.setBackgroundVisibility(true)
+                LeftStructure.menuButton.isVisible = true
             }
             else
             {
                 PopUps.setEndTurnVisibility(true)
                 PopUps.setBackgroundVisibility(false)
+                LeftStructure.menuButton.isVisible = false
             }
         }
         else

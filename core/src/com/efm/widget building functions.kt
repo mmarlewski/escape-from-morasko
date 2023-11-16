@@ -11,8 +11,9 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
 import com.efm.screens.MenuScreen
-import com.efm.ui.gameScreen.EquipmentStructure
-import com.efm.ui.gameScreen.PopUps
+import com.efm.skill.BodyPart
+import com.efm.skill.Skill
+import com.efm.ui.gameScreen.*
 
 lateinit var musicSlider : Slider
 lateinit var soundSlider : Slider
@@ -345,7 +346,8 @@ fun windowAreaOf(
         fontType : BitmapFont,
         fontColor : Color,
         background : NinePatch,
-        onYes : () -> Unit
+        onYes : () -> Unit,
+        onNo : () -> Unit
                 ) : Window
 {
     val windowStyle = Window.WindowStyle()
@@ -390,6 +392,7 @@ fun windowAreaOf(
     {
         window.isVisible = false
         Sounds.blop.playOnce()
+        onNo()
         PopUps.setBackgroundVisibility(true)
     }
     
@@ -465,6 +468,7 @@ fun settingsPause(
         window.isVisible = false
         Sounds.blop.playOnce()
         PopUps.setMenuVisibility(true)
+        LeftStructure.menuButton.isVisible = true
     }
     
     musicSlider.addListener(object : ChangeListener()
@@ -565,7 +569,7 @@ fun menuPopup(
         Sounds.blop.playOnce()
         window.isVisible = false
         PopUps.setSettingsVisibility(true)
-        PopUps.setBackgroundVisibility(true)
+        LeftStructure.menuButton.isVisible = false
         musicSlider.value = getMusicVolume()
         soundSlider.value = getSoundVolume()
     }
@@ -707,7 +711,6 @@ fun itemButtonWithLabel(
                                     onClicked()
                                 }
                             })
-//    highlightSelection(imageButton, down, up)
     
     imageButton.add(stack)
     return imageButton
@@ -763,3 +766,75 @@ fun equipmentOverlay(
 
 const val EQUIPMENT_ROW_MAX = 5
 const val EQUIPMENT_ROWS = 5
+
+fun determineBodyPart(skill : Skill) : Texture
+{
+    return when (skill.bodyPart)
+    {
+        BodyPart.head                       -> Textures.skillHead
+        BodyPart.leftHand                   -> Textures.skillArmLeft
+        BodyPart.rightHand                  -> Textures.skillArmRight
+        BodyPart.torso                      -> Textures.skillTorso
+        BodyPart.leftLeg, BodyPart.rightLeg -> Textures.skillLegRight
+    }
+}
+
+fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
+{
+    val bodyPart = determineBodyPart(skill)
+    val skillIcon = imageOf(skill.texture, Scaling.none)
+    val bodyPartIcon = imageOf(bodyPart, Scaling.none)
+    val skillName = labelOf(skill.name, Fonts.inconsolata20, Colors.darkGray, Textures.translucentNinePatch)
+    val skillDescription = labelOf(skill.description, Fonts.pixeloid10, Colors.black, Textures.translucentNinePatch)
+    val assignButton = textButtonOf(
+            " Assign ", Fonts.pixeloid20, Colors.black,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch,
+                                   )
+    {
+        onClicked
+        PopUps.setSkillAssignmentVisibility(false)
+    }
+    
+    skillDescription.setWrap(true)
+    skillDescription.setAlignment(Align.center)
+    
+    val table = Table()
+    table.add(skillIcon).padTop(64f).row()
+    table.add(bodyPartIcon).padTop(8f).row()
+    table.add(skillName).row()
+    table.add(skillDescription).width(80f).height(80f).row()
+    table.add(assignButton).padBottom(24f).row()
+    
+    return table
+}
+
+fun skillsAssignmentOverlay(
+        skillLeft : Skill,
+        skillMiddle : Skill,
+        skillRight : Skill,
+        onAssign : () -> Unit,
+        onReassign : () -> Unit
+                           ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid30
+    windowStyle.titleFontColor = Colors.black
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundNinePatch)
+    
+    val window = Window("Congratulations! You defeated a boss", windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
+    window.add(
+            rowOf(
+                    skillAssignDisplay(skillLeft, onAssign).padLeft(64f),
+                    skillAssignDisplay(skillMiddle, onAssign).padLeft(96f),
+                    skillAssignDisplay(skillRight, onAssign).padLeft(96f).padRight(64f)
+                 )
+              )
+    return window
+}

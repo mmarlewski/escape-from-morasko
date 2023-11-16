@@ -11,7 +11,7 @@ import com.efm.screens.GameScreen
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Push : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.push)
+object Push : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.push, "Push", "Pushes an enemy away from you")
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
@@ -106,4 +106,5 @@ object Push : ActiveSkill(BodyPart.rightHand, 1, 3, Textures.push)
         
         Animating.executeAnimations(animations)
     }
+    
 }
