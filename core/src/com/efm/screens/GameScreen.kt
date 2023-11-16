@@ -17,7 +17,8 @@ import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
 import com.efm.skills.*
-import com.efm.stackableMapItems.*
+import com.efm.stackableMapItems.Bomb
+import com.efm.stackableMapItems.Explosive
 import com.efm.stackableSelfItems.*
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
@@ -52,13 +53,7 @@ object GameScreen : BaseScreen(), GestureListener
         // input processor
         super.inputProcessor = inputMultiplexer
         
-        // hud
-        ItemsStructure.display()
-        LeftStructure.display()
-        ProgressBars.display()
-        RightStructure.display()
-        PopUps.display()
-        EquipmentStructure.display()
+
         
         // map
         updateMapBaseLayer()
@@ -82,12 +77,20 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.inventory.addItem(Mushroom())
         World.hero.addSkill(LavaWalking)
         World.hero.addSkill(Push)
-        World.hero.addSkill(Pull)
+//        World.hero.addSkill(Pull)
         World.hero.addSkill(Invisibility)
         World.hero.addSkill(Freeze)
         World.hero.addSkill(GrassHealing)
         //World.hero.addSkill(Swap)
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
+        
+        // hud
+        ItemsStructure.display()
+        LeftStructure.display()
+        ProgressBars.display()
+        RightStructure.display()
+        PopUps.display()
+        EquipmentStructure.display()
         
         // state
         val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
