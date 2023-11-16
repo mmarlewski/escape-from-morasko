@@ -32,9 +32,17 @@ object PopUps
     
     fun skillAssignment() : Window
     {
-        val skillAssignmentPopup = skillsAssignmentOverlay(Freeze, { playSoundOnce(Sounds.blop) },
-                                                           Invisibility, { playSoundOnce(Sounds.blop) },
-                                                           Jump, { playSoundOnce(Sounds.blop) })
+        val skillAssignmentPopup = skillsAssignmentOverlay(Freeze, Invisibility, Jump,
+                                                           {
+                                                               //when button assigned
+                                                               playSoundOnce(Sounds.blop)
+                                                               setBackgroundVisibility(true)
+                                                           },
+                                                           {
+                                                               //when button reassigned
+                                                               playSoundOnce(Sounds.blop)
+                                                               setBackgroundVisibility(true)
+                                                           })
         
         return skillAssignmentPopup
     }

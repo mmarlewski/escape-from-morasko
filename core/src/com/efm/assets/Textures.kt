@@ -152,6 +152,15 @@ object Textures
     val swap = load("abilities/swapPlaces.png")
     val waterwalking = load("abilities/waterwalking.png")
     
+    // skill icons
+    
+    val skillHead = load("icons/skill_head.png")
+    val skillArmLeft = load("icons/skill_left_arm.png")
+    val skillArmRight = load("icons/skill_right_arm.png")
+    val skillLegLeft = load("icons/skill_left_leg.png")
+    val skillLegRight = load("icons/skill_right_leg.png")
+    val skillTorso = load("icons/skill_torso.png")
+    
     private fun load(name : String) : Texture
     {
         val filePath = "textures/$name"
