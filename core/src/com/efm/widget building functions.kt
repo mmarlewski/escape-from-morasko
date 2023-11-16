@@ -772,11 +772,12 @@ fun determineBodyPart(skill : Skill) : Texture
 {
     return when (skill.bodyPart)
     {
-        BodyPart.head                       -> Textures.skillHead
-        BodyPart.leftHand                   -> Textures.skillArmLeft
-        BodyPart.rightHand                  -> Textures.skillArmRight
-        BodyPart.torso                      -> Textures.skillTorso
-        BodyPart.leftLeg, BodyPart.rightLeg -> Textures.skillLegRight
+        BodyPart.head      -> Textures.skillHead
+        BodyPart.leftHand  -> Textures.skillArmLeft
+        BodyPart.rightHand -> Textures.skillArmRight
+        BodyPart.torso     -> Textures.skillTorso
+        BodyPart.leftLeg   -> Textures.skillLegLeft
+        BodyPart.rightLeg  -> Textures.skillLegRight
     }
 }
 
@@ -855,7 +856,7 @@ fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
     return table
 }
 
-fun isAnySkillAssgined(skill : Skill) : Boolean
+fun isAnySkillAssigned(skill : Skill) : Boolean
 {
     return World.hero.bodyPartMap[skill.bodyPart] != null
 }
@@ -877,7 +878,7 @@ fun skillsAssignmentOverlay(
     val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
     titleLabel.setAlignment(Align.center)
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
-    val skillLeftToDisplay = if (isAnySkillAssgined(skillLeft))
+    val skillLeftToDisplay = if (isAnySkillAssigned(skillLeft))
     {
         skillReassignDisplay(skillLeft, onAssign).padLeft(64f)
     }
@@ -886,7 +887,7 @@ fun skillsAssignmentOverlay(
         skillAssignDisplay(skillLeft, onReassign).padLeft(64f)
     }
     
-    val skillMiddleToDisplay = if (isAnySkillAssgined(skillMiddle))
+    val skillMiddleToDisplay = if (isAnySkillAssigned(skillMiddle))
     {
         skillReassignDisplay(skillMiddle, onAssign).padLeft(96f)
     }
@@ -895,7 +896,7 @@ fun skillsAssignmentOverlay(
         skillAssignDisplay(skillMiddle, onReassign).padLeft(96f)
     }
     
-    val skillRightToDisplay = if (isAnySkillAssgined(skillRight))
+    val skillRightToDisplay = if (isAnySkillAssigned(skillRight))
     {
         skillReassignDisplay(skillRight, onAssign).padLeft(96f).padRight(64f)
     }
