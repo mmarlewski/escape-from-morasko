@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
+import com.efm.level.World
 import com.efm.screens.MenuScreen
 import com.efm.skill.BodyPart
 import com.efm.skill.Skill
@@ -815,7 +816,7 @@ fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
     return table
 }
 
-fun skillReassignmentDisplay(skill : Skill, onClicked : () -> Unit) : Table
+fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
 {
     val bodyPart = determineBodyPart(skill)
     val skillIcon = imageOf(skill.texture, Scaling.none)
@@ -854,6 +855,11 @@ fun skillReassignmentDisplay(skill : Skill, onClicked : () -> Unit) : Table
     return table
 }
 
+fun isAnySkillAssgined(skill : Skill) : Boolean
+{
+    return World.hero.bodyPartMap[skill.bodyPart] != null
+}
+
 fun skillsAssignmentOverlay(
         skillLeft : Skill,
         skillMiddle : Skill,
@@ -871,12 +877,33 @@ fun skillsAssignmentOverlay(
     val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
     titleLabel.setAlignment(Align.center)
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
-    window.add(
-            rowOf(
-                    skillAssignDisplay(skillLeft, onAssign).padLeft(64f),
-                    skillAssignDisplay(skillMiddle, onAssign).padLeft(96f),
-                    skillReassignmentDisplay(skillRight, onReassign).padLeft(96f).padRight(64f)
-                 )
-              )
+    val skillLeftToDisplay = if (isAnySkillAssgined(skillLeft))
+    {
+        skillReassignDisplay(skillLeft, onAssign).padLeft(64f)
+    }
+    else
+    {
+        skillAssignDisplay(skillLeft, onReassign).padLeft(64f)
+    }
+    
+    val skillMiddleToDisplay = if (isAnySkillAssgined(skillMiddle))
+    {
+        skillReassignDisplay(skillMiddle, onAssign).padLeft(96f)
+    }
+    else
+    {
+        skillAssignDisplay(skillMiddle, onReassign).padLeft(96f)
+    }
+    
+    val skillRightToDisplay = if (isAnySkillAssgined(skillRight))
+    {
+        skillReassignDisplay(skillRight, onAssign).padLeft(96f).padRight(64f)
+    }
+    else
+    {
+        skillAssignDisplay(skillRight, onReassign).padLeft(96f).padRight(64f)
+    }
+    
+    window.add(rowOf(skillLeftToDisplay, skillMiddleToDisplay, skillRightToDisplay))
     return window
 }
