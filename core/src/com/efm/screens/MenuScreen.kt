@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.Textures
-import com.efm.ui.gameScreen.PopUps
+import com.efm.ui.gameScreen.PopUpsMenu
 import com.efm.ui.menuScreen.TitleAndButtons
 
 object MenuScreen : BaseScreen()
@@ -21,7 +21,7 @@ object MenuScreen : BaseScreen()
         // input processor
         super.inputProcessor = stage
         
-        PopUps.display()
+        PopUpsMenu.display()
         TitleAndButtons.display()
         
     }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Scaling
 import com.efm.*
 import com.efm.assets.*
 import com.efm.screens.*
-import com.efm.ui.gameScreen.PopUps
+import com.efm.ui.gameScreen.PopUpsMenu
 
 object TitleAndButtons
 {
@@ -63,7 +63,7 @@ object TitleAndButtons
                                                )
         {
             Sounds.blop.playOnce()
-            PopUps.setOverwriteSaveVisibility(true)
+            PopUpsMenu.setOverwriteSaveVisibility(true)
             setButtonsVisibility(false)
         }
         

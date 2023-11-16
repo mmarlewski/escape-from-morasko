@@ -772,11 +772,12 @@ fun determineBodyPart(skill : Skill) : Texture
 {
     return when (skill.bodyPart)
     {
-        BodyPart.head                       -> Textures.skillHead
-        BodyPart.leftHand                   -> Textures.skillArmLeft
-        BodyPart.rightHand                  -> Textures.skillArmRight
-        BodyPart.torso                      -> Textures.skillTorso
-        BodyPart.leftLeg, BodyPart.rightLeg -> Textures.skillLegRight
+        BodyPart.head      -> Textures.skillHead
+        BodyPart.leftHand  -> Textures.skillArmLeft
+        BodyPart.rightHand -> Textures.skillArmRight
+        BodyPart.torso     -> Textures.skillTorso
+        BodyPart.leftLeg   -> Textures.skillLegLeft
+        BodyPart.rightLeg  -> Textures.skillLegRight
     }
 }
 
@@ -857,6 +858,7 @@ fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
 
 fun isAnySkillAssgined(skill : Skill) : Boolean
 {
+    val aa = World.hero.bodyPartMap
     return World.hero.bodyPartMap[skill.bodyPart] != null
 }
 
