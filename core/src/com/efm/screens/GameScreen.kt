@@ -85,6 +85,7 @@ object GameScreen : BaseScreen(), GestureListener
         World.hero.addSkill(Pull)
         World.hero.addSkill(Invisibility)
         World.hero.addSkill(Freeze)
+        World.hero.addSkill(GrassHealing)
         //World.hero.addSkill(Swap)
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
