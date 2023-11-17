@@ -18,17 +18,11 @@ enum class Base(val tile : TiledMapTile, val isTreadableFor : (Entity) -> Boolea
     water(Tiles.waterFloor, { entity -> entity is EnemyBat || (entity is Hero && entity.hasSkill(WaterWalking)) }),
     waterOctopus(Tiles.waterFloorOctopus, { false }),
     grassDark1(Tiles.grassDarkFloor1),
-    grassDarkDrained1(Tiles.grassDarkFloorDrained1),
     grassDark2(Tiles.grassDarkFloor2),
-    grassDarkDrained2(Tiles.grassDarkFloorDrained2),
     grassLight1(Tiles.grassLightFloor1),
-    grassLightDrained1(Tiles.grassLightFloorDrained1),
     grassStone1(Tiles.grassStoneFloor1),
-    grassStoneDrained1(Tiles.grassStoneFloorDrained1),
     grassStone2(Tiles.grassStoneFloor2),
-    grassStoneDrained2(Tiles.grassStoneFloorDrained2),
     grassStone3(Tiles.grassStoneFloor3),
-    grassStoneDrained3(Tiles.grassStoneFloorDrained3),
     tiled1(Tiles.tiledFloor1),
     tiled2(Tiles.tiledFloor2),
     tiled3(Tiles.tiledFloor3),
@@ -44,7 +38,13 @@ enum class Base(val tile : TiledMapTile, val isTreadableFor : (Entity) -> Boolea
     tiled2xy(Tiles.tiledFloor2xy),
     tiled3x(Tiles.tiledFloor3x),
     tiled3y(Tiles.tiledFloor3y),
-    tiled3xy(Tiles.tiledFloor3xy);
+    tiled3xy(Tiles.tiledFloor3xy),
+    grassDarkDrained1(Tiles.grassDarkFloorDrained1),
+    grassDarkDrained2(Tiles.grassDarkFloorDrained2),
+    grassLightDrained1(Tiles.grassLightFloorDrained1),
+    grassStoneDrained1(Tiles.grassStoneFloorDrained1),
+    grassStoneDrained2(Tiles.grassStoneFloorDrained2),
+    grassStoneDrained3(Tiles.grassStoneFloorDrained3);
     
     companion object
     {
