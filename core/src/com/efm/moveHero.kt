@@ -97,31 +97,43 @@ fun changeBaseIfDrained(space : Space)
     if (space.getBase()?.tile == Tiles.grassDarkFloor1)
     {
         space.changeBase(Base.grassDarkDrained1)
+        Animating.executeAnimations(mutableListOf(
+                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassDarkFloor2)
     {
         space.changeBase(Base.grassDarkDrained2)
+        Animating.executeAnimations(mutableListOf(
+                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassLightFloor1)
     {
         space.changeBase(Base.grassLightDrained1)
+        Animating.executeAnimations(mutableListOf(
+                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassStoneFloor1)
     {
         space.changeBase(Base.grassStoneDrained1)
+        Animating.executeAnimations(mutableListOf(
+                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassStoneFloor2)
     {
         space.changeBase(Base.grassStoneDrained2)
+        Animating.executeAnimations(mutableListOf(
+                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassStoneFloor3)
     {
         space.changeBase(Base.grassStoneDrained3)
+        Animating.executeAnimations(mutableListOf(
+                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
 }
