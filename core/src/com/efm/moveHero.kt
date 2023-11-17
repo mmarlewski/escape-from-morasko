@@ -58,21 +58,31 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         animations += Animation.action { Map.changeTile(MapLayer.entity, World.hero.position, null) }
         if (World.hero.hasSkill(GrassHealing))
         {
-            World.currentRoom.getSpace(World.hero.position)?.let { changeBaseIfDrained(it) }
+            val space = World.currentRoom.getSpace(World.hero.position)
+            if (space != null && space.getBase() in Base.grassTiles)
+            {
+                changeBaseIfDrained(space)
+            }
         }
         val prevMovePosition = startPosition.copy()
         path.forEachIndexed { index, space ->
             
             val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
             val moveTile = World.hero.getMoveTile(n)
-            if (World.hero.hasSkill(GrassHealing))
-            {
-                changeBaseIfDrained(space)
-            }
             
             animations += Animation.moveTileWithCameraFocus(moveTile, prevMovePosition.copy(), space.position.copy(), 0.1f)
             animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
             prevMovePosition.set(space.position)
+            
+            if (World.hero.hasSkill(GrassHealing) && space.getBase() in Base.grassTiles)
+            {
+                changeBaseIfDrained(space)
+                val showAndHeal = mutableListOf(
+                        Animation.showTile(moveTile, space.position.copy(), 0.2f),
+                        Animation.ascendTile(Tiles.hpPlus, space.position.copy(), 0.2f, 0.25f)
+                                               )
+                animations += Animation.simultaneous(showAndHeal)
+            }
         }
         if (animateToEndSpace)
         {
@@ -84,7 +94,16 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
                                                            )
             if (World.hero.hasSkill(GrassHealing))
             {
-                World.currentRoom.getSpace(endPosition)?.let { changeBaseIfDrained(it) }
+                val space = World.currentRoom.getSpace(endPosition)
+                if (space != null && space.getBase() in Base.grassTiles)
+                {
+                    changeBaseIfDrained(space)
+                    val showAndHeal = mutableListOf(
+                            Animation.showTile(Tiles.heroIdle1, space.position.copy(), 0.2f),
+                            Animation.ascendTile(Tiles.hpPlus, space.position.copy(), 0.2f, 0.25f)
+                                                   )
+                    animations += Animation.simultaneous(showAndHeal)
+                }
             }
         }
         animations += Animation.action(action)
@@ -97,43 +116,31 @@ fun changeBaseIfDrained(space : Space)
     if (space.getBase()?.tile == Tiles.grassDarkFloor1)
     {
         space.changeBase(Base.grassDarkDrained1)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassDarkFloor2)
     {
         space.changeBase(Base.grassDarkDrained2)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassLightFloor1)
     {
         space.changeBase(Base.grassLightDrained1)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassStoneFloor1)
     {
         space.changeBase(Base.grassStoneDrained1)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassStoneFloor2)
     {
         space.changeBase(Base.grassStoneDrained2)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
     if (space.getBase()?.tile == Tiles.grassStoneFloor3)
     {
         space.changeBase(Base.grassStoneDrained3)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.hpPlus,space.position,0.5f,0.25f)))
         World.hero.healCharacter(3)
     }
 }

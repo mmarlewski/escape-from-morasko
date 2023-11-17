@@ -11,13 +11,16 @@ import com.efm.entity.Interactive
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
+import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.*
 
 fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -58,6 +61,7 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
+            
             is Hero  ->
             {
                 RightStructure.xButtonVisibility(true)
@@ -94,6 +98,7 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
+            
             is Enemy ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -114,6 +119,7 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
                     this.selectedEnemy = selectedEntity
                 }
             }
+            
             else     ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -136,8 +142,10 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
 
 fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -146,7 +154,7 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -169,6 +177,7 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
         }
+        
         is Hero  ->
         {
             RightStructure.xButtonVisibility(true)
@@ -183,6 +192,7 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
             }
         }
+        
         is Enemy ->
         {
             Map.clearLayer(MapLayer.select)
@@ -203,6 +213,7 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
                 this.selectedEnemy = selectedEntity
             }
         }
+        
         else     ->
         {
             Map.clearLayer(MapLayer.select)
@@ -224,8 +235,10 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
 
 fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -234,7 +247,7 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -259,6 +272,7 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
             }
+            
             is Hero  ->
             {
                 RightStructure.xButtonVisibility(true)
@@ -273,6 +287,7 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
+            
             is Enemy ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -293,6 +308,7 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
                     this.selectedEnemy = selectedEntity
                 }
             }
+            
             else     ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -315,8 +331,10 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
 
 fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -325,7 +343,7 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -350,6 +368,7 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
             }
+            
             is Hero  ->
             {
                 RightStructure.xButtonVisibility(true)
@@ -364,6 +383,7 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
+            
             is Enemy ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -383,6 +403,7 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
                     this.selectedEnemy = selectedEntity
                 }
             }
+            
             else     ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -405,8 +426,10 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
 
 fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -415,7 +438,7 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -439,6 +462,7 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
             {
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
             }
+            
             else    ->
             {
                 val pathSpaces = PathFinding.findPathInRoomForEntity(
@@ -508,8 +532,10 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
 
 fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelectedOnce) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -518,7 +544,7 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -678,12 +704,13 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
                 ProgressBars.abilityBarForFlashing.isVisible = true
                 ProgressBars.abilityBarLabel.isVisible = true
             }
+            
             false ->
             {
                 ProgressBars.abilityBar.isVisible = false
                 ProgressBars.abilityBarForFlashing.isVisible = false
                 ProgressBars.abilityBarLabel.isVisible = false
-    
+                
                 World.hero.removeCoolDownFromAllActiveSkills()
                 ItemsStructure.fillItemsStructureWithItemsAndSkills()
             }
@@ -696,6 +723,7 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = false
             }
+            
             true  ->
             {
                 if (currState.isHeroMovingThroughDetectionPosition)

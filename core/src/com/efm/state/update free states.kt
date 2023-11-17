@@ -9,13 +9,16 @@ import com.efm.exit.LevelExit
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.level.World
+import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.*
 
 fun updateFreeNoSelection(currState : State.free.noSelection) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -86,8 +89,10 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
 
 fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -162,8 +167,10 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
 
 fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -227,8 +234,10 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
 
 fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -308,8 +317,10 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
 
 fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     

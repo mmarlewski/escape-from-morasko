@@ -10,8 +10,8 @@
 {
 	class: com.efm.entities.Hero
 	position: {
-		x: 3
-		y: 7
+		x: 4
+		y: 6
 	}
 	maxHealthPoints: 100
 	healthPoints: 100
@@ -608,7 +608,12 @@
 						}
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 6
+							y: 3
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 6
 							y: 3
@@ -620,6 +625,7 @@
 							x: 0
 							y: 7
 						}
+						endDirection: right
 					}
 				]
 			}
@@ -1171,7 +1177,7 @@
 							x: 1
 							y: 6
 						}
-						base: grassStone3
+						base: grassStoneDrained3
 					}
 					{
 						class: com.efm.room.Space
@@ -1179,7 +1185,7 @@
 							x: 2
 							y: 6
 						}
-						base: grassStone1
+						base: grassStoneDrained1
 					}
 					{
 						class: com.efm.room.Space
@@ -1187,7 +1193,7 @@
 							x: 3
 							y: 6
 						}
-						base: grassStone2
+						base: grassStoneDrained2
 					}
 					{
 						class: com.efm.room.Space
@@ -1195,7 +1201,7 @@
 							x: 4
 							y: 6
 						}
-						base: grassStone2
+						base: grassStoneDrained2
 					}
 					{
 						class: com.efm.room.Space
@@ -1259,7 +1265,7 @@
 							x: 1
 							y: 7
 						}
-						base: grassStone2
+						base: grassStoneDrained2
 					}
 					{
 						class: com.efm.room.Space
@@ -1874,10 +1880,15 @@
 						maxHealthPoints: 10
 						healthPoints: 10
 						alive: true
-						isFrozen: true
+						isFrozen: false
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 0
+							y: 7
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 0
 							y: 7
@@ -1889,9 +1900,15 @@
 							x: 6
 							y: 3
 						}
+						endDirection: left
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 10
+							y: 3
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 10
 							y: 3
@@ -1903,9 +1920,15 @@
 							x: 0
 							y: 3
 						}
+						endDirection: right
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 10
+							y: 9
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 10
 							y: 9
@@ -1917,12 +1940,13 @@
 							x: 0
 							y: 9
 						}
+						endDirection: right
 					}
 					{
 						class: com.efm.entities.Hero
 						position: {
-							x: 3
-							y: 7
+							x: 4
+							y: 6
 						}
 						maxHealthPoints: 100
 						healthPoints: 100
@@ -2449,7 +2473,12 @@
 						}
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 0
+							y: 3
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 0
 							y: 3
@@ -2461,9 +2490,15 @@
 							x: 10
 							y: 3
 						}
+						endDirection: left
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 5
+							y: 3
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 5
 							y: 3
@@ -2475,6 +2510,7 @@
 							x: 5
 							y: 3
 						}
+						endDirection: right
 					}
 				]
 			}
@@ -3733,7 +3769,12 @@
 						isFrozen: false
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 0
+							y: 9
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 0
 							y: 9
@@ -3745,9 +3786,15 @@
 							x: 10
 							y: 9
 						}
+						endDirection: left
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 5
+							y: 3
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 5
 							y: 3
@@ -3759,9 +3806,15 @@
 							x: 5
 							y: 3
 						}
+						endDirection: left
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 10
+							y: 7
+						}
+						activeWhenNoEnemiesAreInRoom: false
 						position: {
 							x: 10
 							y: 7
@@ -3773,6 +3826,7 @@
 							x: 0
 							y: 7
 						}
+						endDirection: right
 					}
 				]
 			}
@@ -5297,20 +5351,6 @@
 						]
 					}
 					{
-						class: com.efm.entities.walls.Wall
-						position: {
-							x: 13
-							y: 0
-						}
-						style: brickRedDarkTall
-						directions: [
-							{
-								class: com.efm.Direction4
-								value: down
-							}
-						]
-					}
-					{
 						class: com.efm.entities.bosses.slime.BossSlime
 						position: {
 							x: 6
@@ -5322,7 +5362,12 @@
 						isFrozen: false
 					}
 					{
-						class: com.efm.entities.exits.RoomExit
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 0
+							y: 7
+						}
+						activeWhenNoEnemiesAreInRoom: true
 						position: {
 							x: 0
 							y: 7
@@ -5334,6 +5379,22 @@
 							x: 10
 							y: 7
 						}
+						endDirection: left
+					}
+					{
+						class: com.efm.exit.LevelExit
+						position: {
+							x: 13
+							y: 0
+						}
+						activeWhenNoEnemiesAreInRoom: true
+						position: {
+							x: 13
+							y: 0
+						}
+						direction: down
+						style: stone
+						endLevelName: 1
 					}
 				]
 			}

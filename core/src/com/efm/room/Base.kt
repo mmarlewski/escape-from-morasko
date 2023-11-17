@@ -50,5 +50,14 @@ enum class Base(val tile : TiledMapTile, val isTreadableFor : (Entity) -> Boolea
     {
         fun getOrdinal(base : Base) : Int = base.ordinal
         fun getBase(baseNumber : Int) = values()[baseNumber]
+        
+        val grassTiles = listOf(
+                grassDark1,
+                grassDark2,
+                grassLight1,
+                grassStone1,
+                grassStone2,
+                grassStone3
+                               )
     }
 }
