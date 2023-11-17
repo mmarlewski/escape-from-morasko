@@ -28,7 +28,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
             is Hero ->
             {
             }
-        
+            
             null    ->
             {
                 if (endBase == null || !endBase.isTreadableFor(World.hero))
@@ -38,7 +38,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
                     animateToEndSpace = false
                 }
             }
-        
+            
             else    ->
             {
                 val lastSpace = path.lastOrNull()
@@ -46,14 +46,14 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
                 animateToEndSpace = false
             }
         }
-    
+        
         val action = {
             World.currentRoom.removeEntity(World.hero)
             World.currentRoom.addEntityAt(World.hero, newPosition)
             adjustCameraAfterMoving()
             adjustMapLayersAfterMoving()
         }
-    
+        
         val animations = mutableListOf<Animation>()
         animations += Animation.action { Map.changeTile(MapLayer.entity, World.hero.position, null) }
         if (World.hero.hasSkill(GrassHealing))
@@ -62,7 +62,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         }
         val prevMovePosition = startPosition.copy()
         path.forEachIndexed { index, space ->
-        
+            
             val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
             val moveTile = World.hero.getMoveTile(n)
             if (World.hero.hasSkill(GrassHealing))
@@ -128,6 +128,7 @@ fun changeBaseIfDrained(space : Space)
 
 fun adjustMapLayersAfterMoving()
 {
+    World.currentRoom.updateSpacesEntities()
     GameScreen.updateMapBaseLayer()
     GameScreen.updateMapEntityLayer()
     Map.clearLayer(MapLayer.select)

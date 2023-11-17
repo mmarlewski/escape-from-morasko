@@ -1,6 +1,8 @@
 package com.efm.entities
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.assets.Tiles
 import com.efm.entity.Character
 import com.efm.item.Container
@@ -14,7 +16,9 @@ import com.efm.ui.gameScreen.ProgressBars
  * Hero has its own turn and is controlled by the player.
  */
 class Hero(
-        override var maxHealthPoints : Int = 100, override var healthPoints : Int = 100, override var alive : Boolean = true
+        override var maxHealthPoints : Int = 100,
+        override var healthPoints : Int = 100,
+        override var alive : Boolean = true
           ) : Character
 {
     override val position = RoomPosition()
@@ -210,6 +214,41 @@ class Hero(
             if (s == skill) return true
         }
         return false
+    }
+    
+    // for serializing
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("maxAbilityPoints", this.maxAbilityPoints)
+            json.writeValue("abilityPoints", this.abilityPoints)
+            json.writeValue("apDrainInNextTurn", this.apDrainInNextTurn)
+            json.writeValue("canMoveNextTurn", this.canMoveNextTurn)
+            json.writeValue("isVisible", this.isVisible)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonMaxAbilityPoints = json.readValue("maxAbilityPoints", Int::class.java, jsonData)
+            if (jsonMaxAbilityPoints != null) this.maxAbilityPoints = jsonMaxAbilityPoints
+            val jsonAbilityPoints = json.readValue("abilityPoints", Int::class.java, jsonData)
+            if (jsonAbilityPoints != null) this.abilityPoints = jsonAbilityPoints
+            val jsonApDrainInNextTurn = json.readValue("apDrainInNextTurn", Int::class.java, jsonData)
+            if (jsonApDrainInNextTurn != null) this.apDrainInNextTurn = jsonApDrainInNextTurn
+            val jsonCanMoveNextTurn = json.readValue("canMoveNextTurn", Boolean::class.java, jsonData)
+            if (jsonCanMoveNextTurn != null) this.canMoveNextTurn = jsonCanMoveNextTurn
+            val jsonIsVisible = json.readValue("isVisible", Boolean::class.java, jsonData)
+            if (jsonIsVisible != null) this.isVisible = jsonIsVisible
+        }
     }
 }
 

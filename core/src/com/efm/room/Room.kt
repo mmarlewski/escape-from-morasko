@@ -101,6 +101,11 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
     /** remove killed characters or replace them with corpses **/
     fun removeKilledCharacters()
     {
+        println("before")
+        for(enemy in enemies)
+        {
+            println(enemy.javaClass.name)
+        }
         val killedCharacters = mutableListOf<Character>()
         val corpsesToAdd = mutableListOf<EnemyCorpse>()
         for (character in characters)
@@ -122,6 +127,11 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         characters.removeAll(killedCharacters)
         entities.removeAll(killedCharacters)
         for (corpse in corpsesToAdd) addEntityAt(corpse, corpse.position)
+        println("after")
+        for(enemy in enemies)
+        {
+            println(enemy.javaClass.name)
+        }
     }
     
     /** adding entities to room can mess things up, so it happens in its own time **/
@@ -313,9 +323,20 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
             {
                 for (jsonEntity in jsonEntities)
                 {
-                    if (jsonEntity is Entity && jsonEntity !is Hero)
+                    if (jsonEntity !is Hero)
                     {
-                        this.entities.add(jsonEntity)
+                        if (jsonEntity is Entity)
+                        {
+                            this.entities.add(jsonEntity)
+                        }
+                        if (jsonEntity is Character)
+                        {
+                            this.characters.add(jsonEntity)
+                        }
+                        if (jsonEntity is Enemy)
+                        {
+                            this.enemies.add(jsonEntity)
+                        }
                     }
                 }
             }
