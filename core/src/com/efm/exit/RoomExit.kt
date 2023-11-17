@@ -2,6 +2,8 @@ package com.efm.exit
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.maps.tiled.TiledMapTile
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.Direction4
 import com.efm.adjustCameraAfterMoving
 import com.efm.adjustMapLayersAfterMoving
@@ -21,18 +23,18 @@ open class RoomExit(
 {
     override fun getOutlineTealTile() : TiledMapTile? = when (direction)
     {
-        Direction4.up -> style.tiles.exitUpOutlineTeal
+        Direction4.up    -> style.tiles.exitUpOutlineTeal
         Direction4.right -> style.tiles.exitRightOutlineTeal
-        Direction4.down -> style.tiles.exitDownOutlineTeal
-        Direction4.left -> style.tiles.exitLeftOutlineTeal
+        Direction4.down  -> style.tiles.exitDownOutlineTeal
+        Direction4.left  -> style.tiles.exitLeftOutlineTeal
     }
     
     override fun getTile() : TiledMapTile? = when (direction)
     {
-        Direction4.up -> style.tiles.exitUp
+        Direction4.up    -> style.tiles.exitUp
         Direction4.right -> style.tiles.exitRight
-        Direction4.down -> style.tiles.exitDown
-        Direction4.left -> style.tiles.exitLeft
+        Direction4.down  -> style.tiles.exitDown
+        Direction4.left  -> style.tiles.exitLeft
     }
     
     override fun interact()
@@ -60,6 +62,37 @@ open class RoomExit(
         World.currentRoom.removeEntity(World.hero)
         World.changeCurrentRoom(newRoom)
         World.currentRoom.addEntityAt(World.hero, newPosition)
+    }
+    
+    // for serializing
+    
+    constructor() : this(RoomPosition(-1, -1), Direction4.up, "", RoomPosition(-1, -1), ExitStyle.stone)
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("endRoomName", this.endRoomName)
+            json.writeValue("endPosition", this.endPosition)
+            json.writeValue("endDirection", this.endDirection)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonEndRoomName = json.readValue("endRoomName", String::class.java, jsonData)
+            if (jsonEndRoomName != null) this.endRoomName = jsonEndRoomName
+            val jsonEndPosition = json.readValue("endPosition", RoomPosition::class.java, jsonData)
+            if (jsonEndPosition != null) this.endPosition.set(jsonEndPosition)
+            val jsonEndDirection = json.readValue("endDirection", Direction4::class.java, jsonData)
+            if (jsonEndDirection != null) this.endDirection = jsonEndDirection
+        }
     }
     
 }

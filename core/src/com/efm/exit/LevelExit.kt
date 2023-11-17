@@ -3,7 +3,7 @@ package com.efm.exit
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.Window
-import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.*
 import com.efm.*
 import com.efm.assets.Colors
 import com.efm.assets.Fonts
@@ -55,14 +55,16 @@ open class LevelExit(
         GameScreen.stage.addActor(nextLevelPopupWindow)
     }
     
-    private fun nextLevelPopup() : Window
+    fun nextLevelPopup() : Window
     {
         val nextLevelPopUp = windowAreaOf(
                 "You are about to leave this level\n\nAre you sure?",
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.pauseBackgroundNinePatch
-        ) { travelBetweenLevels() }
+                Textures.pauseBackgroundNinePatch,
+                { travelBetweenLevels() },
+                {}
+                                         )
         nextLevelPopUp.isVisible = false
         return nextLevelPopUp
     }
@@ -81,5 +83,30 @@ open class LevelExit(
         Gdx.app.log("Exit", "adjusting camera again")
         adjustCameraAfterMoving()
         adjustMapLayersAfterMoving()
+    }
+    
+    // for serializing
+    
+    constructor() : this(RoomPosition(-1, -1), Direction4.up, "", ExitStyle.stone)
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("endLevelName", this.endLevelName)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonEndLevelName = json.readValue("endLevelName", String::class.java, jsonData)
+            if (jsonEndLevelName != null) this.endLevelName = jsonEndLevelName
+        }
     }
 }

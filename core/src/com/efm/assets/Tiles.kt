@@ -825,6 +825,12 @@ object Tiles
     val grassStoneFloor1 = load(grass_floor_tiles_folder_name + "grass_floor_stone_1.png")
     val grassStoneFloor2 = load(grass_floor_tiles_folder_name + "grass_floor_stone_2.png")
     val grassStoneFloor3 = load(grass_floor_tiles_folder_name + "grass_floor_stone_3.png")
+    val grassDarkFloorDrained1 = load(grass_floor_tiles_folder_name + "grass_floor_dark_drained_1.png")
+    val grassDarkFloorDrained2 = load(grass_floor_tiles_folder_name + "grass_floor_dark_drained_2.png")
+    val grassLightFloorDrained1 = load(grass_floor_tiles_folder_name + "grass_floor_light_drained_1.png")
+    val grassStoneFloorDrained1 = load(grass_floor_tiles_folder_name + "grass_floor_stone_drained_1.png")
+    val grassStoneFloorDrained2 = load(grass_floor_tiles_folder_name + "grass_floor_stone_drained_2.png")
+    val grassStoneFloorDrained3 = load(grass_floor_tiles_folder_name + "grass_floor_stone_drained_3.png")
     
     // tiled floor tiles
     val tiled_floor_tiles_folder_name = "new_floor_tiles/tiled/"

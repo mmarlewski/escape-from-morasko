@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
+import com.efm.level.World
 import com.efm.screens.MenuScreen
 import com.efm.skill.BodyPart
 import com.efm.skill.Skill
@@ -771,11 +772,12 @@ fun determineBodyPart(skill : Skill) : Texture
 {
     return when (skill.bodyPart)
     {
-        BodyPart.head                       -> Textures.skillHead
-        BodyPart.leftHand                   -> Textures.skillArmLeft
-        BodyPart.rightHand                  -> Textures.skillArmRight
-        BodyPart.torso                      -> Textures.skillTorso
-        BodyPart.leftLeg, BodyPart.rightLeg -> Textures.skillLegRight
+        BodyPart.head      -> Textures.skillHead
+        BodyPart.leftHand  -> Textures.skillArmLeft
+        BodyPart.rightHand -> Textures.skillArmRight
+        BodyPart.torso     -> Textures.skillTorso
+        BodyPart.leftLeg   -> Textures.skillLegLeft
+        BodyPart.rightLeg  -> Textures.skillLegRight
     }
 }
 
@@ -784,10 +786,10 @@ fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
     val bodyPart = determineBodyPart(skill)
     val skillIcon = imageOf(skill.texture, Scaling.none)
     val bodyPartIcon = imageOf(bodyPart, Scaling.none)
-    val skillName = labelOf(skill.name, Fonts.inconsolata20, Colors.darkGray, Textures.translucentNinePatch)
-    val skillDescription = labelOf(skill.description, Fonts.pixeloid10, Colors.black, Textures.translucentNinePatch)
+    val skillName = labelOf(skill.name, Fonts.pixeloid20, Colors.darkGray, Textures.translucentNinePatch)
+    val skillDescription = labelOf(skill.description, Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
     val assignButton = textButtonOf(
-            " Assign ", Fonts.pixeloid20, Colors.black,
+            "Assign", Fonts.pixeloid20, Colors.black,
             Textures.upNinePatch,
             Textures.downNinePatch,
             Textures.overNinePatch,
@@ -799,6 +801,9 @@ fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
         PopUps.setSkillAssignmentVisibility(false)
     }
     
+    skillDescription.setFontScale(0.6f)
+    skillName.setFontScale(0.8f)
+    
     skillDescription.setWrap(true)
     skillDescription.setAlignment(Align.center)
     
@@ -806,10 +811,54 @@ fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
     table.add(skillIcon).padTop(64f).row()
     table.add(bodyPartIcon).padTop(8f).row()
     table.add(skillName).row()
-    table.add(skillDescription).width(80f).height(80f).row()
-    table.add(assignButton).padBottom(24f).row()
+    table.add(skillDescription).width(160f).height(80f).row()
+    table.add(assignButton).width(160f).padBottom(24f).row()
     
     return table
+}
+
+fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
+{
+    val bodyPart = determineBodyPart(skill)
+    val skillIcon = imageOf(skill.texture, Scaling.none)
+    val bodyPartIcon = imageOf(bodyPart, Scaling.none)
+    val skillName = labelOf(skill.name, Fonts.pixeloid20, Colors.darkGray, Textures.translucentNinePatch)
+    val skillDescription = labelOf(skill.description, Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
+    val reassignButton = textButtonOf(
+            "Reassign", Fonts.pixeloid20, Colors.black,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch,
+                                     )
+    {
+        onClicked
+        PopUps.setSkillAssignmentVisibility(false)
+    }
+    val reassignmentInfo = labelOf("Skill already assigned", Fonts.pixeloid10, Colors.red, Textures.translucentNinePatch)
+    
+    skillDescription.setFontScale(0.6f)
+    skillName.setFontScale(0.8f)
+    
+    
+    skillDescription.setWrap(true)
+    skillDescription.setAlignment(Align.center)
+    
+    val table = Table()
+    table.add(skillIcon).padTop(64f).row()
+    table.add(bodyPartIcon).padTop(8f).row()
+    table.add(skillName).row()
+    table.add(skillDescription).width(160f).height(80f).row()
+    table.add(reassignButton).width(160f).row()
+    table.add(reassignmentInfo).padBottom(24f - reassignmentInfo.height).row()
+    
+    return table
+}
+
+fun isAnySkillAssigned(skill : Skill) : Boolean
+{
+    return World.hero.bodyPartMap[skill.bodyPart] != null
 }
 
 fun skillsAssignmentOverlay(
@@ -829,12 +878,33 @@ fun skillsAssignmentOverlay(
     val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
     titleLabel.setAlignment(Align.center)
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
-    window.add(
-            rowOf(
-                    skillAssignDisplay(skillLeft, onAssign).padLeft(64f),
-                    skillAssignDisplay(skillMiddle, onAssign).padLeft(96f),
-                    skillAssignDisplay(skillRight, onAssign).padLeft(96f).padRight(64f)
-                 )
-              )
+    val skillLeftToDisplay = if (isAnySkillAssigned(skillLeft))
+    {
+        skillReassignDisplay(skillLeft, onAssign).padLeft(64f)
+    }
+    else
+    {
+        skillAssignDisplay(skillLeft, onReassign).padLeft(64f)
+    }
+    
+    val skillMiddleToDisplay = if (isAnySkillAssigned(skillMiddle))
+    {
+        skillReassignDisplay(skillMiddle, onAssign).padLeft(96f)
+    }
+    else
+    {
+        skillAssignDisplay(skillMiddle, onReassign).padLeft(96f)
+    }
+    
+    val skillRightToDisplay = if (isAnySkillAssigned(skillRight))
+    {
+        skillReassignDisplay(skillRight, onAssign).padLeft(96f).padRight(64f)
+    }
+    else
+    {
+        skillAssignDisplay(skillRight, onReassign).padLeft(96f).padRight(64f)
+    }
+    
+    window.add(rowOf(skillLeftToDisplay, skillMiddleToDisplay, skillRightToDisplay))
     return window
 }

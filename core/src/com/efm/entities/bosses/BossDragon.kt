@@ -4,10 +4,11 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entities.enemies.EnemyBatCorpse
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.Base
@@ -165,8 +166,8 @@ class BossDragon : Entity, Enemy
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
-                this         -> Unit
-                null         ->
+                this -> Unit
+                null ->
                 {
                     attackedSpace?.changeBase(Base.lava)
                     GameScreen.updateMapBaseLayer()
@@ -232,9 +233,9 @@ class BossDragon : Entity, Enemy
             val attackHero = 2
             val goSitting = 3
             val goFlying = 4
-    
+            
             var decision = doNothing
-    
+            
             if (isSitting)
             {
                 if (count >= 5)
@@ -261,7 +262,7 @@ class BossDragon : Entity, Enemy
                     decision = attackHero
                 }
             }
-    
+            
             when (decision)
             {
                 turnTileIntoLava ->
@@ -276,11 +277,11 @@ class BossDragon : Entity, Enemy
                     val tilePosition = validAttackAreaPositions.random()
                     turnTileIntoLava(tilePosition)
                 }
-        
+                
                 attackHero       ->
                 {
                     val attackAreaPositions = getSquareAreaPositions(position, attackRange)
-            
+                    
                     if (World.hero.position in attackAreaPositions)
                     {
                         breatheFire(World.hero.position)
@@ -289,7 +290,7 @@ class BossDragon : Entity, Enemy
                     {
                         val pathSpaces =
                                 PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
-                
+                        
                         val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
                         if (!stepsSpaces.isNullOrEmpty())
                         {
@@ -300,22 +301,23 @@ class BossDragon : Entity, Enemy
                         }
                     }
                 }
-        
+                
                 goSitting        ->
                 {
                     isSitting = true
                 }
-        
+                
                 goFlying         ->
                 {
                     isSitting = false
                 }
-        
+                
                 else             ->
                 {
                 }
             }
-        } else
+        }
+        else
         {
             isFrozen = false
         }
@@ -323,5 +325,31 @@ class BossDragon : Entity, Enemy
     
     override fun enemyAttack()
     {
+    }
+    
+    // for serializing
+    
+    override fun write(json : Json?)
+    {
+        super<Enemy>.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("isSitting", this.isSitting)
+            json.writeValue("count", this.count)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super<Enemy>.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonIsSitting = json.readValue("isSitting", Boolean::class.java, jsonData)
+            if (jsonIsSitting != null) this.isSitting = jsonIsSitting
+            val jsonCount = json.readValue("count", Int::class.java, jsonData)
+            if (jsonCount != null) this.count = jsonCount
+        }
     }
 }

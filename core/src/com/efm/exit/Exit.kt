@@ -19,11 +19,16 @@ interface Exit : Interactive
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile? = null
     
+    // for serializing
+    
     override fun write(json : Json?)
     {
         super.write(json)
+        
         if (json != null)
         {
+            json.writeValue("activeWhenNoEnemiesAreInRoom", this.activeWhenNoEnemiesAreInRoom)
+            json.writeValue("position", this.position)
             json.writeValue("direction", this.direction)
             json.writeValue("style", this.style.name)
         }
@@ -32,8 +37,13 @@ interface Exit : Interactive
     override fun read(json : Json?, jsonData : JsonValue?)
     {
         super.read(json, jsonData)
+        
         if (json != null)
         {
+            val jsonActiveWhenNoEnemiesAreInRoom = json.readValue("activeWhenNoEnemiesAreInRoom", Boolean::class.java, jsonData)
+            if (jsonActiveWhenNoEnemiesAreInRoom != null) this.activeWhenNoEnemiesAreInRoom = jsonActiveWhenNoEnemiesAreInRoom
+            val jsonPosition = json.readValue("position", RoomPosition::class.java, jsonData)
+            if (jsonPosition != null) this.position.set(jsonPosition)
             val jsonDirection = json.readValue("direction", Direction4::class.java, jsonData)
             if (jsonDirection != null) this.direction = jsonDirection
             val jsonStyle = json.readValue("style", String::class.java, jsonData)

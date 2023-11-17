@@ -11,7 +11,8 @@ fun saveWorld()
 {
     println("saving")
     val file = Gdx.files.local("save.txt")
-    file.writeString(json.prettyPrint(World.currentLevel), false)
+    val saveList = listOf<Any>(World.currentLevel.name, World.currentRoom.name, World.hero, World.getLevels())
+    file.writeString(json.prettyPrint(saveList), false)
 //    try
 //    {
 //        file.writeString(json.toJson(World.currentLevel), false)
@@ -28,7 +29,7 @@ fun loadWorld()
     val file = Gdx.files.local("save.txt")
     if (file.exists())
     {
-        World.set(json.fromJson(Level::class.java,file))
+        World.set(json.fromJson(List::class.java, file.readString()))
 //        try
 //        {
 //            World.set(json.fromJson(Level::class.java,file))
