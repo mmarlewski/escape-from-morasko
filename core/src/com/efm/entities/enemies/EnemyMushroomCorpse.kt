@@ -10,12 +10,17 @@ import com.efm.stackableSelfItems.Mushroom
 class EnemyMushroomCorpse(position : RoomPosition = RoomPosition()) : EnemyCorpse(position)
 {
     override var maxItems : Int = 4
-    override var loot = PossibleItems(
-            mutableListOf(
-                    PossibleItem(Mushroom(), 0.8f, IntRange(0, 4))
-                         )
-                                     )
-    override val items : MutableList<Item> = loot.drawItems()
+    
+    init
+    {
+        loot = PossibleItems(
+                mutableListOf(
+                        PossibleItem(Mushroom(), 0.8f, IntRange(0, 4))
+                             )
+                            )
+    }
+    
+    override val items : MutableList<Item> = loot?.drawItems() ?: mutableListOf()
     
     override fun getTile() : TiledMapTile = Tiles.mushroomCorpse
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.mushroomCorpseOutlineYellow

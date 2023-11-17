@@ -53,8 +53,6 @@ object GameScreen : BaseScreen(), GestureListener
         // input processor
         super.inputProcessor = inputMultiplexer
         
-
-        
         // map
         updateMapBaseLayer()
         updateMapEntityLayer()
@@ -64,24 +62,6 @@ object GameScreen : BaseScreen(), GestureListener
         focusCameraOnRoomPosition(World.hero.position)
         
         // hero
-        World.hero.inventory.addItem(SmallAxe())
-        World.hero.inventory.addItem(Sledgehammer())
-        World.hero.inventory.addItem(Bow())
-        World.hero.inventory.addItem(Staff())
-        World.hero.inventory.addItem(Bomb())
-        World.hero.inventory.addItem(Explosive())
-        World.hero.inventory.addItem(Explosive())
-        World.hero.inventory.addItem(Explosive())
-        World.hero.inventory.addItem(Apple())
-        World.hero.inventory.addItem(Fish())
-        World.hero.inventory.addItem(Mushroom())
-        World.hero.addSkill(LavaWalking)
-        World.hero.addSkill(Push)
-//        World.hero.addSkill(Pull)
-        World.hero.addSkill(Invisibility)
-        World.hero.addSkill(Freeze)
-        World.hero.addSkill(GrassHealing)
-        //World.hero.addSkill(Swap)
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
         // hud

@@ -30,7 +30,7 @@ class Hero(
     var canMoveNextTurn = true
     var isVisible = true
     
-    val inventory = HeroInventory()
+    var inventory = HeroInventory()
     
     val bodyPartMap = mutableMapOf<BodyPart, Skill?>().apply { BodyPart.values().forEach { this[it] = null } }
     
@@ -229,6 +229,8 @@ class Hero(
             json.writeValue("apDrainInNextTurn", this.apDrainInNextTurn)
             json.writeValue("canMoveNextTurn", this.canMoveNextTurn)
             json.writeValue("isVisible", this.isVisible)
+            json.writeValue("inventory", this.inventory)
+            json.writeValue("bodyPartMapList", this.bodyPartMap.values)
         }
     }
     
@@ -248,6 +250,19 @@ class Hero(
             if (jsonCanMoveNextTurn != null) this.canMoveNextTurn = jsonCanMoveNextTurn
             val jsonIsVisible = json.readValue("isVisible", Boolean::class.java, jsonData)
             if (jsonIsVisible != null) this.isVisible = jsonIsVisible
+            val jsonInventory = json.readValue("inventory", HeroInventory::class.java, jsonData)
+            if (jsonInventory != null) this.inventory = jsonInventory
+            val jsonBodyPartMapList = json.readValue("bodyPartMapList", List::class.java, jsonData)
+            if (jsonBodyPartMapList != null)
+            {
+                for (value in jsonBodyPartMapList)
+                {
+                    if (value is Skill)
+                    {
+                        this.bodyPartMap[value.bodyPart] = value
+                    }
+                }
+            }
         }
     }
 }

@@ -10,12 +10,17 @@ import com.efm.room.RoomPosition
 class EnemyMimicCorpse(position : RoomPosition = RoomPosition()) : EnemyCorpse(position)
 {
     override var maxItems : Int = 4
-    override var loot = PossibleItems(
-            mutableListOf(
-                    PossibleItem(WoodenSword(), 0.8f, IntRange(1, 1))
-                         )
-                                     )
-    override val items : MutableList<Item> = loot.drawItems()
+    
+    init
+    {
+        loot = PossibleItems(
+                mutableListOf(
+                        PossibleItem(WoodenSword(), 0.8f, IntRange(1, 1))
+                             )
+                            )
+    }
+    
+    override val items : MutableList<Item> = loot?.drawItems() ?: mutableListOf()
     
     override fun getTile() : TiledMapTile = Tiles.mimicCorpse
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.mimicCorpseOutlineYellow
