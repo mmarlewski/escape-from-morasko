@@ -136,9 +136,9 @@ object TitleAndButtons
             // clear World levels
             World.levels.clear()
             // create World
-//            World.createWorldPrototypeTwo()
-//            World.createWorldBoarTest()
-            World.createWorldPrototypeThree()
+            //World.createWorldPrototypeTwo()
+            World.createWorldBoarTest()
+            //World.createWorldPrototypeThree()
             // set currentLevel and currentRoom
             val startingLevel = World.levels.first()
             World.changeCurrentLevel(startingLevel)
@@ -166,11 +166,12 @@ object TitleAndButtons
             World.hero.inventory.addItem(Fish())
             World.hero.inventory.addItem(Mushroom())
             // add Skills to Hero
-            World.hero.addSkill(LavaWalking)
+            //World.hero.addSkill(LavaWalking)
             World.hero.addSkill(Push)
             World.hero.addSkill(Invisibility)
             World.hero.addSkill(Freeze)
-            World.hero.addSkill(GrassHealing)
+            //World.hero.addSkill(GrassHealing)
+            World.hero.addSkill(Jump)
             // set State
             val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
             val initState = when (areEnemiesInRoom)

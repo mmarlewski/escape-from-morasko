@@ -21,6 +21,9 @@ object Pockets : Skill(
         "Pockets",
         "Increases equipment size"
                       )
+{
+    const val additionalInventorySlotsAmount = 5
+}
 
 object WaterWalking : Skill(
         BodyPart.rightLeg,
