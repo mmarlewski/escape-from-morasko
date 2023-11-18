@@ -9,6 +9,7 @@ import com.efm.level.Level
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
+import java.lang.Exception
 
 val json = Json()
 
@@ -78,4 +79,20 @@ fun loadGame()
     {
         println("didn't load game")
     }
+}
+
+fun saveExists() : Boolean
+{
+    val file = Gdx.files.local("save.txt")
+    
+    return file.exists()
+}
+
+fun deleteSave()
+{
+    println("deleting game...")
+    
+    Gdx.files.local("save.txt").delete()
+    
+    println("deleted game")
 }

@@ -18,11 +18,25 @@ object GameOverScreen : BaseScreen()
     init
     {
         // input processor
-        super.inputProcessor = MenuScreen.stage
+        super.inputProcessor = stage
         
         val gameOverText = labelOf("Game Over", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         
-        val column = columnOf(rowOf(gameOverText)).align(Align.center)
+        val menuTextButton = textButtonOf(
+                "menu",
+                Fonts.inconsolata30,
+                Colors.black,
+                Textures.upLongNinePatch,
+                Textures.downLongNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                         )
+        {
+            changeScreen(MenuScreen)
+        }
+        
+        val column = columnOf(gameOverText, menuTextButton).align(Align.center)
         column.setFillParent(true)
         stage.addActor(column)
         
@@ -37,21 +51,21 @@ object GameOverScreen : BaseScreen()
                 Textures.mainMenuBackground,
                 0f,
                 0f,
-                MenuScreen.viewport.worldWidth,
-                MenuScreen.viewport.worldHeight
+                viewport.worldWidth,
+                viewport.worldHeight
                                           )
         EscapeFromMorasko.spriteBatch.end()
-        MenuScreen.camera.update()
-        MenuScreen.stage.draw()
+        camera.update()
+        stage.draw()
     }
     
     override fun resize(width : Int, height : Int)
     {
-        MenuScreen.viewport.update(width, height, true)
+        viewport.update(width, height, true)
     }
     
     override fun dispose()
     {
-        MenuScreen.stage.dispose()
+        stage.dispose()
     }
 }

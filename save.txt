@@ -1,6 +1,6 @@
 [
 {
-	class: com.efm.state.State$constrained$multiUseMapItemChosen
+	class: com.efm.state.State$constrained$heroSelected
 	areEnemiesInRoom: true
 	areAnyActionPointsLeft: true
 }
@@ -19,10 +19,10 @@
 		y: 7
 	}
 	maxHealthPoints: 100
-	healthPoints: 90
+	healthPoints: 100
 	alive: true
 	maxAbilityPoints: 14
-	abilityPoints: 7
+	abilityPoints: 12
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
@@ -33,7 +33,6 @@
 			}
 			{
 				class: com.efm.multiUseMapItems.Sledgehammer
-				durability: 5
 			}
 			{
 				class: com.efm.multiUseMapItems.SmallAxe
@@ -2023,10 +2022,10 @@
 							y: 7
 						}
 						maxHealthPoints: 100
-						healthPoints: 90
+						healthPoints: 100
 						alive: true
 						maxAbilityPoints: 14
-						abilityPoints: 7
+						abilityPoints: 12
 						apDrainInNextTurn: 0
 						canMoveNextTurn: true
 						isVisible: true
@@ -2037,7 +2036,6 @@
 								}
 								{
 									class: com.efm.multiUseMapItems.Sledgehammer
-									durability: 5
 								}
 								{
 									class: com.efm.multiUseMapItems.SmallAxe
@@ -2610,11 +2608,10 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 2
+								amount: 4
 							}
 							{
 								class: com.efm.stackableSelfItems.PotionSmall
-								amount: 2
 							}
 						]
 						maxItems: 5

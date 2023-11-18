@@ -8,6 +8,7 @@ import com.efm.assets.*
 import com.efm.level.World
 import com.efm.multiUseMapItems.*
 import com.efm.screens.*
+import com.efm.skill.BodyPart
 import com.efm.skills.*
 import com.efm.stackableMapItems.Bomb
 import com.efm.stackableMapItems.Explosive
@@ -144,6 +145,14 @@ object TitleAndButtons
             World.changeCurrentRoom(startingLevel.getStartingRoom())
             // add Hero to currentRoom
             World.currentRoom.addEntityAt(World.hero, startingLevel.getStartingPosition())
+            // reset Hero
+            World.hero.alive = true
+            World.hero.healthPoints = World.hero.maxHealthPoints
+            World.hero.healCharacter(0)
+            World.hero.abilityPoints = World.hero.maxAbilityPoints
+            World.hero.gainAP(0)
+            World.hero.inventory.items.clear()
+            BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
             // add Items to Hero
             World.hero.inventory.addItem(SmallAxe())
             World.hero.inventory.addItem(Sledgehammer())
@@ -326,5 +335,7 @@ object TitleAndButtons
                              )
         column.setFillParent(true)
         MenuScreen.stage.addActor(column)
+        MenuScreen.playButton = playButton
+        MenuScreen.startAgainButton = startAgainButton
     }
 }

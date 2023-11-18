@@ -1,9 +1,8 @@
 package com.efm.state
 
-import com.efm.Animating
+import com.efm.*
 import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.inventoryTabSlot.InventoryTabStackableSelfItemSlot
-import com.efm.saveGame
 
 fun updateState()
 {
@@ -188,6 +187,11 @@ fun updateState()
     if (newState != currState && newState !is State.combat.enemies)
     {
         saveGame()
+    }
+    
+    if (newState is State.over)
+    {
+        deleteSave()
     }
 }
 
