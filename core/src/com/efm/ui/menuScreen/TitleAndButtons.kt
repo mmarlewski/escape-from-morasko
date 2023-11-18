@@ -157,11 +157,12 @@ object TitleAndButtons
             World.hero.inventory.addItem(Fish())
             World.hero.inventory.addItem(Mushroom())
             // add Skills to Hero
-            World.hero.addSkill(LavaWalking)
+            //World.hero.addSkill(LavaWalking)
             World.hero.addSkill(Push)
             World.hero.addSkill(Invisibility)
             World.hero.addSkill(Freeze)
-            World.hero.addSkill(GrassHealing)
+            //World.hero.addSkill(GrassHealing)
+            World.hero.addSkill(Jump)
             // set State
             val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
             val initState = when (areEnemiesInRoom)
