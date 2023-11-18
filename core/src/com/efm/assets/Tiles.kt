@@ -904,6 +904,11 @@ object Tiles
     val tableSmallWater = load(props_composite_folder_name + "table_small_water.png")
     val tableSmallWine = load(props_composite_folder_name + "table_small_wine.png")
     
+    // dropped pockets
+    val droppedPockets = load("droppedPockets.png")
+    val droppedPocketsOutlineYellow = load("droppedPocketsOutlineYellow.png")
+    val droppedPocketsOutlineTeal = load("droppedPocketsOutlineTeal.png")
+    
     fun load(name : String) : StaticTiledMapTile
     {
         val filePath = "tiles/$name"

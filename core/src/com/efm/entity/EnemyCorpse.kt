@@ -1,15 +1,14 @@
 package com.efm.entity
 
-import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import com.efm.item.*
 import com.efm.room.RoomPosition
 import com.efm.ui.gameScreen.EquipmentStructure
 
-open class EnemyCorpse(
+abstract class EnemyCorpse(
         override val position : RoomPosition
-                      ) : Interactive, Container, Character
+                          ) : Interactive, Container, Character
 {
     /** can be empty PossibleItems() **/
     var loot : PossibleItems? = null
@@ -20,21 +19,6 @@ open class EnemyCorpse(
     override var maxHealthPoints : Int = 1
     override var healthPoints : Int = 1
     override var alive : Boolean = true
-    
-    override fun getTile() : TiledMapTile?
-    {
-        return null
-    }
-    
-    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
-    {
-        return null
-    }
-    
-    override fun getOutlineTealTile() : TiledMapTile?
-    {
-        return null
-    }
     
     override fun interact()
     {

@@ -1,13 +1,14 @@
 package com.efm.state
 
+import com.badlogic.gdx.Gdx
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
-import com.efm.exit.Exit
-import com.efm.exit.LevelExit
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
+import com.efm.exit.Exit
+import com.efm.exit.LevelExit
 import com.efm.level.World
 import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
@@ -407,6 +408,7 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
     {
         // interact with Interactive Entity if it was selected in FreeMoveSelectedOnce
         val entityOnPositionHeroWalkedTowards = currState.entityOnPosition
+        Gdx.app.log("CommandBlock", "$entityOnPositionHeroWalkedTowards")
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
         
         GameScreen.roomTouchPosition.set(World.hero.position)
@@ -584,13 +586,19 @@ fun updateFreeMultiUseMapItemTargetSelectedTwice(currState : State.free.multiUse
 {
     if (!Animating.isAnimating())
     {
+        // in free state you can destroy corpses
+        World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
+        World.currentRoom.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
+    
         val item = currState.chosenMultiUseItem
         item?.lowerDurability()
         if (item != null && item.durability < 1)
         {
             World.hero.inventory.removeItem(item)
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
+        
             return State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -714,13 +722,19 @@ fun updateFreeStackableMapItemTargetSelectedTwice(currState : State.free.stackab
 {
     if (!Animating.isAnimating())
     {
+        // in free state you can destroy corpses
+        World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
+        World.currentRoom.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
+    
         val item = currState.chosenStackableMapItem
         item?.lowerAmountByOne()
         if (item != null && item.amount < 1)
         {
             World.hero.inventory.removeItem(item)
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
+        
             return State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -849,10 +863,16 @@ fun updateFreeActiveSkillTargetSelectedTwice(currState : State.free.activeSkillT
 {
     if (!Animating.isAnimating())
     {
+        // in free state you can destroy corpses
+        World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
+        World.currentRoom.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
+    
         val activeSkill = currState.chosenActiveSkill
-        
+    
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
+    
         return State.free.heroSelected.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom

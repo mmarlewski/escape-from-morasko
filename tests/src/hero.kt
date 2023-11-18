@@ -1,6 +1,7 @@
 import com.efm.entities.Hero
 import com.efm.item.ContainerFullException
 import com.efm.multiUseMapItems.Bow
+import com.efm.skills.Pockets
 import com.efm.stackableMapItems.Bomb
 import org.junit.Assert.*
 import org.junit.Before
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith
     @Before fun `set up`()
     {
         hero.inventory.items.clear()
+        hero.bodyPartMap.clear()
     }
     
     @Test fun `add item to empty equipment`()
@@ -63,5 +65,20 @@ import org.junit.runner.RunWith
         hero.inventory.removeItem(bombInInventory)
         assertFalse(hero.inventory.items.contains(bombExistingNowhere))
         assertFalse(hero.inventory.items.contains(bombInInventory))
+    }
+    
+    @Test fun `adding Pockets increases inventory size`()
+    {
+        // fill inventory
+        for (i in 0 until hero.inventory.maxItems)
+        {
+            hero.inventory.addItem(Bow())
+        }
+        assertTrue(hero.inventory.items.size == hero.inventory.maxItems)
+        // increase inventory size by adding Pockets Skill
+        val oldSize = hero.inventory.maxItems
+        hero.addSkill(Pockets)
+        val newSize = hero.inventory.maxItems
+        assertTrue(newSize == oldSize + Pockets.additionalInventorySlotsAmount)
     }
 }
