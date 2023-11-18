@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
-import com.efm.Direction4
-import com.efm.adjustCameraAfterMoving
-import com.efm.adjustMapLayersAfterMoving
+import com.efm.*
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
@@ -62,6 +60,8 @@ open class RoomExit(
         World.currentRoom.removeEntity(World.hero)
         World.changeCurrentRoom(newRoom)
         World.currentRoom.addEntityAt(World.hero, newPosition)
+        
+        saveGame()
     }
     
     // for serializing

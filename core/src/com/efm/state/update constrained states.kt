@@ -676,7 +676,7 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
         
         World.hero.spendAP(currState.pathSpaces.size + 1)
-        for (level in World.getLevels())
+        for (level in World.levels)
         {
             for (room in level.rooms)
             {

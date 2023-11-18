@@ -559,7 +559,7 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
         
         World.hero.spendAP(currState.pathSpaces.size + 1)
-        for (level in World.getLevels())
+        for (level in World.levels)
         {
             for (room in level.rooms)
             {

@@ -71,7 +71,7 @@ open class LevelExit(
     
     private fun travelBetweenLevels()
     {
-        val newLevel = World.getLevels().find { it.name == endLevelName }
+        val newLevel = World.levels.find { it.name == endLevelName }
         val newPosition = newLevel?.getStartingPosition()
         val newRoom = newLevel?.getStartingRoom()
         Gdx.app.log("Exit", "travelling...")
@@ -83,6 +83,8 @@ open class LevelExit(
         Gdx.app.log("Exit", "adjusting camera again")
         adjustCameraAfterMoving()
         adjustMapLayersAfterMoving()
+        
+        saveGame()
     }
     
     // for serializing

@@ -411,7 +411,7 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         
         GameScreen.roomTouchPosition.set(World.hero.position)
         Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
-        for (level in World.getLevels())
+        for (level in World.levels)
         {
             for (room in level.rooms)
             {

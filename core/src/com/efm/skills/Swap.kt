@@ -10,7 +10,14 @@ import com.efm.room.RoomPosition
 import com.efm.skill.ActiveSkill
 import com.efm.skill.BodyPart
 
-object Swap : ActiveSkill(BodyPart.head, 1, 3, Textures.swap, "Swap", "Swap places with enemy unit")
+object Swap : ActiveSkill(
+        BodyPart.head,
+        1,
+        3,
+        Textures.swap,
+        "Swap",
+        "Swap places with enemy unit"
+                         )
 {
     override fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     {
@@ -26,7 +33,7 @@ object Swap : ActiveSkill(BodyPart.head, 1, 3, Textures.swap, "Swap", "Swap plac
                 targetPositions.add(squarePosition)
             }
         }
-    
+        
         return targetPositions
     }
     

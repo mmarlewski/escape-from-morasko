@@ -230,7 +230,9 @@ class Hero(
             json.writeValue("canMoveNextTurn", this.canMoveNextTurn)
             json.writeValue("isVisible", this.isVisible)
             json.writeValue("inventory", this.inventory)
-            json.writeValue("bodyPartMapList", this.bodyPartMap.values)
+            val skillNames = mutableListOf<String>()
+            this.bodyPartMap.values.forEach { skillNames.add(it?.name ?: "") }
+            json.writeValue("skillNames", skillNames)
         }
     }
     
@@ -252,14 +254,18 @@ class Hero(
             if (jsonIsVisible != null) this.isVisible = jsonIsVisible
             val jsonInventory = json.readValue("inventory", HeroInventory::class.java, jsonData)
             if (jsonInventory != null) this.inventory = jsonInventory
-            val jsonBodyPartMapList = json.readValue("bodyPartMapList", List::class.java, jsonData)
-            if (jsonBodyPartMapList != null)
+            val jsonSkillNames = json.readValue("skillNames", List::class.java, jsonData)
+            if (jsonSkillNames != null)
             {
-                for (value in jsonBodyPartMapList)
+                for (jsonSkillName in jsonSkillNames)
                 {
-                    if (value is Skill)
+                    if (jsonSkillName is String)
                     {
-                        this.bodyPartMap[value.bodyPart] = value
+                        val skill = getSkillFromName(jsonSkillName)
+                        if (skill != null)
+                        {
+                            this.addSkill(skill)
+                        }
                     }
                 }
             }

@@ -3,10 +3,13 @@ package com.efm.state
 import com.efm.Animating
 import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.inventoryTabSlot.InventoryTabStackableSelfItemSlot
+import com.efm.saveGame
 
 fun updateState()
 {
-    val newState = when (val currState = getState())
+    val currState = getState()
+    
+    val newState = when (currState)
     {
         is State.free           -> when (currState)
         {
@@ -49,9 +52,11 @@ fun updateState()
             is State.constrained.moveSelectedTwiceToLevelExit.waiting    -> updateConstrainedMoveSelectedTwiceToLevelExitWaiting(
                     currState
                                                                                                                                 )
+            
             is State.constrained.moveSelectedTwiceToLevelExit.confirmed  -> updateConstrainedMoveSelectedTwiceToLevelExitConfirmed(
                     currState
                                                                                                                                   )
+            
             is State.constrained.moveSelectedTwiceToLevelExit.cancelled  -> updateConstrainedMoveSelectedTwiceToLevelExitCancelled(
                     currState
                                                                                                                                   )
@@ -60,6 +65,7 @@ fun updateState()
             is State.constrained.multiUseMapItemTargetSelectedOnce       -> updateConstrainedMultiUseMapItemTargetSelectedOnce(
                     currState
                                                                                                                               )
+            
             is State.constrained.multiUseMapItemTargetSelectedTwice      -> updateConstrainedMultiUseMapItemTargetSelectedTwice(
                     currState
                                                                                                                                )
@@ -68,6 +74,7 @@ fun updateState()
             is State.constrained.stackableMapItemTargetSelectedOnce      -> updateConstrainedStackableMapItemTargetSelectedOnce(
                     currState
                                                                                                                                )
+            
             is State.constrained.stackableMapItemTargetSelectedTwice     -> updateConstrainedStackableMapItemTargetSelectedTwice(
                     currState
                                                                                                                                 )
@@ -75,18 +82,25 @@ fun updateState()
             is State.constrained.stackableSelfItemChosen                 -> updateConstrainedStackableSelfItemChosen(
                     currState
                                                                                                                     )
-    
-            is State.constrained.activeSkillChosen                      -> updateConstrainedActiveSkillChosen(currState)
-            is State.constrained.activeSkillTargetSelectedOnce          -> updateConstrainedActiveSkillTargetSelectedOnce(currState)
-            is State.constrained.activeSkillTargetSelectedTwice         -> updateConstrainedActiveSkillTargetSelectedTwice(currState)
+            
+            is State.constrained.activeSkillChosen                       -> updateConstrainedActiveSkillChosen(currState)
+            is State.constrained.activeSkillTargetSelectedOnce           -> updateConstrainedActiveSkillTargetSelectedOnce(
+                    currState
+                                                                                                                          )
+            
+            is State.constrained.activeSkillTargetSelectedTwice          -> updateConstrainedActiveSkillTargetSelectedTwice(
+                    currState
+                                                                                                                           )
             
             is State.constrained.turnEnded                               -> updateConstrainedTurnEnded(currState)
             is State.constrained.turnEndedWithActionPointsLeft.waiting   -> updateConstrainedTurnEndedWithActionPointsLeftWaiting(
                     currState
                                                                                                                                  )
+            
             is State.constrained.turnEndedWithActionPointsLeft.confirmed -> updateConstrainedTurnEndedWithActionPointsLeftConfirmed(
                     currState
                                                                                                                                    )
+            
             is State.constrained.turnEndedWithActionPointsLeft.cancelled -> updateConstrainedTurnEndedWithActionPointsLeftCancelled(
                     currState
                                                                                                                                    )
@@ -105,9 +119,11 @@ fun updateState()
             is State.combat.hero.moveSelectedTwiceToLevelExit.waiting    -> updateCombatHeroMoveSelectedTwiceToLevelExitWaiting(
                     currState
                                                                                                                                )
+            
             is State.combat.hero.moveSelectedTwiceToLevelExit.confirmed  -> updateCombatHeroMoveSelectedTwiceToLevelExitConfirmed(
                     currState
                                                                                                                                  )
+            
             is State.combat.hero.moveSelectedTwiceToLevelExit.cancelled  -> updateCombatHeroMoveSelectedTwiceToLevelExitCancelled(
                     currState
                                                                                                                                  )
@@ -116,6 +132,7 @@ fun updateState()
             is State.combat.hero.multiUseMapItemTargetSelectedOnce       -> updateCombatHeroMultiUseMapItemTargetSelectedOnce(
                     currState
                                                                                                                              )
+            
             is State.combat.hero.multiUseMapItemTargetSelectedTwice      -> updateCombatHeroMultiUseMapItemTargetSelectedTwice(
                     currState
                                                                                                                               )
@@ -124,6 +141,7 @@ fun updateState()
             is State.combat.hero.stackableMapItemTargetSelectedOnce      -> updateCombatHeroStackableMapItemTargetSelectedOnce(
                     currState
                                                                                                                               )
+            
             is State.combat.hero.stackableMapItemTargetSelectedTwice     -> updateCombatHeroStackableMapItemTargetSelectedTwice(
                     currState
                                                                                                                                )
@@ -131,18 +149,25 @@ fun updateState()
             is State.combat.hero.stackableSelfItemChosen                 -> updateCombatHeroStackableSelfItemChosen(
                     currState
                                                                                                                    )
-    
-            is State.combat.hero.activeSkillChosen                      -> updateCombatHeroActiveSkillChosen(currState)
-            is State.combat.hero.activeSkillTargetSelectedOnce          -> updateCombatHeroActiveSkillTargetSelectedOnce(currState)
-            is State.combat.hero.activeSkillTargetSelectedTwice         -> updateCombatHeroActiveSkillTargetSelectedTwice(currState)
+            
+            is State.combat.hero.activeSkillChosen                       -> updateCombatHeroActiveSkillChosen(currState)
+            is State.combat.hero.activeSkillTargetSelectedOnce           -> updateCombatHeroActiveSkillTargetSelectedOnce(
+                    currState
+                                                                                                                         )
+            
+            is State.combat.hero.activeSkillTargetSelectedTwice          -> updateCombatHeroActiveSkillTargetSelectedTwice(
+                    currState
+                                                                                                                          )
             
             is State.combat.hero.turnEnded                               -> updateCombatHeroTurnEnded(currState)
             is State.combat.hero.turnEndedWithActionPointsLeft.waiting   -> updateCombatHeroTurnEndedWithActionPointsLeftWaiting(
                     currState
                                                                                                                                 )
+            
             is State.combat.hero.turnEndedWithActionPointsLeft.confirmed -> updateCombatHeroTurnEndedWithActionPointsLeftConfirmed(
                     currState
                                                                                                                                   )
+            
             is State.combat.hero.turnEndedWithActionPointsLeft.cancelled -> updateCombatHeroTurnEndedWithActionPointsLeftCancelled(
                     currState
                                                                                                                                   )
@@ -157,7 +182,13 @@ fun updateState()
         
         else                    -> currState
     }
+    
     setState(newState)
+    
+    if (newState != currState && newState !is State.combat.enemies)
+    {
+        saveGame()
+    }
 }
 
 fun updateState(itemSlot : InventoryTabSlot)
@@ -196,10 +227,12 @@ fun updateState(itemSlot : InventoryTabSlot)
                     newState.chosenStackableSelfItem = itemSlot.item
                     setState(newState)
                 }
+                
                 is State.free.stackableSelfItemChosen ->
                 {
                     itemSlot.item.use()
                 }
+                
                 else                                  ->
                 {
                 }

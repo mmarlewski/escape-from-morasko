@@ -3,6 +3,7 @@ package com.efm.skill
 import com.badlogic.gdx.graphics.Texture
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import com.efm.skills.*
 
 enum class BodyPart
 {
@@ -34,4 +35,24 @@ abstract class ActiveSkill(
     abstract fun getTargetPositions(source : RoomPosition) : List<RoomPosition>
     abstract fun getAffectedPositions(targetPosition : RoomPosition) : List<RoomPosition>
     abstract fun use(room : Room, targetPosition : RoomPosition)
+}
+
+fun getSkillFromName(name : String) : Skill?
+{
+    return when (name)
+    {
+        "Barrel Throwing" -> BarrelThrowing
+        "Freeze"          -> Freeze
+        "Invisibility"    -> Invisibility
+        "Jump"            -> Jump
+        "Pull"            -> Pull
+        "Push"            -> Push
+        "Shield"          -> Shield
+        "Swap"            -> Swap
+        "Grass Healing"   -> GrassHealing
+        "Pockets"         -> Pockets
+        "Water Walking"   -> WaterWalking
+        "Lava Walking"    -> LavaWalking
+        else              -> null
+    }
 }

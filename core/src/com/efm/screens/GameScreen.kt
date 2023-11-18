@@ -53,17 +53,6 @@ object GameScreen : BaseScreen(), GestureListener
         // input processor
         super.inputProcessor = inputMultiplexer
         
-        // map
-        updateMapBaseLayer()
-        updateMapEntityLayer()
-        
-        // camera
-        changeCameraZoom(currZoom)
-        focusCameraOnRoomPosition(World.hero.position)
-        
-        // hero
-        ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
         // hud
         ItemsStructure.display()
         LeftStructure.display()
@@ -71,33 +60,6 @@ object GameScreen : BaseScreen(), GestureListener
         RightStructure.display()
         PopUps.display()
         EquipmentStructure.display()
-        
-        // state
-        val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
-        val initState = when (areEnemiesInRoom)
-        {
-            true  -> State.constrained.noSelection
-            false -> State.free.noSelection
-        }
-        for (level in World.getLevels())
-        {
-            for (room in level.rooms)
-            {
-                for (enemy in room.getEnemies())
-                {
-                    enemy.createOwnHealthBar()
-                    enemy.hideOwnHealthBar()
-                }
-            }
-        }
-        for (enemy in World.currentRoom.getEnemies())
-        {
-            enemy.displayOwnHealthBar()
-        }
-        
-        
-        initState.areEnemiesInRoom = areEnemiesInRoom
-        setState(initState)
     }
     
     fun updateMapBaseLayer()
