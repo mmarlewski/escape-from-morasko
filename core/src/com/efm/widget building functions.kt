@@ -940,7 +940,7 @@ fun tutorialPopup(
     val windowStyle = Window.WindowStyle()
     windowStyle.titleFont = Fonts.pixeloid30
     windowStyle.titleFontColor = Colors.white
-    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundBlackNinePatch)
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
     
     val window = Window(title, windowStyle)
     val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
