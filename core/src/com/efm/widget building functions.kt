@@ -947,8 +947,6 @@ fun tutorialPopup(
     titleLabel.setAlignment(Align.center)
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(48f)
     
-    val titleWidth = window.titleLabel.width
-    
     val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
     delimiter.setFontScale(0.1f)
     
@@ -970,7 +968,7 @@ fun tutorialPopup(
     
     val table = Table()
     table.add(delimiter).fillX().height(1f).padTop(40f).row()
-    table.add(description).width(titleWidth).height(44f).padTop(16f).row()
+    table.add(description).width(558f).padTop(16f).row()
     table.add(okButton).width(180f).padTop(16f).padBottom(8f).row()
     
     
