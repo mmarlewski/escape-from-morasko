@@ -9,9 +9,11 @@ object Sounds
     
     // ui
     
-    val blop = load("blop.mp3")
-    val coin = load("coin.mp3")
-    val jump = load("jump.mp3")
+    val ui_1 = load("ui_1.mp3")
+    val ui_2 = load("ui_2.mp3")
+    val ui_3 = load("ui_3.mp3")
+    val ui_4 = load("ui_4.mp3")
+    val ui_5 = load("ui_5.mp3")
     
     // multi use map items
     

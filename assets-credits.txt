@@ -30,4 +30,6 @@
  "Dungeon Theme"    remaxim         (opengameart.org)
  "Caves"        Alexandr Zhelanov   (opengameart.org)
 
- sound effects : Pixabay, Mixkit
+ ui sound effects : ColorAlpha      (itch.io)
+
+ other sound effects from Pixabay and Mixkit

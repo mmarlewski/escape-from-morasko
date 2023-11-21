@@ -28,7 +28,7 @@ class InventoryTabStackableSelfItemSlot(
     override var itemButton : ImageButton = itemButtonWithLabel(
             image, item.amount.toString(), up, down, over, disabled, focused
                                                                ) {
-        playSoundOnce(Sounds.blop)
+        playSoundOnce(Sounds.ui_1)
         updateState(this)
     }
     

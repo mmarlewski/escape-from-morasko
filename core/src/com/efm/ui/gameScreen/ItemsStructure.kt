@@ -22,7 +22,7 @@ object ItemsStructure
             Textures.disabledNinePatch,
             Textures.focusedNinePatch
                                        ) {
-        playSoundOnce(Sounds.blop)
+        playSoundOnce(Sounds.ui_1)
         LeftStructure.setVisibility(!LeftStructure.healingItemsButton.isVisible)
     }
     
@@ -53,7 +53,7 @@ object ItemsStructure
                     Textures.disabledNinePatch,
                     Textures.focusedNinePatch
                                            ) {
-                playSoundOnce(Sounds.blop)
+                playSoundOnce(Sounds.ui_4)
                 action()
             }
             return imageButton
@@ -107,7 +107,7 @@ object ItemsStructure
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                             ) {
-            playSoundOnce(Sounds.blop)
+            playSoundOnce(Sounds.ui_4)
             action()
         }
         
@@ -128,7 +128,7 @@ object ItemsStructure
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                         ) {
-            playSoundOnce(Sounds.blop)
+            playSoundOnce(Sounds.ui_4)
             action()
         }
         

@@ -52,8 +52,8 @@ object TitleAndButtons
                 Textures.focusedNinePatch
                                          )
         {
-            Sounds.blop.playOnce()
-            playMusicIfNotAlreadyPlaying(Musics.versaLifeAmbient)
+            Sounds.ui_5.playOnce()
+            playMusicIfNotAlreadyPlaying(Musics.ambient_5)
             
             // remove enemy health stacks
             for (level in World.levels)
@@ -118,7 +118,8 @@ object TitleAndButtons
                 Textures.focusedNinePatch
                                                )
         {
-            Sounds.blop.playOnce()
+            Sounds.ui_5.playOnce()
+            playMusicIfNotAlreadyPlaying(Musics.ambient_5)
             PopUpsMenu.setOverwriteSaveVisibility(true)
             setButtonsVisibility(false)
             
@@ -227,7 +228,7 @@ object TitleAndButtons
                 Textures.focusedNinePatch
                                             )
         {
-            Sounds.blop.playOnce()
+            Sounds.ui_1.playOnce()
             CreditsScreen.setScreen()
         }
         
@@ -245,7 +246,7 @@ object TitleAndButtons
                 Textures.focusedNinePatch
                                       )
         {
-            Sounds.blop.playOnce()
+            Sounds.ui_1.playOnce()
             exitGame()
         }
         
@@ -263,7 +264,7 @@ object TitleAndButtons
                 Textures.focusedNinePatch
                                           )
         {
-            Sounds.blop.playOnce()
+            Sounds.ui_1.playOnce()
             SettingsScreen.setScreen()
         }
         
@@ -281,7 +282,7 @@ object TitleAndButtons
                 Textures.focusedNinePatch
                                       )
         {
-            Sounds.blop.playOnce()
+            Sounds.ui_1.playOnce()
             AppInfoScreen.setScreen()
         }
         

@@ -73,7 +73,7 @@ object SettingsScreen : BaseScreen()
                 Textures.focusedNinePatch
                                  )
         {
-            Sounds.blop.playOnce()
+            Sounds.ui_1.playOnce()
             MenuScreen.setScreen()
         }
         

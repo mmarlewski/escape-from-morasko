@@ -32,7 +32,7 @@ object RightStructure
                 Textures.focusedNinePatch
                               )
         {
-            playSoundOnce(Sounds.blop)
+            playSoundOnce(Sounds.ui_3)
             
             Map.clearLayer(MapLayer.select)
             Map.clearLayer(MapLayer.outline)
@@ -103,7 +103,7 @@ object RightStructure
         {
             endCurrentTurn()
         }
-        playSoundOnce(Sounds.blop)
+        playSoundOnce(Sounds.ui_5)
     
     }
     

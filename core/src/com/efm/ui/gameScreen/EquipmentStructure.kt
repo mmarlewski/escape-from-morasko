@@ -39,7 +39,7 @@ object EquipmentStructure
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                         ) {
-            Sounds.blop.playOnce()
+            Sounds.ui_3.playOnce()
             ProgressBars.setVisibilty(true)
             PopUps.setBackgroundVisibility(true)
             LeftStructure.menuButton.isVisible = true
@@ -59,7 +59,7 @@ object EquipmentStructure
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                         ) {
-            Sounds.blop.playOnce()
+            Sounds.ui_2.playOnce()
             
             this.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
             
@@ -91,7 +91,7 @@ object EquipmentStructure
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                        ) {
-            Sounds.blop.playOnce()
+            Sounds.ui_2.playOnce()
             
             this.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
             
@@ -154,7 +154,7 @@ object EquipmentStructure
     
     fun showHeroEquipment()
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         if (containerOverlay in equipment.children)
         {
             equipment.removeActor(containerOverlay)
@@ -172,7 +172,7 @@ object EquipmentStructure
     
     fun showHeroAndContainerEquipments(containerEquipment : Container)
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         if (containerOverlay !in equipment.children)
         {
             equipment.addActor(containerOverlay)

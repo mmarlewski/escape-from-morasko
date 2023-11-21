@@ -376,7 +376,7 @@ fun windowAreaOf(
             Textures.focusedNinePatch
                                  )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_2.playOnce()
         window.isVisible = false
         onYes()
         PopUps.setBackgroundVisibility(true)
@@ -392,7 +392,7 @@ fun windowAreaOf(
                                 )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
+        Sounds.ui_3.playOnce()
         onNo()
         PopUps.setBackgroundVisibility(true)
     }
@@ -467,7 +467,7 @@ fun settingsPause(
                                  )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         PopUps.setMenuVisibility(true)
         LeftStructure.menuButton.isVisible = true
     }
@@ -537,7 +537,7 @@ fun menuPopup(
                                    )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
+        Sounds.ui_3.playOnce()
         PopUps.setBackgroundVisibility(true)
     }
     
@@ -567,7 +567,7 @@ fun menuPopup(
             Textures.focusedNinePatch
                                      )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         window.isVisible = false
         PopUps.setSettingsVisibility(true)
         LeftStructure.menuButton.isVisible = false
@@ -586,7 +586,7 @@ fun menuPopup(
             Textures.focusedNinePatch
                                        )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         changeScreen(MenuScreen)
         window.isVisible = false
         PopUps.setBackgroundVisibility(true)
