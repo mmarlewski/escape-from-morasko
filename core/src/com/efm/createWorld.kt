@@ -20,7 +20,6 @@ import com.efm.level.World
 import com.efm.multiUseMapItems.Bow
 import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.*
-import com.efm.screens.GameScreen
 import com.efm.skills.Pockets
 import com.efm.stackableMapItems.Bomb
 import com.efm.stackableSelfItems.*
@@ -688,9 +687,9 @@ fun World.createWorldBoarTest()
     chest.addItem(Mushroom(14))
     l1r1.addEntityAt(chest, 5, 5)
     val boar = EnemyBoar()
-    //l1r1.addEntityAt(boar, 8, 8)
+    l1r1.addEntityAt(boar, 8, 8)
     val ghost = EnemyGhost()
-    //l1r1.addEntityAt(ghost, 1, 10)
+    l1r1.addEntityAt(ghost, 1, 10)
     val commandBlock = CommandBlock {
         if (!hero.hasSkill(Pockets))
         {
@@ -803,7 +802,7 @@ fun World.createWorldPrototypeThree()
                 ExitStyle.metal,
                 exitBBase = Base.stone
                       )
-    
+        /*
         // after going through exit focus camera on tutorial enemy
         val exit = object : RoomExit(RoomPosition(6, 3), Direction4.left, l1r2.name, RoomPosition(0, 7), ExitStyle.metal)
         {
@@ -829,7 +828,7 @@ fun World.createWorldPrototypeThree()
             }
         }
         l1r1.replaceEntityAt(exit, 6, 3)
-    
+        */
         addRoomPassage(
                 this,
                 l1r2.name,
