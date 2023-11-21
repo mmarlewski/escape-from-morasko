@@ -1,8 +1,10 @@
 package com.efm.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
@@ -21,9 +23,10 @@ object GameOverScreen : BaseScreen()
         super.inputProcessor = stage
         
         val gameOverText = labelOf("Game Over", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+        gameOverText.setFontScale(3f)
         
         val menuTextButton = textButtonOf(
-                "menu",
+                "back to menu",
                 Fonts.inconsolata30,
                 Colors.black,
                 Textures.upLongNinePatch,
@@ -36,9 +39,18 @@ object GameOverScreen : BaseScreen()
             changeScreen(MenuScreen)
         }
         
-        val column = columnOf(gameOverText, menuTextButton).align(Align.center)
-        column.setFillParent(true)
-        stage.addActor(column)
+        val tableGameOver = Table()
+        tableGameOver.setFillParent(true)
+        tableGameOver.add(gameOverText).align(Align.center)
+        
+        val tableButton = Table()
+        tableButton.setFillParent(true)
+        
+        val screenHeight = Gdx.graphics.height.toFloat()
+        tableButton.add(menuTextButton).padTop(screenHeight / 2).align(Align.center)
+        
+        stage.addActor(tableGameOver)
+        stage.addActor(tableButton)
         
     }
     
@@ -48,7 +60,7 @@ object GameOverScreen : BaseScreen()
         
         EscapeFromMorasko.spriteBatch.begin()
         EscapeFromMorasko.spriteBatch.draw(
-                Textures.mainMenuBackground,
+                Textures.pauseBackgroundBlack,
                 0f,
                 0f,
                 viewport.worldWidth,
