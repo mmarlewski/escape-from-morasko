@@ -1,9 +1,9 @@
 package com.efm.state
 
-import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
-import com.efm.assets.Tiles
+import com.efm.assets.*
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
@@ -274,10 +274,7 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
             else    ->
             {
                 val pathSpaces = PathFinding.findPathInRoomForEntity(
-                        World.hero.position,
-                        selectedPosition,
-                        World.currentRoom,
-                        World.hero
+                        World.hero.position, selectedPosition, World.currentRoom, World.hero
                                                                     )
                 if (pathSpaces != null)
                 {
@@ -360,6 +357,7 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
                 this.pathSpaces = currState.pathSpaces
                 this.isMoveToAnotherRoom = currState.isMoveToAnotherRoom
                 this.isMoveToAnotherLevel = currState.isMoveToAnotherLevel
+                this.tutorialFlags.playerMoved = true
             }
         }
         else if (selectedPosition != World.hero.position)
@@ -408,7 +406,6 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
     {
         // interact with Interactive Entity if it was selected in FreeMoveSelectedOnce
         val entityOnPositionHeroWalkedTowards = currState.entityOnPosition
-        Gdx.app.log("CommandBlock", "$entityOnPositionHeroWalkedTowards")
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
         
         GameScreen.roomTouchPosition.set(World.hero.position)
@@ -450,7 +447,14 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
                 }
             }
         }
-        
+        val lootingPopupShown =
+                if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.movementPopupShown && currState.tutorialFlags.playerMoved && !currState.tutorialFlags.lootingPopupShown)
+                {
+                    showLootingPopup()
+                    true
+                }
+                else currState.tutorialFlags.lootingPopupShown
+    
         return when (areEnemiesInRoom)
         {
             true  -> State.constrained.heroSelected.apply {
@@ -458,15 +462,27 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
                 this.areEnemiesInRoom = areEnemiesInRoom
                 this.isHeroDetected = false
                 this.areAnyActionPointsLeft = true
+                this.tutorialFlags.lootingPopupShown = lootingPopupShown
             }
             false -> State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = areEnemiesInRoom
+                this.tutorialFlags.lootingPopupShown = lootingPopupShown
             }
         }
     }
     
     return currState
+}
+
+fun showLootingPopup()
+{
+    val popUp = windowAreaOf("Looting popup", Fonts.pixeloid20, Colors.black, Textures.pauseBackgroundNinePatch, {}, {})
+    popUp.isVisible = false
+    popUp.isVisible = true
+    val nextLevelPopupWindow = columnOf(rowOf(popUp)).align(Align.center)
+    nextLevelPopupWindow.setFillParent(true)
+    GameScreen.stage.addActor(nextLevelPopupWindow)
 }
 
 fun updateFreeMoveSelectedTwiceToLevelExitWaiting(currState : State.free.moveSelectedTwiceToLevelExit.waiting) : State
@@ -598,7 +614,7 @@ fun updateFreeMultiUseMapItemTargetSelectedTwice(currState : State.free.multiUse
         {
             World.hero.inventory.removeItem(item)
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
+    
             return State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -734,7 +750,7 @@ fun updateFreeStackableMapItemTargetSelectedTwice(currState : State.free.stackab
         {
             World.hero.inventory.removeItem(item)
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
+    
             return State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom

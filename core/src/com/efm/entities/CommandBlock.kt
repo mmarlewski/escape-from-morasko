@@ -6,7 +6,7 @@ import com.efm.entity.Interactive
 import com.efm.room.RoomPosition
 
 class CommandBlock(
-        val action : () -> Unit
+        val action : () -> Unit = { }
                   ) : Interactive
 {
     override val position : RoomPosition = RoomPosition(0, 0)

@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.Textures
-import com.efm.ui.gameScreen.PopUpsMenu
+import com.efm.ui.menuScreen.PopUpsMenu
 import com.efm.ui.menuScreen.TitleAndButtons
 
 object MenuScreen : BaseScreen()

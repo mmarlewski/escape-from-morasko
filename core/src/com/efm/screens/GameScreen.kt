@@ -14,12 +14,7 @@ import com.efm.Map
 import com.efm.assets.Colors
 import com.efm.entity.Enemy
 import com.efm.level.World
-import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
-import com.efm.skills.*
-import com.efm.stackableMapItems.Bomb
-import com.efm.stackableMapItems.Explosive
-import com.efm.stackableSelfItems.*
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
 
@@ -60,6 +55,7 @@ object GameScreen : BaseScreen(), GestureListener
         RightStructure.display()
         PopUps.display()
         EquipmentStructure.display()
+        TutorialPopups.display()
     }
     
     fun updateMapBaseLayer()

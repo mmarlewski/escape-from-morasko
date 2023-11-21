@@ -6,7 +6,6 @@ import com.efm.exit.Exit
 import com.efm.item.*
 import com.efm.room.RoomPosition
 import com.efm.room.Space
-import com.efm.saveGame
 import com.efm.skill.ActiveSkill
 
 private var prevState : State = State.free.noSelection
@@ -32,6 +31,18 @@ sealed class State
 {
     var isHeroAlive = true
     var areEnemiesInRoom = false
+    
+    var tutorialFlags = TutorialFlags
+    
+    object TutorialFlags
+    {
+        var tutorialOn = true
+        //var cameraPopupShown = false
+        //var playerMovedCamera = false
+        var movementPopupShown = true
+        var playerMoved = false
+        var lootingPopupShown = false
+    }
     
     sealed class free : State()
     {
