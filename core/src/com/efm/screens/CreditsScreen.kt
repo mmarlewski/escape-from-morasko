@@ -1,6 +1,5 @@
 package com.efm.screens
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -9,6 +8,43 @@ import com.badlogic.gdx.utils.*
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.*
+
+val assetsCreditsString =
+        " mushroom :     LuizMelo            (itch.io)\n" +
+                " bat :          bagzie              (opengameart.org)\n" +
+                " skeleton :     Calciumtrice        (opengameart.org)\n" +
+                " boar :         BenCreating         (opengameart.org)\n" +
+                " rock :         Unnamed             (opengameart.org)\n" +
+                " rock pile :    FunwithPixels       (opengameart.org)\n" +
+                " ghost :        Balmer              (opengameart.org)\n" +
+                " plant :        Aswino              (opengameart.org)\n" +
+                " wizard :       Merry Dream Games   (opengameart.org)\n" +
+                " turret :       bluecarrot16        (opengameart.org)\n" +
+                "\n" +
+                " goblins :      William.Thompsonj   (opengameart.org)\n" +
+                " barrel :       Lil Pie             (opengameart.org)\n" +
+                " explosion :    Pompei2             (opengameart.org)\n" +
+                " dragon :       ZaPaper             (opengameart.org)\n" +
+                " chess :        Nem_                (opengameart.org)\n" +
+                " slime :        Chrisblue           (opengameart.org)\n" +
+                " golem :        William.Thompsonj   (opengameart.org)\n" +
+                "\n" +
+                " floors :       Anokolisa           (itch.io)\n" +
+                " walls :        hawkbirdtree        (opengameart.org)\n" +
+                "\n" +
+                " music :\n" +
+                " \"Dungeon 01\"       Fantasy Musica  (opengameart.org)\n" +
+                " \"Dungeon 03\"       Fantasy Musica  (opengameart.org)\n" +
+                " \"Dungeon 05\"       Fantasy Musica  (opengameart.org)\n" +
+                " \"Dungeon Deep\"     adn_adn         (opengameart.org)\n" +
+                " \"Dark Fallout\"     remaxim         (opengameart.org)\n" +
+                " \"Dungeon Ambience\" yd              (opengameart.org)\n" +
+                " \"Dungeon Theme\"    remaxim         (opengameart.org)\n" +
+                " \"Caves\"        Alexandr Zhelanov   (opengameart.org)\n" +
+                "\n" +
+                " ui sound effects : ColorAlpha      (itch.io)\n" +
+                "\n" +
+                " other sound effects from Pixabay and Mixkit"
 
 object CreditsScreen : BaseScreen()
 {
@@ -37,7 +73,7 @@ object CreditsScreen : BaseScreen()
                        )
         val assetsLabel =
                 labelOf(
-                        "assets:\n\n" + Gdx.files.local("assets-credits.txt").readString(),
+                        "assets:\n\n$assetsCreditsString",
                         Fonts.pixeloid30,
                         Colors.white,
                         Textures.translucentNinePatch
