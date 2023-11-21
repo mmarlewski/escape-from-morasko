@@ -32,17 +32,19 @@ object PopUps
     {
         val skillAssignmentPopup = skillsAssignmentOverlay(Freeze, Invisibility, Jump,
                                                            {
-                                                               //when button assigned
+                                                               //when skill assigned
                                                                playSoundOnce(Sounds.ui_2)
                                                                World.hero.addSkill(it)
                                                                setBackgroundVisibility(true)
                                                            },
                                                            {
-                                                               //when button reassigned
+                                                               //when skill reassigned
                                                                playSoundOnce(Sounds.ui_2)
                                                                World.hero.addSkill(it)
                                                                setBackgroundVisibility(true)
                                                            })
+        
+        skillAssignmentPopup.isVisible = false
         
         return skillAssignmentPopup
     }

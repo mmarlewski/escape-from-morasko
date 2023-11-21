@@ -25,6 +25,7 @@ object Textures
     val translucentThreeQuartersBlack = load("/backgrounds/translucent75percentBlack.png")
     val pauseBackground = load("/backgrounds/pauseBackground.png")
     val pauseBackgroundBlack = load("/backgrounds/pauseBackgroundBlack.png")
+    val pauseBackgroundWhite = load("/backgrounds/pauseBackgroundWhite.png")
     
     val upNinePatch = NinePatch(up, 5, 5, 5, 5)
     val upLongNinePatch = NinePatch(upLong, 5, 5, 5, 5)
@@ -39,6 +40,7 @@ object Textures
     val translucentThreeQuartersNinePatch = NinePatch(translucentThreeQuarters, 5, 5, 5, 5)
     val pauseBackgroundNinePatch = NinePatch(pauseBackground, 5, 5, 5, 5)
     val pauseBackgroundBlackNinePatch = NinePatch(pauseBackgroundBlack, 5, 5, 5, 5)
+    val pauseBackgroundWhiteNinePatch = NinePatch(pauseBackgroundWhite, 5, 5, 5, 5)
     
     //knobs
     val knobBackground = load("/bars/knobBackground.png")
