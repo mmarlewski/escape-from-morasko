@@ -1,10 +1,9 @@
-package com.efm.ui.gameScreen
+package com.efm.ui.menuScreen
 
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.*
 import com.efm.screens.MenuScreen
-import com.efm.ui.menuScreen.TitleAndButtons
 
 object PopUpsMenu
 {
