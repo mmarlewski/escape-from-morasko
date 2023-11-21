@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.*
+import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.skills.*
 
@@ -33,11 +34,13 @@ object PopUps
                                                            {
                                                                //when button assigned
                                                                playSoundOnce(Sounds.blop)
+                                                               World.hero.addSkill(it)
                                                                setBackgroundVisibility(true)
                                                            },
                                                            {
                                                                //when button reassigned
                                                                playSoundOnce(Sounds.blop)
+                                                               World.hero.addSkill(it)
                                                                setBackgroundVisibility(true)
                                                            })
         
@@ -57,7 +60,7 @@ object PopUps
                 },
                 { LeftStructure.menuButton.isVisible = true }
                                        )
-    
+        
         endTurnPopUp.isVisible = false
         
         return endTurnPopUp
@@ -77,7 +80,7 @@ object PopUps
     
     fun menuPause() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
-    
+        
         val menuPausePopUp = menuPopup(
                 "PAUSE",
                 Fonts.pixeloid30,
@@ -103,7 +106,6 @@ object PopUps
     {
         skillAssignment.isVisible = visibility
     }
-    
     
     fun setEndTurnVisibility(visibility : Boolean)
     {

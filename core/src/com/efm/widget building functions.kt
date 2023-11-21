@@ -442,7 +442,7 @@ fun settingsPause(
             Textures.materialKnobNinePatchAfter,
             Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatch
-                              )
+                          )
     
     soundSlider = sliderOf(
             0.0f,
@@ -481,17 +481,17 @@ fun settingsPause(
                             })
     
     soundSlider.addListener(object : ChangeListener()
-                                        {
-                                            override fun changed(event : ChangeEvent, actor : Actor)
-                                            {
-                                                setSoundVolume(soundSlider.value)
-                                            }
-                                        })
+                            {
+                                override fun changed(event : ChangeEvent, actor : Actor)
+                                {
+                                    setSoundVolume(soundSlider.value)
+                                }
+                            })
     
     val buttonTable = Table()
     buttonTable.add(
             columnOf(
-                    rowOf( musicLabel,musicSlider),
+                    rowOf(musicLabel, musicSlider),
                     rowOf(soundEffectsLabel, soundSlider),
                     rowOf(backButton)
                     )
@@ -781,7 +781,7 @@ fun determineBodyPart(skill : Skill) : Texture
     }
 }
 
-fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
+fun skillAssignDisplay(skill : Skill, onClicked : (Skill) -> Unit) : Table
 {
     val bodyPart = determineBodyPart(skill)
     val skillIcon = imageOf(skill.texture, Scaling.none)
@@ -797,7 +797,7 @@ fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
             Textures.focusedNinePatch,
                                    )
     {
-        onClicked
+        onClicked(skill)
         PopUps.setSkillAssignmentVisibility(false)
     }
     
@@ -817,7 +817,7 @@ fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
     return table
 }
 
-fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
+fun skillReassignDisplay(skill : Skill, onClicked : (Skill) -> Unit) : Table
 {
     val bodyPart = determineBodyPart(skill)
     val skillIcon = imageOf(skill.texture, Scaling.none)
@@ -833,7 +833,7 @@ fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
             Textures.focusedNinePatch,
                                      )
     {
-        onClicked
+        onClicked(skill)
         PopUps.setSkillAssignmentVisibility(false)
     }
     val reassignmentInfo = labelOf("Skill already assigned", Fonts.pixeloid10, Colors.red, Textures.translucentNinePatch)
@@ -865,8 +865,8 @@ fun skillsAssignmentOverlay(
         skillLeft : Skill,
         skillMiddle : Skill,
         skillRight : Skill,
-        onAssign : () -> Unit,
-        onReassign : () -> Unit
+        onAssign : (Skill) -> Unit,
+        onReassign : (Skill) -> Unit
                            ) : Window
 {
     val windowStyle = Window.WindowStyle()
