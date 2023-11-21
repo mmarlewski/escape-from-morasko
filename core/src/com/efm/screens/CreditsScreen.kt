@@ -1,8 +1,10 @@
 package com.efm.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.*
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
@@ -26,9 +28,16 @@ object CreditsScreen : BaseScreen()
                 Scaling.none
                                   )
         
-        val creditsLabel =
+        val authorsLabel =
                 labelOf(
-                        "authors:\n\nMarcin Marlewski\n\nWiktor Leszczynski\n\nDominik Jagosz\n\nJerzy Tomaszewski",
+                        "authors:\n\nMarcin Marlewski\nWiktor Leszczynski\nDominik Jagosz\nJerzy Tomaszewski",
+                        Fonts.pixeloid30,
+                        Colors.white,
+                        Textures.translucentNinePatch
+                       )
+        val assetsLabel =
+                labelOf(
+                        "assets:\n\n" + Gdx.files.local("assets-credits.txt").readString(),
                         Fonts.pixeloid30,
                         Colors.white,
                         Textures.translucentNinePatch
@@ -49,15 +58,21 @@ object CreditsScreen : BaseScreen()
             MenuScreen.setScreen()
         }
         
-        creditsLabel.setAlignment(Align.center)
+        authorsLabel.setAlignment(Align.center)
+        assetsLabel.setAlignment(Align.center)
         
         val column = columnOf(
                 rowOf(creditsTitle),
-                rowOf(creditsLabel),
+                rowOf(authorsLabel),
+                rowOf(assetsLabel),
                 rowOf(backButton)
                              )
-        column.setFillParent(true)
-        stage.addActor(column)
+        
+        val scrollPaneStyle = ScrollPane.ScrollPaneStyle()
+        val scrollPane = ScrollPane(column, scrollPaneStyle)
+        
+        scrollPane.setFillParent(true)
+        stage.addActor(scrollPane)
     }
     
     override fun render(delta : Float)
@@ -70,6 +85,7 @@ object CreditsScreen : BaseScreen()
         EscapeFromMorasko.spriteBatch.end()
         camera.update()
         stage.draw()
+        stage.act()
     }
     
     override fun resize(width : Int, height : Int)
