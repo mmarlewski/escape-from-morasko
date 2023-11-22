@@ -3,6 +3,7 @@ package com.efm.ui.gameScreen
 import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
+import com.efm.assets.Sounds
 import com.efm.screens.GameScreen
 
 object TutorialPopups
@@ -23,6 +24,7 @@ object TutorialPopups
                 "In this tutorial you will learn the basics of the game - movement and looting",
                                         )
         {
+            Sounds.ui_2.playOnce()
             welcomePopup.isVisible = false
             cameraPopup.isVisible = true
         }
@@ -43,6 +45,7 @@ object TutorialPopups
                         "use a pinching motion to zoom in and out for a closer or wider view."
                                        )
         {
+            Sounds.ui_2.playOnce()
             cameraPopup.isVisible = false
             LeftStructure.menuButton.isVisible = true
             GameScreen.canBeInteractedWith = true
@@ -61,6 +64,7 @@ object TutorialPopups
                         "and then select a tile to move to."
                                          )
         {
+            Sounds.ui_2.playOnce()
             movementPopup.isVisible = false
             RightStructure.xButton.isVisible = true
             lootingPopup.isVisible = true
@@ -78,6 +82,7 @@ object TutorialPopups
                         "Select items and transfer them to your equipment by clicking the arrow."
                                         )
         {
+            Sounds.ui_2.playOnce()
             lootingPopup.isVisible = false
             equipmentPopup.isVisible = true
         }
@@ -94,6 +99,7 @@ object TutorialPopups
                         "map-usables, skills, self-usables, and weapons."
                                           )
         {
+            Sounds.ui_2.playOnce()
             equipmentPopup.isVisible = false
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
             ItemsStructure.setVisibility(true)
@@ -113,6 +119,7 @@ object TutorialPopups
                 "Every action consumes action points. Enemy attacks reduce your health, but specific items can restore it."
                                                  )
         {
+            Sounds.ui_2.playOnce()
             healthAndAbilityPopup.isVisible = false
             ProgressBars.setVisibilty(true)
             turnsPopup.isVisible = true
@@ -129,6 +136,7 @@ object TutorialPopups
                 "In the top right, find the 'End Turn' button. Decide when to end your turn, even with remaining action points."
                                       )
         {
+            Sounds.ui_2.playOnce()
             turnsPopup.isVisible = false
             RightStructure.endTurnButton.isVisible = true
             combatPopup.isVisible = true
@@ -146,6 +154,7 @@ object TutorialPopups
                         "Counter with a selected weapon by choosing the enemy or tile."
                                        )
         {
+            Sounds.ui_2.playOnce()
             combatPopup.isVisible = false
         }
         combatPopup.isVisible = false
