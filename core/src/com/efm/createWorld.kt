@@ -4,16 +4,17 @@ package com.efm
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
-import com.efm.entities.Chest
-import com.efm.entities.ExplodingBarrel
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
+import com.efm.entities.*
 import com.efm.entities.bosses.*
 import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost
 import com.efm.entities.enemies.chess.spawnChessSet
-import com.efm.entities.exits.*
 import com.efm.entities.walls.*
+import com.efm.exit.*
 import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
 import com.efm.level.Level
@@ -21,6 +22,7 @@ import com.efm.level.World
 import com.efm.multiUseMapItems.Bow
 import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.*
+import com.efm.skills.Pockets
 import com.efm.stackableMapItems.Bomb
 import com.efm.stackableSelfItems.*
 
@@ -642,9 +644,13 @@ fun World.createWorldPrototypeTwo()
     addLevel(l2)
     
     // level passages
-    val l1tol2 = LevelExitActiveWhenNoEnemiesAreInRoom(
-            RoomPosition(l1r4.widthInSpaces - 1, l1r4.heightInSpaces - 1), Direction4.left, l2.name, ExitStyle.stone
-                                                      )
+    val l1tol2 = LevelExit(
+            RoomPosition(l1r4.widthInSpaces - 1, l1r4.heightInSpaces - 1),
+            Direction4.left,
+            l2.name,
+            ExitStyle.stone,
+            activeWhenNoEnemiesAreInRoom = true
+                          )
     l1r4.addEntity(l1tol2)
 }
 
@@ -686,6 +692,21 @@ fun World.createWorldBoarTest()
     l1r1.addEntityAt(boar, 8, 8)
     val ghost = EnemyGhost()
     l1r1.addEntityAt(ghost, 1, 10)
+    val commandBlock = CommandBlock {
+        if (!hero.hasSkill(Pockets))
+        {
+            hero.addSkill(Pockets)
+            // fill inventory
+            for (i in hero.inventory.items.size until hero.inventory.maxItems) hero.inventory.addItem(Bow())
+            Gdx.app.log("CommandBlock", "added Pockets and filled them")
+        }
+        else
+        {
+            hero.removeSkill(Pockets)
+            Gdx.app.log("CommandBlock", "removed Pockets")
+        }
+    }
+    l1r1.addEntityAt(commandBlock, 6, 6)
     
     // add to World
     addLevel(l1)
@@ -783,6 +804,33 @@ fun World.createWorldPrototypeThree()
                 ExitStyle.metal,
                 exitBBase = Base.stone
                       )
+        /*
+        // after going through exit focus camera on tutorial enemy
+        val exit = object : RoomExit(RoomPosition(6, 3), Direction4.left, l1r2.name, RoomPosition(0, 7), ExitStyle.metal)
+        {
+            override fun interact()
+            {
+                super.interact()
+                val enemy = currentRoom.getEnemies().firstOrNull()
+                if (enemy != null)
+                {
+                    GameScreen.focusCameraOnRoomPosition(enemy.position)
+                    val animations = mutableListOf<Animation>()
+                    animations += Animation.action {
+                        Animation.moveTileSmoothlyWithCameraFocus(null, hero.position, enemy.position, 100f)
+                        Animation.wait(10f)
+                        Animation.moveTileSmoothlyWithCameraFocus(null, enemy.position, hero.position, 100f)
+                    }
+                    if (!Animating.isAnimating())
+                    {
+                        Animating.executeAnimations(animations)
+                        Gdx.app.log("Exit", "to sie printuje")
+                    }
+                }
+            }
+        }
+        l1r1.replaceEntityAt(exit, 6, 3)
+        */
         addRoomPassage(
                 this,
                 l1r2.name,
@@ -810,6 +858,7 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(l1r3.widthInSpaces - 1, 3),
                 ExitStyle.stone
                       )
+        // one end of this one should be locked
         addRoomPassage(
                 this,
                 l1r4.name,
@@ -819,10 +868,21 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(0, 7),
                 ExitStyle.stone
                       )
+        (l1r5.getSpace(0, 7)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         // starting position
         //
         changeStartingRoom(l1r1)
         changeStartingPosition(2, 3)
+        // level exit
+        l1r5.replaceEntityAt(
+                LevelExit(
+                        RoomPosition(l1r5.widthInSpaces - 1, 0),
+                        Direction4.down,
+                        "1",
+                        ExitStyle.stone,
+                        activeWhenNoEnemiesAreInRoom = true
+                         ), RoomPosition(l1r5.widthInSpaces - 1, 0)
+                            )
     }
     // add level to World
     this.addLevel(l1)

@@ -2,7 +2,6 @@ import com.efm.level.Level
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -14,9 +13,9 @@ class `level`
         val level = Level("level")
         val room = Room("room", 2, 2)
         
-        assertTrue(level.getRooms().isEmpty())
+        assertTrue(level.rooms.isEmpty())
         level.addRoom(room)
-        assertTrue(level.getRooms().isNotEmpty())
+        assertTrue(level.rooms.isNotEmpty())
     }
     
     @Test fun `changeStartingRoom test`()

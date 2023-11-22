@@ -10,7 +10,6 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Textures
 import com.efm.assets.Tiles
-import com.efm.entities.exits.ExitStyle
 import com.efm.level.World
 import com.efm.room.*
 import com.efm.screens.GameScreen

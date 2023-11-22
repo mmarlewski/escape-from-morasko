@@ -1,8 +1,10 @@
 package com.efm.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
@@ -18,13 +20,37 @@ object GameOverScreen : BaseScreen()
     init
     {
         // input processor
-        super.inputProcessor = MenuScreen.stage
+        super.inputProcessor = stage
         
         val gameOverText = labelOf("Game Over", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+        gameOverText.setFontScale(3f)
         
-        val column = columnOf(rowOf(gameOverText)).align(Align.center)
-        column.setFillParent(true)
-        stage.addActor(column)
+        val menuTextButton = textButtonOf(
+                "back to menu",
+                Fonts.inconsolata30,
+                Colors.black,
+                Textures.upLongNinePatch,
+                Textures.downLongNinePatch,
+                Textures.overNinePatch,
+                Textures.disabledNinePatch,
+                Textures.focusedNinePatch
+                                         )
+        {
+            changeScreen(MenuScreen)
+        }
+        
+        val tableGameOver = Table()
+        tableGameOver.setFillParent(true)
+        tableGameOver.add(gameOverText).align(Align.center)
+        
+        val tableButton = Table()
+        tableButton.setFillParent(true)
+        
+        val screenHeight = Gdx.graphics.height.toFloat()
+        tableButton.add(menuTextButton).padTop(screenHeight / 2).align(Align.center)
+        
+        stage.addActor(tableGameOver)
+        stage.addActor(tableButton)
         
     }
     
@@ -34,24 +60,24 @@ object GameOverScreen : BaseScreen()
         
         EscapeFromMorasko.spriteBatch.begin()
         EscapeFromMorasko.spriteBatch.draw(
-                Textures.mainMenuBackground,
+                Textures.pauseBackgroundBlack,
                 0f,
                 0f,
-                MenuScreen.viewport.worldWidth,
-                MenuScreen.viewport.worldHeight
+                viewport.worldWidth,
+                viewport.worldHeight
                                           )
         EscapeFromMorasko.spriteBatch.end()
-        MenuScreen.camera.update()
-        MenuScreen.stage.draw()
+        camera.update()
+        stage.draw()
     }
     
     override fun resize(width : Int, height : Int)
     {
-        MenuScreen.viewport.update(width, height, true)
+        viewport.update(width, height, true)
     }
     
     override fun dispose()
     {
-        MenuScreen.stage.dispose()
+        stage.dispose()
     }
 }

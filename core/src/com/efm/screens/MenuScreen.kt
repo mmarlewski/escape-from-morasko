@@ -3,11 +3,12 @@ package com.efm.screens
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.Textures
-import com.efm.ui.gameScreen.PopUpsMenu
+import com.efm.ui.menuScreen.PopUpsMenu
 import com.efm.ui.menuScreen.TitleAndButtons
 
 object MenuScreen : BaseScreen()
@@ -16,6 +17,11 @@ object MenuScreen : BaseScreen()
     val viewport = ExtendViewport(minScreenWidth, minScreenHeight, maxScreenWidth, maxScreenHeight, camera)
     val stage = Stage(viewport, EscapeFromMorasko.spriteBatch)
     
+    var playButton : TextButton? = null
+    var startAgainButton : TextButton? = null
+    
+    var saveExists = false
+    
     init
     {
         // input processor
@@ -23,11 +29,16 @@ object MenuScreen : BaseScreen()
         
         PopUpsMenu.display()
         TitleAndButtons.display()
-        
     }
     
     override fun render(delta : Float)
     {
+        saveExists = saveExists()
+        if (playButton?.isVisible == true)
+        {
+            playButton?.isVisible = saveExists
+        }
+        
         ScreenUtils.clear(Color.CLEAR)
         
         EscapeFromMorasko.spriteBatch.begin()

@@ -1,14 +1,18 @@
 package com.efm.entities
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import com.efm.assets.Tiles
 import com.efm.entity.Character
-import com.efm.item.Container
-import com.efm.item.Item
+import com.efm.getSquareAreaPositions
+import com.efm.item.*
+import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.screens.GameScreen
 import com.efm.skill.*
+import com.efm.skills.Pockets
 import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
 
@@ -16,9 +20,7 @@ import com.efm.ui.gameScreen.ProgressBars
  * Hero has its own turn and is controlled by the player.
  */
 class Hero(
-        override var maxHealthPoints : Int = 100,
-        override var healthPoints : Int = 100,
-        override var alive : Boolean = true
+        override var maxHealthPoints : Int = 100, override var healthPoints : Int = 100, override var alive : Boolean = true
           ) : Character
 {
     override val position = RoomPosition()
@@ -30,7 +32,7 @@ class Hero(
     var canMoveNextTurn = true
     var isVisible = true
     
-    val inventory = HeroInventory()
+    var inventory = HeroInventory()
     
     val bodyPartMap = mutableMapOf<BodyPart, Skill?>().apply { BodyPart.values().forEach { this[it] = null } }
     
@@ -200,11 +202,19 @@ class Hero(
     fun addSkill(skill : Skill)
     {
         bodyPartMap[skill.bodyPart] = skill
+        if (skill is Pockets)
+        {
+            this.inventory.maxItems += Pockets.additionalInventorySlotsAmount
+        }
     }
     
     fun removeSkill(skill : Skill)
     {
         bodyPartMap[skill.bodyPart] = null
+        if (skill is Pockets)
+        {
+            this.inventory.maxItems -= Pockets.additionalInventorySlotsAmount
+        }
     }
     
     fun hasSkill(skill : Skill) : Boolean
@@ -229,6 +239,10 @@ class Hero(
             json.writeValue("apDrainInNextTurn", this.apDrainInNextTurn)
             json.writeValue("canMoveNextTurn", this.canMoveNextTurn)
             json.writeValue("isVisible", this.isVisible)
+            json.writeValue("inventory", this.inventory)
+            val skillNames = mutableListOf<String>()
+            this.bodyPartMap.values.forEach { skillNames.add(it?.name ?: "") }
+            json.writeValue("skillNames", skillNames)
         }
     }
     
@@ -248,12 +262,56 @@ class Hero(
             if (jsonCanMoveNextTurn != null) this.canMoveNextTurn = jsonCanMoveNextTurn
             val jsonIsVisible = json.readValue("isVisible", Boolean::class.java, jsonData)
             if (jsonIsVisible != null) this.isVisible = jsonIsVisible
+            val jsonInventory = json.readValue("inventory", HeroInventory::class.java, jsonData)
+            if (jsonInventory != null) this.inventory = jsonInventory
+            val jsonSkillNames = json.readValue("skillNames", List::class.java, jsonData)
+            if (jsonSkillNames != null)
+            {
+                for (jsonSkillName in jsonSkillNames)
+                {
+                    if (jsonSkillName is String)
+                    {
+                        val skill = getSkillFromName(jsonSkillName)
+                        if (skill != null)
+                        {
+                            this.addSkill(skill)
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 class HeroInventory : Container
 {
-    override val items : MutableList<Item> = mutableListOf<Item>()
+    override val items : MutableList<Item> = mutableListOf()
     override var maxItems : Int = 10
+        set(value)
+        {
+            if (items.size > value)
+            {
+                val droppedPockets = DroppedPockets()
+                droppedPockets.maxItems = 2 * (this.items.size - value)
+                while (items.size > value)
+                {
+                    val item = items.last()
+                    moveItem(item, this, droppedPockets)
+                }
+                for (pos in getSquareAreaPositions(World.hero.position, 1))
+                {
+                    val space = World.currentRoom.getSpace(pos)
+                    if (space != null && space.isTraversableFor(World.hero))
+                    {
+                        World.currentRoom.addEntityAt(droppedPockets, pos)
+                        World.currentRoom.updateSpacesEntities()
+                        GameScreen.updateMapBaseLayer()
+                        GameScreen.updateMapEntityLayer()
+                        break
+                    }
+                }
+            }
+            field = value
+            Gdx.app.log("HeroInventory", "set maxItems = $value")
+        }
 }

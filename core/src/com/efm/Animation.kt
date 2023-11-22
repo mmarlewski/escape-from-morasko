@@ -484,21 +484,37 @@ sealed class Animation
         
     }
     
-    class moveTileWithArch(
+    open class moveTileWithArch(
             tile : TiledMapTile?,
             from : RoomPosition,
             to : RoomPosition,
             seconds : Float,
             val heightPercent : Float
-                          ) : moveTile(tile, from, to, seconds)
+                               ) : moveTile(tile, from, to, seconds)
     {
         var movePercent = 0.0f
+    
+        override fun update()
+        {
+            super.update()
         
+            movePercent = deltaTimeDifference() / seconds
+        }
+    }
+    
+    class moveTileWithArchAndCameraFocus(
+            tile : TiledMapTile?,
+            from : RoomPosition,
+            to : RoomPosition,
+            seconds : Float,
+            heightPercent : Float
+                                        ) : moveTileWithArch(tile, from, to, seconds, heightPercent)
+    {
         override fun update()
         {
             super.update()
             
-            movePercent = deltaTimeDifference() / seconds
+            GameScreen.focusCameraOnVector2Position(moveTilePosition)
         }
     }
     
@@ -540,7 +556,7 @@ sealed class Animation
         override fun update()
         {
             label.setText("${value.toInt()} / ${World.hero.maxAbilityPoints}")
-            bar?.setValue(value)
+            bar?.value = value
         }
         
         override fun isFinished() : Boolean

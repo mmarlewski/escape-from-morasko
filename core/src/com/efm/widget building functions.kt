@@ -2,8 +2,8 @@ package com.efm
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.NinePatch
+import com.badlogic.gdx.graphics.g2d.*
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.*
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.*
@@ -376,7 +376,7 @@ fun windowAreaOf(
             Textures.focusedNinePatch
                                  )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_2.playOnce()
         window.isVisible = false
         onYes()
         PopUps.setBackgroundVisibility(true)
@@ -392,7 +392,7 @@ fun windowAreaOf(
                                 )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
+        Sounds.ui_3.playOnce()
         onNo()
         PopUps.setBackgroundVisibility(true)
     }
@@ -442,7 +442,7 @@ fun settingsPause(
             Textures.materialKnobNinePatchAfter,
             Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatch
-                              )
+                          )
     
     soundSlider = sliderOf(
             0.0f,
@@ -467,7 +467,7 @@ fun settingsPause(
                                  )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         PopUps.setMenuVisibility(true)
         LeftStructure.menuButton.isVisible = true
     }
@@ -481,17 +481,17 @@ fun settingsPause(
                             })
     
     soundSlider.addListener(object : ChangeListener()
-                                        {
-                                            override fun changed(event : ChangeEvent, actor : Actor)
-                                            {
-                                                setSoundVolume(soundSlider.value)
-                                            }
-                                        })
+                            {
+                                override fun changed(event : ChangeEvent, actor : Actor)
+                                {
+                                    setSoundVolume(soundSlider.value)
+                                }
+                            })
     
     val buttonTable = Table()
     buttonTable.add(
             columnOf(
-                    rowOf( musicLabel,musicSlider),
+                    rowOf(musicLabel, musicSlider),
                     rowOf(soundEffectsLabel, soundSlider),
                     rowOf(backButton)
                     )
@@ -537,7 +537,7 @@ fun menuPopup(
                                    )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
+        Sounds.ui_3.playOnce()
         PopUps.setBackgroundVisibility(true)
     }
     
@@ -567,7 +567,7 @@ fun menuPopup(
             Textures.focusedNinePatch
                                      )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         window.isVisible = false
         PopUps.setSettingsVisibility(true)
         LeftStructure.menuButton.isVisible = false
@@ -586,7 +586,7 @@ fun menuPopup(
             Textures.focusedNinePatch
                                        )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         changeScreen(MenuScreen)
         window.isVisible = false
         PopUps.setBackgroundVisibility(true)
@@ -781,7 +781,7 @@ fun determineBodyPart(skill : Skill) : Texture
     }
 }
 
-fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
+fun skillAssignDisplay(skill : Skill, onClicked : (Skill) -> Unit) : Table
 {
     val bodyPart = determineBodyPart(skill)
     val skillIcon = imageOf(skill.texture, Scaling.none)
@@ -797,7 +797,7 @@ fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
             Textures.focusedNinePatch,
                                    )
     {
-        onClicked
+        onClicked(skill)
         PopUps.setSkillAssignmentVisibility(false)
     }
     
@@ -817,7 +817,7 @@ fun skillAssignDisplay(skill : Skill, onClicked : () -> Unit) : Table
     return table
 }
 
-fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
+fun skillReassignDisplay(skill : Skill, onClicked : (Skill) -> Unit) : Table
 {
     val bodyPart = determineBodyPart(skill)
     val skillIcon = imageOf(skill.texture, Scaling.none)
@@ -833,7 +833,7 @@ fun skillReassignDisplay(skill : Skill, onClicked : () -> Unit) : Table
             Textures.focusedNinePatch,
                                      )
     {
-        onClicked
+        onClicked(skill)
         PopUps.setSkillAssignmentVisibility(false)
     }
     val reassignmentInfo = labelOf("Skill already assigned", Fonts.pixeloid10, Colors.red, Textures.translucentNinePatch)
@@ -865,8 +865,8 @@ fun skillsAssignmentOverlay(
         skillLeft : Skill,
         skillMiddle : Skill,
         skillRight : Skill,
-        onAssign : () -> Unit,
-        onReassign : () -> Unit
+        onAssign : (Skill) -> Unit,
+        onReassign : (Skill) -> Unit
                            ) : Window
 {
     val windowStyle = Window.WindowStyle()
@@ -906,5 +906,74 @@ fun skillsAssignmentOverlay(
     }
     
     window.add(rowOf(skillLeftToDisplay, skillMiddleToDisplay, skillRightToDisplay))
+    return window
+}
+
+fun coloredRectangle(color : Color, width : Float, height : Float) : Actor
+{
+    return object : Actor()
+    {
+        private val shapeRenderer = ShapeRenderer()
+        
+        init
+        {
+            setSize(width, height)
+            shapeRenderer.color = color
+        }
+        
+        override fun draw(batch : Batch?, parentAlpha : Float)
+        {
+            super.draw(batch, parentAlpha)
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+            shapeRenderer.rect(x, y, width, height)
+            shapeRenderer.end()
+        }
+    }
+}
+
+fun tutorialPopup(
+        title : String,
+        body : String,
+        onOK : () -> Unit
+                 ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid30
+    windowStyle.titleFontColor = Colors.white
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
+    
+    val window = Window(title, windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(48f)
+    
+    val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
+    delimiter.setFontScale(0.1f)
+    
+    val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    description.setWrap(true)
+    description.setAlignment(Align.center)
+    
+    val okButton = textButtonOf(
+            "OK",
+            Fonts.pixeloid20,
+            Colors.black,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch,
+            onOK
+                               )
+    
+    val table = Table()
+    table.add(delimiter).fillX().height(1f).padTop(40f).row()
+    table.add(description).width(558f).padTop(16f).row()
+    table.add(okButton).width(180f).padTop(16f).padBottom(8f).row()
+    
+    
+    
+    window.add(columnOf(table))
+    
     return window
 }

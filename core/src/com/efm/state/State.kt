@@ -1,8 +1,8 @@
 package com.efm.state
 
-import com.efm.entities.exits.Exit
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
+import com.efm.exit.Exit
 import com.efm.item.*
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -23,8 +23,7 @@ fun setState(newState : State)
     
     if (prevState != newState)
     {
-        println(currState.javaClass.canonicalName)
-        println()
+        println("new state: \n ${currState.javaClass.canonicalName}")
     }
 }
 
@@ -32,6 +31,18 @@ sealed class State
 {
     var isHeroAlive = true
     var areEnemiesInRoom = false
+    
+    var tutorialFlags = TutorialFlags
+    
+    object TutorialFlags
+    {
+        var tutorialOn = true
+        //var cameraPopupShown = false
+        //var playerMovedCamera = false
+        var movementPopupShown = true
+        var playerMoved = false
+        var lootingPopupShown = false
+    }
     
     sealed class free : State()
     {
@@ -123,15 +134,15 @@ sealed class State
         {
             var chosenStackableSelfItem : StackableSelfItem? = null
         }
-    
+        
         // ActiveSkill
-    
+        
         object activeSkillChosen : free()
         {
             var chosenActiveSkill : ActiveSkill? = null
             var targetPositions : List<RoomPosition>? = null
         }
-    
+        
         object activeSkillTargetSelectedOnce : free()
         {
             var chosenActiveSkill : ActiveSkill? = null
@@ -139,7 +150,7 @@ sealed class State
             var selectedPosition = RoomPosition()
             var effectPositions : List<RoomPosition>? = null
         }
-    
+        
         object activeSkillTargetSelectedTwice : free()
         {
             var chosenActiveSkill : ActiveSkill? = null
@@ -245,15 +256,15 @@ sealed class State
         {
             var chosenStackableSelfItem : StackableSelfItem? = null
         }
-    
+        
         // ActiveSkill
-    
+        
         object activeSkillChosen : constrained()
         {
             var chosenActiveSkill : ActiveSkill? = null
             var targetPositions : List<RoomPosition>? = null
         }
-    
+        
         object activeSkillTargetSelectedOnce : constrained()
         {
             var chosenActiveSkill : ActiveSkill? = null
@@ -261,7 +272,7 @@ sealed class State
             var selectedPosition = RoomPosition()
             var effectPositions : List<RoomPosition>? = null
         }
-    
+        
         object activeSkillTargetSelectedTwice : constrained()
         {
             var chosenActiveSkill : ActiveSkill? = null
@@ -378,15 +389,15 @@ sealed class State
             {
                 var chosenStackableSelfItem : StackableSelfItem? = null
             }
-    
+            
             // ActiveSkill
-    
+            
             object activeSkillChosen : hero()
             {
                 var chosenActiveSkill : ActiveSkill? = null
                 var targetPositions : List<RoomPosition>? = null
             }
-    
+            
             object activeSkillTargetSelectedOnce : hero()
             {
                 var chosenActiveSkill : ActiveSkill? = null
@@ -394,7 +405,7 @@ sealed class State
                 var selectedPosition = RoomPosition()
                 var effectPositions : List<RoomPosition>? = null
             }
-    
+            
             object activeSkillTargetSelectedTwice : hero()
             {
                 var chosenActiveSkill : ActiveSkill? = null

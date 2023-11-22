@@ -67,7 +67,7 @@ object LeftStructure
             {
                 ItemsStructure.setWeaponDisplay()
             }
-            playSoundOnce(Sounds.blop)
+            playSoundOnce(Sounds.ui_1)
         }
         button.isVisible = isVisible
         return button

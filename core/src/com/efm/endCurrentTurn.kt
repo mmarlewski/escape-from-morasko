@@ -7,6 +7,8 @@ import com.efm.ui.gameScreen.ItemsStructure
 
 fun endCurrentTurn()
 {
+    saveGame()
+    
     val isHeroVisible = World.hero.isVisible
     val currState = getState()
     

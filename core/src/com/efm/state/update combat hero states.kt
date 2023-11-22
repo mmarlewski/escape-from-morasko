@@ -4,18 +4,21 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
-import com.efm.entities.exits.Exit
-import com.efm.entities.exits.LevelExit
+import com.efm.exit.Exit
+import com.efm.exit.LevelExit
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.level.World
+import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.*
 
 fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -124,8 +127,10 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
 
 fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -203,8 +208,10 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
 
 fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -285,8 +292,10 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
 
 fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -367,8 +376,10 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
 
 fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -453,8 +464,10 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
 
 fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedOnce) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -546,7 +559,7 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
         
         World.hero.spendAP(currState.pathSpaces.size + 1)
-        for (level in World.getLevels())
+        for (level in World.levels)
         {
             for (room in level.rooms)
             {

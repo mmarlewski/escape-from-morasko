@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.*
+import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.skills.*
 
@@ -31,15 +32,19 @@ object PopUps
     {
         val skillAssignmentPopup = skillsAssignmentOverlay(Freeze, Invisibility, Jump,
                                                            {
-                                                               //when button assigned
-                                                               playSoundOnce(Sounds.blop)
+                                                               //when skill assigned
+                                                               playSoundOnce(Sounds.ui_2)
+                                                               World.hero.addSkill(it)
                                                                setBackgroundVisibility(true)
                                                            },
                                                            {
-                                                               //when button reassigned
-                                                               playSoundOnce(Sounds.blop)
+                                                               //when skill reassigned
+                                                               playSoundOnce(Sounds.ui_2)
+                                                               World.hero.addSkill(it)
                                                                setBackgroundVisibility(true)
                                                            })
+        
+        skillAssignmentPopup.isVisible = false
         
         return skillAssignmentPopup
     }
@@ -57,7 +62,7 @@ object PopUps
                 },
                 { LeftStructure.menuButton.isVisible = true }
                                        )
-    
+        
         endTurnPopUp.isVisible = false
         
         return endTurnPopUp
@@ -77,7 +82,7 @@ object PopUps
     
     fun menuPause() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
-    
+        
         val menuPausePopUp = menuPopup(
                 "PAUSE",
                 Fonts.pixeloid30,
@@ -103,7 +108,6 @@ object PopUps
     {
         skillAssignment.isVisible = visibility
     }
-    
     
     fun setEndTurnVisibility(visibility : Boolean)
     {
