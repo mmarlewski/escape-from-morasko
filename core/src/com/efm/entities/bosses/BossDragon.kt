@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.JsonValue
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entities.enemies.EnemyBatCorpse
 import com.efm.entities.exits.ExitStyle
 import com.efm.entity.*
@@ -327,6 +328,11 @@ class BossDragon : Entity, Enemy
     
     override fun enemyAttack()
     {
+    }
+    
+    override fun onDeath()
+    {
+        addBossToDefeatedBossesList(BossDragon())
     }
     
     // for serializing

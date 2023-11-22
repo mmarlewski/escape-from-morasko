@@ -164,6 +164,7 @@ class BossSlime : Entity, Enemy
             World.currentRoom.addEntityToBeAddedEntities(slimeHalf2)
         }
         World.currentRoom.updateSpacesEntities()
+        addBossToDefeatedBossesList(BossSlime())
     }
     
     override fun getCorpse() : EnemyCorpse?

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entities.enemies.EnemyBat
 import com.efm.entity.*
 import com.efm.level.World
@@ -139,6 +140,11 @@ class BossWizard : Entity, Enemy
         
             Animating.executeAnimations(animations)
         }
+    }
+    
+    override fun onDeath()
+    {
+        addBossToDefeatedBossesList(BossWizard())
     }
     
     fun areaOfEffectAttack()

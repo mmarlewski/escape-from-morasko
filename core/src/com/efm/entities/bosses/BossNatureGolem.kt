@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.Base
@@ -186,6 +187,11 @@ class BossNatureGolem : Entity, Enemy
         {
             isFrozen = false
         }
+    }
+    
+    override fun onDeath()
+    {
+        addBossToDefeatedBossesList(BossNatureGolem())
     }
     
     private fun replaceTileWithGrass(tilePosition : RoomPosition)
