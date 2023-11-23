@@ -1,8 +1,10 @@
 package com.efm.exit
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.*
+import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 import com.efm.state.getState
@@ -27,24 +29,26 @@ class TutorialRoomExit(
         if (getState().tutorialFlags.equipmentPopupShown)
         {
             super.interact()
-            /*
-            val enemy = currentRoom.getEnemies().firstOrNull()
+            val enemy = World.currentRoom.getEnemies().firstOrNull()
             if (enemy != null)
             {
                 GameScreen.focusCameraOnRoomPosition(enemy.position)
                 val animations = mutableListOf<Animation>()
-                animations += Animation.action {
-                    Animation.moveTileSmoothlyWithCameraFocus(null, hero.position, enemy.position, 100f)
-                    Animation.wait(10f)
-                    Animation.moveTileSmoothlyWithCameraFocus(null, enemy.position, hero.position, 100f)
-                }
-                if (!Animating.isAnimating())
-                {
-                    Animating.executeAnimations(animations)
-                    Gdx.app.log("Exit", "to sie printuje")
-                }
+                animations += Animation.moveTileSmoothlyWithCameraFocus(
+                        null,
+                        World.hero.position.copy(),
+                        enemy.position.copy(),
+                        0.1f
+                                                                       )
+                animations += Animation.wait(1f)
+                animations += Animation.moveTileSmoothlyWithCameraFocus(
+                        null,
+                        enemy.position.copy(),
+                        World.hero.position.copy(),
+                        0.1f
+                                                                       )
+                Animating.executeAnimations(animations)
             }
-            */
         }
         else
         {
