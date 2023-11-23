@@ -4,6 +4,7 @@ package com.efm
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
+import com.efm.assets.*
 import com.efm.entities.*
 import com.efm.entities.bosses.*
 import com.efm.entities.bosses.slime.BossSlime
@@ -803,33 +804,12 @@ fun World.createWorldPrototypeThree()
                 ExitStyle.metal,
                 exitBBase = Base.stone
                       )
-        /*
+    
         // after going through exit focus camera on tutorial enemy
-        val exit = object : RoomExit(RoomPosition(6, 3), Direction4.left, l1r2.name, RoomPosition(0, 7), ExitStyle.metal)
-        {
-            override fun interact()
-            {
-                super.interact()
-                val enemy = currentRoom.getEnemies().firstOrNull()
-                if (enemy != null)
-                {
-                    GameScreen.focusCameraOnRoomPosition(enemy.position)
-                    val animations = mutableListOf<Animation>()
-                    animations += Animation.action {
-                        Animation.moveTileSmoothlyWithCameraFocus(null, hero.position, enemy.position, 100f)
-                        Animation.wait(10f)
-                        Animation.moveTileSmoothlyWithCameraFocus(null, enemy.position, hero.position, 100f)
-                    }
-                    if (!Animating.isAnimating())
-                    {
-                        Animating.executeAnimations(animations)
-                        Gdx.app.log("Exit", "to sie printuje")
-                    }
-                }
-            }
-        }
-        l1r1.replaceEntityAt(exit, 6, 3)
-        */
+        val tutorialExit =
+                TutorialRoomExit(RoomPosition(6, 3), Direction4.left, l1r2.name, RoomPosition(0, 7), ExitStyle.metal)
+        l1r1.replaceEntityAt(tutorialExit, 6, 3)
+    
         addRoomPassage(
                 this,
                 l1r2.name,
