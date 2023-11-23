@@ -45,6 +45,19 @@ sealed class State
         var lootingPopupShown = false
         var playerLooted = false
         var equipmentPopupShown = false
+    
+        fun setDefault()
+        {
+            tutorialOn = true
+            welcomePopupShown = false
+            cameraPopupShown = false
+            //playerMovedCamera = false
+            movementPopupShown = false
+            playerMoved = false
+            lootingPopupShown = false
+            playerLooted = false
+            equipmentPopupShown = false
+        }
     }
     
     sealed class free : State()

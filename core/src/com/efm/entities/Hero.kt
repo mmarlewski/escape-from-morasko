@@ -36,15 +36,29 @@ class Hero(
     
     val bodyPartMap = mutableMapOf<BodyPart, Skill?>().apply { BodyPart.values().forEach { this[it] = null } }
     
+    var isInvincible = false
+        set(value)
+        {
+            field = value
+            GameScreen.updateMapEntityLayer()
+        }
+    
     override fun getTile() : TiledMapTile?
     {
         return when
         {
-            !canMoveNextTurn && !isVisible -> Tiles.heroVinesInvisible
-            !canMoveNextTurn && isVisible  -> Tiles.heroVines
-            canMoveNextTurn && !isVisible  -> Tiles.heroIdle1Invisible
-            canMoveNextTurn && isVisible   -> Tiles.heroIdle1
-            else                           -> null
+            canMoveNextTurn && isVisible && !isInvincible   -> Tiles.heroIdle1
+            
+            !canMoveNextTurn && isVisible && !isInvincible  -> Tiles.heroVines
+            !canMoveNextTurn && !isVisible && !isInvincible -> Tiles.heroVinesInvisible
+            !canMoveNextTurn && isVisible && isInvincible   -> Tiles.heroVinesInvincible
+            !canMoveNextTurn && !isVisible && isInvincible  -> Tiles.heroVinesInvisibleInvincible
+            
+            canMoveNextTurn && !isVisible && !isInvincible  -> Tiles.heroIdle1Invisible
+            canMoveNextTurn && !isVisible && isInvincible   -> Tiles.heroIdle1InvisibleInvincible
+            
+            //canMoveNextTurn && isVisible && isInvincible
+            else                                            -> Tiles.heroIdle1Invincible
         }
     }
     
@@ -52,17 +66,24 @@ class Hero(
     {
         return when
         {
-            !canMoveNextTurn && !isVisible -> Tiles.heroVinesInvisible
-            !canMoveNextTurn && isVisible  -> Tiles.heroVines
-            canMoveNextTurn && !isVisible  -> Tiles.heroIdle1Invisible
-            canMoveNextTurn && isVisible   -> Tiles.heroIdle1
-            else                           -> null
+            canMoveNextTurn && isVisible && !isInvincible   -> Tiles.heroIdle1
+    
+            !canMoveNextTurn && isVisible && !isInvincible  -> Tiles.heroVines
+            !canMoveNextTurn && !isVisible && !isInvincible -> Tiles.heroVinesInvisible
+            !canMoveNextTurn && isVisible && isInvincible   -> Tiles.heroVinesInvincible
+            !canMoveNextTurn && !isVisible && isInvincible  -> Tiles.heroVinesInvisibleInvincible
+    
+            canMoveNextTurn && !isVisible && !isInvincible  -> Tiles.heroIdle1Invisible
+            canMoveNextTurn && !isVisible && isInvincible   -> Tiles.heroIdle1InvisibleInvincible
+    
+            //canMoveNextTurn && isVisible && isInvincible
+            else                                            -> Tiles.heroIdle1Invincible
         }
     }
     
     fun getMoveTile(n : Int) : TiledMapTile?
     {
-        if (isVisible)
+        if (isVisible && !isInvincible)
         {
             return when (n)
             {
@@ -73,7 +94,7 @@ class Hero(
                 else -> Tiles.heroMove1
             }
         }
-        else
+        else if (!isVisible && !isInvincible)
         {
             return when (n)
             {
@@ -82,6 +103,28 @@ class Hero(
                 3    -> Tiles.heroMove3Invisible
                 4    -> Tiles.heroMove4Invisible
                 else -> Tiles.heroMove1Invisible
+            }
+        }
+        else if (isVisible && isInvincible)
+        {
+            return when (n)
+            {
+                1    -> Tiles.heroMove1Invincible
+                2    -> Tiles.heroMove2Invincible
+                3    -> Tiles.heroMove3Invincible
+                4    -> Tiles.heroMove4Invincible
+                else -> Tiles.heroMove1Invincible
+            }
+        }
+        else
+        {
+            return when (n)
+            {
+                1    -> Tiles.heroMove1InvisibleInvincible
+                2    -> Tiles.heroMove2InvisibleInvincible
+                3    -> Tiles.heroMove3InvisibleInvincible
+                4    -> Tiles.heroMove4InvisibleInvincible
+                else -> Tiles.heroMove1InvisibleInvincible
             }
         }
     }
@@ -98,9 +141,12 @@ class Hero(
     
     override fun damageCharacter(dmgAmount : Int)
     {
-        super.damageCharacter(dmgAmount)
-        ProgressBars.healthBar.value = this.healthPoints.toFloat()
-        ProgressBars.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
+        if (!isInvincible)
+        {
+            super.damageCharacter(dmgAmount)
+            ProgressBars.healthBar.value = this.healthPoints.toFloat()
+            ProgressBars.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
+        }
     }
     
     override fun healCharacter(healAmount : Int)

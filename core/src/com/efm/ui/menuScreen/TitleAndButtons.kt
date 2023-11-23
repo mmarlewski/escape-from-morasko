@@ -172,6 +172,7 @@ object TitleAndButtons
             World.hero.addSkill(Freeze)
             //World.hero.addSkill(GrassHealing)
             World.hero.addSkill(Jump)
+            World.hero.addSkill(Shield)
             // set State
             val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
             val initState = when (areEnemiesInRoom)
@@ -180,6 +181,7 @@ object TitleAndButtons
                 false -> State.free.noSelection
             }
             initState.areEnemiesInRoom = areEnemiesInRoom
+            initState.tutorialFlags.setDefault()
             setState(initState)
             // set new enemy health stacks
             for (level in World.levels)
