@@ -37,11 +37,14 @@ sealed class State
     object TutorialFlags
     {
         var tutorialOn = true
-        //var cameraPopupShown = false
+        var welcomePopupShown = false
+        var cameraPopupShown = false
         //var playerMovedCamera = false
-        var movementPopupShown = true
+        var movementPopupShown = false
         var playerMoved = false
         var lootingPopupShown = false
+        var playerLooted = false
+        var equipmentPopupShown = false
     }
     
     sealed class free : State()

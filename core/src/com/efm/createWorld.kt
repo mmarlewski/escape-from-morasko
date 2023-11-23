@@ -870,7 +870,7 @@ fun World.createWorldPrototypeThree()
         (l1r5.getSpace(0, 7)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         // starting position
         //
-        changeStartingRoom(l1r5)
+        changeStartingRoom(l1r1)
         changeStartingPosition(1, 3)
         // level exit
         l1r5.replaceEntityAt(

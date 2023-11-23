@@ -1,14 +1,14 @@
 package com.efm.state
 
-import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
-import com.efm.assets.*
+import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.exit.Exit
 import com.efm.exit.LevelExit
+import com.efm.item.Container
 import com.efm.level.World
 import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
@@ -16,6 +16,22 @@ import com.efm.ui.gameScreen.*
 
 fun updateFreeNoSelection(currState : State.free.noSelection) : State
 {
+    if (currState.tutorialFlags.tutorialOn && !currState.tutorialFlags.welcomePopupShown)
+    {
+        TutorialPopups.addPopupToDisplay(TutorialPopups.welcomePopup)
+        currState.tutorialFlags.welcomePopupShown = true
+    }
+    if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.welcomePopupShown && !currState.tutorialFlags.cameraPopupShown)
+    {
+        TutorialPopups.addPopupToDisplay(TutorialPopups.cameraPopup)
+        currState.tutorialFlags.cameraPopupShown = true
+    }
+    if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.cameraPopupShown && !currState.tutorialFlags.movementPopupShown)
+    {
+        TutorialPopups.addPopupToDisplay(TutorialPopups.movementPopup)
+        currState.tutorialFlags.movementPopupShown = true
+    }
+    
     if (!World.hero.alive)
     {
         changeScreen(GameOverScreen)
@@ -84,7 +100,6 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
             }
         }
     }
-    
     return currState
 }
 
@@ -406,8 +421,15 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
     {
         // interact with Interactive Entity if it was selected in FreeMoveSelectedOnce
         val entityOnPositionHeroWalkedTowards = currState.entityOnPosition
-        if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
-        
+        if (entityOnPositionHeroWalkedTowards is Interactive)
+        {
+            entityOnPositionHeroWalkedTowards.interact()
+            if (entityOnPositionHeroWalkedTowards is Container)
+            {
+                currState.tutorialFlags.playerLooted = true
+            }
+        }
+    
         GameScreen.roomTouchPosition.set(World.hero.position)
         Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
         for (level in World.levels)
@@ -450,10 +472,17 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         val lootingPopupShown =
                 if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.movementPopupShown && currState.tutorialFlags.playerMoved && !currState.tutorialFlags.lootingPopupShown)
                 {
-                    showLootingPopup()
+                    TutorialPopups.addPopupToDisplay(TutorialPopups.lootingPopup)
                     true
                 }
                 else currState.tutorialFlags.lootingPopupShown
+        val equipmentPopupShown =
+                if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.lootingPopupShown && currState.tutorialFlags.playerLooted && !currState.tutorialFlags.equipmentPopupShown)
+                {
+                    TutorialPopups.addPopupToDisplay(TutorialPopups.equipmentPopup)
+                    true
+                }
+                else currState.tutorialFlags.equipmentPopupShown
     
         return when (areEnemiesInRoom)
         {
@@ -463,26 +492,18 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
                 this.isHeroDetected = false
                 this.areAnyActionPointsLeft = true
                 this.tutorialFlags.lootingPopupShown = lootingPopupShown
+                this.tutorialFlags.equipmentPopupShown = equipmentPopupShown
             }
             false -> State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = areEnemiesInRoom
                 this.tutorialFlags.lootingPopupShown = lootingPopupShown
+                this.tutorialFlags.equipmentPopupShown = equipmentPopupShown
             }
         }
     }
     
     return currState
-}
-
-fun showLootingPopup()
-{
-    val popUp = windowAreaOf("Looting popup", Fonts.pixeloid20, Colors.black, Textures.pauseBackgroundNinePatch, {}, {})
-    popUp.isVisible = false
-    popUp.isVisible = true
-    val nextLevelPopupWindow = columnOf(rowOf(popUp)).align(Align.center)
-    nextLevelPopupWindow.setFillParent(true)
-    GameScreen.stage.addActor(nextLevelPopupWindow)
 }
 
 fun updateFreeMoveSelectedTwiceToLevelExitWaiting(currState : State.free.moveSelectedTwiceToLevelExit.waiting) : State
