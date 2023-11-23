@@ -140,6 +140,7 @@ class Knight: Entity, Enemy
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
         var possibleMovePositions = mutableListOf<RoomPosition>()
+        possibleMovePositions.add(position)
         //add -2x positions
         possibleMovePositions.add(RoomPosition(position.x - 2, position.y + 1))
         possibleMovePositions.add(RoomPosition(position.x - 2, position.y - 1))

@@ -145,6 +145,7 @@ class Rook: Entity, Enemy
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
         val result = mutableListOf<RoomPosition>()
+        result.add(position)
         for (posX in position.x - 1 downTo 1)
         {
             var space = World.currentRoom.getSpace(RoomPosition(posX, position.y))
