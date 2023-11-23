@@ -6,13 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
-import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.level.World
+import com.efm.playSoundOnce
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen

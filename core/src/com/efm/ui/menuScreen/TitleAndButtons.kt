@@ -16,7 +16,6 @@ import com.efm.stackableSelfItems.*
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
-import com.efm.ui.menuScreen.PopUpsMenu
 
 object TitleAndButtons
 {
@@ -137,9 +136,9 @@ object TitleAndButtons
             // clear World levels
             World.levels.clear()
             // create World
-            World.createWorldPrototypeTwo()
-//            World.createWorldBoarTest()
-//            World.createWorldPrototypeThree()
+            //World.createWorldPrototypeTwo()
+            //World.createWorldBoarTest()
+            World.createWorldPrototypeThree()
             // set currentLevel and currentRoom
             val startingLevel = World.levels.first()
             World.changeCurrentLevel(startingLevel)

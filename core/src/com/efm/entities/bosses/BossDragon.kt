@@ -9,8 +9,6 @@ import com.badlogic.gdx.utils.JsonValue
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entities.bosses.slime.BossSlime
-import com.efm.entities.enemies.EnemyBatCorpse
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.Base

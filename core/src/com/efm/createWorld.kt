@@ -4,8 +4,6 @@ package com.efm
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.JsonValue
 import com.efm.entities.*
 import com.efm.entities.bosses.*
 import com.efm.entities.bosses.slime.BossSlime
@@ -731,7 +729,7 @@ fun World.createWorldPrototypeThree()
             val chest = Chest()
             chest.addItem(WoodenSword())
             chest.addItem(Fish(2))
-            addEntityAt(chest, 4, 5)
+            addEntityAt(chest, 4, 3)
         }
         // add room to level
         addRoom(l1r1)
@@ -787,7 +785,8 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.brickRedDarkTall)
             // entities
-            addEntityAt(BossSlime(), 6, 6)
+            val bossPosition = RoomPosition(6, 6)
+            spawnRandomUndefeatedBoss(this, bossPosition)
         }
         // add room to level
         addRoom(l1r5)
@@ -871,8 +870,8 @@ fun World.createWorldPrototypeThree()
         (l1r5.getSpace(0, 7)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         // starting position
         //
-        changeStartingRoom(l1r1)
-        changeStartingPosition(2, 3)
+        changeStartingRoom(l1r5)
+        changeStartingPosition(1, 3)
         // level exit
         l1r5.replaceEntityAt(
                 LevelExit(
@@ -998,7 +997,7 @@ fun pom()
             "11 11\n" + "x x x x x x x x x x x\n" + "x x x x x x 10 11 10 12 7\n" + "x x x x x x 11 8 10 10 11\n" + "x x x x x x 10 11 7 7 10\n" + "x x x x x x 11 8 12 8 8\n" + "x x x x x x 10 8 7 8 7\n" + "x x x x x x 8 7 11 7 7\n" + "x 10 10 7 8 10 12 9 9 9 9\n" + "x 11 8 7 10 9 9 9 5 5 5\n" + "x 10 8 11 9 9 5 5 5 5 5\n" + "x 7 8 9 9 5 5 5 5 5 5"
     Gdx.files.local("l1r4.txt").writeString(l1r4, false)
     val l1r5 =
-            "11 14\n" + "x x x x x x x x x x x x x x\n" + "x 2 2 2 4 4 4 4 4 2 2 2 2 2\n" + "x 2 2 2 2 4 4 4 2 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" + "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" + "x 2 2 4 4 2 2 2 2 4 4 4 2 2\n" + "x 2 2 4 4 4 4 4 4 4 4 4 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x x x x x x x x x x x x x x\n"
+            "11 14\n" + "x x x x x x x x x x x x x x\n" + "x 2 2 2 4 4 4 4 4 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 4 4 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" + "x 2 2 2 2 2 2 2 2 2 4 4 2 2\n" + "x 2 2 4 4 2 2 2 2 4 4 4 2 2\n" + "x 2 2 4 4 2 2 4 4 4 4 4 2 2\n" + "x 2 2 2 2 2 2 2 2 2 2 2 2 2\n" + "x x x x x x x x x x x x x x\n"
     Gdx.files.local("l1r5.txt").writeString(l1r5, false)
 }
 
