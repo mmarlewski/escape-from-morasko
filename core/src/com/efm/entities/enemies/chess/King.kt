@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.Character
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
@@ -135,6 +136,11 @@ class King : Entity, Enemy
             }
         }
         Animating.executeAnimations(animations)
+    }
+    
+    override fun onDeath()
+    {
+        addBossToDefeatedBossesList(King())
     }
     
     fun getPossibleAttackPositions() : List<RoomPosition>
