@@ -146,6 +146,7 @@ class Queen: Entity, Enemy
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
         val result = mutableListOf<RoomPosition>()
+        result.add(position)
         var upLeftFound = false
         var upRightFound = false
         var downLeftFound = false

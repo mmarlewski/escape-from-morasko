@@ -176,7 +176,9 @@ class Pawn: Entity, Enemy
     
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
-        return mutableListOf(position.positionOffsetBy(1, direction))
+        var result = mutableListOf(position.positionOffsetBy(1, direction))
+        result.add(position)
+        return result
     }
     
     fun setChessPieceDirection(direction4 : Direction4)
