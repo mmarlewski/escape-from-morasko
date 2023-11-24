@@ -38,7 +38,7 @@ class TutorialRoomExit(
                         enemy.position.copy(),
                         0.1f
                                                                        )
-                animations += Animation.wait(1f)
+                animations += Animation.wait(0.5f)
                 animations += Animation.moveTileSmoothlyWithCameraFocus(
                         null,
                         enemy.position.copy(),
