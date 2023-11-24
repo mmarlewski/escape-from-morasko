@@ -16,6 +16,7 @@ object TutorialPopups
     var healthAndAbilityPopup : Window
     var turnsPopup : Window
     var combatPopup : Window
+    var cantLeavePopup : Window
     
     fun welcomePopup() : Window
     {
@@ -66,7 +67,7 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             movementPopup.isVisible = false
-            RightStructure.xButton.isVisible = true
+            RightStructure.moveButton.isVisible = true
             lootingPopup.isVisible = true
         }
         movementPopup.isVisible = false
@@ -162,6 +163,24 @@ object TutorialPopups
         return combatPopup
     }
     
+    fun cantLeavePopup() : Window
+    {
+        val cantLeavePopup = tutorialPopup(
+                "Sorry, can't let you leave just yet",
+                "Try looting first!",
+                                          )
+        {
+            Sounds.ui_2.playOnce()
+            LeftStructure.menuButton.isVisible = true
+            RightStructure.moveButton.isVisible = true
+            cantLeavePopup.isVisible = false
+            
+        }
+        cantLeavePopup.isVisible = false
+        
+        return cantLeavePopup
+    }
+    
     init
     {
         welcomePopup = welcomePopup()
@@ -172,6 +191,7 @@ object TutorialPopups
         healthAndAbilityPopup = healthAndAbilityPopup()
         turnsPopup = turnsPopup()
         combatPopup = combatPopup()
+        cantLeavePopup = cantLeavePopup()
     }
     
     fun addPopupToDisplay(popup : Window)
@@ -191,6 +211,7 @@ object TutorialPopups
         addPopupToDisplay(healthAndAbilityPopup)
         addPopupToDisplay(turnsPopup)
         addPopupToDisplay(combatPopup)
+        addPopupToDisplay(cantLeavePopup)
     }
     
 }
