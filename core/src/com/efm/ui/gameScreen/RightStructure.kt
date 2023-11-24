@@ -1,17 +1,18 @@
 package com.efm.ui.gameScreen
 
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
-import com.efm.assets.*
+import com.efm.assets.Sounds
+import com.efm.assets.Textures
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
 
 object RightStructure
 {
-    lateinit var xButton : TextButton
+    lateinit var xButton : ImageButton
     
     fun setVisibility(boolean : Boolean)
     {
@@ -19,18 +20,16 @@ object RightStructure
         endTurnButton.isVisible = boolean
     }
     
-    fun createXButton() : TextButton
+    fun createXButton() : ImageButton
     {
-        xButton = textButtonOf(
-                "X",
-                Fonts.pixeloid20,
-                Colors.black,
+        xButton = imageButtonOf(
+                Textures.move,
                 Textures.upNinePatch,
                 Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                              )
+                               )
         {
             playSoundOnce(Sounds.ui_3)
             
