@@ -37,7 +37,8 @@ interface Enemy : Character
         if (isFrozen)
         {
             return getFreezeTile()
-        } else
+        }
+        else
         {
             return getIdleTile(IdleAnimation.idleAnimationCount)
         }
@@ -60,25 +61,25 @@ interface Enemy : Character
         if (!isFrozen)
         {
             var decision = -1
-    
+            
             val directPathSpaces =
                     PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
-    
+            
             var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
             var minPathSpaces = directPathSpaces
-    
+            
             if (minPathSpaces == null)
             {
                 val squarePositions = getSquareAreaPositions(World.hero.position, 2)
                 for (squarePosition in squarePositions)
                 {
                     val squareSpace = World.currentRoom.getSpace(squarePosition)
-            
+                    
                     if (squareSpace != null && squareSpace.isTraversableFor(this))
                     {
                         val pathSpaces =
                                 PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom, this)
-                
+                        
                         if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
                         {
                             minPathLength = pathSpaces.size
@@ -87,7 +88,7 @@ interface Enemy : Character
                     }
                 }
             }
-    
+            
             for (pos in getSquareAreaPositions(position, attackRange))
             {
                 if (pos == World.hero.position)
@@ -102,14 +103,14 @@ interface Enemy : Character
                     decision = 1
                 }
             }
-    
+            
             when (decision)
             {
                 0 ->
                 {
                     enemyAttack()
                 }
-        
+                
                 1 ->
                 {
                     moveTowardsHero(minPathSpaces)
@@ -155,7 +156,12 @@ interface Enemy : Character
     
     fun createOwnHealthBar()
     {
-        healthBar = ProgressBars.createBar(5f, Textures.knobEnemyHealthBarNinePatch, this.healthPoints, this.maxHealthPoints)
+        healthBar = ProgressBars.createBar(
+                5f,
+                Textures.knobEnemyHealthBarNinePatch,
+                this.healthPoints,
+                this.maxHealthPoints
+                                          )
 //        GameScreen.gameStage.addActor(healthBar)
         val healthLabel = ProgressBars.createLabel(this.healthPoints, this.maxHealthPoints)
         healthLabel.isVisible = true
@@ -203,7 +209,8 @@ interface Enemy : Character
         {
             val moveTo = randomWalk()
             val path = PathFinding.findPathInRoomForEntity(position, moveTo, World.currentRoom, this)
-            if (path != null) {
+            if (path != null)
+            {
                 moveEnemy(position, moveTo, path, this)
             }
         }
@@ -214,7 +221,8 @@ interface Enemy : Character
         var possibleSteps = mutableListOf<RoomPosition>()
         var pos = RoomPosition(position.x - 1, position.y - 1)
         var space = World.currentRoom.getSpace(pos)
-        if (space != null) {
+        if (space != null)
+        {
             if (space.isTraversableFor(this) && space.getEntity() == null)
             {
                 possibleSteps.add(pos)
@@ -222,7 +230,8 @@ interface Enemy : Character
         }
         pos = RoomPosition(position.x - 1, position.y + 1)
         space = World.currentRoom.getSpace(pos)
-        if (space != null) {
+        if (space != null)
+        {
             if (space.isTraversableFor(this) && space.getEntity() == null)
             {
                 possibleSteps.add(pos)
@@ -230,7 +239,8 @@ interface Enemy : Character
         }
         pos = RoomPosition(position.x + 1, position.y - 1)
         space = World.currentRoom.getSpace(pos)
-        if (space != null) {
+        if (space != null)
+        {
             if (space.isTraversableFor(this) && space.getEntity() == null)
             {
                 possibleSteps.add(pos)
@@ -238,7 +248,8 @@ interface Enemy : Character
         }
         pos = RoomPosition(position.x + 1, position.y + 1)
         space = World.currentRoom.getSpace(pos)
-        if (space != null) {
+        if (space != null)
+        {
             if (space.isTraversableFor(this) && space.getEntity() == null)
             {
                 possibleSteps.add(pos)
