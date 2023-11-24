@@ -36,6 +36,7 @@ object GameOverScreen : BaseScreen()
                 Textures.focusedNinePatch
                                          )
         {
+            Sounds.ui_1.playOnce()
             changeScreen(MenuScreen)
         }
         
