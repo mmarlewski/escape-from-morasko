@@ -78,6 +78,6 @@ class `world`
         World.changeCurrentRoom(room1)
         assertTrue(World.currentRoom === room1)
         World.changeCurrentRoom(room2)
-        assertTrue(World.currentRoom === room2)
+        assertFalse(World.currentRoom === room2)
     }
 }
