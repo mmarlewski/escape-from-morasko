@@ -14,6 +14,8 @@ import com.efm.room.Space
 import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.*
+import kotlin.math.max
+import kotlin.math.min
 
 fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : State
 {
@@ -471,8 +473,11 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
                         World.currentRoom,
                         World.hero
                                                                     )
-                if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
+                if (pathSpaces != null && World.hero.abilityPoints > 0)
                 {
+                    val canReach = (pathSpaces.size + 1 <= World.hero.abilityPoints)
+                    val possiblePathSpaces = pathSpaces.take(World.hero.abilityPoints)
+                    
                     val detectionPathPositions = mutableListOf<RoomPosition>()
                     ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - (pathSpaces.size + 1)
                     for (enemy in World.currentRoom.getEnemies())
@@ -493,34 +498,58 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
                     Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                     for (space in pathSpaces)
                     {
-                        Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
+                        Map.changeTile(MapLayer.select, space.position, Tiles.selectRed)
                     }
                     for (position in detectionPathPositions)
                     {
                         Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
                     }
+                    for (space in possiblePathSpaces)
+                    {
+                        Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
+                    }
                     Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
-                    if (selectedEntity is Interactive)
-                    {
-                        Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
-                    }
                     
-                    val isMoveToAnotherRoom = (selectedEntity is Exit)
-                    val isMoveToAnotherLevel = when (selectedEntity)
+                    if (canReach)
                     {
-                        is Exit -> selectedEntity is LevelExit
-                        else    -> false
+                        if (selectedEntity is Interactive)
+                        {
+                            Map.changeTile(
+                                    MapLayer.outline,
+                                    GameScreen.roomTouchPosition,
+                                    selectedEntity.getOutlineTealTile()
+                                          )
+                        }
+                        val isMoveToAnotherRoom = (selectedEntity is Exit)
+                        val isMoveToAnotherLevel = when (selectedEntity)
+                        {
+                            is Exit -> selectedEntity is LevelExit
+                            else    -> false
+                        }
+                        
+                        return State.constrained.moveSelectedOnce.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.isHeroDetected = currState.isHeroDetected
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                            this.selectedPosition.set(selectedPosition)
+                            this.pathSpaces = pathSpaces
+                            this.isMoveToAnotherRoom = isMoveToAnotherRoom
+                            this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                        }
                     }
-                    
-                    return State.constrained.moveSelectedOnce.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.isHeroDetected = currState.isHeroDetected
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.selectedPosition.set(selectedPosition)
-                        this.pathSpaces = pathSpaces
-                        this.isMoveToAnotherRoom = isMoveToAnotherRoom
-                        this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                    else
+                    {
+                        return State.constrained.moveSelectedOnce.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.isHeroDetected = currState.isHeroDetected
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                            this.selectedPosition.set(selectedPosition)
+                            this.pathSpaces = possiblePathSpaces
+                            this.isMoveToAnotherRoom = false
+                            this.isMoveToAnotherLevel = false
+                        }
                     }
                 }
             }
@@ -565,7 +594,11 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
         if (selectedPosition == currState.selectedPosition)
         {
             Map.clearLayer(MapLayer.select)
-            moveHero(World.hero.position, currState.selectedPosition, currState.pathSpaces)
+            
+            val canReach = (currState.pathSpaces.size + 1 <= World.hero.abilityPoints)
+            val movePosition = if (canReach) selectedPosition else currState.pathSpaces.last().position
+            
+            moveHero(World.hero.position, movePosition, currState.pathSpaces)
             for (enemy in World.currentRoom.getEnemies())
             {
                 enemy.healthStack.isVisible = false
@@ -598,7 +631,7 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
                 this.isHeroDetected = currState.isHeroDetected
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                this.entityOnPosition = selectedEntity
+                this.entityOnPosition = if (canReach) selectedEntity else null
                 this.pathSpaces = currState.pathSpaces
                 this.isHeroMovingThroughDetectionPosition = isHeroMovingThroughDetectionPosition
                 this.isMoveToAnotherRoom = currState.isMoveToAnotherRoom
@@ -607,10 +640,17 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
         }
         else if (selectedPosition != World.hero.position)
         {
-            val pathSpaces =
-                    PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom, World.hero)
-            if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(
+                    World.hero.position,
+                    selectedPosition,
+                    World.currentRoom,
+                    World.hero
+                                                                )
+            if (pathSpaces != null && World.hero.abilityPoints > 0)
             {
+                val canReach = (pathSpaces.size + 1 <= World.hero.abilityPoints)
+                val possiblePathSpaces = pathSpaces.take(World.hero.abilityPoints)
+                
                 val detectionPathPositions = mutableListOf<RoomPosition>()
                 ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - (pathSpaces.size + 1)
                 for (enemy in World.currentRoom.getEnemies())
@@ -631,34 +671,54 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                 for (space in pathSpaces)
                 {
-                    Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
+                    Map.changeTile(MapLayer.select, space.position, Tiles.selectRed)
                 }
                 for (position in detectionPathPositions)
                 {
                     Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
                 }
+                for (space in possiblePathSpaces)
+                {
+                    Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
+                }
                 Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
-                if (selectedEntity is Interactive)
-                {
-                    Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
-                }
                 
-                val isMoveToAnotherRoom = (selectedEntity is Exit)
-                val isMoveToAnotherLevel = when (selectedEntity)
+                if (canReach)
                 {
-                    is Exit -> selectedEntity is LevelExit
-                    else    -> false
+                    if (selectedEntity is Interactive)
+                    {
+                        Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
+                    }
+                    val isMoveToAnotherRoom = (selectedEntity is Exit)
+                    val isMoveToAnotherLevel = when (selectedEntity)
+                    {
+                        is Exit -> selectedEntity is LevelExit
+                        else    -> false
+                    }
+                    
+                    return State.constrained.moveSelectedOnce.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.isHeroDetected = currState.isHeroDetected
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.selectedPosition.set(selectedPosition)
+                        this.pathSpaces = pathSpaces
+                        this.isMoveToAnotherRoom = isMoveToAnotherRoom
+                        this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                    }
                 }
-                
-                return State.constrained.moveSelectedOnce.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.isHeroDetected = currState.isHeroDetected
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.selectedPosition.set(selectedPosition)
-                    this.pathSpaces = pathSpaces
-                    this.isMoveToAnotherRoom = isMoveToAnotherRoom
-                    this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                else
+                {
+                    return State.constrained.moveSelectedOnce.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.isHeroDetected = currState.isHeroDetected
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.selectedPosition.set(selectedPosition)
+                        this.pathSpaces = possiblePathSpaces
+                        this.isMoveToAnotherRoom = false
+                        this.isMoveToAnotherLevel = false
+                    }
                 }
             }
         }

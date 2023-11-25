@@ -436,36 +436,62 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
                         World.currentRoom,
                         World.hero
                                                                     )
-                if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
+                if (pathSpaces != null && World.hero.abilityPoints > 0)
                 {
+                    val canReach = (pathSpaces.size + 1 <= World.hero.abilityPoints)
+                    val possiblePathSpaces = pathSpaces.take(World.hero.abilityPoints)
+                    
                     Map.clearLayer(MapLayer.select)
                     Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                     ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - (pathSpaces.size + 1)
                     for (space in pathSpaces)
                     {
+                        Map.changeTile(MapLayer.select, space.position, Tiles.selectRed)
+                    }
+                    for (space in possiblePathSpaces)
+                    {
                         Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
                     }
                     Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
-                    if (selectedEntity is Interactive)
-                    {
-                        Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
-                    }
                     
-                    val isMoveToAnotherRoom = (selectedEntity is Exit)
-                    val isMoveToAnotherLevel = when (selectedEntity)
+                    if (canReach)
                     {
-                        is Exit -> selectedEntity is LevelExit
-                        else    -> false
+                        if (selectedEntity is Interactive)
+                        {
+                            Map.changeTile(
+                                    MapLayer.outline,
+                                    GameScreen.roomTouchPosition,
+                                    selectedEntity.getOutlineTealTile()
+                                          )
+                        }
+                        val isMoveToAnotherRoom = (selectedEntity is Exit)
+                        val isMoveToAnotherLevel = when (selectedEntity)
+                        {
+                            is Exit -> selectedEntity is LevelExit
+                            else    -> false
+                        }
+                        
+                        return State.combat.hero.moveSelectedOnce.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                            this.selectedPosition.set(selectedPosition)
+                            this.pathSpaces = pathSpaces
+                            this.isMoveToAnotherRoom = isMoveToAnotherRoom
+                            this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                        }
                     }
-                    
-                    return State.combat.hero.moveSelectedOnce.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.selectedPosition.set(selectedPosition)
-                        this.pathSpaces = pathSpaces
-                        this.isMoveToAnotherRoom = isMoveToAnotherRoom
-                        this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                    else
+                    {
+                        return State.combat.hero.moveSelectedOnce.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                            this.selectedPosition.set(selectedPosition)
+                            this.pathSpaces = possiblePathSpaces
+                            this.isMoveToAnotherRoom = false
+                            this.isMoveToAnotherLevel = false
+                        }
                     }
                 }
             }
@@ -509,13 +535,17 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         if (selectedPosition == currState.selectedPosition)
         {
             Map.clearLayer(MapLayer.select)
-            moveHero(World.hero.position, currState.selectedPosition, currState.pathSpaces)
+            
+            val canReach = (currState.pathSpaces.size + 1 <= World.hero.abilityPoints)
+            val movePosition = if (canReach) selectedPosition else currState.pathSpaces.last().position
+            
+            moveHero(World.hero.position, movePosition, currState.pathSpaces)
             
             return State.combat.hero.moveSelectedTwice.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                this.entityOnPosition = selectedEntity
+                this.entityOnPosition = if (canReach) selectedEntity else null
                 this.pathSpaces = currState.pathSpaces
                 this.isMoveToAnotherRoom = currState.isMoveToAnotherRoom
                 this.isMoveToAnotherLevel = currState.isMoveToAnotherLevel
@@ -523,38 +553,64 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         }
         else if (selectedPosition != World.hero.position)
         {
-            val pathSpaces =
-                    PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom, World.hero)
-            if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(
+                    World.hero.position,
+                    selectedPosition,
+                    World.currentRoom,
+                    World.hero
+                                                                )
+            if (pathSpaces != null && World.hero.abilityPoints > 0)
             {
+                val canReach = (pathSpaces.size + 1 <= World.hero.abilityPoints)
+                val possiblePathSpaces = pathSpaces.take(World.hero.abilityPoints)
+                
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                 ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - (pathSpaces.size + 1)
                 for (space in pathSpaces)
                 {
+                    Map.changeTile(MapLayer.select, space.position, Tiles.selectRed)
+                }
+                for (space in possiblePathSpaces)
+                {
                     Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
                 }
                 Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
-                if (selectedEntity is Interactive)
-                {
-                    Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
-                }
                 
-                val isMoveToAnotherRoom = (selectedEntity is Exit)
-                val isMoveToAnotherLevel = when (selectedEntity)
+                if (canReach)
                 {
-                    is Exit -> selectedEntity is LevelExit
-                    else    -> false
+                    if (selectedEntity is Interactive)
+                    {
+                        Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
+                    }
+                    val isMoveToAnotherRoom = (selectedEntity is Exit)
+                    val isMoveToAnotherLevel = when (selectedEntity)
+                    {
+                        is Exit -> selectedEntity is LevelExit
+                        else    -> false
+                    }
+                    
+                    return State.combat.hero.moveSelectedOnce.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.selectedPosition.set(selectedPosition)
+                        this.pathSpaces = pathSpaces
+                        this.isMoveToAnotherRoom = isMoveToAnotherRoom
+                        this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                    }
                 }
-                
-                return State.combat.hero.moveSelectedOnce.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.selectedPosition.set(selectedPosition)
-                    this.pathSpaces = pathSpaces
-                    this.isMoveToAnotherRoom = isMoveToAnotherRoom
-                    this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                else
+                {
+                    return State.combat.hero.moveSelectedOnce.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.selectedPosition.set(selectedPosition)
+                        this.pathSpaces = possiblePathSpaces
+                        this.isMoveToAnotherRoom = false
+                        this.isMoveToAnotherLevel = false
+                    }
                 }
             }
         }
