@@ -16,7 +16,7 @@ class Bomb(
     override val name : String = "Bomb"
     override val maxAmount : Int = 4
     override val baseAPUseCost : Int = 1
-    val damage : Int = 10
+    val damage : Int = 11
     
     override fun getTexture() : Texture
     {

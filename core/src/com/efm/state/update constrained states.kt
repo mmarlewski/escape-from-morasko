@@ -881,6 +881,28 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
     {
         World.hero.spendAP(currState.chosenMultiUseItem?.baseAPUseCost ?: 0)
         
+        World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
+        World.currentRoom.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
+        
+        currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
+        
+        if (!currState.areEnemiesInRoom)
+        {
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false
+            
+            World.hero.removeCoolDownFromAllActiveSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+            
+            return State.free.noSelection.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+        
         val item = currState.chosenMultiUseItem
         item?.lowerDurability()
         if (item != null && item.durability < 1)
@@ -896,16 +918,9 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
-        World.currentRoom.removeKilledCharacters()
-        World.currentRoom.addToBeAddedEntitiesToRoom()
-        World.currentRoom.updateSpacesEntities()
-        GameScreen.updateMapEntityLayer()
-        
-        val areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
-        
         var wasEnemyAttacked = false
         
-        if (areEnemiesInRoom)
+        if (currState.areEnemiesInRoom)
         {
             enemyFor@ for (enemy in World.currentRoom.getEnemies())
             {
@@ -1106,6 +1121,28 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
     {
         World.hero.spendAP(currState.chosenStackableMapItem?.baseAPUseCost ?: 0)
         
+        World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
+        World.currentRoom.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
+        
+        currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
+        
+        if (!currState.areEnemiesInRoom)
+        {
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false
+            
+            World.hero.removeCoolDownFromAllActiveSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+            
+            return State.free.noSelection.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+        
         val item = currState.chosenStackableMapItem
         item?.lowerAmountByOne()
         if (item != null && item.amount < 1)
@@ -1121,16 +1158,9 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
-        World.currentRoom.removeKilledCharacters()
-        World.currentRoom.addToBeAddedEntitiesToRoom()
-        World.currentRoom.updateSpacesEntities()
-        GameScreen.updateMapEntityLayer()
-        
-        val areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
-        
         var wasEnemyAttacked = false
         
-        if (areEnemiesInRoom)
+        if (currState.areEnemiesInRoom)
         {
             enemyFor@ for (enemy in World.currentRoom.getEnemies())
             {
@@ -1337,6 +1367,11 @@ fun updateConstrainedActiveSkillTargetSelectedTwice(currState : State.constraine
     {
         World.hero.spendAP(currState.chosenActiveSkill?.apCost ?: 0)
         
+        World.currentRoom.removeKilledCharacters()
+        World.currentRoom.addToBeAddedEntitiesToRoom()
+        World.currentRoom.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
+        
         val activeSkill = currState.chosenActiveSkill
         if (activeSkill != null)
         {
@@ -1344,11 +1379,6 @@ fun updateConstrainedActiveSkillTargetSelectedTwice(currState : State.constraine
             activeSkill.currCoolDown = activeSkill.coolDown
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
-        World.currentRoom.removeKilledCharacters()
-        World.currentRoom.addToBeAddedEntitiesToRoom()
-        World.currentRoom.updateSpacesEntities()
-        GameScreen.updateMapEntityLayer()
         
         val areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
         

@@ -8,7 +8,7 @@
 	value: 1
 }
 {
-	class: com.efm.state.State$combat$hero$heroSelected
+	class: com.efm.state.State$constrained$heroSelected
 	areEnemiesInRoom: true
 	areAnyActionPointsLeft: true
 }
@@ -18,19 +18,19 @@
 }
 {
 	class: java.lang.String
-	value: 5
+	value: 2
 }
 {
 	class: com.efm.entities.Hero
 	position: {
 		x: 3
-		y: 6
+		y: 4
 	}
 	maxHealthPoints: 100
-	healthPoints: 90
+	healthPoints: 100
 	alive: true
 	maxAbilityPoints: 14
-	abilityPoints: 12
+	abilityPoints: 9
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
@@ -41,7 +41,6 @@
 			}
 			{
 				class: com.efm.multiUseMapItems.Sledgehammer
-				durability: 4
 			}
 			{
 				class: com.efm.multiUseMapItems.SmallAxe
@@ -2024,6 +2023,79 @@
 						}
 						endDirection: right
 					}
+					{
+						class: com.efm.entities.Hero
+						position: {
+							x: 3
+							y: 4
+						}
+						maxHealthPoints: 100
+						healthPoints: 100
+						alive: true
+						maxAbilityPoints: 14
+						abilityPoints: 9
+						apDrainInNextTurn: 0
+						canMoveNextTurn: true
+						isVisible: true
+						inventory: {
+							items: [
+								{
+									class: com.efm.multiUseMapItems.Bow
+								}
+								{
+									class: com.efm.multiUseMapItems.Sledgehammer
+								}
+								{
+									class: com.efm.multiUseMapItems.SmallAxe
+								}
+								{
+									class: com.efm.multiUseMapItems.Staff
+								}
+								{
+									class: com.efm.stackableMapItems.Bomb
+								}
+								{
+									class: com.efm.stackableMapItems.Explosive
+									amount: 3
+								}
+								{
+									class: com.efm.stackableSelfItems.Apple
+								}
+								{
+									class: com.efm.stackableSelfItems.Fish
+								}
+								{
+									class: com.efm.stackableSelfItems.Mushroom
+								}
+							]
+						}
+						skillNames: [
+							{
+								class: java.lang.String
+								value: Freeze
+							}
+							{
+								class: java.lang.String
+								value: Invisibility
+							}
+							{
+								class: java.lang.String
+								value: Push
+							}
+							{
+								class: java.lang.String
+								value: Shield
+							}
+							{
+								class: java.lang.String
+								value: Jump
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+						]
+					}
 				]
 			}
 			{
@@ -2544,11 +2616,11 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 2
+								amount: 4
 							}
 							{
 								class: com.efm.stackableSelfItems.PotionSmall
-								amount: 3
+								amount: 2
 							}
 						]
 						maxItems: 5
@@ -5432,13 +5504,13 @@
 						]
 					}
 					{
-						class: com.efm.entities.bosses.BossNatureGolem
+						class: com.efm.entities.bosses.slime.BossSlime
 						position: {
 							x: 6
 							y: 6
 						}
 						maxHealthPoints: 50
-						healthPoints: 38
+						healthPoints: 50
 						alive: true
 						isFrozen: false
 					}
@@ -5476,80 +5548,6 @@
 						direction: down
 						style: stone
 						endLevelName: 1
-					}
-					{
-						class: com.efm.entities.Hero
-						position: {
-							x: 3
-							y: 6
-						}
-						maxHealthPoints: 100
-						healthPoints: 90
-						alive: true
-						maxAbilityPoints: 14
-						abilityPoints: 12
-						apDrainInNextTurn: 0
-						canMoveNextTurn: true
-						isVisible: true
-						inventory: {
-							items: [
-								{
-									class: com.efm.multiUseMapItems.Bow
-								}
-								{
-									class: com.efm.multiUseMapItems.Sledgehammer
-									durability: 4
-								}
-								{
-									class: com.efm.multiUseMapItems.SmallAxe
-								}
-								{
-									class: com.efm.multiUseMapItems.Staff
-								}
-								{
-									class: com.efm.stackableMapItems.Bomb
-								}
-								{
-									class: com.efm.stackableMapItems.Explosive
-									amount: 3
-								}
-								{
-									class: com.efm.stackableSelfItems.Apple
-								}
-								{
-									class: com.efm.stackableSelfItems.Fish
-								}
-								{
-									class: com.efm.stackableSelfItems.Mushroom
-								}
-							]
-						}
-						skillNames: [
-							{
-								class: java.lang.String
-								value: Freeze
-							}
-							{
-								class: java.lang.String
-								value: Invisibility
-							}
-							{
-								class: java.lang.String
-								value: Push
-							}
-							{
-								class: java.lang.String
-								value: Shield
-							}
-							{
-								class: java.lang.String
-								value: Jump
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-						]
 					}
 				]
 			}
