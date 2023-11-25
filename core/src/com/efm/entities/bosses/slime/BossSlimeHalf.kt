@@ -15,8 +15,8 @@ import kotlin.random.Random
 class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 50
-    override var healthPoints = 5
+    override var maxHealthPoints = 25
+    override var healthPoints = 25
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1

@@ -590,6 +590,7 @@ fun menuPopup(
         changeScreen(MenuScreen)
         window.isVisible = false
         PopUps.setBackgroundVisibility(true)
+        saveGame()
     }
     
     window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)

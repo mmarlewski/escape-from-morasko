@@ -1,17 +1,18 @@
 package com.efm.ui.gameScreen
 
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
-import com.efm.assets.*
+import com.efm.assets.Sounds
+import com.efm.assets.Textures
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
 
 object RightStructure
 {
-    lateinit var xButton : TextButton
+    lateinit var moveButton : ImageButton
     
     fun setVisibility(boolean : Boolean)
     {
@@ -19,18 +20,16 @@ object RightStructure
         endTurnButton.isVisible = boolean
     }
     
-    fun createXButton() : TextButton
+    fun createMoveButton() : ImageButton
     {
-        xButton = textButtonOf(
-                "X",
-                Fonts.pixeloid20,
-                Colors.black,
+        moveButton = imageButtonOf(
+                Textures.move,
                 Textures.upNinePatch,
                 Textures.downNinePatch,
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                              )
+                                  )
         {
             playSoundOnce(Sounds.ui_3)
             
@@ -60,19 +59,19 @@ object RightStructure
                 else                 -> currState
             }
             setState(newState)
-        }.also { xButton = it }
+        }.also { moveButton = it }
         
-        return xButton
+        return moveButton
     }
     
     init
     {
-        xButton = createXButton()
+        moveButton = createMoveButton()
     }
     
     fun xButtonVisibility(visibility : Boolean)
     {
-        xButton.isVisible = visibility
+        moveButton.isVisible = visibility
     }
     
     val endTurnButton = imageButtonOf(
@@ -113,7 +112,7 @@ object RightStructure
                 rowOf(endTurnButton)
                                     ).align(Align.topRight)
         val xButtonPlace = columnOf(
-                rowOf(xButton)
+                rowOf(moveButton)
                                    ).align(Align.bottomRight)
         
         nextTurnPlace.pad(16f)

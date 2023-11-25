@@ -15,8 +15,8 @@ import com.efm.room.RoomPosition
 class BossSlime : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 100
-    override var healthPoints = 10
+    override var maxHealthPoints = 50
+    override var healthPoints = 50
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1

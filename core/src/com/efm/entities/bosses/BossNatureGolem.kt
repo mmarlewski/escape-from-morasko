@@ -16,8 +16,8 @@ import com.efm.screens.GameScreen
 class BossNatureGolem : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 100
-    override var healthPoints = 10
+    override var maxHealthPoints = 50
+    override var healthPoints = 50
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 5

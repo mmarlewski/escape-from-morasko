@@ -113,6 +113,7 @@ object Textures
     val itemUsable = load("/icons/itemUsable.png")
     val itemWeapon = load("/icons/itemWeapon.png")
     val delete = load("/icons/delete.png")
+    val move = load("/icons/move.png")
     
     //images
     val title = load("/images/title.png")

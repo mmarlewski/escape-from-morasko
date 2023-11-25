@@ -1,13 +1,11 @@
 package com.efm.exit
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.Align
 import com.efm.*
-import com.efm.assets.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 import com.efm.state.getState
+import com.efm.ui.gameScreen.*
 
 class TutorialRoomExit(
         position : RoomPosition,
@@ -40,7 +38,7 @@ class TutorialRoomExit(
                         enemy.position.copy(),
                         0.1f
                                                                        )
-                animations += Animation.wait(1f)
+                animations += Animation.wait(0.5f)
                 animations += Animation.moveTileSmoothlyWithCameraFocus(
                         null,
                         enemy.position.copy(),
@@ -53,17 +51,10 @@ class TutorialRoomExit(
         else
         {
             //showPopup()
-            val popUp = windowAreaOf("Try looting first!",
-                                     Fonts.pixeloid20,
-                                     Colors.black,
-                                     Textures.pauseBackgroundNinePatch,
-                                     {},
-                                     {})
-            popUp.isVisible = false
-            popUp.isVisible = true
-            val nextLevelPopupWindow = columnOf(rowOf(popUp)).align(Align.center)
-            nextLevelPopupWindow.setFillParent(true)
-            GameScreen.stage.addActor(nextLevelPopupWindow)
+            LeftStructure.menuButton.isVisible = false
+            RightStructure.moveButton.isVisible = false
+            TutorialPopups.addPopupToDisplay(TutorialPopups.cantLeavePopup)
+            TutorialPopups.cantLeavePopup.isVisible = true
         }
     }
 }
