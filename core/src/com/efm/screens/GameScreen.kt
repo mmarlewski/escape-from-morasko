@@ -88,6 +88,21 @@ object GameScreen : BaseScreen(), GestureListener
         }
     }
     
+    fun updateMapOutlineLayer()
+    {
+        for (i in 0 until Map.mapHeightInTiles)
+        {
+            for (j in 0 until Map.mapWidthInTiles)
+            {
+                val space = World.currentRoom.getSpace(j, i)
+                
+                val tile = space?.getEntity()?.getTile()
+                
+                Map.changeTile(MapLayer.outline, j, i, tile)
+            }
+        }
+    }
+    
     fun updateMapEnemyIdleAnimation()
     {
         for (i in 0 until Map.mapHeightInTiles)
