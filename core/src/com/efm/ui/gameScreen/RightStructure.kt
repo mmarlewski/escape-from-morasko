@@ -38,19 +38,19 @@ object RightStructure
             
             val newState = when (val currState = getState())
             {
-                is State.free        -> State.free.noSelection.apply {
+                is State.free        -> State.free.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                 }
                 
-                is State.constrained -> State.constrained.noSelection.apply {
+                is State.constrained -> State.constrained.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.isHeroDetected = currState.isHeroDetected
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
                 
-                is State.combat.hero -> State.combat.hero.noSelection.apply {
+                is State.combat.hero -> State.combat.hero.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
