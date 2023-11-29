@@ -18,7 +18,15 @@ fun saveGame()
     println("saving game...")
     
     val file = Gdx.files.local("save.txt")
-    val saveList = listOf<Any>(getState(), World.currentLevel.name, World.currentRoom.name, World.hero, World.levels)
+    val saveList = listOf<Any>(
+            getSoundVolume(),
+            getMusicVolume(),
+            getState(),
+            World.currentLevel.name,
+            World.currentRoom.name,
+            World.hero,
+            World.levels
+                              )
     file.writeString(json.prettyPrint(saveList), false)
     
     println("saved game")
@@ -33,15 +41,20 @@ fun loadGame()
     {
         val saveList = json.fromJson(List::class.java, file.readString())
         
-        val saveState = saveList[0] as State
-        val saveCurrentLevelName = saveList[1] as String
-        val saveCurrentRoomName = saveList[2] as String
-        val saveHero = saveList[3] as Hero
-        val saveLevels = saveList[4] as Array<*>
+        val saveSoundVolume = saveList[0] as Float
+        val saveMusicVolume = saveList[1] as Float
+        val saveState = saveList[2] as State
+        val saveCurrentLevelName = saveList[3] as String
+        val saveCurrentRoomName = saveList[4] as String
+        val saveHero = saveList[5] as Hero
+        val saveLevels = saveList[6] as Array<*>
+        
+        setSoundVolume(saveSoundVolume)
+        setMusicVolume(saveMusicVolume)
         
         when (saveState)
         {
-            is State.free        -> setState(State.free.noSelection.apply {
+            is State.free -> setState(State.free.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
             })
@@ -59,7 +72,7 @@ fun loadGame()
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
             })
             
-            else                 -> setState(State.over)
+            else -> setState(State.over)
         }
         
         World.hero = saveHero
