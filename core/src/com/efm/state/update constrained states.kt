@@ -4,10 +4,10 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
-import com.efm.exit.Exit
-import com.efm.exit.LevelExit
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
+import com.efm.exit.Exit
+import com.efm.exit.LevelExit
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -64,7 +64,7 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
             
             is Hero  ->
             {
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -180,7 +180,7 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
         
         is Hero  ->
         {
-            RightStructure.xButtonVisibility(true)
+            RightStructure.moveButtonVisibility(true)
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
             Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -275,7 +275,7 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
             
             is Hero  ->
             {
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -371,7 +371,7 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
             
             is Hero  ->
             {
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())

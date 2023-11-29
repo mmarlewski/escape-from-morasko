@@ -16,7 +16,7 @@ object RightStructure
     
     fun setVisibility(boolean : Boolean)
     {
-        xButtonVisibility(boolean)
+        moveButtonVisibility(boolean)
         endTurnButton.isVisible = boolean
     }
     
@@ -69,7 +69,7 @@ object RightStructure
         moveButton = createMoveButton()
     }
     
-    fun xButtonVisibility(visibility : Boolean)
+    fun moveButtonVisibility(visibility : Boolean)
     {
         moveButton.isVisible = visibility
     }

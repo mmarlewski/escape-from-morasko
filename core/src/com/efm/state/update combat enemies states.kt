@@ -89,7 +89,7 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, World.hero.position, Tiles.heroIdle1OutlineGreen)
                 
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 
                 return State.combat.hero.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive

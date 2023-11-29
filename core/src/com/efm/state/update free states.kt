@@ -76,7 +76,7 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
             }
             is Hero ->
             {
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -142,7 +142,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
         }
         is Hero  ->
         {
-            RightStructure.xButtonVisibility(true)
+            RightStructure.moveButtonVisibility(true)
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
             Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -220,7 +220,7 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
             }
             is Hero ->
             {
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
