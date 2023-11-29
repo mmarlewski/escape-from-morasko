@@ -496,17 +496,25 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
                     
                     Map.clearLayer(MapLayer.select)
                     Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+                    if (selectedEntity is Enemy)
+                    {
+                        val detectionPositions = selectedEntity.getDetectionPositions()
+                        for (position in detectionPositions)
+                        {
+                            Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
+                        }
+                    }
                     for (space in pathSpaces)
                     {
                         Map.changeTile(MapLayer.select, space.position, Tiles.selectRed)
                     }
-                    for (position in detectionPathPositions)
-                    {
-                        Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
-                    }
                     for (space in possiblePathSpaces)
                     {
                         Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
+                    }
+                    for (position in detectionPathPositions)
+                    {
+                        Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
                     }
                     Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
                     
@@ -669,19 +677,28 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
                 
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+                if (selectedEntity is Enemy)
+                {
+                    val detectionPositions = selectedEntity.getDetectionPositions()
+                    for (position in detectionPositions)
+                    {
+                        Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
+                    }
+                }
                 for (space in pathSpaces)
                 {
                     Map.changeTile(MapLayer.select, space.position, Tiles.selectRed)
-                }
-                for (position in detectionPathPositions)
-                {
-                    Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
                 }
                 for (space in possiblePathSpaces)
                 {
                     Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
                 }
+                for (position in detectionPathPositions)
+                {
+                    Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
+                }
                 Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
+                
                 
                 if (canReach)
                 {
