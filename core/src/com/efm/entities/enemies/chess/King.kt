@@ -140,7 +140,11 @@ class King : Entity, Enemy
     
     override fun onDeath()
     {
-        addBossToDefeatedBossesList(King())
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.damageCharacter(enemy.healthPoints)
+        }
+        showSkillAssignPopUpAfterBossKill(this)
     }
     
     fun getPossibleAttackPositions() : List<RoomPosition>
