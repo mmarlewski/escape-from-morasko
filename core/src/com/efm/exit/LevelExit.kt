@@ -5,9 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.*
 import com.efm.*
-import com.efm.assets.Colors
-import com.efm.assets.Fonts
-import com.efm.assets.Textures
+import com.efm.assets.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
@@ -16,7 +14,7 @@ open class LevelExit(
         override val position : RoomPosition,
         override var direction : Direction4,
         var endLevelName : String,
-        override var style : ExitStyle, override var activeWhenNoEnemiesAreInRoom : Boolean = false
+        override var style : ExitStyle, override var activeWhenNoEnemiesAreInRoom : Boolean = true
                     ) : Exit
 {
     override fun getOutlineTealTile() : TiledMapTile? = when (direction)

@@ -8,6 +8,8 @@ import com.efm.*
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import com.efm.state.State
+import com.efm.state.getState
 
 open class RoomExit(
         override val position : RoomPosition,
@@ -39,10 +41,15 @@ open class RoomExit(
     {
         if (!activeWhenNoEnemiesAreInRoom || !World.currentRoom.areEnemiesInRoom())
         {
-            travelBetweenRooms()
-            Gdx.app.log("Exit", "adjusting camera")
-            adjustCameraAfterMoving()
-            adjustMapLayersAfterMoving()
+            val targetRoom : Room? = World.currentLevel.rooms.find { it.name == endRoomName }
+            // do not allow travel that would change state combat to state free
+            if (!(getState() is State.combat && targetRoom?.areEnemiesInRoom() == false))
+            {
+                travelBetweenRooms()
+                Gdx.app.log("Exit", "adjusting camera")
+                adjustCameraAfterMoving()
+                adjustMapLayersAfterMoving()
+            }
         }
     }
     

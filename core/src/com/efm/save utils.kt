@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Json
 import com.efm.entities.Hero
+import com.efm.entities.bosses.defeatedBosses
 import com.efm.entity.Enemy
 import com.efm.level.Level
 import com.efm.level.World
-import com.efm.screens.GameScreen
 import com.efm.state.*
-import java.lang.Exception
+import kotlin.reflect.KClass
 
 val json = Json()
 
@@ -25,7 +25,8 @@ fun saveGame()
             World.currentLevel.name,
             World.currentRoom.name,
             World.hero,
-            World.levels
+            World.levels,
+            defeatedBosses
                               )
     file.writeString(json.prettyPrint(saveList), false)
     
@@ -48,13 +49,14 @@ fun loadGame()
         val saveCurrentRoomName = saveList[4] as String
         val saveHero = saveList[5] as Hero
         val saveLevels = saveList[6] as Array<*>
+        val saveDefeatedBosses = saveList[7] as Array<*>
         
         setSoundVolume(saveSoundVolume)
         setMusicVolume(saveMusicVolume)
         
         when (saveState)
         {
-            is State.free -> setState(State.free.noSelection.apply {
+            is State.free        -> setState(State.free.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
             })
@@ -71,21 +73,28 @@ fun loadGame()
                 this.isHeroAlive = saveState.isHeroAlive
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
             })
-            
-            else -> setState(State.over)
+    
+            else                 -> setState(State.over)
         }
-        
+    
         World.hero = saveHero
-        
+    
+        defeatedBosses.clear()
+        for (boss in saveDefeatedBosses)
+        {
+            defeatedBosses.add(boss as KClass<out Enemy>)
+        }
+    
+        World.levels.clear()
         for (level in saveLevels)
         {
             World.levels.add(level as Level)
         }
         World.currentLevel = World.levels.find { it.name == saveCurrentLevelName }!!
         World.currentRoom = World.currentLevel.rooms.find { it.name == saveCurrentRoomName }!!
-        
+    
         //
-        
+    
         println("loaded game")
     }
     else

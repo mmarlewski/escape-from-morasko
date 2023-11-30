@@ -1,5 +1,7 @@
 package com.efm.state
 
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.exit.Exit
@@ -34,7 +36,7 @@ sealed class State
     
     var tutorialFlags = TutorialFlags
     
-    object TutorialFlags
+    object TutorialFlags : Json.Serializable
     {
         var tutorialOn = true
         var welcomePopupShown = false
@@ -57,6 +59,49 @@ sealed class State
             lootingPopupShown = false
             playerLooted = false
             equipmentPopupShown = false
+        }
+        
+        // for serializing
+        
+        override fun write(json : Json?)
+        {
+            if (json != null)
+            {
+                json.writeValue("tutorialOn", this.tutorialOn)
+                json.writeValue("welcomePopupShown", this.welcomePopupShown)
+                json.writeValue("cameraPopupShown", this.cameraPopupShown)
+                //json.writeValue("playerMovedCamera", this.playerMovedCamera)
+                json.writeValue("movementPopupShown", this.movementPopupShown)
+                json.writeValue("playerMoved", this.playerMoved)
+                json.writeValue("lootingPopupShown", this.lootingPopupShown)
+                json.writeValue("playerLooted", this.playerLooted)
+                json.writeValue("equipmentPopupShown", this.equipmentPopupShown)
+            }
+        }
+        
+        override fun read(json : Json?, jsonData : JsonValue?)
+        {
+            if (json != null)
+            {
+                val jsonTutorialOn = json.readValue("tutorialOn", Boolean::class.java, jsonData)
+                if (jsonTutorialOn != null) this.tutorialOn = jsonTutorialOn
+                val jsonWelcomePopupShown = json.readValue("welcomePopupShown", Boolean::class.java, jsonData)
+                if (jsonWelcomePopupShown != null) this.welcomePopupShown = jsonWelcomePopupShown
+                val jsonCameraPopupShown = json.readValue("cameraPopupShown", Boolean::class.java, jsonData)
+                if (jsonCameraPopupShown != null) this.cameraPopupShown = jsonCameraPopupShown
+                //val jsonPlayerMovedCamera = json.readValue("playerMovedCamera", Boolean::class.java, jsonData)
+                //if (jsonPlayerMovedCamera != null) this.playerMovedCamera = jsonPlayerMovedCamera
+                val jsonMovementPopupShown = json.readValue("movementPopupShown", Boolean::class.java, jsonData)
+                if (jsonMovementPopupShown != null) this.movementPopupShown = jsonMovementPopupShown
+                val jsonPlayerMoved = json.readValue("playerMoved", Boolean::class.java, jsonData)
+                if (jsonPlayerMoved != null) this.playerMoved = jsonPlayerMoved
+                val jsonLootingPopupShown = json.readValue("lootingPopupShown", Boolean::class.java, jsonData)
+                if (jsonLootingPopupShown != null) this.lootingPopupShown = jsonLootingPopupShown
+                val jsonPlayerLooted = json.readValue("playerLooted", Boolean::class.java, jsonData)
+                if (jsonPlayerLooted != null) this.playerLooted = jsonPlayerLooted
+                val jsonEquipmentPopupShown = json.readValue("equipmentPopupShown", Boolean::class.java, jsonData)
+                if (jsonEquipmentPopupShown != null) this.equipmentPopupShown = jsonEquipmentPopupShown
+            }
         }
     }
     
