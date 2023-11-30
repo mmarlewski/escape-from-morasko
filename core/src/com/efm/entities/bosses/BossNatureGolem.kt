@@ -190,7 +190,7 @@ class BossNatureGolem : Entity, Enemy
     
     override fun onDeath()
     {
-        addBossToDefeatedBossesList(BossNatureGolem())
+        showSkillAssignPopUpAfterBossKill(this)
     }
     
     private fun replaceTileWithGrass(tilePosition : RoomPosition)

@@ -15,6 +15,7 @@ import com.efm.playSoundOnce
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
+import com.efm.showSkillAssignPopUpAfterBossKill
 
 class BossOctopusHead : Entity, Enemy
 {
@@ -187,7 +188,7 @@ class BossOctopusHead : Entity, Enemy
     
     override fun onDeath()
     {
-        addBossToDefeatedBossesList(BossOctopusHead())
+        showSkillAssignPopUpAfterBossKill(this)
     }
     
     // for serializing

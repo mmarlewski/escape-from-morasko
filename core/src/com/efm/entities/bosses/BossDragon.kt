@@ -14,6 +14,9 @@ import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
+import com.efm.skill.Skill
+import com.efm.skills.*
+import com.efm.ui.gameScreen.PopUps
 
 class BossDragon : Entity, Enemy
 {
@@ -329,7 +332,7 @@ class BossDragon : Entity, Enemy
     
     override fun onDeath()
     {
-        addBossToDefeatedBossesList(BossDragon())
+        showSkillAssignPopUpAfterBossKill(this)
     }
     
     // for serializing

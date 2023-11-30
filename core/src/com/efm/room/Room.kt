@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonValue
 import com.efm.Map
 import com.efm.MapLayer
 import com.efm.entities.Hero
+import com.efm.entities.bosses.slime.BossSlimeQuarter
 import com.efm.entity.*
 
 /**
@@ -122,6 +123,50 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         characters.removeAll(killedCharacters)
         entities.removeAll(killedCharacters)
         for (corpse in corpsesToAdd) addEntityAt(corpse, corpse.position)
+        val howManyKilledCharactersAreQuarterSlime = howManyKilledCharactersAreQuarterSlime(killedCharacters)
+        val getAllQuarterSlimeCharacterInRoom = getAllQuarterSlimeCharacterInRoom()
+        if (howManyKilledCharactersAreQuarterSlime > 0 && getAllQuarterSlimeCharacterInRoom == 0 && enemies.isEmpty())
+        {
+            triggerQuarterSlimeOnDeath(killedCharacters)
+        }
+    }
+    
+    private fun triggerQuarterSlimeOnDeath(killedCharacters : MutableList<Character>)
+    {
+        for (enemy in killedCharacters)
+        {
+            if (enemy is BossSlimeQuarter)
+            {
+                enemy.finalBossSlimeQuartersKilled()
+                return
+            }
+        }
+    }
+    
+    private fun howManyKilledCharactersAreQuarterSlime(corpsesToAdd : MutableList<Character>) : Int
+    {
+        var killedQuarterSlimes = 0
+        for (enemy in corpsesToAdd)
+        {
+            if (enemy is BossSlimeQuarter)
+            {
+                killedQuarterSlimes += 1
+            }
+        }
+        return killedQuarterSlimes
+    }
+    
+    private fun getAllQuarterSlimeCharacterInRoom() : Int
+    {
+        var enemiesThatAreSlimeQuarter = 0
+        for (enemy in enemies)
+        {
+            if (enemy is BossSlimeQuarter)
+            {
+                enemiesThatAreSlimeQuarter += 1
+            }
+        }
+        return enemiesThatAreSlimeQuarter
     }
     
     /** adding entities to room can mess things up, so it happens in its own time **/

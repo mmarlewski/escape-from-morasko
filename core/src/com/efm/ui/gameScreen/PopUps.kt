@@ -6,6 +6,7 @@ import com.efm.*
 import com.efm.assets.*
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.skill.Skill
 import com.efm.skills.*
 
 object PopUps
@@ -28,9 +29,9 @@ object PopUps
         LeftStructure.setVisibility(boolean)
     }
     
-    fun skillAssignment() : Window
+    fun skillAssignment(leftSkill : Skill, middleSkill : Skill, rightSkill : Skill) : Window
     {
-        val skillAssignmentPopup = skillsAssignmentOverlay(Freeze, Invisibility, Jump,
+        val skillAssignmentPopup = skillsAssignmentOverlay(leftSkill, middleSkill, rightSkill,
                                                            {
                                                                //when skill assigned
                                                                playSoundOnce(Sounds.ui_2)
@@ -101,7 +102,7 @@ object PopUps
         menuPause = menuPause()
         settings = settings()
         
-        skillAssignment = skillAssignment()
+        skillAssignment = skillAssignment(Jump, Jump, Jump)
     }
     
     fun setSkillAssignmentVisibility(visibility : Boolean)

@@ -143,7 +143,7 @@ class BossWizard : Entity, Enemy
     
     override fun onDeath()
     {
-        addBossToDefeatedBossesList(BossWizard())
+        showSkillAssignPopUpAfterBossKill(this)
     }
     
     fun areaOfEffectAttack()

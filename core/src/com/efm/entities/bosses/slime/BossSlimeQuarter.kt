@@ -112,4 +112,9 @@ class BossSlimeQuarter : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
+    fun finalBossSlimeQuartersKilled()
+    {
+        showSkillAssignPopUpAfterBossKill(this)
+    }
+    
 }

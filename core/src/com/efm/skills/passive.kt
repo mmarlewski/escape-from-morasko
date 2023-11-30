@@ -41,3 +41,8 @@ object LavaWalking : Skill(
         "Lava Walking",
         "Allows to walk on lava tiles"
                           )
+
+fun getAllPassiveSkills() : List<Skill>
+{
+    return mutableListOf(GrassHealing, Pockets, WaterWalking, LavaWalking)
+}
