@@ -27,6 +27,7 @@ fun setState(newState : State)
     {
         println("new state: \n ${currState.javaClass.canonicalName}")
     }
+    
 }
 
 sealed class State
@@ -47,6 +48,11 @@ sealed class State
         var lootingPopupShown = false
         var playerLooted = false
         var equipmentPopupShown = false
+        var playerSelectedSomethingFromEquipment = false
+        var healthAndAbilityPopupShown = false
+        var turnsPopupShown = false
+        var playerEndedTurn = false
+        var combatPopupShown = false
     
         fun setDefault()
         {
@@ -59,6 +65,11 @@ sealed class State
             lootingPopupShown = false
             playerLooted = false
             equipmentPopupShown = false
+            playerSelectedSomethingFromEquipment = false
+            healthAndAbilityPopupShown = false
+            turnsPopupShown = false
+            playerEndedTurn = false
+            combatPopupShown = false
         }
         
         // for serializing
@@ -76,6 +87,11 @@ sealed class State
                 json.writeValue("lootingPopupShown", this.lootingPopupShown)
                 json.writeValue("playerLooted", this.playerLooted)
                 json.writeValue("equipmentPopupShown", this.equipmentPopupShown)
+                json.writeValue("playerSelectedSomethingFromEquipment", this.playerSelectedSomethingFromEquipment)
+                json.writeValue("healthAndAbilityPopupShown", this.healthAndAbilityPopupShown)
+                json.writeValue("turnsPopupShown", this.turnsPopupShown)
+                json.writeValue("playerEndedTurn", this.playerEndedTurn)
+                json.writeValue("combatPopupShown", this.combatPopupShown)
             }
         }
         
@@ -101,6 +117,19 @@ sealed class State
                 if (jsonPlayerLooted != null) this.playerLooted = jsonPlayerLooted
                 val jsonEquipmentPopupShown = json.readValue("equipmentPopupShown", Boolean::class.java, jsonData)
                 if (jsonEquipmentPopupShown != null) this.equipmentPopupShown = jsonEquipmentPopupShown
+                val jsonPlayerSelectedSomethingFromEquipment =
+                        json.readValue("playerSelectedSomethingFromEquipment", Boolean::class.java, jsonData)
+                if (jsonPlayerSelectedSomethingFromEquipment != null) this.playerSelectedSomethingFromEquipment =
+                        jsonPlayerSelectedSomethingFromEquipment
+                val jsonHealthAndAbilityPopupShown =
+                        json.readValue("healthAndAbilityPopupShown", Boolean::class.java, jsonData)
+                if (jsonHealthAndAbilityPopupShown != null) this.healthAndAbilityPopupShown = jsonHealthAndAbilityPopupShown
+                val jsonTurnsPopupShown = json.readValue("turnsPopupShown", Boolean::class.java, jsonData)
+                if (jsonTurnsPopupShown != null) this.turnsPopupShown = jsonTurnsPopupShown
+                val jsonPlayerEndedTurn = json.readValue("playerEndedTurn", Boolean::class.java, jsonData)
+                if (jsonPlayerEndedTurn != null) this.playerEndedTurn = jsonPlayerEndedTurn
+                val jsonCombatPopupShown = json.readValue("combatPopupShown", Boolean::class.java, jsonData)
+                if (jsonCombatPopupShown != null) this.combatPopupShown = jsonCombatPopupShown
             }
         }
     }

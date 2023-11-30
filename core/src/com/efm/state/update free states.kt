@@ -469,20 +469,11 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
                 }
             }
         }
-        val lootingPopupShown =
-                if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.movementPopupShown && currState.tutorialFlags.playerMoved && !currState.tutorialFlags.lootingPopupShown)
-                {
-                    TutorialPopups.addPopupToDisplay(TutorialPopups.lootingPopup)
-                    true
-                }
-                else currState.tutorialFlags.lootingPopupShown
-        val equipmentPopupShown =
-                if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.lootingPopupShown && currState.tutorialFlags.playerLooted && !currState.tutorialFlags.equipmentPopupShown)
-                {
-                    TutorialPopups.addPopupToDisplay(TutorialPopups.equipmentPopup)
-                    true
-                }
-                else currState.tutorialFlags.equipmentPopupShown
+        if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.movementPopupShown && currState.tutorialFlags.playerMoved && !currState.tutorialFlags.lootingPopupShown)
+        {
+            TutorialPopups.addPopupToDisplay(TutorialPopups.lootingPopup)
+            currState.tutorialFlags.lootingPopupShown = true
+        }
     
         return when (areEnemiesInRoom)
         {
@@ -491,14 +482,10 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
                 this.areEnemiesInRoom = areEnemiesInRoom
                 this.isHeroDetected = false
                 this.areAnyActionPointsLeft = true
-                this.tutorialFlags.lootingPopupShown = lootingPopupShown
-                this.tutorialFlags.equipmentPopupShown = equipmentPopupShown
             }
             false -> State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = areEnemiesInRoom
-                this.tutorialFlags.lootingPopupShown = lootingPopupShown
-                this.tutorialFlags.equipmentPopupShown = equipmentPopupShown
             }
         }
     }

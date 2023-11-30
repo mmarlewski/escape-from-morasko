@@ -24,27 +24,27 @@ class TutorialRoomExit(
     
     override fun interact()
     {
-        if (getState().tutorialFlags.equipmentPopupShown)
+        if (getState().tutorialFlags.playerLooted)
         {
             super.interact()
             val enemy = World.currentRoom.getEnemies().firstOrNull()
-            if (enemy != null)
+            if (enemy != null && !getState().tutorialFlags.equipmentPopupShown)
             {
                 GameScreen.focusCameraOnRoomPosition(enemy.position)
                 val animations = mutableListOf<Animation>()
                 animations += Animation.moveTileSmoothlyWithCameraFocus(
-                        null,
-                        World.hero.position.copy(),
-                        enemy.position.copy(),
-                        0.1f
+                        null, World.hero.position.copy(), enemy.position.copy(), 0.1f
                                                                        )
                 animations += Animation.wait(0.5f)
                 animations += Animation.moveTileSmoothlyWithCameraFocus(
-                        null,
-                        enemy.position.copy(),
-                        World.hero.position.copy(),
-                        0.1f
+                        null, enemy.position.copy(), World.hero.position.copy(), 0.1f
                                                                        )
+                animations += Animation.action {
+                    TutorialPopups.addPopupToDisplay(TutorialPopups.equipmentPopup)
+                    getState().tutorialFlags.equipmentPopupShown = true
+                    // hero has no AP
+                    World.hero.spendAP(World.hero.abilityPoints)
+                }
                 Animating.executeAnimations(animations)
             }
         }
