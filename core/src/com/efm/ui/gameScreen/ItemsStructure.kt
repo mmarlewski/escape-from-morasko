@@ -193,7 +193,18 @@ object ItemsStructure
     fun attack(item : Item)
     {
         val currState = getState()
-        
+    
+        // tutorial popups
+        if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.equipmentPopupShown)
+            currState.tutorialFlags.playerSelectedSomethingFromEquipment = true
+        if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.playerSelectedSomethingFromEquipment && !currState.tutorialFlags.healthAndAbilityPopupShown)
+        {
+            TutorialPopups.addPopupToDisplay(TutorialPopups.healthAndAbilityPopup)
+            currState.tutorialFlags.healthAndAbilityPopupShown = true
+            TutorialPopups.addPopupToDisplay(TutorialPopups.turnsPopup)
+            currState.tutorialFlags.turnsPopupShown = true
+        }
+    
         val canBeUsed = when (currState)
         {
             is State.free                              -> true
@@ -201,7 +212,7 @@ object ItemsStructure
             {
                 World.hero.abilityPoints >= item.baseAPUseCost
             }
-            
+        
             else                                       -> false
         }
         
