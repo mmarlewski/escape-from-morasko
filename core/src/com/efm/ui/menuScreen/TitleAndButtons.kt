@@ -57,8 +57,6 @@ object TitleAndButtons
                     }
                 }
             }
-            // clear World levels
-            World.levels.clear()
             // load game
             loadGame()
             // add Hero to currentRoom

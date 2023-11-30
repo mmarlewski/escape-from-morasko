@@ -5,14 +5,10 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
 import com.efm.level.World
-import com.efm.multiUseMapItems.*
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 import com.efm.skill.BodyPart
-import com.efm.skills.*
-import com.efm.stackableMapItems.Bomb
-import com.efm.stackableMapItems.Explosive
-import com.efm.stackableSelfItems.*
+import com.efm.stackableSelfItems.Apple
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
@@ -40,8 +36,6 @@ object PopUpsMenu
                             }
                         }
                     }
-                    // clear World levels
-                    World.levels.clear()
                     // create World
                     //World.createWorldPrototypeTwo()
                     //World.createWorldBoarTest()
@@ -61,30 +55,20 @@ object PopUpsMenu
                     World.hero.inventory.items.clear()
                     BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
                     // add Items to Hero
-                    World.hero.inventory.addItem(SmallAxe())
-                    World.hero.inventory.addItem(Sledgehammer())
-                    World.hero.inventory.addItem(Bow())
-                    World.hero.inventory.addItem(Staff())
-                    World.hero.inventory.addItem(Bomb())
-                    World.hero.inventory.addItem(Explosive())
-                    World.hero.inventory.addItem(Explosive())
-                    World.hero.inventory.addItem(Explosive())
-                    World.hero.inventory.addItem(Apple())
-                    World.hero.inventory.addItem(Fish())
-                    World.hero.inventory.addItem(Mushroom())
+                    World.hero.inventory.addItem(Apple(2))
                     // add Skills to Hero
                     //World.hero.addSkill(LavaWalking)
-                    World.hero.addSkill(Push)
-                    World.hero.addSkill(Invisibility)
-                    World.hero.addSkill(Freeze)
+                    //World.hero.addSkill(Push)
+                    //World.hero.addSkill(Invisibility)
+                    //World.hero.addSkill(Freeze)
                     //World.hero.addSkill(GrassHealing)
-                    World.hero.addSkill(Jump)
-                    World.hero.addSkill(Shield)
+                    //World.hero.addSkill(Jump)
+                    //World.hero.addSkill(Shield)
                     // set State
                     val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
                     val initState = when (areEnemiesInRoom)
                     {
-                        true -> State.constrained.noSelection
+                        true  -> State.constrained.noSelection
                         false -> State.free.noSelection
                     }
                     initState.areEnemiesInRoom = areEnemiesInRoom
