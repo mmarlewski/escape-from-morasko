@@ -2,6 +2,7 @@ package com.efm.level
 
 import com.badlogic.gdx.utils.Array
 import com.efm.entities.Hero
+import com.efm.entities.bosses.spawnAllBossesInOneRoom
 import com.efm.room.Room
 import com.efm.state.State
 import com.efm.state.setState
@@ -36,7 +37,12 @@ object World
     {
         if (newCurrentRoom in currentLevel.rooms)
         {
+            if (newCurrentRoom.name == "finalRoom")
+            {
+                spawnAllBossesInOneRoom(newCurrentRoom)
+            }
             currentRoom = newCurrentRoom
+            
         }
     }
 }

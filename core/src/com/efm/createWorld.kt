@@ -13,6 +13,8 @@ import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost
 import com.efm.entities.enemies.chess.spawnChessSet
 import com.efm.entities.walls.*
+import com.efm.entity.Enemy
+import com.efm.entity.Entity
 import com.efm.exit.*
 import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
@@ -23,7 +25,11 @@ import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.*
 import com.efm.skills.Pockets
 import com.efm.stackableMapItems.Bomb
+import com.efm.stackableMapItems.Explosive
 import com.efm.stackableSelfItems.*
+import kotlin.random.Random
+import kotlin.random.nextInt
+import kotlin.reflect.KClass
 
 /*
 fun World.createWorldPrototypeOne()
@@ -857,14 +863,51 @@ fun World.createWorldPrototypeThree()
                 LevelExit(
                         RoomPosition(l1r5.widthInSpaces - 1, 0),
                         Direction4.down,
-                        "1",
+                        "2",
                         ExitStyle.stone,
                         activeWhenNoEnemiesAreInRoom = true
                          ), RoomPosition(l1r5.widthInSpaces - 1, 0)
                             )
     }
+    val l2 = Level("2").apply {
+        // room 1
+        //
+        val l1r1 = createRoomFromFile("1", Gdx.files.local("l1r1.txt")).apply {
+            // walls
+            addWalls(WallStyle.metal)
+            // entities
+            val chest = Chest()
+            chest.addItem(WoodenSword())
+            chest.addItem(Fish(2))
+            addEntityAt(chest, 4, 3)
+        }
+        val finalRoom = createRoomFromFile("finalRoom", Gdx.files.local("l1r2.txt")).apply {
+            // walls
+            addWalls(WallStyle.cobblestoneDarkTall)
+            // entities
+        }
+        // add room to level
+        addRoom(finalRoom)
+        // add room to level
+        addRoom(l1r1)
+        // add room passages
+        //
+        addRoomPassage(
+                this,
+                l1r1.name,
+                RoomPosition(6, 3),
+                Direction4.left,
+                finalRoom.name,
+                RoomPosition(0, 7),
+                ExitStyle.metal,
+                exitBBase = Base.stone
+                      )
+        changeStartingRoom(l1r1)
+        changeStartingPosition(1, 3)
+    }
     // add level to World
     this.addLevel(l1)
+    this.addLevel(l2)
 }
 
 private fun createRoomFromFile(name : String, fileHandle : FileHandle) : Room

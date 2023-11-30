@@ -5,6 +5,7 @@ import com.efm.entities.bosses.slime.BossSlime
 import com.efm.entities.enemies.chess.King
 import com.efm.entities.enemies.chess.spawnChessSet
 import com.efm.entity.Enemy
+import com.efm.entity.Entity
 import com.efm.room.*
 import kotlin.random.Random
 import kotlin.reflect.KClass
@@ -23,6 +24,11 @@ val defeatedBosses = mutableListOf<KClass<out Enemy>>()
 fun addBossToDefeatedBossesList(boss : Enemy)
 {
     defeatedBosses.add(boss::class)
+}
+
+fun getDefeatedBossesList() : MutableList<KClass<out Enemy>>
+{
+    return defeatedBosses
 }
 
 private fun chooseRandomBossClass(random : Random = Random(Random.nextInt())) : KClass<out Enemy>
@@ -67,4 +73,92 @@ fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : 
         }
     }
     //Gdx.app.log("bosses", "$bossClass")
+}
+
+fun spawnAllBossesInOneRoom(finalRoom : Room)
+{
+    for (bossClass in getDefeatedBossesList())
+    {
+        when (bossClass)
+        {
+            King::class            ->
+            {
+                var bossNotSpawned = true
+                while (bossNotSpawned)
+                {
+                    val posX = Random.nextInt(1, finalRoom.widthInSpaces - 1)
+                    val posY = Random.nextInt(1, finalRoom.heightInSpaces - 1)
+                    try
+                    {
+                        spawnChessSet(posX, posY, Direction4.down, finalRoom)
+                    }
+                    finally
+                    {
+                        if (finalRoom.getSpace(RoomPosition(posX, posY))?.getEntity() != null)
+                        {
+                            bossNotSpawned = false
+                        }
+                    }
+                }
+            }
+            BossOctopusHead::class ->
+            {
+                val head = BossOctopusHead()
+                head.createOwnHealthBar()
+                val tentacle1 = BossOctopusTentacle()
+                tentacle1.createOwnHealthBar()
+                head.addTentacle(tentacle1)
+                val tentacle2 = BossOctopusTentacle()
+                tentacle2.createOwnHealthBar()
+                head.addTentacle(tentacle2)
+                var bossNotSpawned = true
+                while (bossNotSpawned)
+                {
+                    val posX = Random.nextInt(1, finalRoom.widthInSpaces - 1)
+                    val posY = Random.nextInt(1, finalRoom.heightInSpaces - 1)
+                    try
+                    {
+                        finalRoom.changeBaseAt(Base.water, posX - 2, posY)
+                        finalRoom.addEntityAt(tentacle1, posX - 2, posY)
+                        finalRoom.changeBaseAt(Base.water, posX - 1, posY)
+                        finalRoom.changeBaseAt(Base.waterOctopus, posX, posY)
+                        finalRoom.addEntityAt(head, posX, posY)
+                        finalRoom.changeBaseAt(Base.water, posX + 1, posY)
+                        finalRoom.changeBaseAt(Base.water, posX + 2, posY)
+                        finalRoom.addEntityAt(tentacle2, posX + 2, posY)
+                    }
+                    finally
+                    {
+                        if (finalRoom.getSpace(RoomPosition(posX, posY))?.getEntity() != null)
+                        {
+                            bossNotSpawned = false
+                        }
+                    }
+                }
+            }
+            else                   ->
+            {
+                var bossNotSpawned = true
+                while (bossNotSpawned)
+                {
+                    val posX = Random.nextInt(1, finalRoom.widthInSpaces - 1)
+                    val posY = Random.nextInt(1, finalRoom.heightInSpaces - 1)
+                    try
+                    {
+                        val boss = Class.forName(bossClass.qualifiedName).getConstructor().newInstance() as Enemy
+                        boss.createOwnHealthBar()
+                        finalRoom.addEntityAt(boss, RoomPosition(posX, posY))
+                    }
+                    finally
+                    {
+                        if (finalRoom.getSpace(RoomPosition(posX, posY))?.getEntity() != null)
+                        {
+                            bossNotSpawned = false
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
 }
