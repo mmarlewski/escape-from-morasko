@@ -144,7 +144,10 @@ class King : Entity, Enemy
         {
             enemy.damageCharacter(enemy.healthPoints)
         }
-        showSkillAssignPopUpAfterBossKill(this)
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+        }
     }
     
     fun getPossibleAttackPositions() : List<RoomPosition>

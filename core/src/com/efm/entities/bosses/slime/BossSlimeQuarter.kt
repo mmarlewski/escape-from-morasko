@@ -114,7 +114,10 @@ class BossSlimeQuarter : Entity, Enemy
     
     fun finalBossSlimeQuartersKilled()
     {
-        showSkillAssignPopUpAfterBossKill(this)
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+        }
     }
     
 }

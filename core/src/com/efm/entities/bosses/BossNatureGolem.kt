@@ -190,7 +190,10 @@ class BossNatureGolem : Entity, Enemy
     
     override fun onDeath()
     {
-        showSkillAssignPopUpAfterBossKill(this)
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+        }
     }
     
     private fun replaceTileWithGrass(tilePosition : RoomPosition)

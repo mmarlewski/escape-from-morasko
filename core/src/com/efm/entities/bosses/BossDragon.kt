@@ -332,7 +332,10 @@ class BossDragon : Entity, Enemy
     
     override fun onDeath()
     {
-        showSkillAssignPopUpAfterBossKill(this)
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+        }
     }
     
     // for serializing
