@@ -14,6 +14,7 @@ import com.efm.level.World
 import com.efm.room.*
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
+import kotlin.math.round
 
 /**
  * Enemy has its own turn and can attack the Hero.
@@ -23,6 +24,7 @@ interface Enemy : Character
     override val position : RoomPosition
     val detectionRange : Int
     val attackRange : Int
+    var attackDamage : Int
     val stepsInOneTurn : Int
     var healthBar : ProgressBar
     var healthStack : Stack
@@ -257,6 +259,17 @@ interface Enemy : Character
         }
         return possibleSteps.random()
     }
+    
+    //scaling
+    fun scaleOwnStats()
+    {
+        val turnsElapsed = getTurnsElapsed()
+        maxHealthPoints += turnsElapsed
+        healthPoints += turnsElapsed
+        attackDamage += round((turnsElapsed/3).toDouble()).toInt()
+        createOwnHealthBar()
+    }
+    
     
     // for serializing
     

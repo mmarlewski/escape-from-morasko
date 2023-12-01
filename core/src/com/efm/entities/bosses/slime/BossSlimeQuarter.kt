@@ -19,6 +19,7 @@ class BossSlimeQuarter : Entity, Enemy
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
+    override var attackDamage = 10
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -104,7 +105,7 @@ class BossSlimeQuarter : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(10)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }

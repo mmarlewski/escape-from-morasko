@@ -41,6 +41,13 @@ object World
             {
                 spawnAllBossesInOneRoom(newCurrentRoom)
             }
+            if (newCurrentRoom.areEnemiesInRoom())
+            {
+                for (enemy in newCurrentRoom.getEnemies())
+                {
+                    enemy.scaleOwnStats()
+                }
+            }
             currentRoom = newCurrentRoom
             
         }

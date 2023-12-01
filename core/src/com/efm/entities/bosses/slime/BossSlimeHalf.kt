@@ -20,6 +20,7 @@ class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
+    override var attackDamage = 20
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -105,7 +106,7 @@ class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(20)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }

@@ -23,6 +23,7 @@ fun endCurrentTurn()
         {
             World.hero.regainAllAP()
             World.hero.updateActiveSkillCoolDown()
+            incrementTurnsElapsed()
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             if (!isHeroVisible)
@@ -46,6 +47,7 @@ fun endCurrentTurn()
         is State.combat.hero ->
         {
             World.hero.updateActiveSkillCoolDown()
+            incrementTurnsElapsed()
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             Map.clearLayer(MapLayer.select)
