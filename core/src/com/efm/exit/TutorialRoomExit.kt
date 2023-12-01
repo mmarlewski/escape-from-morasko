@@ -40,7 +40,8 @@ class TutorialRoomExit(
                         null, enemy.position.copy(), World.hero.position.copy(), 0.1f
                                                                        )
                 animations += Animation.action {
-                    TutorialPopups.addPopupToDisplay(TutorialPopups.equipmentPopup)
+                    //TutorialPopups.addPopupToDisplay(TutorialPopups.equipmentPopup)
+                    TutorialPopups.equipmentPopup.isVisible = true
                     getState().tutorialFlags.equipmentPopupShown = true
                     // hero has no AP
                     World.hero.spendAP(World.hero.abilityPoints)

@@ -39,7 +39,8 @@ fun endCurrentTurn()
             }
             if (newState.tutorialFlags.tutorialOn && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
             {
-                TutorialPopups.addPopupToDisplay(TutorialPopups.combatPopup)
+                //TutorialPopups.addPopupToDisplay(TutorialPopups.combatPopup)
+                TutorialPopups.combatPopup.isVisible = true
                 newState.tutorialFlags.combatPopupShown = true
             }
         }

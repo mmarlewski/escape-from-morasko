@@ -199,9 +199,11 @@ object ItemsStructure
             currState.tutorialFlags.playerSelectedSomethingFromEquipment = true
         if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.playerSelectedSomethingFromEquipment && !currState.tutorialFlags.healthAndAbilityPopupShown)
         {
-            TutorialPopups.addPopupToDisplay(TutorialPopups.healthAndAbilityPopup)
+            //TutorialPopups.addPopupToDisplay(TutorialPopups.healthAndAbilityPopup)
+            TutorialPopups.healthAndAbilityPopup.isVisible = true
             currState.tutorialFlags.healthAndAbilityPopupShown = true
-            TutorialPopups.addPopupToDisplay(TutorialPopups.turnsPopup)
+            //TutorialPopups.addPopupToDisplay(TutorialPopups.turnsPopup)
+            TutorialPopups.turnsPopup.isVisible = true
             currState.tutorialFlags.turnsPopupShown = true
         }
     

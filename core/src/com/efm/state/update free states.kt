@@ -18,17 +18,20 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
 {
     if (currState.tutorialFlags.tutorialOn && !currState.tutorialFlags.welcomePopupShown)
     {
-        TutorialPopups.addPopupToDisplay(TutorialPopups.welcomePopup)
+        //TutorialPopups.addPopupToDisplay(TutorialPopups.welcomePopup)
+        TutorialPopups.welcomePopup.isVisible = true
         currState.tutorialFlags.welcomePopupShown = true
     }
     if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.welcomePopupShown && !currState.tutorialFlags.cameraPopupShown)
     {
-        TutorialPopups.addPopupToDisplay(TutorialPopups.cameraPopup)
+        //TutorialPopups.addPopupToDisplay(TutorialPopups.cameraPopup)
+        TutorialPopups.cameraPopup.isVisible = true
         currState.tutorialFlags.cameraPopupShown = true
     }
     if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.cameraPopupShown && !currState.tutorialFlags.movementPopupShown)
     {
-        TutorialPopups.addPopupToDisplay(TutorialPopups.movementPopup)
+        //TutorialPopups.addPopupToDisplay(TutorialPopups.movementPopup)
+        TutorialPopups.movementPopup.isVisible = true
         currState.tutorialFlags.movementPopupShown = true
     }
     
@@ -471,7 +474,8 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         }
         if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.movementPopupShown && currState.tutorialFlags.playerMoved && !currState.tutorialFlags.lootingPopupShown)
         {
-            TutorialPopups.addPopupToDisplay(TutorialPopups.lootingPopup)
+            //TutorialPopups.addPopupToDisplay(TutorialPopups.lootingPopup)
+            TutorialPopups.lootingPopup.isVisible = true
             currState.tutorialFlags.lootingPopupShown = true
         }
     
