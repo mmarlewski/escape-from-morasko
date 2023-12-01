@@ -19,6 +19,7 @@ class BossOctopusTentacle : Entity, Enemy
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 2
+    override var attackDamage = 2
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -92,7 +93,7 @@ class BossOctopusTentacle : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(2)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }

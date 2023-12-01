@@ -19,6 +19,7 @@ class EnemyMimic : Entity, Enemy
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
+    override var attackDamage = 2
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -121,7 +122,7 @@ class EnemyMimic : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(2)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }

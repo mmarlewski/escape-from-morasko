@@ -23,6 +23,7 @@ class EnemyBoar(
     
     override val detectionRange : Int = 3
     override val attackRange : Int = 3
+    override var attackDamage = 20
     override val stepsInOneTurn : Int = 2
     
     override lateinit var healthBar : ProgressBar
@@ -132,7 +133,7 @@ class EnemyBoar(
             val attackedSpace = World.currentRoom.getSpace(heroPosition)
             when (val attackedEntity = attackedSpace?.getEntity())
             {
-                is Character -> attackedEntity.damageCharacter(20)
+                is Character -> attackedEntity.damageCharacter(attackDamage)
             }
         }
         Animating.executeAnimations(animations)

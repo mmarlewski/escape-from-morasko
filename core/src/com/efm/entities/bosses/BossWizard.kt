@@ -22,6 +22,7 @@ class BossWizard : Entity, Enemy
     override var alive = true
     override val detectionRange = 5
     override val attackRange = 5
+    override var attackDamage = 5
     override val stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -132,7 +133,7 @@ class BossWizard : Entity, Enemy
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(5)
+                        attackedEntity.damageCharacter(attackDamage)
                     }
                 }
             })

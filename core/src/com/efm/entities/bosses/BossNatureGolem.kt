@@ -21,6 +21,7 @@ class BossNatureGolem : Entity, Enemy
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 5
+    override var attackDamage = 10
     override val stepsInOneTurn = 5
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -103,7 +104,7 @@ class BossNatureGolem : Entity, Enemy
                     if (entity != null)
                     {
                         projectileSquare.add(Animation.showTile(Tiles.impact, squarePerimeterPosition, 0.2f))
-                        projectileSquare.add(Animation.action { if (entity is Character) entity.damageCharacter(10) })
+                        projectileSquare.add(Animation.action { if (entity is Character) entity.damageCharacter(attackDamage) })
                     }
                 }
             }

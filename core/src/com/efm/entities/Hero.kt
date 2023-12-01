@@ -36,6 +36,8 @@ class Hero(
     
     val bodyPartMap = mutableMapOf<BodyPart, Skill?>().apply { BodyPart.values().forEach { this[it] = null } }
     
+    var turnsElapsed : Int = 0
+    
     var isInvincible = false
         set(value)
         {
@@ -270,6 +272,16 @@ class Hero(
             if (s == skill) return true
         }
         return false
+    }
+    
+    fun incrementTurnsElapsed()
+    {
+        turnsElapsed += 1
+    }
+    
+    fun getAmountOfTurnsElapsed() : Int
+    {
+        return turnsElapsed
     }
     
     // for serializing

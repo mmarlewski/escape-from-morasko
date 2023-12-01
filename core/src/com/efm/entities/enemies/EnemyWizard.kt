@@ -20,6 +20,7 @@ class EnemyWizard : Enemy
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 3
+    override var attackDamage = 20
     override val stepsInOneTurn = 5
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

@@ -34,6 +34,7 @@ class King : Entity, Enemy
     
     override val detectionRange = 1
     override val attackRange = 0
+    override var attackDamage = 5
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -131,7 +132,7 @@ class King : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(5)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }

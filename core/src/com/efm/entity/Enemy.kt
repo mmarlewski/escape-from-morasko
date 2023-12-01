@@ -1,5 +1,6 @@
 package com.efm.entity
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
@@ -263,10 +264,11 @@ interface Enemy : Character
     //scaling
     fun scaleOwnStats()
     {
-        val turnsElapsed = getTurnsElapsed()
+        val turnsElapsed = World.hero.getAmountOfTurnsElapsed()
         maxHealthPoints += turnsElapsed
         healthPoints += turnsElapsed
         attackDamage += round((turnsElapsed/3).toDouble()).toInt()
+        Gdx.app.log("Scaling", "Turns elapsed : $turnsElapsed")
         createOwnHealthBar()
     }
     

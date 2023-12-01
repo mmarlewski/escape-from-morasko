@@ -21,6 +21,7 @@ class EnemyRollingStone : Entity, Enemy
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 1
+    override var attackDamage = 20
     override var stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -134,7 +135,7 @@ class EnemyRollingStone : Entity, Enemy
                 is Character ->
                 {
                     // the longer the charge, the stronger the attack
-                    attackedEntity.damageCharacter(20 + (stepsSpaces?.size?.times(10) ?: 0))
+                    attackedEntity.damageCharacter(attackDamage + (stepsSpaces?.size?.times(3) ?: 0))
                 }
             }
         }

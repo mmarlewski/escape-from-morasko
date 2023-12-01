@@ -19,6 +19,7 @@ class EnemySkeleton : Entity, Enemy
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 3
+    override var attackDamage = 2
     override val stepsInOneTurn = 1
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -106,7 +107,7 @@ class EnemySkeleton : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(2)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }
