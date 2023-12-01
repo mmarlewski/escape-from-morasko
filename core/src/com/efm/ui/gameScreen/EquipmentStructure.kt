@@ -30,7 +30,6 @@ object EquipmentStructure
     
     fun createReturnButton() : ImageButton
     {
-        
         val returnButton = imageButtonOf(
                 Textures.close,
                 Textures.upNinePatch,
@@ -38,14 +37,19 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                        ) {
+                                        )
+        {
             Sounds.ui_3.playOnce()
             ProgressBars.setVisibilty(true)
             PopUps.setBackgroundVisibility(true)
             LeftStructure.menuButton.isVisible = true
             setVisibility(false)
+            
+            saveGame()
         }
+        
         returnButton.isVisible = false
+        
         return returnButton
     }
     
@@ -58,7 +62,8 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                        ) {
+                                        )
+        {
             Sounds.ui_2.playOnce()
             
             this.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
@@ -90,7 +95,8 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                       ) {
+                                       )
+        {
             Sounds.ui_2.playOnce()
             
             this.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)

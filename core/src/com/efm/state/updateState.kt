@@ -184,7 +184,29 @@ fun updateState()
     
     setState(newState)
     
-    if (newState != currState && newState !is State.combat.enemies)
+    if ((currState is State.combat.enemies && newState !is State.combat.enemies)
+            || (newState != currState && newState in listOf(
+                    
+                    State.free.moveSelectedTwice,
+                    State.free.multiUseMapItemTargetSelectedTwice,
+                    State.free.stackableMapItemTargetSelectedTwice,
+                    State.free.stackableSelfItemChosen,
+                    State.free.activeSkillTargetSelectedTwice,
+                    
+                    State.free.moveSelectedTwice,
+                    State.constrained.multiUseMapItemTargetSelectedTwice,
+                    State.constrained.stackableMapItemTargetSelectedTwice,
+                    State.constrained.stackableSelfItemChosen,
+                    State.constrained.activeSkillTargetSelectedTwice,
+                    
+                    State.combat.hero.moveSelectedTwice,
+                    State.combat.hero.multiUseMapItemTargetSelectedTwice,
+                    State.combat.hero.stackableMapItemTargetSelectedTwice,
+                    State.combat.hero.stackableSelfItemChosen,
+                    State.combat.hero.activeSkillTargetSelectedTwice
+                                                           )
+                    )
+    )
     {
         saveGame()
     }
