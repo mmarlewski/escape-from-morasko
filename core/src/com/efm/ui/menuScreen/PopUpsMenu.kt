@@ -8,6 +8,7 @@ import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 import com.efm.skill.BodyPart
+import com.efm.skills.*
 import com.efm.stackableSelfItems.Apple
 import com.efm.state.State
 import com.efm.state.setState
@@ -37,6 +38,7 @@ object PopUpsMenu
                         }
                     }
                     // create World
+                    World.levels.clear()
                     //World.createWorldPrototypeTwo()
                     //World.createWorldBoarTest()
                     World.createWorldPrototypeThree()
@@ -57,13 +59,13 @@ object PopUpsMenu
                     // add Items to Hero
                     World.hero.inventory.addItem(Apple(2))
                     // add Skills to Hero
-                    //World.hero.addSkill(LavaWalking)
-                    //World.hero.addSkill(Push)
-                    //World.hero.addSkill(Invisibility)
-                    //World.hero.addSkill(Freeze)
-                    //World.hero.addSkill(GrassHealing)
-                    //World.hero.addSkill(Jump)
-                    //World.hero.addSkill(Shield)
+//                    World.hero.addSkill(LavaWalking)
+//                    World.hero.addSkill(Push)
+//                    World.hero.addSkill(Invisibility)
+//                    World.hero.addSkill(Freeze)
+//                    World.hero.addSkill(GrassHealing)
+//                    World.hero.addSkill(Jump)
+//                    World.hero.addSkill(Shield)
                     // set State
                     val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
                     val initState = when (areEnemiesInRoom)

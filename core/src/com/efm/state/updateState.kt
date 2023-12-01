@@ -193,7 +193,7 @@ fun updateState()
                     State.free.stackableSelfItemChosen,
                     State.free.activeSkillTargetSelectedTwice,
                     
-                    State.free.moveSelectedTwice,
+                    State.constrained.moveSelectedTwice,
                     State.constrained.multiUseMapItemTargetSelectedTwice,
                     State.constrained.stackableMapItemTargetSelectedTwice,
                     State.constrained.stackableSelfItemChosen,

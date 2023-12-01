@@ -78,8 +78,8 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
             {
                 changeBaseIfDrained(space)
                 val showAndHeal = mutableListOf(
-                        Animation.showTile(moveTile, space.position.copy(), 0.2f),
-                        Animation.ascendTile(Tiles.hpPlus, space.position.copy(), 0.2f, 0.25f)
+                        Animation.showTile(moveTile, space.position.copy(), 0.1f),
+                        Animation.ascendTile(Tiles.hpPlus, space.position.copy(), 0.1f, 0.1f)
                                                )
                 animations += Animation.simultaneous(showAndHeal)
             }

@@ -23,31 +23,18 @@
 {
 	class: com.efm.entities.Hero
 	position: {
-		x: 1
-		y: 7
+		x: 6
+		y: 2
 	}
 	maxHealthPoints: 100
 	healthPoints: 100
 	alive: true
 	maxAbilityPoints: 14
-	abilityPoints: 1
+	abilityPoints: 11
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
-	inventory: {
-		items: [
-			{
-				class: com.efm.multiUseMapItems.WoodenSword
-			}
-			{
-				class: com.efm.stackableSelfItems.Apple
-				amount: 2
-			}
-			{
-				class: com.efm.stackableSelfItems.Fish
-			}
-		]
-	}
+	inventory: {}
 	skillNames: [
 		{
 			class: java.lang.String
@@ -659,7 +646,15 @@
 							x: 4
 							y: 3
 						}
-						items: []
+						items: [
+							{
+								class: com.efm.multiUseMapItems.WoodenSword
+							}
+							{
+								class: com.efm.stackableSelfItems.Fish
+								amount: 2
+							}
+						]
 						maxItems: 5
 					}
 					{
@@ -1929,8 +1924,8 @@
 					{
 						class: com.efm.entities.enemies.EnemyMushroom
 						position: {
-							x: 7
-							y: 3
+							x: 5
+							y: 5
 						}
 						maxHealthPoints: 10
 						healthPoints: 10
@@ -2521,7 +2516,7 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.PotionSmall
-								amount: 3
+								amount: 2
 							}
 						]
 						maxItems: 5
@@ -3803,11 +3798,11 @@
 					{
 						class: com.efm.entities.enemies.Boar.EnemyGhost
 						position: {
-							x: 4
-							y: 8
+							x: 2
+							y: 10
 						}
-						maxHealthPoints: 41
-						healthPoints: 41
+						maxHealthPoints: 40
+						healthPoints: 40
 						alive: true
 						isFrozen: false
 					}
@@ -3817,8 +3812,8 @@
 							x: 7
 							y: 5
 						}
-						maxHealthPoints: 11
-						healthPoints: 11
+						maxHealthPoints: 10
+						healthPoints: 10
 						alive: true
 						isFrozen: false
 					}
@@ -3885,31 +3880,18 @@
 					{
 						class: com.efm.entities.Hero
 						position: {
-							x: 1
-							y: 7
+							x: 6
+							y: 2
 						}
 						maxHealthPoints: 100
 						healthPoints: 100
 						alive: true
 						maxAbilityPoints: 14
-						abilityPoints: 1
+						abilityPoints: 11
 						apDrainInNextTurn: 0
 						canMoveNextTurn: true
 						isVisible: true
-						inventory: {
-							items: [
-								{
-									class: com.efm.multiUseMapItems.WoodenSword
-								}
-								{
-									class: com.efm.stackableSelfItems.Apple
-									amount: 2
-								}
-								{
-									class: com.efm.stackableSelfItems.Fish
-								}
-							]
-						}
+						inventory: {}
 						skillNames: [
 							{
 								class: java.lang.String
@@ -8052,11 +8034,18 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.Sledgehammer
+							}
+							{
 								class: com.efm.multiUseMapItems.WoodenSword
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 6
+								amount: 2
+							}
+							{
+								class: com.efm.stackableSelfItems.PotionSmall
+								amount: 2
 							}
 						]
 						maxItems: 5
