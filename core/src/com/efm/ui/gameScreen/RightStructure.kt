@@ -39,11 +39,13 @@ object RightStructure
             val newState = when (val currState = getState())
             {
                 is State.free        -> State.free.heroSelected.apply {
+                    Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                 }
                 
                 is State.constrained -> State.constrained.heroSelected.apply {
+                    Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.isHeroDetected = currState.isHeroDetected
@@ -51,6 +53,7 @@ object RightStructure
                 }
                 
                 is State.combat.hero -> State.combat.hero.heroSelected.apply {
+                    Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
