@@ -18,23 +18,29 @@
 }
 {
 	class: java.lang.String
-	value: 4
+	value: 5
 }
 {
 	class: com.efm.entities.Hero
 	position: {
-		x: 6
-		y: 2
+		x: 11
+		y: 1
 	}
 	maxHealthPoints: 100
-	healthPoints: 100
+	healthPoints: 98
 	alive: true
 	maxAbilityPoints: 14
-	abilityPoints: 11
+	abilityPoints: 12
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
-	inventory: {}
+	inventory: {
+		items: [
+			{
+				class: com.efm.stackableSelfItems.Apple
+			}
+		]
+	}
 	skillNames: [
 		{
 			class: java.lang.String
@@ -1924,11 +1930,11 @@
 					{
 						class: com.efm.entities.enemies.EnemyMushroom
 						position: {
-							x: 5
-							y: 5
+							x: 7
+							y: 3
 						}
-						maxHealthPoints: 10
-						healthPoints: 10
+						maxHealthPoints: 11
+						healthPoints: 11
 						alive: true
 						isFrozen: false
 					}
@@ -2512,11 +2518,10 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 4
+								amount: 3
 							}
 							{
 								class: com.efm.stackableSelfItems.PotionSmall
-								amount: 2
 							}
 						]
 						maxItems: 5
@@ -3801,8 +3806,8 @@
 							x: 2
 							y: 10
 						}
-						maxHealthPoints: 40
-						healthPoints: 40
+						maxHealthPoints: 42
+						healthPoints: 42
 						alive: true
 						isFrozen: false
 					}
@@ -3812,8 +3817,8 @@
 							x: 7
 							y: 5
 						}
-						maxHealthPoints: 10
-						healthPoints: 10
+						maxHealthPoints: 12
+						healthPoints: 12
 						alive: true
 						isFrozen: false
 					}
@@ -3876,48 +3881,6 @@
 							y: 7
 						}
 						endDirection: right
-					}
-					{
-						class: com.efm.entities.Hero
-						position: {
-							x: 6
-							y: 2
-						}
-						maxHealthPoints: 100
-						healthPoints: 100
-						alive: true
-						maxAbilityPoints: 14
-						abilityPoints: 11
-						apDrainInNextTurn: 0
-						canMoveNextTurn: true
-						isVisible: true
-						inventory: {}
-						skillNames: [
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-						]
 					}
 				]
 			}
@@ -4637,7 +4600,7 @@
 							x: 4
 							y: 6
 						}
-						base: water
+						base: rock
 					}
 					{
 						class: com.efm.room.Space
@@ -4645,7 +4608,7 @@
 							x: 5
 							y: 6
 						}
-						base: water
+						base: rock
 					}
 					{
 						class: com.efm.room.Space
@@ -4653,7 +4616,7 @@
 							x: 6
 							y: 6
 						}
-						base: waterOctopus
+						base: rock
 					}
 					{
 						class: com.efm.room.Space
@@ -4661,7 +4624,7 @@
 							x: 7
 							y: 6
 						}
-						base: water
+						base: rock
 					}
 					{
 						class: com.efm.room.Space
@@ -4669,7 +4632,7 @@
 							x: 8
 							y: 6
 						}
-						base: water
+						base: rock
 					}
 					{
 						class: com.efm.room.Space
@@ -5442,63 +5405,13 @@
 						]
 					}
 					{
-						class: com.efm.entities.bosses.BossOctopusTentacle
-						position: {
-							x: 4
-							y: 6
-						}
-						maxHealthPoints: 5
-						healthPoints: 5
-						alive: true
-						isFrozen: false
-					}
-					{
-						class: com.efm.entities.bosses.BossOctopusHead
+						class: com.efm.entities.bosses.slime.BossSlime
 						position: {
 							x: 6
-							y: 6
+							y: 3
 						}
-						maxHealthPoints: 50
-						healthPoints: 50
-						alive: true
-						isFrozen: false
-						isShowingHead: false
-						showHeadNextTurn: false
-						showHeadIndefinitely: false
-						currTentacleNum: 2
-						tentacles: [
-							{
-								class: com.efm.entities.bosses.BossOctopusTentacle
-								position: {
-									x: 4
-									y: 6
-								}
-								maxHealthPoints: 5
-								healthPoints: 5
-								alive: true
-								isFrozen: false
-							}
-							{
-								class: com.efm.entities.bosses.BossOctopusTentacle
-								position: {
-									x: 8
-									y: 6
-								}
-								maxHealthPoints: 5
-								healthPoints: 5
-								alive: true
-								isFrozen: false
-							}
-						]
-					}
-					{
-						class: com.efm.entities.bosses.BossOctopusTentacle
-						position: {
-							x: 8
-							y: 6
-						}
-						maxHealthPoints: 5
-						healthPoints: 5
+						maxHealthPoints: 52
+						healthPoints: 52
 						alive: true
 						isFrozen: false
 					}
@@ -5536,6 +5449,54 @@
 						direction: down
 						style: stone
 						endLevelName: 2
+					}
+					{
+						class: com.efm.entities.Hero
+						position: {
+							x: 11
+							y: 1
+						}
+						maxHealthPoints: 100
+						healthPoints: 98
+						alive: true
+						maxAbilityPoints: 14
+						abilityPoints: 12
+						apDrainInNextTurn: 0
+						canMoveNextTurn: true
+						isVisible: true
+						inventory: {
+							items: [
+								{
+									class: com.efm.stackableSelfItems.Apple
+								}
+							]
+						}
+						skillNames: [
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+						]
 					}
 				]
 			}
@@ -8032,22 +7993,7 @@
 							x: 13
 							y: 3
 						}
-						items: [
-							{
-								class: com.efm.multiUseMapItems.Sledgehammer
-							}
-							{
-								class: com.efm.multiUseMapItems.WoodenSword
-							}
-							{
-								class: com.efm.stackableMapItems.Shuriken
-								amount: 2
-							}
-							{
-								class: com.efm.stackableSelfItems.PotionSmall
-								amount: 2
-							}
-						]
+						items: []
 						maxItems: 5
 					}
 					{

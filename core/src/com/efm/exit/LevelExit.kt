@@ -14,23 +14,57 @@ open class LevelExit(
         override val position : RoomPosition,
         override var direction : Direction4,
         var endLevelName : String,
-        override var style : ExitStyle, override var activeWhenNoEnemiesAreInRoom : Boolean = true
+        override var style : ExitStyle,
+        override var activeWhenNoEnemiesAreInRoom : Boolean = true,
+        override var active : Boolean = true
                     ) : Exit
 {
-    override fun getOutlineTealTile() : TiledMapTile? = when (direction)
+    override fun getOutlineTealTile() : TiledMapTile?
     {
-        Direction4.up -> style.tiles.exitLevelUpOutlineTeal
-        Direction4.right -> style.tiles.exitLevelRightOutlineTeal
-        Direction4.down -> style.tiles.exitLevelDownOutlineTeal
-        Direction4.left -> style.tiles.exitLevelLeftOutlineTeal
+        return if (!activeWhenNoEnemiesAreInRoom)
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitLevelUpOutlineTeal
+                Direction4.right -> Tiles.ExitLevelRightOutlineTeal
+                Direction4.down  -> Tiles.ExitLevelDownOutlineTeal
+                Direction4.left  -> Tiles.ExitLevelLeftOutlineTeal
+            }
+        }
+        else
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitLevelUpOutlineRed
+                Direction4.right -> Tiles.ExitLevelRightOutlineRed
+                Direction4.down  -> Tiles.ExitLevelDownOutlineRed
+                Direction4.left  -> Tiles.ExitLevelLeftOutlineRed
+            }
+        }
     }
     
-    override fun getTile() : TiledMapTile? = when (direction)
+    override fun getTile() : TiledMapTile?
     {
-        Direction4.up -> style.tiles.exitLevelUp
-        Direction4.right -> style.tiles.exitLevelRight
-        Direction4.down -> style.tiles.exitLevelDown
-        Direction4.left -> style.tiles.exitLevelLeft
+        return if (!activeWhenNoEnemiesAreInRoom)
+        {
+            when (direction)
+            {
+                Direction4.up    -> style.tiles.exitLevelUp
+                Direction4.right -> style.tiles.exitLevelRight
+                Direction4.down  -> style.tiles.exitLevelDown
+                Direction4.left  -> style.tiles.exitLevelLeft
+            }
+        }
+        else
+        {
+            when (direction)
+            {
+                Direction4.up    -> style.tiles.exitLevelUpClosed
+                Direction4.right -> style.tiles.exitLevelRightClosed
+                Direction4.down  -> style.tiles.exitLevelDownClosed
+                Direction4.left  -> style.tiles.exitLevelLeftClosed
+            }
+        }
     }
     
     override fun interact()

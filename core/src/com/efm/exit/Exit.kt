@@ -16,6 +16,7 @@ interface Exit : Interactive
     override val position : RoomPosition
     var direction : Direction4
     var style : ExitStyle
+    var active : Boolean
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile? = null
     

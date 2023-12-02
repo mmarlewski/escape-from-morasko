@@ -7,16 +7,19 @@ internal class ExitTiles(
         val exitRight : TiledMapTile?,
         val exitDown : TiledMapTile?,
         val exitLeft : TiledMapTile?,
+        
         val exitLevelUp : TiledMapTile?,
         val exitLevelRight : TiledMapTile?,
         val exitLevelDown : TiledMapTile?,
         val exitLevelLeft : TiledMapTile?,
-        val exitUpOutlineTeal : TiledMapTile?,
-        val exitRightOutlineTeal : TiledMapTile?,
-        val exitDownOutlineTeal : TiledMapTile?,
-        val exitLeftOutlineTeal : TiledMapTile?,
-        val exitLevelUpOutlineTeal : TiledMapTile?,
-        val exitLevelRightOutlineTeal : TiledMapTile?,
-        val exitLevelDownOutlineTeal : TiledMapTile?,
-        val exitLevelLeftOutlineTeal : TiledMapTile?
+        
+        val exitUpClosed : TiledMapTile?,
+        val exitRightClosed : TiledMapTile?,
+        val exitDownClosed : TiledMapTile?,
+        val exitLeftClosed : TiledMapTile?,
+        
+        val exitLevelUpClosed : TiledMapTile?,
+        val exitLevelRightClosed : TiledMapTile?,
+        val exitLevelDownClosed : TiledMapTile?,
+        val exitLevelLeftClosed : TiledMapTile?
                         )

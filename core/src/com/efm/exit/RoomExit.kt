@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import com.efm.*
+import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
@@ -18,23 +19,56 @@ open class RoomExit(
         var endPosition : RoomPosition,
         override var style : ExitStyle,
         var endDirection : Direction4 = direction.opposite(),
-        override var activeWhenNoEnemiesAreInRoom : Boolean = false
+        override var activeWhenNoEnemiesAreInRoom : Boolean = false,
+        override var active : Boolean = true
                    ) : Exit
 {
-    override fun getOutlineTealTile() : TiledMapTile? = when (direction)
+    override fun getOutlineTealTile() : TiledMapTile?
     {
-        Direction4.up    -> style.tiles.exitUpOutlineTeal
-        Direction4.right -> style.tiles.exitRightOutlineTeal
-        Direction4.down  -> style.tiles.exitDownOutlineTeal
-        Direction4.left  -> style.tiles.exitLeftOutlineTeal
+        return if (!activeWhenNoEnemiesAreInRoom)
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitUpOutlineTeal
+                Direction4.right -> Tiles.ExitRightOutlineTeal
+                Direction4.down  -> Tiles.ExitDownOutlineTeal
+                Direction4.left  -> Tiles.ExitLeftOutlineTeal
+            }
+        }
+        else
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitUpOutlineRed
+                Direction4.right -> Tiles.ExitRightOutlineRed
+                Direction4.down  -> Tiles.ExitDownOutlineRed
+                Direction4.left  -> Tiles.ExitLeftOutlineRed
+            }
+        }
     }
     
-    override fun getTile() : TiledMapTile? = when (direction)
+    override fun getTile() : TiledMapTile?
     {
-        Direction4.up    -> style.tiles.exitUp
-        Direction4.right -> style.tiles.exitRight
-        Direction4.down  -> style.tiles.exitDown
-        Direction4.left  -> style.tiles.exitLeft
+        return if (!activeWhenNoEnemiesAreInRoom)
+        {
+            when (direction)
+            {
+                Direction4.up    -> style.tiles.exitUp
+                Direction4.right -> style.tiles.exitRight
+                Direction4.down  -> style.tiles.exitDown
+                Direction4.left  -> style.tiles.exitLeft
+            }
+        }
+        else
+        {
+            when (direction)
+            {
+                Direction4.up    -> style.tiles.exitUpClosed
+                Direction4.right -> style.tiles.exitRightClosed
+                Direction4.down  -> style.tiles.exitDownClosed
+                Direction4.left  -> style.tiles.exitLeftClosed
+            }
+        }
     }
     
     override fun interact()
