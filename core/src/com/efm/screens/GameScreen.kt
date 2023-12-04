@@ -55,7 +55,7 @@ object GameScreen : BaseScreen(), GestureListener
         RightStructure.display()
         PopUps.display()
         EquipmentStructure.display()
-        //TutorialPopups.display()
+        TutorialPopups.display()
     }
     
     fun updateMapBaseLayer()

@@ -24,9 +24,14 @@ class TutorialRoomExit(
     
     override fun interact()
     {
-        if (getState().tutorialFlags.playerLooted)
+        if (!getState().tutorialFlags.tutorialOn)
         {
             super.interact()
+        }
+        else if (getState().tutorialFlags.playerLooted)
+        {
+            super.interact()
+            // focus camera on enemy and show equipmentPopup
             val enemy = World.currentRoom.getEnemies().firstOrNull()
             if (enemy != null && !getState().tutorialFlags.equipmentPopupShown)
             {
@@ -40,7 +45,7 @@ class TutorialRoomExit(
                         null, enemy.position.copy(), World.hero.position.copy(), 0.1f
                                                                        )
                 animations += Animation.action {
-                    TutorialPopups.addPopupToDisplay(TutorialPopups.equipmentPopup)
+                    TutorialPopups.equipmentPopup.isVisible = true
                     getState().tutorialFlags.equipmentPopupShown = true
                     // hero has no AP
                     World.hero.spendAP(World.hero.abilityPoints)
@@ -50,7 +55,7 @@ class TutorialRoomExit(
         }
         else
         {
-            //showPopup()
+            // in tutorial cannot leave without looting
             LeftStructure.menuButton.isVisible = false
             RightStructure.moveButton.isVisible = false
             TutorialPopups.addPopupToDisplay(TutorialPopups.cantLeavePopup)
