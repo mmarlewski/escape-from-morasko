@@ -109,7 +109,10 @@ object TitleAndButtons
         {
             Sounds.ui_5.playOnce()
             playMusicIfNotAlreadyPlaying(Musics.ambient_5)
-            PopUpsMenu.setOverwriteSaveVisibility(true)
+            if (playButton.isVisible)
+            {
+                PopUpsMenu.setOverwriteSaveVisibility(true)
+            }
             setButtonsVisibility(false)
             
         }
