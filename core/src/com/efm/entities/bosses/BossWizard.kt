@@ -148,6 +148,7 @@ class BossWizard : Entity, Enemy
         {
             showSkillAssignPopUpAfterBossKill(this)
         }
+        increaseHeroStats(5, 3)
     }
     
     fun areaOfEffectAttack()
