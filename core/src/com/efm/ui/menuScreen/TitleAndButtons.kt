@@ -113,6 +113,10 @@ object TitleAndButtons
             {
                 PopUpsMenu.setOverwriteSaveVisibility(true)
             }
+            else
+            {
+                PopUpsMenu.startNewGame()
+            }
             setButtonsVisibility(false)
             
         }

@@ -25,85 +25,7 @@ object PopUpsMenu
                 Colors.black,
                 Textures.pauseBackgroundNinePatch,
                 {
-                    TitleAndButtons.setButtonsVisibility(true)
-                    // remove enemy health stacks
-                    for (level in World.levels)
-                    {
-                        for (room in level.rooms)
-                        {
-                            for (enemy in room.getEnemies())
-                            {
-                                enemy.healthStack.remove()
-                            }
-                        }
-                    }
-                    // create World
-                    World.levels.clear()
-                    //World.createWorldPrototypeTwo()
-                    //World.createWorldBoarTest()
-                    World.createWorldPrototypeThree()
-                    // set currentLevel and currentRoom
-                    val startingLevel = World.levels.first()
-                    World.changeCurrentLevel(startingLevel)
-                    World.changeCurrentRoom(startingLevel.getStartingRoom())
-                    // add Hero to currentRoom
-                    World.currentRoom.addEntityAt(World.hero, startingLevel.getStartingPosition())
-                    // reset Hero
-                    World.hero.alive = true
-                    World.hero.healthPoints = World.hero.maxHealthPoints
-                    World.hero.healCharacter(0)
-                    World.hero.abilityPoints = World.hero.maxAbilityPoints
-                    World.hero.gainAP(0)
-                    World.hero.inventory.items.clear()
-                    BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
-                    // add Items to Hero
-                    World.hero.inventory.addItem(Apple(2))
-                    // add Skills to Hero
-//                    World.hero.addSkill(LavaWalking)
-//                    World.hero.addSkill(Push)
-//                    World.hero.addSkill(Invisibility)
-//                    World.hero.addSkill(Freeze)
-//                    World.hero.addSkill(GrassHealing)
-//                    World.hero.addSkill(Jump)
-//                    World.hero.addSkill(Shield)
-                    // set State
-                    val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
-                    val initState = when (areEnemiesInRoom)
-                    {
-                        true  -> State.constrained.noSelection
-                        false -> State.free.noSelection
-                    }
-                    initState.areEnemiesInRoom = areEnemiesInRoom
-                    initState.tutorialFlags.setDefault()
-                    setState(initState)
-                    // set new enemy health stacks
-                    for (level in World.levels)
-                    {
-                        for (room in level.rooms)
-                        {
-                            for (enemy in room.getEnemies())
-                            {
-                                enemy.createOwnHealthBar()
-                                enemy.hideOwnHealthBar()
-                            }
-                        }
-                    }
-                    // display new enemy health stacks
-                    for (enemy in World.currentRoom.getEnemies())
-                    {
-                        enemy.displayOwnHealthBar()
-                    }
-                    // update Room, Map, UI
-                    World.currentRoom.updateSpacesEntities()
-                    Map.clearAllLayers()
-                    GameScreen.updateMapBaseLayer()
-                    GameScreen.updateMapEntityLayer()
-                    ItemsStructure.fillItemsStructureWithItemsAndSkills()
-                    // camera
-                    GameScreen.changeCameraZoom(GameScreen.currZoom)
-                    GameScreen.focusCameraOnRoomPosition(World.hero.position)
-                    
-                    changeScreen(GameScreen)
+                    startNewGame()
                 },
                 {
                     TitleAndButtons.setButtonsVisibility(true)
@@ -123,6 +45,89 @@ object PopUpsMenu
     fun setOverwriteSaveVisibility(visibility : Boolean)
     {
         overwriteSave.isVisible = visibility
+    }
+    
+    fun startNewGame()
+    {
+        TitleAndButtons.setButtonsVisibility(true)
+        // remove enemy health stacks
+        for (level in World.levels)
+        {
+            for (room in level.rooms)
+            {
+                for (enemy in room.getEnemies())
+                {
+                    enemy.healthStack.remove()
+                }
+            }
+        }
+        // create World
+        World.levels.clear()
+        //World.createWorldPrototypeTwo()
+        //World.createWorldBoarTest()
+        World.createWorldPrototypeThree()
+        // set currentLevel and currentRoom
+        val startingLevel = World.levels.first()
+        World.changeCurrentLevel(startingLevel)
+        World.changeCurrentRoom(startingLevel.getStartingRoom())
+        // add Hero to currentRoom
+        World.currentRoom.addEntityAt(World.hero, startingLevel.getStartingPosition())
+        // reset Hero
+        World.hero.alive = true
+        World.hero.healthPoints = World.hero.maxHealthPoints
+        World.hero.healCharacter(0)
+        World.hero.abilityPoints = World.hero.maxAbilityPoints
+        World.hero.gainAP(0)
+        World.hero.inventory.items.clear()
+        BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
+        // add Items to Hero
+        World.hero.inventory.addItem(Apple(2))
+        // add Skills to Hero
+//                    World.hero.addSkill(LavaWalking)
+//                    World.hero.addSkill(Push)
+//                    World.hero.addSkill(Invisibility)
+//                    World.hero.addSkill(Freeze)
+//                    World.hero.addSkill(GrassHealing)
+//                    World.hero.addSkill(Jump)
+//                    World.hero.addSkill(Shield)
+        // set State
+        val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
+        val initState = when (areEnemiesInRoom)
+        {
+            true  -> State.constrained.noSelection
+            false -> State.free.noSelection
+        }
+        initState.areEnemiesInRoom = areEnemiesInRoom
+        initState.tutorialFlags.setDefault()
+        setState(initState)
+        // set new enemy health stacks
+        for (level in World.levels)
+        {
+            for (room in level.rooms)
+            {
+                for (enemy in room.getEnemies())
+                {
+                    enemy.createOwnHealthBar()
+                    enemy.hideOwnHealthBar()
+                }
+            }
+        }
+        // display new enemy health stacks
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.displayOwnHealthBar()
+        }
+        // update Room, Map, UI
+        World.currentRoom.updateSpacesEntities()
+        Map.clearAllLayers()
+        GameScreen.updateMapBaseLayer()
+        GameScreen.updateMapEntityLayer()
+        ItemsStructure.fillItemsStructureWithItemsAndSkills()
+        // camera
+        GameScreen.changeCameraZoom(GameScreen.currZoom)
+        GameScreen.focusCameraOnRoomPosition(World.hero.position)
+        
+        changeScreen(GameScreen)
     }
     
     fun display()
