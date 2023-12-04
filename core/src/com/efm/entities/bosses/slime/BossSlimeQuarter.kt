@@ -10,6 +10,7 @@ import com.efm.assets.Tiles
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.ui.gameScreen.ProgressBars
 
 class BossSlimeQuarter : Entity, Enemy
 {
@@ -119,6 +120,11 @@ class BossSlimeQuarter : Entity, Enemy
         {
             showSkillAssignPopUpAfterBossKill(this)
         }
+    }
+    
+    override fun onDeath()
+    {
+        increaseHeroStats(3, 2)
     }
     
 }

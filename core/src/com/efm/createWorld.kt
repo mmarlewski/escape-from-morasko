@@ -7,6 +7,7 @@ import com.badlogic.gdx.files.FileHandle
 import com.efm.entities.*
 import com.efm.entities.bosses.*
 import com.efm.entities.bosses.slime.BossSlime
+import com.efm.entities.bosses.slime.BossSlimeQuarter
 import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost

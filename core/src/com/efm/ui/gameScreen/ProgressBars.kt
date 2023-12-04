@@ -137,6 +137,33 @@ object ProgressBars
         abilityBarLabel = createLabel(World.hero.abilityPoints, World.hero.maxAbilityPoints)
     }
     
+    fun updateHeroApHpBars()
+    {
+        healthBar = createBar(
+                24f,
+                Textures.knobHealthbarAfterNinePatch,
+                World.hero.healthPoints,
+                World.hero.maxHealthPoints
+                             )
+        healthBarLabel = createLabel(World.hero.healthPoints, World.hero.maxHealthPoints)
+    
+        abilityBar = createBar(
+                24f,
+                Textures.knobAbilitybarAfterNinePatch,
+                World.hero.abilityPoints,
+                World.hero.maxAbilityPoints
+                              )
+        abilityBarForFlashing = createBar(
+                24f,
+                Textures.knobAbilitybarAfterNinePatch,
+                World.hero.abilityPoints,
+                World.hero.maxAbilityPoints
+                                         )
+        abilityBarForFlashing.setColor(8f, 196f, 252f, 1f)
+        abilityBarLabel = createLabel(World.hero.abilityPoints, World.hero.maxAbilityPoints)
+        display()
+    }
+    
     fun display()
     {
         

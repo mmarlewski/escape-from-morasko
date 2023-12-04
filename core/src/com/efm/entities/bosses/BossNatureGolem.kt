@@ -195,6 +195,7 @@ class BossNatureGolem : Entity, Enemy
         {
             showSkillAssignPopUpAfterBossKill(this)
         }
+        increaseHeroStats(5, 3)
     }
     
     private fun replaceTileWithGrass(tilePosition : RoomPosition)
