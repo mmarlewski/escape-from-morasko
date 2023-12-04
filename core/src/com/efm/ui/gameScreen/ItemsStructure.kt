@@ -199,9 +199,9 @@ object ItemsStructure
             currState.tutorialFlags.playerSelectedSomethingFromEquipment = true
         if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.playerSelectedSomethingFromEquipment && !currState.tutorialFlags.healthAndAbilityPopupShown)
         {
-            TutorialPopups.addPopupToDisplay(TutorialPopups.healthAndAbilityPopup)
+            // turnsPopup is shown directly after closing healthAndAbilityPopup
+            TutorialPopups.healthAndAbilityPopup.isVisible = true
             currState.tutorialFlags.healthAndAbilityPopupShown = true
-            TutorialPopups.addPopupToDisplay(TutorialPopups.turnsPopup)
             currState.tutorialFlags.turnsPopupShown = true
         }
     

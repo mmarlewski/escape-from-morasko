@@ -33,13 +33,15 @@ fun endCurrentTurn()
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                 }
             }
+            // enemies roaming
             for (enemy in World.currentRoom.getEnemies())
             {
                 enemy.roam()
             }
+            // tutorial popups
             if (newState.tutorialFlags.tutorialOn && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
             {
-                TutorialPopups.addPopupToDisplay(TutorialPopups.combatPopup)
+                TutorialPopups.combatPopup.isVisible = true
                 newState.tutorialFlags.combatPopupShown = true
             }
         }

@@ -29,11 +29,7 @@ object TutorialPopups
             welcomePopup.isVisible = false
             cameraPopup.isVisible = true
         }
-        
-        
-        PopUps.setBackgroundVisibility(false)
-        LeftStructure.menuButton.isVisible = false
-        
+        welcomePopup.isVisible = false
         return welcomePopup
         
     }
@@ -53,7 +49,6 @@ object TutorialPopups
             movementPopup.isVisible = true
         }
         cameraPopup.isVisible = false
-        
         return cameraPopup
     }
     
@@ -68,7 +63,6 @@ object TutorialPopups
             Sounds.ui_2.playOnce()
             movementPopup.isVisible = false
             RightStructure.moveButton.isVisible = true
-            lootingPopup.isVisible = true
         }
         movementPopup.isVisible = false
         
@@ -85,7 +79,6 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             lootingPopup.isVisible = false
-            equipmentPopup.isVisible = true
         }
         lootingPopup.isVisible = false
         
@@ -94,7 +87,7 @@ object TutorialPopups
     
     fun equipmentPopup() : Window
     {
-        var equipmentPopup = tutorialPopup(
+        val equipmentPopup = tutorialPopup(
                 "Equipment",
                 "Check your current equipment is visible in pause menu and at the bottom left with tabs for " +
                         "map-usables, skills, self-usables, and weapons."
@@ -102,10 +95,6 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             equipmentPopup.isVisible = false
-            ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            ItemsStructure.setVisibility(true)
-            LeftStructure.setVisibility(true)
-            healthAndAbilityPopup.isVisible = true
         }
         equipmentPopup.isVisible = false
         
@@ -140,7 +129,6 @@ object TutorialPopups
             Sounds.ui_2.playOnce()
             turnsPopup.isVisible = false
             RightStructure.endTurnButton.isVisible = true
-            combatPopup.isVisible = true
         }
         turnsPopup.isVisible = false
         
