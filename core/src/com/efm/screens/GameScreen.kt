@@ -94,11 +94,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             for (j in 0 until Map.mapWidthInTiles)
             {
-                val space = World.currentRoom.getSpace(j, i)
-                
-                val tile = space?.getEntity()?.getTile()
-                
-                Map.changeTile(MapLayer.outline, j, i, tile)
+                Map.changeTile(MapLayer.outline, j, i, null)
             }
         }
     }

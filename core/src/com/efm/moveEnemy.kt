@@ -16,11 +16,6 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
         GameScreen.updateMapBaseLayer()
         GameScreen.updateMapOutlineLayer()
         Map.clearLayer(MapLayer.select)
-        val detectionPositions = enemy.getDetectionPositions()
-        for (position in detectionPositions)
-        {
-            Map.changeTile(MapLayer.select, position, Tiles.selectPurple)
-        }
     }
     val animations = mutableListOf<Animation>()
     animations += Animation.action { enemy.hideOwnHealthBar() }

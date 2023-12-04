@@ -18,19 +18,19 @@
 }
 {
 	class: java.lang.String
-	value: 5
+	value: 4
 }
 {
 	class: com.efm.entities.Hero
 	position: {
-		x: 11
-		y: 1
+		x: 1
+		y: 7
 	}
 	maxHealthPoints: 100
 	healthPoints: 98
 	alive: true
 	maxAbilityPoints: 14
-	abilityPoints: 12
+	abilityPoints: 14
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
@@ -38,6 +38,7 @@
 		items: [
 			{
 				class: com.efm.stackableSelfItems.Apple
+				amount: 2
 			}
 		]
 	}
@@ -1930,8 +1931,8 @@
 					{
 						class: com.efm.entities.enemies.EnemyMushroom
 						position: {
-							x: 7
-							y: 3
+							x: 4
+							y: 4
 						}
 						maxHealthPoints: 11
 						healthPoints: 11
@@ -2518,10 +2519,11 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 3
+								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.PotionSmall
+								amount: 2
 							}
 						]
 						maxItems: 5
@@ -3803,22 +3805,22 @@
 					{
 						class: com.efm.entities.enemies.Boar.EnemyGhost
 						position: {
-							x: 2
-							y: 10
+							x: 9
+							y: 1
 						}
-						maxHealthPoints: 42
-						healthPoints: 42
+						maxHealthPoints: 43
+						healthPoints: 43
 						alive: true
 						isFrozen: false
 					}
 					{
 						class: com.efm.entities.enemies.EnemySkeleton
 						position: {
-							x: 7
-							y: 5
+							x: 3
+							y: 7
 						}
-						maxHealthPoints: 12
-						healthPoints: 12
+						maxHealthPoints: 13
+						healthPoints: 13
 						alive: true
 						isFrozen: false
 					}
@@ -3881,6 +3883,55 @@
 							y: 7
 						}
 						endDirection: right
+					}
+					{
+						class: com.efm.entities.Hero
+						position: {
+							x: 1
+							y: 7
+						}
+						maxHealthPoints: 100
+						healthPoints: 98
+						alive: true
+						maxAbilityPoints: 14
+						abilityPoints: 14
+						apDrainInNextTurn: 0
+						canMoveNextTurn: true
+						isVisible: true
+						inventory: {
+							items: [
+								{
+									class: com.efm.stackableSelfItems.Apple
+									amount: 2
+								}
+							]
+						}
+						skillNames: [
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+						]
 					}
 				]
 			}
@@ -5405,13 +5456,13 @@
 						]
 					}
 					{
-						class: com.efm.entities.bosses.slime.BossSlime
+						class: com.efm.entities.bosses.BossNatureGolem
 						position: {
 							x: 6
-							y: 3
+							y: 6
 						}
-						maxHealthPoints: 52
-						healthPoints: 52
+						maxHealthPoints: 50
+						healthPoints: 50
 						alive: true
 						isFrozen: false
 					}
@@ -5449,54 +5500,6 @@
 						direction: down
 						style: stone
 						endLevelName: 2
-					}
-					{
-						class: com.efm.entities.Hero
-						position: {
-							x: 11
-							y: 1
-						}
-						maxHealthPoints: 100
-						healthPoints: 98
-						alive: true
-						maxAbilityPoints: 14
-						abilityPoints: 12
-						apDrainInNextTurn: 0
-						canMoveNextTurn: true
-						isVisible: true
-						inventory: {
-							items: [
-								{
-									class: com.efm.stackableSelfItems.Apple
-								}
-							]
-						}
-						skillNames: [
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-						]
 					}
 				]
 			}
@@ -7993,7 +7996,12 @@
 							x: 13
 							y: 3
 						}
-						items: []
+						items: [
+							{
+								class: com.efm.stackableMapItems.Shuriken
+								amount: 5
+							}
+						]
 						maxItems: 5
 					}
 					{
