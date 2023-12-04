@@ -95,9 +95,6 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             equipmentPopup.isVisible = false
-            ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            ItemsStructure.setVisibility(true)
-            LeftStructure.setVisibility(true)
         }
         equipmentPopup.isVisible = false
         
