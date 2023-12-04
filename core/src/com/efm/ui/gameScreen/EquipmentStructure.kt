@@ -40,9 +40,7 @@ object EquipmentStructure
                                         )
         {
             Sounds.ui_3.playOnce()
-            ProgressBars.setVisibilty(true)
-            PopUps.setBackgroundVisibility(true)
-            LeftStructure.menuButton.isVisible = true
+            interfaceVisibilityWithTutorial()
             setVisibility(false)
             
             saveGame()

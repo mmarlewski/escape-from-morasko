@@ -43,7 +43,7 @@ object LeftStructure
                 if (PopUps.menuPause.isVisible)
                 {
                     PopUps.setMenuVisibility(false)
-                    PopUps.setBackgroundVisibility(true)
+                    interfaceVisibilityWithTutorial()
                 }
                 else
                 {
@@ -108,4 +108,18 @@ object LeftStructure
         columnTopLeft.setFillParent(true)
         GameScreen.stage.addActor(columnTopLeft)
     }
+    
+    fun displayMenuButton()
+    {
+        val columnTopLeft = columnOf(
+                rowOf(
+                        menuButton
+                     )
+                                    ).align(Align.topLeft)
+        
+        columnTopLeft.pad(16f)
+        columnTopLeft.setFillParent(true)
+        GameScreen.stage.addActor(columnTopLeft)
+    }
+    
 }

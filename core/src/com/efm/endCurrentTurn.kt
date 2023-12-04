@@ -3,8 +3,7 @@ package com.efm
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
-import com.efm.ui.gameScreen.ItemsStructure
-import com.efm.ui.gameScreen.TutorialPopups
+import com.efm.ui.gameScreen.*
 
 fun endCurrentTurn()
 {
@@ -42,6 +41,8 @@ fun endCurrentTurn()
             if (newState.tutorialFlags.tutorialOn && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
             {
                 TutorialPopups.combatPopup.isVisible = true
+                PopUps.setBackgroundVisibility(false)
+                LeftStructure.menuButton.isVisible = false
                 newState.tutorialFlags.combatPopupShown = true
             }
         }
