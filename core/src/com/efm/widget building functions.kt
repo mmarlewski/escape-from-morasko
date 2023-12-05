@@ -2,8 +2,8 @@ package com.efm
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.*
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.*
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.*
@@ -11,9 +11,11 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
 import com.efm.level.World
+import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 import com.efm.skill.BodyPart
 import com.efm.skill.Skill
+import com.efm.state.State
 import com.efm.ui.gameScreen.*
 
 lateinit var musicSlider : Slider
@@ -538,7 +540,8 @@ fun menuPopup(
     {
         window.isVisible = false
         Sounds.ui_3.playOnce()
-        PopUps.setBackgroundVisibility(true)
+        interfaceVisibilityWithTutorial()
+        
     }
     
     val equipmentButton = textButtonOf(
@@ -635,7 +638,7 @@ fun itemButtonWithHealthBar(
                             })
     imageButton.pad(10f)
     
-    var healthBar = progressBarOf(
+    val healthBar = progressBarOf(
             0f,
             maxHealth.toFloat(),
             1f,
@@ -689,9 +692,9 @@ fun itemButtonWithLabel(
     
     val imageButtonTmp = imageButtonOf(Textures.translucent1px, up, down, over, disabled, focused, onClicked)
     
-    var image = if (image != null) imageOf(image, Scaling.none) else null
+    val image = if (image != null) imageOf(image, Scaling.none) else null
     
-    var label = labelOf(
+    val label = labelOf(
             text,
             Fonts.pixeloid10,
             Color.BLACK,
@@ -910,28 +913,6 @@ fun skillsAssignmentOverlay(
     return window
 }
 
-fun coloredRectangle(color : Color, width : Float, height : Float) : Actor
-{
-    return object : Actor()
-    {
-        private val shapeRenderer = ShapeRenderer()
-        
-        init
-        {
-            setSize(width, height)
-            shapeRenderer.color = color
-        }
-        
-        override fun draw(batch : Batch?, parentAlpha : Float)
-        {
-            super.draw(batch, parentAlpha)
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-            shapeRenderer.rect(x, y, width, height)
-            shapeRenderer.end()
-        }
-    }
-}
-
 fun tutorialPopup(
         title : String,
         body : String,
@@ -977,4 +958,111 @@ fun tutorialPopup(
     window.add(columnOf(table))
     
     return window
+}
+
+fun interfaceVisibilityWithTutorial()
+{
+    if (State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
+    {
+        if (!State.TutorialFlags.equipmentPopupShown)
+        {
+            LeftStructure.menuButton.isVisible = true
+            RightStructure.moveButton.isVisible = true
+            GameScreen.canBeInteractedWith = true
+        }
+        else
+        {
+            if (!State.TutorialFlags.healthAndAbilityPopupShown)
+            {
+                ItemsStructure.setVisibility(true)
+                LeftStructure.menuButton.isVisible = true
+                RightStructure.moveButton.isVisible = true
+                GameScreen.canBeInteractedWith = true
+            }
+            else
+            {
+                if (!State.TutorialFlags.turnsPopupShown)
+                {
+                    ProgressBars.setVisibilty(true)
+                    ItemsStructure.setVisibility(true)
+                    LeftStructure.menuButton.isVisible = true
+                    RightStructure.moveButton.isVisible = true
+                    GameScreen.canBeInteractedWith = true
+                }
+                else
+                {
+                    if (!State.TutorialFlags.combatPopupShown)
+                    {
+                        RightStructure.endTurnButton.isVisible = true
+                        ProgressBars.setVisibilty(true)
+                        ItemsStructure.setVisibility(true)
+                        LeftStructure.menuButton.isVisible = true
+                        RightStructure.moveButton.isVisible = true
+                        GameScreen.canBeInteractedWith = true
+                    }
+                    else
+                    {
+                        PopUps.setBackgroundVisibility(true)
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun interfaceDrawingWithTutorial()
+{
+    State.TutorialFlags.cameraPopupShown = true
+    if (State.TutorialFlags.cameraPopupShown || State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
+    {
+        if (!State.TutorialFlags.equipmentPopupShown)
+        {
+            LeftStructure.displayMenuButton()
+            RightStructure.displayMoveButton()
+            PopUps.display()
+            EquipmentStructure.display()
+        }
+        else
+        {
+            if (!State.TutorialFlags.healthAndAbilityPopupShown)
+            {
+                RightStructure.displayMoveButton()
+                PopUps.display()
+                EquipmentStructure.display()
+                ItemsStructure.display()
+                LeftStructure.display()
+                ItemsStructure.display()
+            }
+            else
+            {
+                if (!State.TutorialFlags.turnsPopupShown)
+                {
+                    RightStructure.displayMoveButton()
+                    ProgressBars.display()
+                    PopUps.display()
+                    EquipmentStructure.display()
+                    ItemsStructure.display()
+                    LeftStructure.display()
+                    ItemsStructure.display()
+                }
+                else
+                {
+                    if (!State.TutorialFlags.combatPopupShown)
+                    {
+                        RightStructure.display()
+                        ProgressBars.display()
+                        PopUps.display()
+                        EquipmentStructure.display()
+                        ItemsStructure.display()
+                        LeftStructure.display()
+                        ItemsStructure.display()
+                    }
+                    else
+                    {
+                        PopUps.setBackgroundVisibility(true)
+                    }
+                }
+            }
+        }
+    }
 }

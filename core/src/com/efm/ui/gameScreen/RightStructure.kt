@@ -114,17 +114,30 @@ object RightStructure
         val nextTurnPlace = columnOf(
                 rowOf(endTurnButton)
                                     ).align(Align.topRight)
-        val xButtonPlace = columnOf(
+        val moveButtonPlace = columnOf(
                 rowOf(moveButton)
-                                   ).align(Align.bottomRight)
+                                      ).align(Align.bottomRight)
         
         nextTurnPlace.pad(16f)
-        xButtonPlace.pad(16f)
+        moveButtonPlace.pad(16f)
         
         nextTurnPlace.setFillParent(true)
-        xButtonPlace.setFillParent(true)
+        moveButtonPlace.setFillParent(true)
         
         GameScreen.stage.addActor(nextTurnPlace)
-        GameScreen.stage.addActor(xButtonPlace)
+        GameScreen.stage.addActor(moveButtonPlace)
+    }
+    
+    fun displayMoveButton()
+    {
+        val moveButtonPlace = columnOf(
+                rowOf(moveButton)
+                                      ).align(Align.bottomRight)
+        
+        moveButtonPlace.pad(16f)
+        
+        moveButtonPlace.setFillParent(true)
+        
+        GameScreen.stage.addActor(moveButtonPlace)
     }
 }

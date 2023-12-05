@@ -44,8 +44,6 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             cameraPopup.isVisible = false
-            LeftStructure.menuButton.isVisible = true
-            GameScreen.canBeInteractedWith = true
             movementPopup.isVisible = true
         }
         cameraPopup.isVisible = false
@@ -62,7 +60,7 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             movementPopup.isVisible = false
-            RightStructure.moveButton.isVisible = true
+            interfaceVisibilityWithTutorial()
         }
         movementPopup.isVisible = false
         
@@ -78,6 +76,7 @@ object TutorialPopups
                                         )
         {
             Sounds.ui_2.playOnce()
+            interfaceVisibilityWithTutorial()
             lootingPopup.isVisible = false
         }
         lootingPopup.isVisible = false
@@ -94,6 +93,7 @@ object TutorialPopups
                                           )
         {
             Sounds.ui_2.playOnce()
+            interfaceVisibilityWithTutorial()
             equipmentPopup.isVisible = false
         }
         equipmentPopup.isVisible = false
@@ -112,6 +112,7 @@ object TutorialPopups
             Sounds.ui_2.playOnce()
             healthAndAbilityPopup.isVisible = false
             ProgressBars.setVisibilty(true)
+            RightStructure.display()
             turnsPopup.isVisible = true
         }
         healthAndAbilityPopup.isVisible = false
@@ -128,7 +129,7 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             turnsPopup.isVisible = false
-            RightStructure.endTurnButton.isVisible = true
+            interfaceVisibilityWithTutorial()
         }
         turnsPopup.isVisible = false
         
@@ -145,6 +146,8 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             combatPopup.isVisible = false
+            interfaceVisibilityWithTutorial()
+            LeftStructure.menuButton.isVisible = true
         }
         combatPopup.isVisible = false
         
@@ -159,8 +162,7 @@ object TutorialPopups
                                           )
         {
             Sounds.ui_2.playOnce()
-            LeftStructure.menuButton.isVisible = true
-            RightStructure.moveButton.isVisible = true
+            interfaceVisibilityWithTutorial()
             cantLeavePopup.isVisible = false
             
         }

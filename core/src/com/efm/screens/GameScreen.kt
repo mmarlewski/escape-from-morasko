@@ -49,13 +49,21 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
-        ItemsStructure.display()
-        LeftStructure.display()
-        ProgressBars.display()
-        RightStructure.display()
-        PopUps.display()
-        EquipmentStructure.display()
-        TutorialPopups.display()
+        if (!State.TutorialFlags.tutorialOn)
+        {
+            ItemsStructure.display()
+            LeftStructure.display()
+            ProgressBars.display()
+            RightStructure.display()
+            PopUps.display()
+            EquipmentStructure.display()
+            TutorialPopups.display()
+        }
+        else
+        {
+            TutorialPopups.display()
+            interfaceDrawingWithTutorial()
+        }
     }
     
     fun updateMapBaseLayer()

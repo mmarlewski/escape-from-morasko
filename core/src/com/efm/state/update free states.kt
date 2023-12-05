@@ -468,6 +468,8 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.movementPopupShown && currState.tutorialFlags.playerMoved && !currState.tutorialFlags.lootingPopupShown)
         {
             TutorialPopups.lootingPopup.isVisible = true
+            LeftStructure.menuButton.isVisible = false
+            PopUps.setBackgroundVisibility(false)
             currState.tutorialFlags.lootingPopupShown = true
         }
     

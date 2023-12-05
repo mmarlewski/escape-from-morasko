@@ -200,7 +200,11 @@ object ItemsStructure
         if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.playerSelectedSomethingFromEquipment && !currState.tutorialFlags.healthAndAbilityPopupShown)
         {
             // turnsPopup is shown directly after closing healthAndAbilityPopup
+            ProgressBars.display()
             TutorialPopups.healthAndAbilityPopup.isVisible = true
+            PopUps.setBackgroundVisibility(false)
+            ProgressBars.setVisibilty(true)
+            LeftStructure.menuButton.isVisible = false
             currState.tutorialFlags.healthAndAbilityPopupShown = true
             currState.tutorialFlags.turnsPopupShown = true
         }
