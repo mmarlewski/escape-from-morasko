@@ -42,5 +42,6 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
     animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
     animations += Animation.action { enemy.displayOwnHealthBar() }
+    animations += Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
     Animating.executeAnimations(animations)
 }
