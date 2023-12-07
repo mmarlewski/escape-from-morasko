@@ -11,7 +11,6 @@ import com.efm.entities.bosses.slime.BossSlimeQuarter
 import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost
-import com.efm.entities.enemies.chess.spawnChessSet
 import com.efm.entities.walls.*
 import com.efm.exit.*
 import com.efm.item.PossibleItem
@@ -371,7 +370,7 @@ fun World.createWorldPrototypeOne()
     forge1.updateSpacesEntities()
     
 }*/
-
+/*
 fun World.createWorldPrototypeTwo()
 {
     //
@@ -652,7 +651,7 @@ fun World.createWorldPrototypeTwo()
                           )
     l1r4.addEntity(l1tol2)
 }
-
+*/
 fun World.createWorldBoarTest()
 {
     //
@@ -872,18 +871,26 @@ fun World.createWorldPrototypeThree()
         val l2r1 = createRoomFromFile("1", Gdx.files.local("l2r1.txt")).apply {
             // walls
             addWalls(WallStyle.cobblestoneDark)
-            // entities
+            // chests
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(WoodenSword(), 0.3f, 1..1), PossibleItem(Sledgehammer(), 0.2f, 1..1),
-                                    PossibleItem(SmallAxe(), 0.3f, 1..1), PossibleItem
-                                    (Shuriken(), 1f, 0..10),
-                                    PossibleItem(Mushroom(), 0.5f, 0..6), PossibleItem(PotionSmall(), 0.3f, 1..3)
+                                    PossibleItem(WoodenSword(), 0.3f, 1..1),
+                                    PossibleItem(Sledgehammer(), 0.2f, 1..1),
+                                    PossibleItem(SmallAxe(), 0.3f, 1..1),
+                                    PossibleItem(Shuriken(), 1f, 0..10),
+                                    PossibleItem(Mushroom(), 0.5f, 0..6),
+                                    PossibleItem(PotionSmall(), 0.5f, 1..3)
                                          )
                                  )
                              )
             addEntityAt(chest, 13, 3)
+            // entities
+            addEntityAt(EnemyMushroom(), 7, 10)
+            addEntityAt(EnemySkeleton(), 4, 7)
+            addEntityAt(EnemyBat(), 10, 6)
+            addEntityAt(EnemySkeleton(), 11, 9)
+            addEntityAt(EnemyMushroom(), 14, 5)
         }
         // add room to level
         addRoom(l2r1)
@@ -905,6 +912,8 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.cobblestoneDarkTall)
             // entities
+            addEntityAt(EnemyMushroom(), 2, 5)
+            addEntityAt(EnemyMushroom(), 4, 3)
         }
         // add room to level
         addRoom(l2r3)
@@ -914,7 +923,26 @@ fun World.createWorldPrototypeThree()
         val l2r4 = createRoomFromFile("4", Gdx.files.local("l2r4.txt")).apply {
             // walls
             addWalls(WallStyle.cobblestoneLight)
+            // holes
+            //deleteSpaceAt(8,5)
+            //deleteSpaceAt(9,5)
+            //deleteSpaceAt(10,5)
+            // chests
+            val chest = Chest(
+                    PossibleItems(
+                            mutableListOf(
+                                    PossibleItem(WoodenSword(), 0.3f, 1..1),
+                                    PossibleItem(Sledgehammer(), 0.1f, 1..1),
+                                    PossibleItem(Shuriken(), 1f, 0..6),
+                                    PossibleItem(Mushroom(), 1f, 0..4),
+                                    PossibleItem(PotionSmall(), 0.3f, 1..3)
+                                         )
+                                 )
+                             )
+            addEntityAt(chest, this.widthInSpaces - 1, 1)
             // entities
+            addEntityAt(EnemySkeleton(), 8, 2)
+            addEntityAt(EnemyMushroom(), 13, 3)
         }
         // add room to level
         addRoom(l2r4)
@@ -934,7 +962,20 @@ fun World.createWorldPrototypeThree()
         val l2r6 = createRoomFromFile("6", Gdx.files.local("l2r6.txt")).apply {
             // walls
             addWalls(WallStyle.cobblestoneLightTall)
+            // chests
+            val chest = Chest(
+                    PossibleItems(
+                            mutableListOf(
+                                    PossibleItem(SmallAxe(), 0.3f, 1..1),
+                                    PossibleItem(Shuriken(), 1f, 0..6),
+                                    PossibleItem(Mushroom(), 1f, 0..4),
+                                    PossibleItem(PotionSmall(), 0.3f, 1..3)
+                                         )
+                                 )
+                             )
+            addEntityAt(chest, 4, 5)
             // entities
+            addEntityAt(EnemyBoar(), 5, 3)
         }
         // add room to level
         addRoom(l2r6)
@@ -945,6 +986,7 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.cobblestoneLightTall)
             // entities
+            addEntityAt(EnemySkeleton(), 3, 5)
         }
         // add room to level
         addRoom(l2r7)
@@ -955,6 +997,8 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.stone)
             // entities
+            addEntityAt(EnemyPlant(), 7, 2)
+            addEntityAt(EnemyBat(), 3, 3)
         }
         // add room to level
         addRoom(l2r8)
@@ -965,6 +1009,17 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.stone)
             // entities
+            addEntityAt(BossSlime(), RoomPosition(9, 2))
+            // level exit
+            replaceEntityAt(
+                    LevelExit(
+                            RoomPosition(9, 0),
+                            Direction4.down,
+                            "3",
+                            ExitStyle.stone,
+                            activeWhenNoEnemiesAreInRoom = true
+                             ), RoomPosition(9, 0)
+                           )
         }
         // add room to level
         addRoom(l2r9)
@@ -980,6 +1035,97 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(0, 3),
                 ExitStyle.metal
                       )
+        addRoomPassage(
+                this,
+                l2r1.name,
+                RoomPosition(14, 0),
+                Direction4.down,
+                l2r4.name,
+                RoomPosition(5, l2r4.heightInSpaces - 3),
+                ExitStyle.metal
+                      )
+        addRoomPassage(
+                this,
+                l2r1.name,
+                RoomPosition(6, 3),
+                Direction4.down,
+                l2r7.name,
+                RoomPosition(2, l2r7.heightInSpaces - 1),
+                ExitStyle.metal
+                      )
+        addRoomPassage(
+                this,
+                l2r1.name,
+                RoomPosition(0, 10),
+                Direction4.right,
+                l2r5.name,
+                RoomPosition(5, 4),
+                ExitStyle.metal
+                      )
+        addRoomPassage(
+                this,
+                l2r5.name,
+                RoomPosition(4, 0),
+                Direction4.down,
+                l2r6.name,
+                RoomPosition(4, l2r6.heightInSpaces - 1),
+                ExitStyle.rock
+                      )
+        addRoomPassage(
+                this,
+                l2r6.name,
+                RoomPosition(l2r6.widthInSpaces - 1, 2),
+                Direction4.left,
+                l2r7.name,
+                RoomPosition(0, 1),
+                ExitStyle.rock
+                      )
+        addRoomPassage(
+                this,
+                l2r7.name,
+                RoomPosition(4, 0),
+                Direction4.down,
+                l2r8.name,
+                RoomPosition(4, l2r8.heightInSpaces - 1),
+                ExitStyle.rock
+                      )
+        addRoomPassage(
+                this,
+                l2r2.name,
+                RoomPosition(6, 0),
+                Direction4.down,
+                l2r3.name,
+                RoomPosition(3, l2r3.heightInSpaces - 1),
+                ExitStyle.stone
+                      )
+        addRoomPassage(
+                this,
+                l2r3.name,
+                RoomPosition(3, 0),
+                Direction4.down,
+                l2r4.name,
+                RoomPosition(13, l2r4.heightInSpaces - 1),
+                ExitStyle.stone
+                      )
+        addRoomPassage(
+                this,
+                l2r4.name,
+                RoomPosition(3, 0),
+                Direction4.down,
+                l2r8.name,
+                RoomPosition(8, l2r8.heightInSpaces - 2),
+                ExitStyle.stone
+                      )
+        addRoomPassage(
+                this,
+                l2r8.name,
+                RoomPosition(5, 0),
+                Direction4.down,
+                l2r9.name,
+                RoomPosition(9, l2r9.heightInSpaces - 3),
+                ExitStyle.metal
+                      )
+        (l2r8.getSpace(5, 0)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         // starting position
         //
         changeStartingRoom(l2r1)
@@ -1078,7 +1224,7 @@ x 2 2 2 10 2 2 x x x"""
     val l2r7 = """8 6
 x x x x x x
 x 2 2 2 2 2
-x 10 2 2 2 2
+x 2 2 2 2 2
 x 2 2 2 2 2
 x 2 2 2 2 2
 x 2 2 2 2 2
@@ -1088,7 +1234,7 @@ x 2 2 2 2 2"""
     val l2r8 = """8 11
 x x x x x x x x x x x
 x 2 2 2 2 2 2 2 2 2 2
-x 10 2 2 2 2 2 2 2 2 2
+x 2 2 2 2 2 2 2 2 2 2
 x 2 2 2 2 2 2 2 2 2 2
 x 2 2 2 2 2 2 2 2 2 2
 x 2 2 2 2 2 2 2 2 2 2
