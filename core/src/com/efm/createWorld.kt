@@ -7,7 +7,6 @@ import com.badlogic.gdx.files.FileHandle
 import com.efm.entities.*
 import com.efm.entities.bosses.*
 import com.efm.entities.bosses.slime.BossSlime
-import com.efm.entities.bosses.slime.BossSlimeQuarter
 import com.efm.entities.enemies.*
 import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.enemies.Boar.EnemyGhost
@@ -724,7 +723,7 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.metal)
             // entities
-            val chest = Chest()
+            val chest = TutorialChest()
             chest.addItem(WoodenSword())
             chest.addItem(Fish(2))
             addEntityAt(chest, 4, 3)
@@ -1044,6 +1043,7 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(5, l2r4.heightInSpaces - 3),
                 ExitStyle.metal
                       )
+        (l2r4.getSpace(5, l2r4.heightInSpaces - 3)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         addRoomPassage(
                 this,
                 l2r1.name,
@@ -1053,6 +1053,7 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(2, l2r7.heightInSpaces - 1),
                 ExitStyle.metal
                       )
+        (l2r7.getSpace(2, l2r7.heightInSpaces - 1)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         addRoomPassage(
                 this,
                 l2r1.name,

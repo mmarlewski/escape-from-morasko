@@ -8,11 +8,11 @@ import com.efm.entity.Interactive
 import com.efm.item.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import com.efm.room.Space
+import com.efm.state.getState
 import com.efm.ui.gameScreen.EquipmentStructure
 import kotlin.random.Random
 
-class Chest(possibleItems : PossibleItems? = null, seed : Int = Random.nextInt()) : Interactive, Container
+open class Chest(possibleItems : PossibleItems? = null, seed : Int = Random.nextInt()) : Interactive, Container
 {
     override val position = RoomPosition()
     override var items : MutableList<Item> = mutableListOf<Item>()
@@ -41,6 +41,12 @@ class Chest(possibleItems : PossibleItems? = null, seed : Int = Random.nextInt()
     fun takeItemFromChest(item : Item)
     {
         moveItem(item, this, World.hero.inventory)
+    }
+    
+    // fixes issue with using addItem() in init
+    final override fun addItem(item : Item)
+    {
+        super.addItem(item)
     }
     
     init
@@ -89,5 +95,13 @@ class Chest(possibleItems : PossibleItems? = null, seed : Int = Random.nextInt()
             val jsonMaxItems = json.readValue("maxItems", Int::class.java, jsonData)
             if (jsonMaxItems != null) this.maxItems = jsonMaxItems
         }
+    }
+}
+
+class TutorialChest : Chest()
+{
+    override fun interact()
+    {
+        if (!getState().tutorialFlags.tutorialOn || getState().tutorialFlags.lootingPopupShown) super.interact()
     }
 }
