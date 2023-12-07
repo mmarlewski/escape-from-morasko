@@ -822,42 +822,53 @@ object Tiles
     // cobblestoneDarkWall
     val cobblestoneDarkWallDown = load(walls_folder_name + "cobblestoneDarkWallDown.png")
     val cobblestoneDarkWallRight = load(walls_folder_name + "cobblestoneDarkWallRight.png")
+    val cobblestoneDarkWallRightDown = load(walls_folder_name + "cobblestoneDarkWallRightDown.png")
     // cobblestoneLightTallWall
     val cobblestoneLightTallWallDown = load(walls_folder_name + "cobblestoneLightTallWallDown.png")
     val cobblestoneLightTallWallRight = load(walls_folder_name + "cobblestoneLightTallWallRight.png")
+    val cobblestoneLightTallWallRightDown = load(walls_folder_name + "cobblestoneLightTallWallRightDown.png")
     // cobblestoneDarkTallWall
     val cobblestoneDarkTallWallDown = load(walls_folder_name + "cobblestoneDarkTallWallDown.png")
     val cobblestoneDarkTallWallRight = load(walls_folder_name + "cobblestoneDarkTallWallRight.png")
+    val cobblestoneDarkTallWallRightDown = load(walls_folder_name + "cobblestoneDarkTallWallRightDown.png")
     
     // orange brick
     
     // brickOrangeLightWall
     val brickOrangeLightWallDown = load(walls_folder_name + "brickOrangeLightWallDown.png")
     val brickOrangeLightWallRight = load(walls_folder_name + "brickOrangeLightWallRight.png")
+    val brickOrangeLightWallRightDown = load(walls_folder_name + "brickOrangeLightWallRightDown.png")
     // brickOrangeDarkWall
     val brickOrangeDarkWallDown = load(walls_folder_name + "brickOrangeDarkWallDown.png")
     val brickOrangeDarkWallRight = load(walls_folder_name + "brickOrangeDarkWallRight.png")
+    val brickOrangeDarkWallRightDown = load(walls_folder_name + "brickOrangeDarkWallRightDown.png")
     // brickOrangeLightTallWall
     val brickOrangeLightTallWallDown = load(walls_folder_name + "brickOrangeLightTallWallDown.png")
     val brickOrangeLightTallWallRight = load(walls_folder_name + "brickOrangeLightTallWallRight.png")
+    val brickOrangeLightTallWallRightDown = load(walls_folder_name + "brickOrangeLightTallWallRightDown.png")
     // brickOrangeDarkTallWall
     val brickOrangeDarkTallWallDown = load(walls_folder_name + "brickOrangeDarkTallWallDown.png")
     val brickOrangeDarkTallWallRight = load(walls_folder_name + "brickOrangeDarkTallWallRight.png")
+    val brickOrangeDarkTallWallRightDown = load(walls_folder_name + "brickOrangeDarkTallWallRightDown.png")
     
     // red brick
     
     // brickRedLightWall
     val brickRedLightWallDown = load(walls_folder_name + "brickRedLightWallDown.png")
     val brickRedLightWallRight = load(walls_folder_name + "brickRedLightWallRight.png")
+    val brickRedLightWallRightDown = load(walls_folder_name + "brickRedLightWallRightDown.png")
     // brickRedDarkWall
     val brickRedDarkWallDown = load(walls_folder_name + "brickRedDarkWallDown.png")
     val brickRedDarkWallRight = load(walls_folder_name + "brickRedDarkWallRight.png")
+    val brickRedDarkWallRightDown = load(walls_folder_name + "brickRedDarkWallRightDown.png")
     // brickRedLightTallWall
     val brickRedLightTallWallDown = load(walls_folder_name + "brickRedLightTallWallDown.png")
     val brickRedLightTallWallRight = load(walls_folder_name + "brickRedLightTallWallRight.png")
+    val brickRedLightTallWallRightDown = load(walls_folder_name + "brickRedLightTallWallRightDown.png")
     // brickRedDarkTallWall
     val brickRedDarkTallWallDown = load(walls_folder_name + "brickRedDarkTallWallDown.png")
     val brickRedDarkTallWallRight = load(walls_folder_name + "brickRedDarkTallWallRight.png")
+    val brickRedDarkTallWallRightDown = load(walls_folder_name + "brickRedDarkTallWallRightDown.png")
     
     // grass floor tiles
     val grass_floor_tiles_folder_name = "new_floor_tiles/grass/"

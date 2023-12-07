@@ -78,7 +78,13 @@ enum class WallStyle(internal val tiles : WallTiles)
     stone(WallTiles(Tiles.stoneWallRight, Tiles.stoneWallDown, Tiles.stoneWallRightDown)),
     metal(WallTiles(Tiles.metalWallRight, Tiles.metalWallDown, Tiles.metalWallRightDown)),
     rock(WallTiles(Tiles.rockWallRight, Tiles.rockWallDown, Tiles.rockWallRightDown)),
-    cobblestoneDark(WallTiles(Tiles.cobblestoneDarkWallRight, Tiles.cobblestoneDarkWallDown, null)),
+    cobblestoneDark(
+            WallTiles(
+                    Tiles.cobblestoneDarkWallRight,
+                    Tiles.cobblestoneDarkWallDown,
+                    Tiles.cobblestoneDarkWallRightDown
+                     )
+                   ),
     cobblestoneLight(
             WallTiles(
                     Tiles.cobblestoneLightWallRight,
@@ -86,16 +92,64 @@ enum class WallStyle(internal val tiles : WallTiles)
                     Tiles.cobblestoneLightWallRightDown
                      )
                     ),
-    cobblestoneDarkTall(WallTiles(Tiles.cobblestoneDarkTallWallRight, Tiles.cobblestoneDarkTallWallDown, null)),
-    cobblestoneLightTall(WallTiles(Tiles.cobblestoneLightTallWallRight, Tiles.cobblestoneLightTallWallDown, null)),
-    brickOrangeDark(WallTiles(Tiles.brickOrangeDarkWallRight, Tiles.brickOrangeDarkWallDown, null)),
-    brickOrangeLight(WallTiles(Tiles.brickOrangeLightWallRight, Tiles.brickOrangeLightWallDown, null)),
-    brickOrangeDarkTall(WallTiles(Tiles.brickOrangeDarkTallWallRight, Tiles.brickOrangeDarkTallWallDown, null)),
-    brickOrangeLightTall(WallTiles(Tiles.brickOrangeLightTallWallRight, Tiles.brickOrangeLightTallWallDown, null)),
-    brickRedDark(WallTiles(Tiles.brickRedDarkWallRight, Tiles.brickRedDarkWallDown, null)),
-    brickRedLight(WallTiles(Tiles.brickRedLightWallRight, Tiles.brickRedLightWallDown, null)),
-    brickRedDarkTall(WallTiles(Tiles.brickRedDarkTallWallRight, Tiles.brickRedDarkTallWallDown, null)),
-    brickRedLightTall(WallTiles(Tiles.brickRedLightTallWallRight, Tiles.brickRedLightTallWallDown, null));
+    cobblestoneDarkTall(
+            WallTiles(
+                    Tiles.cobblestoneDarkTallWallRight,
+                    Tiles.cobblestoneDarkTallWallDown,
+                    Tiles.cobblestoneDarkTallWallRightDown
+                     )
+                       ),
+    cobblestoneLightTall(
+            WallTiles(
+                    Tiles.cobblestoneLightTallWallRight,
+                    Tiles.cobblestoneLightTallWallDown,
+                    Tiles.cobblestoneLightTallWallRightDown
+                     )
+                        ),
+    brickOrangeDark(
+            WallTiles(
+                    Tiles.brickOrangeDarkWallRight,
+                    Tiles.brickOrangeDarkWallDown,
+                    Tiles.brickOrangeDarkWallRightDown
+                     )
+                   ),
+    brickOrangeLight(
+            WallTiles(
+                    Tiles.brickOrangeLightWallRight,
+                    Tiles.brickOrangeLightWallDown,
+                    Tiles.brickOrangeLightWallRightDown
+                     )
+                    ),
+    brickOrangeDarkTall(
+            WallTiles(
+                    Tiles.brickOrangeDarkTallWallRight,
+                    Tiles.brickOrangeDarkTallWallDown,
+                    Tiles.brickOrangeDarkTallWallRightDown
+                     )
+                       ),
+    brickOrangeLightTall(
+            WallTiles(
+                    Tiles.brickOrangeLightTallWallRight,
+                    Tiles.brickOrangeLightTallWallDown,
+                    Tiles.brickOrangeLightTallWallRightDown
+                     )
+                        ),
+    brickRedDark(WallTiles(Tiles.brickRedDarkWallRight, Tiles.brickRedDarkWallDown, Tiles.brickRedDarkWallRightDown)),
+    brickRedLight(WallTiles(Tiles.brickRedLightWallRight, Tiles.brickRedLightWallDown, Tiles.brickRedLightWallRightDown)),
+    brickRedDarkTall(
+            WallTiles(
+                    Tiles.brickRedDarkTallWallRight,
+                    Tiles.brickRedDarkTallWallDown,
+                    Tiles.brickRedDarkTallWallRightDown
+                     )
+                    ),
+    brickRedLightTall(
+            WallTiles(
+                    Tiles.brickRedLightTallWallRight,
+                    Tiles.brickRedLightTallWallDown,
+                    Tiles.brickRedLightTallWallRightDown
+                     )
+                     );
     
     companion object
     {
