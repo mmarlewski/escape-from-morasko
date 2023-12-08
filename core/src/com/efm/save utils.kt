@@ -8,6 +8,8 @@ import com.efm.entities.bosses.defeatedBosses
 import com.efm.entity.Enemy
 import com.efm.level.Level
 import com.efm.level.World
+import com.efm.skill.BodyPart
+import com.efm.stackableSelfItems.Apple
 import com.efm.state.*
 import kotlin.reflect.KClass
 
@@ -73,18 +75,27 @@ fun loadGame()
                 this.isHeroAlive = saveState.isHeroAlive
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
             })
-    
+            
             else                 -> setState(State.over)
         }
-    
-        World.hero = saveHero
-    
+        
+        World.hero.alive = saveHero.alive
+        World.hero.position.set(saveHero.position)
+        World.hero.healthPoints = saveHero.healthPoints
+        World.hero.healCharacter(0)
+        World.hero.abilityPoints = saveHero.abilityPoints
+        World.hero.gainAP(0)
+        World.hero.inventory.items.clear()
+        World.hero.inventory.items.addAll(saveHero.inventory.items)
+        BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
+        saveHero.bodyPartMap.forEach { World.hero.bodyPartMap[it.key] = it.value }
+        
         defeatedBosses.clear()
         for (boss in saveDefeatedBosses)
         {
             defeatedBosses.add(boss as KClass<out Enemy>)
         }
-    
+        
         World.levels.clear()
         for (level in saveLevels)
         {
@@ -92,9 +103,9 @@ fun loadGame()
         }
         World.currentLevel = World.levels.find { it.name == saveCurrentLevelName }!!
         World.currentRoom = World.currentLevel.rooms.find { it.name == saveCurrentRoomName }!!
-    
+        
         //
-    
+        
         println("loaded game")
     }
     else

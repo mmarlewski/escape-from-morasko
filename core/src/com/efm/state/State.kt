@@ -6,9 +6,11 @@ import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.exit.Exit
 import com.efm.item.*
+import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.skill.ActiveSkill
+import com.efm.ui.gameScreen.EquipmentStructure
 
 private var prevState : State = State.free.noSelection
 private var currState : State = State.free.noSelection

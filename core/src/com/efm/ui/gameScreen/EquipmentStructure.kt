@@ -11,6 +11,7 @@ import com.efm.item.*
 import com.efm.item.Container
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.skills.Jump
 
 object EquipmentStructure
 {
