@@ -26,7 +26,8 @@ fun saveGame()
             World.currentRoom.name,
             World.hero,
             World.levels,
-            defeatedBosses
+            defeatedBosses,
+            getState().tutorialFlags
                               )
     file.writeString(json.prettyPrint(saveList), false)
     
@@ -50,6 +51,7 @@ fun loadGame()
         val saveHero = saveList[5] as Hero
         val saveLevels = saveList[6] as Array<*>
         val saveDefeatedBosses = saveList[7] as Array<*>
+        val saveTutorialFlags = saveList[8] as State.TutorialFlags
         
         setSoundVolume(saveSoundVolume)
         setMusicVolume(saveMusicVolume)
@@ -77,7 +79,7 @@ fun loadGame()
         
             else                 -> State.over
         }
-        newState.tutorialFlags = saveState.tutorialFlags
+        newState.tutorialFlags = saveTutorialFlags
         setState(newState)
     
         World.hero = saveHero
