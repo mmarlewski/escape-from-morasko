@@ -6,7 +6,8 @@ import com.efm.entity.EnemyCorpse
 import com.efm.item.*
 import com.efm.multiUseMapItems.Bow
 import com.efm.room.RoomPosition
-import com.efm.stackableSelfItems.PotionSmall
+import com.efm.stackableSelfItems.APPotionSmall
+import com.efm.stackableSelfItems.HPPotionSmall
 
 class EnemySkeletonCorpse(position : RoomPosition = RoomPosition()) : EnemyCorpse(position)
 {
@@ -17,7 +18,8 @@ class EnemySkeletonCorpse(position : RoomPosition = RoomPosition()) : EnemyCorps
         loot = PossibleItems(
                 mutableListOf(
                         PossibleItem(Bow(), 0.5f, IntRange(1, 1)),
-                        PossibleItem(PotionSmall(), 0.8f, IntRange(0, 3))
+                        PossibleItem(APPotionSmall(), 0.8f, IntRange(0, 1)),
+                        PossibleItem(HPPotionSmall(), 0.8f, IntRange(0, 3))
                              )
                             )
     }

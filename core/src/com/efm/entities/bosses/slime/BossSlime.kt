@@ -12,7 +12,7 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class BossSlime : Entity, Enemy
+open class BossSlime : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50

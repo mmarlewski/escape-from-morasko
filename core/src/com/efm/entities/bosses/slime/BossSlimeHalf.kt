@@ -10,9 +10,8 @@ import com.efm.assets.Tiles
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import kotlin.random.Random
 
-class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
+open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 25
