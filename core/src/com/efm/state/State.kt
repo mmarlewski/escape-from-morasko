@@ -37,7 +37,7 @@ sealed class State
     
     var tutorialFlags = TutorialFlags
     
-    object TutorialFlags : Json.Serializable
+    object TutorialFlags
     {
         var tutorialOn = true
         var welcomePopupShown = false
@@ -74,7 +74,7 @@ sealed class State
         
         // for serializing
         
-        override fun write(json : Json?)
+        fun write1(json : Json?)
         {
             if (json != null)
             {
@@ -95,7 +95,7 @@ sealed class State
             }
         }
         
-        override fun read(json : Json?, jsonData : JsonValue?)
+        fun read(json : Json?, jsonData : JsonValue?)
         {
             if (json != null)
             {

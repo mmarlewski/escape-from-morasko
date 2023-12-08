@@ -53,29 +53,32 @@ fun loadGame()
         
         setSoundVolume(saveSoundVolume)
         setMusicVolume(saveMusicVolume)
-        
-        when (saveState)
+    
+        val newState = when (saveState)
         {
-            is State.free        -> setState(State.free.noSelection.apply {
+        
+            is State.free        -> State.free.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
-            })
-            
-            is State.constrained -> setState(State.constrained.noSelection.apply {
+            }
+        
+            is State.constrained -> State.constrained.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
                 this.isHeroDetected = saveState.isHeroDetected
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
-            })
-            
-            is State.combat.hero -> setState(State.combat.hero.noSelection.apply {
+            }
+        
+            is State.combat.hero -> State.combat.hero.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
-            })
-    
-            else                 -> setState(State.over)
+            }
+        
+            else                 -> State.over
         }
+        newState.tutorialFlags = saveState.tutorialFlags
+        setState(newState)
     
         World.hero = saveHero
     
