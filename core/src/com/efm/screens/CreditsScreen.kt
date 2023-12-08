@@ -28,6 +28,7 @@ val assetsCreditsString =
                 " chess :        Nem_                (opengameart.org)\n" +
                 " slime :        Chrisblue           (opengameart.org)\n" +
                 " golem :        William.Thompsonj   (opengameart.org)\n" +
+                " npc :          Syrsly              (opengameart.org)\n" +
                 "\n" +
                 " floors :       Anokolisa           (itch.io)\n" +
                 " walls :        hawkbirdtree        (opengameart.org)\n" +

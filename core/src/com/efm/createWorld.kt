@@ -800,12 +800,12 @@ fun World.createWorldPrototypeThree()
                 ExitStyle.metal,
                 exitBBase = Base.stone
                       )
-    
+        
         // after going through exit focus camera on tutorial enemy
         val tutorialExit =
                 TutorialRoomExit(RoomPosition(6, 3), Direction4.left, l1r2.name, RoomPosition(0, 7), ExitStyle.metal)
         l1r1.replaceEntityAt(tutorialExit, 6, 3)
-    
+        
         addRoomPassage(
                 this,
                 l1r2.name,

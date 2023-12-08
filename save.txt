@@ -8,7 +8,7 @@
 	value: 1
 }
 {
-	class: com.efm.state.State$free$heroSelected
+	class: com.efm.state.State$free$moveSelectedOnce
 }
 {
 	class: java.lang.String
@@ -2566,11 +2566,10 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 4
+								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.PotionSmall
-								amount: 2
 							}
 						]
 						maxItems: 5
@@ -5454,17 +5453,15 @@
 						]
 					}
 					{
-						class: com.efm.entities.bosses.BossDragon
+						class: com.efm.entities.bosses.BossWizard
 						position: {
 							x: 6
 							y: 6
 						}
-						maxHealthPoints: 50
-						healthPoints: 50
+						maxHealthPoints: 10
+						healthPoints: 10
 						alive: true
 						isFrozen: false
-						isSitting: true
-						count: 0
 					}
 					{
 						class: com.efm.exit.RoomExit
@@ -7956,8 +7953,18 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.Sledgehammer
+							}
+							{
+								class: com.efm.multiUseMapItems.SmallAxe
+							}
+							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 10
+								amount: 4
+							}
+							{
+								class: com.efm.stackableSelfItems.PotionSmall
+								amount: 3
 							}
 						]
 						maxItems: 5
@@ -10742,8 +10749,8 @@
 								amount: 2
 							}
 							{
-								class: com.efm.stackableSelfItems.Mushroom
-								amount: 2
+								class: com.efm.stackableSelfItems.PotionSmall
+								amount: 3
 							}
 						]
 						maxItems: 5
@@ -12534,10 +12541,6 @@
 							{
 								class: com.efm.stackableMapItems.Shuriken
 								amount: 5
-							}
-							{
-								class: com.efm.stackableSelfItems.Mushroom
-								amount: 4
 							}
 						]
 						maxItems: 5
@@ -17526,6 +17529,13 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.WoodenSword
+							}
+							{
+								class: com.efm.stackableMapItems.Bomb
+								amount: 2
+							}
+							{
 								class: com.efm.stackableMapItems.Shuriken
 								amount: 2
 							}
@@ -18363,6 +18373,10 @@
 								class: com.efm.stackableMapItems.Shuriken
 								amount: 2
 							}
+							{
+								class: com.efm.stackableSelfItems.PotionBig
+								amount: 2
+							}
 						]
 						maxItems: 5
 					}
@@ -18908,11 +18922,8 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.SmallAxe
-							}
-							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 5
+								amount: 6
 							}
 						]
 						maxItems: 5
@@ -19451,12 +19462,15 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.SmallAxe
+							}
+							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 2
+								amount: 5
 							}
 							{
 								class: com.efm.stackableSelfItems.PotionSmall
-								amount: 2
+								amount: 3
 							}
 						]
 						maxItems: 5
@@ -20396,6 +20410,10 @@
 							y: 1
 						}
 						items: [
+							{
+								class: com.efm.stackableMapItems.Shuriken
+								amount: 5
+							}
 							{
 								class: com.efm.stackableSelfItems.PotionSmall
 								amount: 2
@@ -21846,11 +21864,7 @@
 							x: 7
 							y: 1
 						}
-						items: [
-							{
-								class: com.efm.multiUseMapItems.Sledgehammer
-							}
-						]
+						items: []
 						maxItems: 5
 					}
 					{
