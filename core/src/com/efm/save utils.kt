@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Json
 import com.efm.entities.Hero
+import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.defeatedBosses
 import com.efm.entity.Enemy
 import com.efm.level.Level
@@ -93,7 +94,7 @@ fun loadGame()
         defeatedBosses.clear()
         for (boss in saveDefeatedBosses)
         {
-            defeatedBosses.add(boss as KClass<out Enemy>)
+            defeatedBosses.add(boss as Boss)
         }
         
         World.levels.clear()

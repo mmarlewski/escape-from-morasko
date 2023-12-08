@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.Boss
+import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
@@ -119,6 +121,7 @@ class BossSlimeQuarter : Entity, Enemy
         if (World.currentRoom.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Slime)
         }
     }
     

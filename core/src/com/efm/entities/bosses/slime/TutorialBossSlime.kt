@@ -1,5 +1,6 @@
 package com.efm.entities.bosses.slime
 
+import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.getSquarePerimeterPositions
 import com.efm.level.World
@@ -64,7 +65,7 @@ class TutorialBossSlime : BossSlime()
             World.currentRoom.addEntityToBeAddedEntities(slimeHalf2)
         }
         World.currentRoom.updateSpacesEntities()
-        addBossToDefeatedBossesList(BossSlime())
+        addBossToDefeatedBossesList(Boss.Slime)
     }
 }
 

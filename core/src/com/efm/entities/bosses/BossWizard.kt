@@ -147,6 +147,7 @@ class BossWizard : Entity, Enemy
         if (World.currentRoom.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Wizard)
         }
         increaseHeroStats(5, 3)
     }
