@@ -42,6 +42,7 @@ object EquipmentStructure
             Sounds.ui_3.playOnce()
             interfaceVisibilityWithTutorial()
             setVisibility(false)
+            LeftStructure.menuButton.isVisible = true
             
             saveGame()
         }
