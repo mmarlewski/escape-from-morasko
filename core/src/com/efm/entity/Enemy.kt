@@ -12,7 +12,8 @@ import com.efm.Map
 import com.efm.assets.Textures
 import com.efm.assets.Tiles
 import com.efm.level.World
-import com.efm.room.*
+import com.efm.room.RoomPosition
+import com.efm.room.Space
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
 import kotlin.math.round
@@ -206,7 +207,7 @@ interface Enemy : Character
         isFrozen = value
     }
     
-    fun roam()
+    fun roam(focusCameraOnHero : Boolean = false)
     {
         for (i in 0..stepsInOneTurn)
         {
@@ -214,7 +215,7 @@ interface Enemy : Character
             val path = PathFinding.findPathInRoomForEntity(position, moveTo, World.currentRoom, this)
             if (path != null)
             {
-                moveEnemy(position, moveTo, path, this)
+                moveEnemy(position, moveTo, path, this, focusCameraOnHero = focusCameraOnHero)
             }
         }
     }
