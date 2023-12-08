@@ -24,7 +24,7 @@ class TutorialRoomExit(
     
     override fun interact()
     {
-        if (!getState().tutorialFlags.tutorialOn)
+        if (!getState().tutorialFlags.tutorialActive)
         {
             super.interact()
         }

@@ -49,7 +49,7 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
-        if (!State.TutorialFlags.tutorialOn)
+        if (!State.TutorialFlags.tutorialActive)
         {
             ItemsStructure.display()
             LeftStructure.display()
