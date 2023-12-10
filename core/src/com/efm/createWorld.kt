@@ -1029,14 +1029,7 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.stone)
             // entities
-            addEntityAt(BossSlime().apply {
-                this.maxHealthPoints = (0.25 * this.maxHealthPoints).toInt()
-                this.healthPoints = (0.25 * this.healthPoints).toInt()
-            }, RoomPosition(9, 2))
-            addEntityAt(BossSlime().apply {
-                this.maxHealthPoints = (0.25 * this.maxHealthPoints).toInt()
-                this.healthPoints = (0.25 * this.healthPoints).toInt()
-            }, RoomPosition(10, 2))
+            addEntityAt(BossSlime(), RoomPosition(9, 1))
             // level exit
             replaceEntityAt(
                     LevelExit(
@@ -1278,7 +1271,7 @@ fun World.createWorldPrototypeThree()
             addEntityAt(chest, 1, 3)
             // entities
             addEntityAt(EnemyMushroom(), 3, 2)
-            addEntityAt(BossSlimeQuarter(), 3, 3)
+            addEntityAt(EnemySlimeQuarter(), 3, 3)
         }
         // add room to level
         addRoom(l3r5)
@@ -1302,7 +1295,7 @@ fun World.createWorldPrototypeThree()
                              )
             addEntityAt(chest, 3, 1)
             // entities
-            addEntityAt(BossSlimeQuarter(), 2, 2)
+            addEntityAt(EnemySlimeQuarter(), 2, 2)
             addEntityAt(EnemyPlant(), 4, 2)
             addEntityAt(EnemyRollingStone(), 7, 4)
         }
@@ -1331,8 +1324,8 @@ fun World.createWorldPrototypeThree()
             // entities
             addEntityAt(EnemyGhost(), 5, 6)
             addEntityAt(EnemyBat(), 6, 8)
-            addEntityAt(BossSlimeQuarter(), 10, 7)
-            addEntityAt(BossSlimeQuarter(), 8, 3)
+            addEntityAt(EnemySlimeQuarter(), 10, 7)
+            addEntityAt(EnemySlimeQuarter(), 8, 3)
         }
         // add room to level
         addRoom(l3r7)
