@@ -8,9 +8,7 @@
 	value: 1
 }
 {
-	class: com.efm.state.State$combat$hero$heroSelected
-	areEnemiesInRoom: true
-	areAnyActionPointsLeft: true
+	class: com.efm.state.State$free$heroSelected
 }
 {
 	class: java.lang.String
@@ -18,19 +16,19 @@
 }
 {
 	class: java.lang.String
-	value: 4
+	value: 1
 }
 {
 	class: com.efm.entities.Hero
 	position: {
-		x: 8
-		y: 2
+		x: 5
+		y: 3
 	}
 	maxHealthPoints: 100
-	healthPoints: 76
+	healthPoints: 100
 	alive: true
 	maxAbilityPoints: 8
-	abilityPoints: 7
+	abilityPoints: 8
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
@@ -38,6 +36,7 @@
 		items: [
 			{
 				class: com.efm.stackableSelfItems.Apple
+				amount: 2
 			}
 		]
 	}
@@ -682,6 +681,55 @@
 							y: 7
 						}
 						endDirection: right
+					}
+					{
+						class: com.efm.entities.Hero
+						position: {
+							x: 5
+							y: 3
+						}
+						maxHealthPoints: 100
+						healthPoints: 100
+						alive: true
+						maxAbilityPoints: 8
+						abilityPoints: 8
+						apDrainInNextTurn: 0
+						canMoveNextTurn: true
+						isVisible: true
+						inventory: {
+							items: [
+								{
+									class: com.efm.stackableSelfItems.Apple
+									amount: 2
+								}
+							]
+						}
+						skillNames: [
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+						]
 					}
 				]
 			}
@@ -1930,8 +1978,8 @@
 					{
 						class: com.efm.entities.enemies.EnemyMushroom
 						position: {
-							x: 8
-							y: 6
+							x: 6
+							y: 4
 						}
 						maxHealthPoints: 10
 						healthPoints: 10
@@ -2538,7 +2586,7 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 4
+								amount: 2
 							}
 						]
 						maxItems: 5
@@ -3821,10 +3869,10 @@
 						class: com.efm.entities.enemies.Boar.EnemyGhost
 						position: {
 							x: 4
-							y: 9
+							y: 8
 						}
-						maxHealthPoints: 42
-						healthPoints: 42
+						maxHealthPoints: 40
+						healthPoints: 40
 						alive: true
 						isFrozen: false
 					}
@@ -3834,8 +3882,8 @@
 							x: 7
 							y: 5
 						}
-						maxHealthPoints: 12
-						healthPoints: 12
+						maxHealthPoints: 10
+						healthPoints: 10
 						alive: true
 						isFrozen: false
 					}
@@ -3918,54 +3966,6 @@
 							y: 7
 						}
 						endDirection: right
-					}
-					{
-						class: com.efm.entities.Hero
-						position: {
-							x: 8
-							y: 2
-						}
-						maxHealthPoints: 100
-						healthPoints: 76
-						alive: true
-						maxAbilityPoints: 8
-						abilityPoints: 7
-						apDrainInNextTurn: 0
-						canMoveNextTurn: true
-						isVisible: true
-						inventory: {
-							items: [
-								{
-									class: com.efm.stackableSelfItems.Apple
-								}
-							]
-						}
-						skillNames: [
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-						]
 					}
 				]
 			}
@@ -7990,11 +7990,8 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.Sledgehammer
-							}
-							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 6
+								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.APPotionSmall
@@ -10792,11 +10789,11 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.IronSword
+								class: com.efm.stackableMapItems.Shuriken
 							}
 							{
-								class: com.efm.stackableMapItems.Shuriken
-								amount: 3
+								class: com.efm.stackableSelfItems.Mushroom
+								amount: 4
 							}
 						]
 						maxItems: 5
@@ -12586,7 +12583,10 @@
 						items: [
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 4
+								amount: 6
+							}
+							{
+								class: com.efm.stackableSelfItems.HPPotionSmall
 							}
 						]
 						maxItems: 5
@@ -17588,21 +17588,14 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.Sledgehammer
-							}
-							{
 								class: com.efm.multiUseMapItems.WoodenSword
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 6
-							}
-							{
-								class: com.efm.stackableSelfItems.HPPotionBig
+								amount: 5
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 2
 							}
 						]
 						maxItems: 5
@@ -18436,11 +18429,7 @@
 						items: [
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 6
-							}
-							{
-								class: com.efm.stackableSelfItems.APPotionBig
-								amount: 4
+								amount: 5
 							}
 						]
 						maxItems: 5
@@ -18987,11 +18976,11 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.WoodenSword
-							}
-							{
 								class: com.efm.stackableMapItems.Shuriken
 								amount: 5
+							}
+							{
+								class: com.efm.stackableSelfItems.APPotionSmall
 							}
 						]
 						maxItems: 5
@@ -19537,10 +19526,7 @@
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 5
-							}
-							{
-								class: com.efm.stackableSelfItems.APPotionSmall
+								amount: 3
 							}
 						]
 						maxItems: 5
@@ -20479,7 +20465,15 @@
 							x: 3
 							y: 1
 						}
-						items: []
+						items: [
+							{
+								class: com.efm.multiUseMapItems.SmallAxe
+							}
+							{
+								class: com.efm.stackableMapItems.Shuriken
+								amount: 4
+							}
+						]
 						maxItems: 5
 					}
 					{
@@ -21930,10 +21924,15 @@
 								class: com.efm.multiUseMapItems.IronSword
 							}
 							{
-								class: com.efm.multiUseMapItems.Sledgehammer
+								class: com.efm.multiUseMapItems.Staff
 							}
 							{
 								class: com.efm.stackableMapItems.Bomb
+								amount: 3
+							}
+							{
+								class: com.efm.stackableSelfItems.APPotionBig
+								amount: 2
 							}
 						]
 						maxItems: 5

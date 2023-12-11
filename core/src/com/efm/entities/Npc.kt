@@ -8,8 +8,7 @@ import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
-import com.efm.skill.Skill
-import com.efm.skill.allSkills
+import com.efm.skill.*
 import com.efm.ui.gameScreen.ItemsStructure
 import com.efm.ui.gameScreen.ProgressBars
 
@@ -51,28 +50,35 @@ enum class Modifier(val function : () -> Unit)
                          GameScreen.updateMapBaseLayer()
                      }),
     AddRandomSkill({
-                       val heroSkills = mutableListOf<Skill>()
+                       val freeBodyParts = mutableListOf<BodyPart>()
                        for ((bodyPart, skill) in World.hero.bodyPartMap)
                        {
-                           if (skill != null)
+                           if (skill == null)
                            {
-                               heroSkills.add(skill)
-                           }
-                       }
-                       val nonHeroSkills = mutableListOf<Skill>()
-                       for (skill in allSkills)
-                       {
-                           if (skill !in heroSkills)
-                           {
-                               nonHeroSkills.add(skill)
+                               freeBodyParts.add(bodyPart)
                            }
                        }
                        
-                       if (nonHeroSkills.size > 0)
+                       if (freeBodyParts.isNotEmpty())
                        {
-                           World.hero.addSkill(nonHeroSkills.random())
-                           ItemsStructure.fillItemsStructureWithItemsAndSkills()
+                           val randomFreeBodyPart = freeBodyParts.random()
+                           
+                           val bodyPartSkills = mutableListOf<Skill>()
+                           for (skill in allSkills)
+                           {
+                               if (skill.bodyPart == randomFreeBodyPart)
+                               {
+                                   bodyPartSkills.add(skill)
+                               }
+                           }
+                           
+                           if (bodyPartSkills.isNotEmpty())
+                           {
+                               World.hero.addSkill(bodyPartSkills.random())
+                           }
                        }
+                       
+                       ItemsStructure.fillItemsStructureWithItemsAndSkills()
                    }),
     
     StrongerWeaponsLoseHp({
