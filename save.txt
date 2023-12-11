@@ -8,7 +8,7 @@
 	value: 1
 }
 {
-	class: com.efm.state.State$constrained$heroSelected
+	class: com.efm.state.State$combat$hero$heroSelected
 	areEnemiesInRoom: true
 	areAnyActionPointsLeft: true
 }
@@ -18,33 +18,26 @@
 }
 {
 	class: java.lang.String
-	value: 2
+	value: 4
 }
 {
 	class: com.efm.entities.Hero
 	position: {
-		x: 4
-		y: 10
+		x: 8
+		y: 2
 	}
 	maxHealthPoints: 100
-	healthPoints: 100
+	healthPoints: 76
 	alive: true
 	maxAbilityPoints: 8
-	abilityPoints: 2
+	abilityPoints: 7
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
 	inventory: {
 		items: [
 			{
-				class: com.efm.multiUseMapItems.WoodenSword
-			}
-			{
 				class: com.efm.stackableSelfItems.Apple
-			}
-			{
-				class: com.efm.stackableSelfItems.Fish
-				amount: 2
 			}
 		]
 	}
@@ -659,7 +652,15 @@
 							x: 4
 							y: 3
 						}
-						items: []
+						items: [
+							{
+								class: com.efm.multiUseMapItems.WoodenSword
+							}
+							{
+								class: com.efm.stackableSelfItems.Fish
+								amount: 2
+							}
+						]
 						maxItems: 5
 					}
 					{
@@ -1929,8 +1930,8 @@
 					{
 						class: com.efm.entities.enemies.EnemyMushroom
 						position: {
-							x: 5
-							y: 5
+							x: 8
+							y: 6
 						}
 						maxHealthPoints: 10
 						healthPoints: 10
@@ -2013,61 +2014,6 @@
 							y: 9
 						}
 						endDirection: right
-					}
-					{
-						class: com.efm.entities.Hero
-						position: {
-							x: 4
-							y: 10
-						}
-						maxHealthPoints: 100
-						healthPoints: 100
-						alive: true
-						maxAbilityPoints: 8
-						abilityPoints: 2
-						apDrainInNextTurn: 0
-						canMoveNextTurn: true
-						isVisible: true
-						inventory: {
-							items: [
-								{
-									class: com.efm.multiUseMapItems.WoodenSword
-								}
-								{
-									class: com.efm.stackableSelfItems.Apple
-								}
-								{
-									class: com.efm.stackableSelfItems.Fish
-									amount: 2
-								}
-							]
-						}
-						skillNames: [
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-						]
 					}
 				]
 			}
@@ -2589,11 +2535,10 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.APPotionSmall
-								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 3
+								amount: 4
 							}
 						]
 						maxItems: 5
@@ -3876,10 +3821,10 @@
 						class: com.efm.entities.enemies.Boar.EnemyGhost
 						position: {
 							x: 4
-							y: 8
+							y: 9
 						}
-						maxHealthPoints: 40
-						healthPoints: 40
+						maxHealthPoints: 42
+						healthPoints: 42
 						alive: true
 						isFrozen: false
 					}
@@ -3889,8 +3834,8 @@
 							x: 7
 							y: 5
 						}
-						maxHealthPoints: 10
-						healthPoints: 10
+						maxHealthPoints: 12
+						healthPoints: 12
 						alive: true
 						isFrozen: false
 					}
@@ -3906,6 +3851,13 @@
 							}
 						]
 						maxItems: 5
+					}
+					{
+						class: com.efm.entities.Npc
+						position: {
+							x: 6
+							y: 1
+						}
 					}
 					{
 						class: com.efm.exit.RoomExit
@@ -3966,6 +3918,54 @@
 							y: 7
 						}
 						endDirection: right
+					}
+					{
+						class: com.efm.entities.Hero
+						position: {
+							x: 8
+							y: 2
+						}
+						maxHealthPoints: 100
+						healthPoints: 76
+						alive: true
+						maxAbilityPoints: 8
+						abilityPoints: 7
+						apDrainInNextTurn: 0
+						canMoveNextTurn: true
+						isVisible: true
+						inventory: {
+							items: [
+								{
+									class: com.efm.stackableSelfItems.Apple
+								}
+							]
+						}
+						skillNames: [
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+						]
 					}
 				]
 			}
@@ -7990,18 +7990,14 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.WoodenSword
+								class: com.efm.multiUseMapItems.Sledgehammer
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 8
+								amount: 6
 							}
 							{
 								class: com.efm.stackableSelfItems.APPotionSmall
-								amount: 3
-							}
-							{
-								class: com.efm.stackableSelfItems.Mushroom
 								amount: 2
 							}
 						]
@@ -8016,10 +8012,6 @@
 						items: [
 							{
 								class: com.efm.multiUseMapItems.IronSword
-							}
-							{
-								class: com.efm.stackableSelfItems.HPPotionSmall
-								amount: 4
 							}
 						]
 						maxItems: 5
@@ -10806,13 +10798,6 @@
 								class: com.efm.stackableMapItems.Shuriken
 								amount: 3
 							}
-							{
-								class: com.efm.stackableSelfItems.APPotionSmall
-							}
-							{
-								class: com.efm.stackableSelfItems.Mushroom
-								amount: 3
-							}
 						]
 						maxItems: 5
 					}
@@ -12601,10 +12586,7 @@
 						items: [
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 5
-							}
-							{
-								class: com.efm.stackableSelfItems.Mushroom
+								amount: 4
 							}
 						]
 						maxItems: 5
@@ -16277,21 +16259,10 @@
 						class: com.efm.entities.bosses.slime.BossSlime
 						position: {
 							x: 9
-							y: 2
+							y: 1
 						}
-						maxHealthPoints: 12
-						healthPoints: 12
-						alive: true
-						isFrozen: false
-					}
-					{
-						class: com.efm.entities.bosses.slime.BossSlime
-						position: {
-							x: 10
-							y: 2
-						}
-						maxHealthPoints: 12
-						healthPoints: 12
+						maxHealthPoints: 50
+						healthPoints: 50
 						alive: true
 						isFrozen: false
 					}
@@ -17623,14 +17594,15 @@
 								class: com.efm.multiUseMapItems.WoodenSword
 							}
 							{
-								class: com.efm.multiUseMapItems.WoodenSword
-							}
-							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 3
+								amount: 6
 							}
 							{
 								class: com.efm.stackableSelfItems.HPPotionBig
+							}
+							{
+								class: com.efm.stackableSelfItems.Mushroom
+								amount: 2
 							}
 						]
 						maxItems: 5
@@ -18464,7 +18436,11 @@
 						items: [
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 5
+								amount: 6
+							}
+							{
+								class: com.efm.stackableSelfItems.APPotionBig
+								amount: 4
 							}
 						]
 						maxItems: 5
@@ -19015,11 +18991,7 @@
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 2
-							}
-							{
-								class: com.efm.stackableSelfItems.HPPotionSmall
-								amount: 3
+								amount: 5
 							}
 						]
 						maxItems: 5
@@ -19558,11 +19530,17 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.AmberSword
+							}
+							{
 								class: com.efm.multiUseMapItems.SmallAxe
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 2
+								amount: 5
+							}
+							{
+								class: com.efm.stackableSelfItems.APPotionSmall
 							}
 						]
 						maxItems: 5
@@ -19579,7 +19557,7 @@
 						isFrozen: false
 					}
 					{
-						class: com.efm.entities.bosses.slime.BossSlimeQuarter
+						class: com.efm.entities.enemies.EnemySlimeQuarter
 						position: {
 							x: 3
 							y: 3
@@ -20501,25 +20479,11 @@
 							x: 3
 							y: 1
 						}
-						items: [
-							{
-								class: com.efm.multiUseMapItems.SmallAxe
-							}
-							{
-								class: com.efm.multiUseMapItems.Staff
-							}
-							{
-								class: com.efm.stackableMapItems.Shuriken
-								amount: 2
-							}
-							{
-								class: com.efm.stackableSelfItems.APPotionBig
-							}
-						]
+						items: []
 						maxItems: 5
 					}
 					{
-						class: com.efm.entities.bosses.slime.BossSlimeQuarter
+						class: com.efm.entities.enemies.EnemySlimeQuarter
 						position: {
 							x: 2
 							y: 2
@@ -21966,8 +21930,10 @@
 								class: com.efm.multiUseMapItems.IronSword
 							}
 							{
-								class: com.efm.stackableMapItems.Explosive
-								amount: 3
+								class: com.efm.multiUseMapItems.Sledgehammer
+							}
+							{
+								class: com.efm.stackableMapItems.Bomb
 							}
 						]
 						maxItems: 5
@@ -21995,7 +21961,7 @@
 						isFrozen: false
 					}
 					{
-						class: com.efm.entities.bosses.slime.BossSlimeQuarter
+						class: com.efm.entities.enemies.EnemySlimeQuarter
 						position: {
 							x: 10
 							y: 7
@@ -22006,7 +21972,7 @@
 						isFrozen: false
 					}
 					{
-						class: com.efm.entities.bosses.slime.BossSlimeQuarter
+						class: com.efm.entities.enemies.EnemySlimeQuarter
 						position: {
 							x: 8
 							y: 3

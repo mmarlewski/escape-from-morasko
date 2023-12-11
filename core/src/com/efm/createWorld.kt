@@ -783,6 +783,7 @@ fun World.createWorldPrototypeThree()
                                  )
                              )
             addEntityAt(chest, 6, 5)
+            addEntityAt(Npc(), 6, 1)
         }
         // add room to level
         addRoom(l1r4)

@@ -113,5 +113,4 @@ object Push : ActiveSkill(
         
         Animating.executeAnimations(animations)
     }
-    
 }
