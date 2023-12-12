@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.*
-import com.efm.state.State
 
 object SettingsScreen : BaseScreen()
 {
@@ -117,15 +116,6 @@ object SettingsScreen : BaseScreen()
                                         setSoundVolume(soundSlider.value)
                                     }
                                 })
-        
-        skipTutorialCheckbox.addListener(object : ChangeListener()
-                                         {
-                                             override fun changed(event : ChangeEvent?, actor : Actor)
-                                             {
-                                                 State.TutorialFlags.tutorialActive = !skipTutorialCheckbox.isChecked
-                                                 interfaceDrawingWithTutorial()
-                                             }
-                                         })
         
     }
     
