@@ -1141,18 +1141,19 @@ fun specialEventPopup(
     return window
 }
 
-fun saveOverwritePopup(
+fun yesNoPopup(
+        title : String,
         body : String,
         onYes : () -> Unit,
         onNo : () -> Unit
-                      ) : Window
+              ) : Window
 {
     val windowStyle = Window.WindowStyle()
     windowStyle.titleFont = Fonts.pixeloid30
     windowStyle.titleFontColor = Colors.white
     windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
     
-    val window = Window("Overwrite save?", windowStyle)
+    val window = Window(title, windowStyle)
     val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
     titleLabel.setAlignment(Align.center)
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(48f)

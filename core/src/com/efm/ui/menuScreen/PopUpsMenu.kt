@@ -17,7 +17,8 @@ object PopUpsMenu
     var overwriteSave : com.badlogic.gdx.scenes.scene2d.ui.Window
     fun overwriteSave() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
-        val overwriteSavePopup = saveOverwritePopup(
+        val overwriteSavePopup = yesNoPopup(
+                "Overwrite save?",
                 "You're about to overwrite your existing save. Your progress will be lost. Do you want to continue?",
                 {
                     startNewGame()
@@ -25,7 +26,7 @@ object PopUpsMenu
                 {
                     TitleAndButtons.setButtonsVisibility(true)
                 }
-                                                   )
+                                           )
         
         overwriteSavePopup.isVisible = false
         
