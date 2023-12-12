@@ -1072,6 +1072,7 @@ fun interfaceDrawingWithTutorial()
 }
 
 fun specialEventPopup(
+        subtitle : String,
         body : String,
         onYes : () -> Unit,
         onNo : () -> Unit
@@ -1089,6 +1090,9 @@ fun specialEventPopup(
     
     val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
     delimiter.setFontScale(0.1f)
+    
+    val subtitle = labelOf(subtitle, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    subtitle.setFontScale(1.25f)
     
     val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
     description.setWrap(true)
@@ -1126,6 +1130,7 @@ fun specialEventPopup(
     
     val table = Table()
     table.add(delimiter).fillX().height(1f).padTop(40f).row()
+    table.add(subtitle).padTop(16f).row()
     table.add(description).width(664f).padTop(16f).row()
     table.add(rowOf(rowOf(yesButton).padRight(64f), rowOf(noButton).padLeft(64f))).padTop(16f).padBottom(8f).row()
     
