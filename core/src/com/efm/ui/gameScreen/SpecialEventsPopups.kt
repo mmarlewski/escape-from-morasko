@@ -77,7 +77,7 @@ object SpecialEventsPopups
     {
         gainHealthPopup = gainHealthPopup()
         strongerWeaponPopup = strongerWeaponPopup()
-        gainAbilityPopup = gainHealthPopup()
+        gainAbilityPopup = gainAbilityPopup()
         skillExchangePopup = skillExchangePopup()
         swapTilesPopup = swapTilesPopup()
     }
