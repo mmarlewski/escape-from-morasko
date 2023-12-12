@@ -962,28 +962,32 @@ fun tutorialPopup(
 
 fun interfaceVisibilityWithTutorial()
 {
-    if (State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
+    if (!State.TutorialFlags.tutorialActive)
     {
-        if (!State.TutorialFlags.equipmentPopupShown)
+        ItemsStructure.display()
+        LeftStructure.display()
+        ProgressBars.display()
+        RightStructure.display()
+        PopUps.display()
+        EquipmentStructure.display()
+        TutorialPopups.display()
+        SpecialEventsPopups.display()
+        PopUps.setBackgroundVisibility(true)
+    }
+    else
+    {
+        if (State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
         {
-            LeftStructure.menuButton.isVisible = true
-            RightStructure.moveButton.isVisible = true
-            GameScreen.canBeInteractedWith = true
-        }
-        else
-        {
-            if (!State.TutorialFlags.healthAndAbilityPopupShown)
+            if (!State.TutorialFlags.equipmentPopupShown)
             {
-                ItemsStructure.setVisibility(true)
                 LeftStructure.menuButton.isVisible = true
                 RightStructure.moveButton.isVisible = true
                 GameScreen.canBeInteractedWith = true
             }
             else
             {
-                if (!State.TutorialFlags.turnsPopupShown)
+                if (!State.TutorialFlags.healthAndAbilityPopupShown)
                 {
-                    ProgressBars.setVisibilty(true)
                     ItemsStructure.setVisibility(true)
                     LeftStructure.menuButton.isVisible = true
                     RightStructure.moveButton.isVisible = true
@@ -991,9 +995,8 @@ fun interfaceVisibilityWithTutorial()
                 }
                 else
                 {
-                    if (!State.TutorialFlags.combatPopupShown)
+                    if (!State.TutorialFlags.turnsPopupShown)
                     {
-                        RightStructure.endTurnButton.isVisible = true
                         ProgressBars.setVisibilty(true)
                         ItemsStructure.setVisibility(true)
                         LeftStructure.menuButton.isVisible = true
@@ -1002,7 +1005,19 @@ fun interfaceVisibilityWithTutorial()
                     }
                     else
                     {
-                        PopUps.setBackgroundVisibility(true)
+                        if (!State.TutorialFlags.combatPopupShown)
+                        {
+                            RightStructure.endTurnButton.isVisible = true
+                            ProgressBars.setVisibilty(true)
+                            ItemsStructure.setVisibility(true)
+                            LeftStructure.menuButton.isVisible = true
+                            RightStructure.moveButton.isVisible = true
+                            GameScreen.canBeInteractedWith = true
+                        }
+                        else
+                        {
+                            PopUps.setBackgroundVisibility(true)
+                        }
                     }
                 }
             }
@@ -1012,35 +1027,36 @@ fun interfaceVisibilityWithTutorial()
 
 fun interfaceDrawingWithTutorial()
 {
-    State.TutorialFlags.cameraPopupShown = true
-    if (State.TutorialFlags.cameraPopupShown || State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
+    if (!State.TutorialFlags.tutorialActive)
     {
-        if (!State.TutorialFlags.equipmentPopupShown)
+        ItemsStructure.display()
+        LeftStructure.display()
+        ProgressBars.display()
+        RightStructure.display()
+        PopUps.display()
+        EquipmentStructure.display()
+        TutorialPopups.display()
+        SpecialEventsPopups.display()
+        PopUps.setBackgroundVisibility(true)
+    }
+    else
+    {
+        State.TutorialFlags.cameraPopupShown = true
+        if (State.TutorialFlags.cameraPopupShown || State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
         {
-            LeftStructure.displayMenuButton()
-            RightStructure.displayMoveButton()
-            PopUps.display()
-            EquipmentStructure.display()
-            SpecialEventsPopups.display()
-        }
-        else
-        {
-            if (!State.TutorialFlags.healthAndAbilityPopupShown)
+            if (!State.TutorialFlags.equipmentPopupShown)
             {
+                LeftStructure.displayMenuButton()
                 RightStructure.displayMoveButton()
                 PopUps.display()
                 EquipmentStructure.display()
-                ItemsStructure.display()
-                LeftStructure.display()
-                ItemsStructure.display()
                 SpecialEventsPopups.display()
             }
             else
             {
-                if (!State.TutorialFlags.turnsPopupShown)
+                if (!State.TutorialFlags.healthAndAbilityPopupShown)
                 {
                     RightStructure.displayMoveButton()
-                    ProgressBars.display()
                     PopUps.display()
                     EquipmentStructure.display()
                     ItemsStructure.display()
@@ -1050,9 +1066,9 @@ fun interfaceDrawingWithTutorial()
                 }
                 else
                 {
-                    if (!State.TutorialFlags.combatPopupShown)
+                    if (!State.TutorialFlags.turnsPopupShown)
                     {
-                        RightStructure.display()
+                        RightStructure.displayMoveButton()
                         ProgressBars.display()
                         PopUps.display()
                         EquipmentStructure.display()
@@ -1063,7 +1079,21 @@ fun interfaceDrawingWithTutorial()
                     }
                     else
                     {
-                        PopUps.setBackgroundVisibility(true)
+                        if (!State.TutorialFlags.combatPopupShown)
+                        {
+                            RightStructure.display()
+                            ProgressBars.display()
+                            PopUps.display()
+                            EquipmentStructure.display()
+                            ItemsStructure.display()
+                            LeftStructure.display()
+                            ItemsStructure.display()
+                            SpecialEventsPopups.display()
+                        }
+                        else
+                        {
+                            PopUps.setBackgroundVisibility(true)
+                        }
                     }
                 }
             }
