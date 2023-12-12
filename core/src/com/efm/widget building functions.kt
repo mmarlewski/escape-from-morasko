@@ -1140,3 +1140,68 @@ fun specialEventPopup(
     
     return window
 }
+
+fun saveOverwritePopup(
+        body : String,
+        onYes : () -> Unit,
+        onNo : () -> Unit
+                      ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid30
+    windowStyle.titleFontColor = Colors.white
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
+    
+    val window = Window("Overwrite save?", windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(48f)
+    
+    val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
+    delimiter.setFontScale(0.1f)
+    
+    val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    description.setWrap(true)
+    description.setAlignment(Align.center)
+    
+    val yesButton = imageButtonOf(
+            Textures.check,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                 )
+    {
+        Sounds.ui_2.playOnce()
+        window.isVisible = false
+        onYes()
+        PopUps.setBackgroundVisibility(true)
+    }
+    
+    val noButton = imageButtonOf(
+            Textures.close,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                )
+    {
+        window.isVisible = false
+        Sounds.ui_3.playOnce()
+        onNo()
+        PopUps.setBackgroundVisibility(true)
+    }
+    
+    val table = Table()
+    table.add(delimiter).fillX().height(1f).padTop(40f).row()
+    table.add(description).width(496f).padTop(16f).row()
+    table.add(rowOf(rowOf(yesButton).padRight(64f), rowOf(noButton).padLeft(64f))).padTop(16f).padBottom(8f).row()
+    
+    
+    
+    window.add(columnOf(table))
+    
+    return window
+}
