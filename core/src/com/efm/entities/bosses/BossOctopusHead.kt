@@ -191,6 +191,7 @@ class BossOctopusHead : Entity, Enemy
         if (World.currentRoom.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.OctopusHead)
         }
         increaseHeroStats(5, 3)
     }

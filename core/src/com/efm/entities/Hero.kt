@@ -25,8 +25,8 @@ class Hero(
 {
     override val position = RoomPosition()
     
-    var maxAbilityPoints : Int = 14
-    var abilityPoints : Int = 14
+    var maxAbilityPoints : Int = 8
+    var abilityPoints : Int = 8
     
     var apDrainInNextTurn = 0
     var canMoveNextTurn = true
@@ -372,4 +372,32 @@ class HeroInventory : Container
             field = value
             Gdx.app.log("HeroInventory", "set maxItems = $value")
         }
+    /*
+    // var maxItems done with Delegates.observable
+    override var maxItems : Int by kotlin.properties.Delegates.observable(10) { _, _, newValue ->
+        if (items.size > newValue)
+        {
+            val droppedPockets = DroppedPockets()
+            droppedPockets.maxItems = 2 * (this.items.size - newValue)
+            while (items.size > newValue)
+            {
+                val item = items.last()
+                moveItem(item, this, droppedPockets)
+            }
+            for (pos in getSquareAreaPositions(World.hero.position, 1))
+            {
+                val space = World.currentRoom.getSpace(pos)
+                if (space != null && space.isTraversableFor(World.hero))
+                {
+                    World.currentRoom.addEntityAt(droppedPockets, pos)
+                    World.currentRoom.updateSpacesEntities()
+                    GameScreen.updateMapBaseLayer()
+                    GameScreen.updateMapEntityLayer()
+                    break
+                }
+            }
+        }
+        Gdx.app.log("HeroInventory", "set maxItems = $newValue")
+    }
+    */
 }

@@ -33,6 +33,12 @@ object Tiles
     val selectBlue = load("selectBlue.png")
     val selectPurple = load("selectPurple.png")
     
+    // Npc
+    
+    val npc = load("npc.png")
+    val npcOutlineYellow = load("npcOutlineYellow.png")
+    val npcOutlineTeal = load("npcOutlineTeal.png")
+    
     // Exit
     
     val ExitUpOutlineTeal = load("ExitUpOutlineTeal.png")

@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Json
 import com.efm.entities.Hero
+import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.defeatedBosses
 import com.efm.entity.Enemy
 import com.efm.level.Level
 import com.efm.level.World
+import com.efm.skill.BodyPart
+import com.efm.stackableSelfItems.Apple
 import com.efm.state.*
 import kotlin.reflect.KClass
 
@@ -53,41 +56,47 @@ fun loadGame()
         
         setSoundVolume(saveSoundVolume)
         setMusicVolume(saveMusicVolume)
-    
-        val newState = when (saveState)
-        {
         
-            is State.free        -> State.free.noSelection.apply {
+        when (saveState)
+        {
+            is State.free        -> setState(State.free.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
-            }
-        
-            is State.constrained -> State.constrained.noSelection.apply {
+            })
+            
+            is State.constrained -> setState(State.constrained.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
                 this.isHeroDetected = saveState.isHeroDetected
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
-            }
-        
-            is State.combat.hero -> State.combat.hero.noSelection.apply {
+            })
+            
+            is State.combat.hero -> setState(State.combat.hero.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
-            }
-        
-            else                 -> State.over
+            })
+            
+            else                 -> setState(State.over)
         }
-        newState.tutorialFlags = saveState.tutorialFlags
-        setState(newState)
-    
-        World.hero = saveHero
-    
+        
+        World.hero.alive = saveHero.alive
+        World.hero.position.set(saveHero.position)
+        World.hero.healthPoints = saveHero.healthPoints
+        World.hero.healCharacter(0)
+        World.hero.abilityPoints = saveHero.abilityPoints
+        World.hero.gainAP(0)
+        World.hero.inventory.items.clear()
+        World.hero.inventory.items.addAll(saveHero.inventory.items)
+        BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
+        saveHero.bodyPartMap.forEach { World.hero.bodyPartMap[it.key] = it.value }
+        
         defeatedBosses.clear()
         for (boss in saveDefeatedBosses)
         {
-            defeatedBosses.add(boss as KClass<out Enemy>)
+            defeatedBosses.add(boss as Boss)
         }
-    
+        
         World.levels.clear()
         for (level in saveLevels)
         {
@@ -95,9 +104,9 @@ fun loadGame()
         }
         World.currentLevel = World.levels.find { it.name == saveCurrentLevelName }!!
         World.currentRoom = World.currentLevel.rooms.find { it.name == saveCurrentRoomName }!!
-    
+        
         //
-    
+        
         println("loaded game")
     }
     else

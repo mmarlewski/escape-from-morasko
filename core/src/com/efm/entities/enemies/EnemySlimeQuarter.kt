@@ -1,4 +1,4 @@
-package com.efm.entities.bosses.slime
+package com.efm.entities.enemies
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -7,13 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entities.bosses.Boss
-import com.efm.entities.bosses.addBossToDefeatedBossesList
-import com.efm.entity.*
+import com.efm.entity.Character
+import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class BossSlimeQuarter : Entity, Enemy
+class EnemySlimeQuarter : Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 10
@@ -113,20 +112,6 @@ class BossSlimeQuarter : Entity, Enemy
         }
         
         Animating.executeAnimations(animations)
-    }
-    
-    fun finalBossSlimeQuartersKilled()
-    {
-        if (World.currentRoom.name != "finalRoom")
-        {
-            showSkillAssignPopUpAfterBossKill(this)
-            addBossToDefeatedBossesList(Boss.Slime)
-        }
-    }
-    
-    override fun onDeath()
-    {
-        increaseHeroStats(2, 1)
     }
     
 }

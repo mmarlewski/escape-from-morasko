@@ -8,19 +8,19 @@ import com.efm.assets.Tiles
 import com.efm.item.StackableSelfItem
 import com.efm.level.World
 
-class PotionSmall(
+class APPotionSmall(
         override var amount : Int = 1
-            ) : StackableSelfItem
+                   ) : StackableSelfItem
 {
-    override val name : String = "Small Potion"
+    override val name : String = "Small Stamina Potion"
     override val maxAmount : Int = 16
-    override val baseAPUseCost : Int = 4
-    override val hpBoost : Int? = null
-    override val apBoost : Int = 10
+    override val baseAPUseCost : Int = 0
+    override val hpBoost : Int = 0
+    override val apBoost : Int = 5
     
     override fun getTexture() : Texture
     {
-        return Textures.potionSmall
+        return Textures.aPPotionSmall
     }
     
     override fun selected()

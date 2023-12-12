@@ -12,7 +12,7 @@ fun endCurrentTurn()
     val isHeroVisible = World.hero.isVisible
     val currState = getState()
     // tutorial popups
-    if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.turnsPopupShown)
+    if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.turnsPopupShown)
         currState.tutorialFlags.playerEndedTurn = true
     var newState = currState
     
@@ -38,7 +38,7 @@ fun endCurrentTurn()
                 enemy.roam()
             }
             // tutorial popups
-            if (newState.tutorialFlags.tutorialOn && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
+            if (newState.tutorialFlags.tutorialActive && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
             {
                 TutorialPopups.combatPopup.isVisible = true
                 PopUps.setBackgroundVisibility(false)

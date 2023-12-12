@@ -16,7 +16,7 @@ import com.efm.ui.gameScreen.*
 
 fun updateFreeNoSelection(currState : State.free.noSelection) : State
 {
-    if (currState.tutorialFlags.tutorialOn && !currState.tutorialFlags.welcomePopupShown)
+    if (currState.tutorialFlags.tutorialActive && !currState.tutorialFlags.welcomePopupShown)
     {
         currState.tutorialFlags.welcomePopupShown = true
         currState.tutorialFlags.cameraPopupShown = true
@@ -465,7 +465,7 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
                 }
             }
         }
-        if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.movementPopupShown && currState.tutorialFlags.playerMoved && !currState.tutorialFlags.lootingPopupShown)
+        if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.movementPopupShown && currState.tutorialFlags.playerMoved && !currState.tutorialFlags.lootingPopupShown)
         {
             TutorialPopups.lootingPopup.isVisible = true
             LeftStructure.menuButton.isVisible = false

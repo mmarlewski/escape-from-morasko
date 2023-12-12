@@ -7,12 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class BossSlime : Entity, Enemy
+open class BossSlime : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50
@@ -165,7 +166,7 @@ class BossSlime : Entity, Enemy
             World.currentRoom.addEntityToBeAddedEntities(slimeHalf2)
         }
         World.currentRoom.updateSpacesEntities()
-        addBossToDefeatedBossesList(BossSlime())
+        addBossToDefeatedBossesList(Boss.Slime)
     }
     
     override fun getCorpse() : EnemyCorpse?

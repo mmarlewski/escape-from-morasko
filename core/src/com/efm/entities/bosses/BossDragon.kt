@@ -336,6 +336,7 @@ class BossDragon : Entity, Enemy
         if (World.currentRoom.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Dragon)
         }
         increaseHeroStats(5, 3)
     }

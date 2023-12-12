@@ -53,6 +53,11 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         updateSpacesEntities()
     }
     
+    fun getSpaces() : List<Space>
+    {
+        return spaceList
+    }
+    
     fun deleteSpaceAt(x : Int, y : Int)
     {
         if (isPositionWithinBounds(x, y))

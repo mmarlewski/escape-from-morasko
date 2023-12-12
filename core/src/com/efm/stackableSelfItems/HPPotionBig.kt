@@ -8,19 +8,19 @@ import com.efm.assets.Tiles
 import com.efm.item.StackableSelfItem
 import com.efm.level.World
 
-class PotionBig(
+class HPPotionBig(
         override var amount : Int = 1
-              ) : StackableSelfItem
+                 ) : StackableSelfItem
 {
-    override val name : String = "Big Potion"
+    override val name : String = "Big Health Potion"
     override val maxAmount : Int = 16
-    override val baseAPUseCost : Int = 0
-    override val hpBoost : Int? = null
-    override val apBoost : Int = 10
+    override val baseAPUseCost : Int = 1
+    override val hpBoost : Int = 30
+    override val apBoost : Int = 0
     
     override fun getTexture() : Texture
     {
-        return Textures.potionBig
+        return Textures.hPpotionBig
     }
     
     override fun selected()
@@ -34,7 +34,10 @@ class PotionBig(
     override fun use()
     {
         World.hero.gainAP(apBoost)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.apPlus, World.hero.position, 0.5f, 0.25f)))
+        Animating.executeAnimations(
+                mutableListOf(
+                        Animation.ascendTile(Tiles.apPlus, World.hero.position, 0.5f, 0.25f)
+                             )
+                                   )
     }
 }

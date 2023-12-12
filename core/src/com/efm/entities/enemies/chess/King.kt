@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.Character
 import com.efm.entity.Enemy
@@ -148,6 +149,7 @@ class King : Entity, Enemy
         if (World.currentRoom.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Chess)
         }
     }
     

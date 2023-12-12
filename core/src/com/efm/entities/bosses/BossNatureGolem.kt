@@ -194,6 +194,7 @@ class BossNatureGolem : Entity, Enemy
         if (World.currentRoom.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.NatureGolem)
         }
         increaseHeroStats(5, 3)
     }

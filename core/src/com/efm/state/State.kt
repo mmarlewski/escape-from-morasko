@@ -6,9 +6,11 @@ import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.exit.Exit
 import com.efm.item.*
+import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.skill.ActiveSkill
+import com.efm.ui.gameScreen.EquipmentStructure
 
 private var prevState : State = State.free.noSelection
 private var currState : State = State.free.noSelection
@@ -30,6 +32,11 @@ fun setState(newState : State)
     
 }
 
+fun toggleTutorialActive()
+{
+    getState().tutorialFlags.tutorialActive = !getState().tutorialFlags.tutorialActive
+}
+
 sealed class State
 {
     var isHeroAlive = true
@@ -39,7 +46,7 @@ sealed class State
     
     object TutorialFlags
     {
-        var tutorialOn = true
+        var tutorialActive = true
         var welcomePopupShown = false
         var cameraPopupShown = false
         //var playerMovedCamera = false
@@ -56,7 +63,7 @@ sealed class State
     
         fun setDefault()
         {
-            tutorialOn = true
+            tutorialActive = true
             welcomePopupShown = false
             cameraPopupShown = false
             //playerMovedCamera = false
@@ -78,7 +85,7 @@ sealed class State
         {
             if (json != null)
             {
-                json.writeValue("tutorialOn", this.tutorialOn)
+                json.writeValue("tutorialActive", this.tutorialActive)
                 json.writeValue("welcomePopupShown", this.welcomePopupShown)
                 json.writeValue("cameraPopupShown", this.cameraPopupShown)
                 //json.writeValue("playerMovedCamera", this.playerMovedCamera)
@@ -99,8 +106,8 @@ sealed class State
         {
             if (json != null)
             {
-                val jsonTutorialOn = json.readValue("tutorialOn", Boolean::class.java, jsonData)
-                if (jsonTutorialOn != null) this.tutorialOn = jsonTutorialOn
+                val jsonTutorialActive = json.readValue("tutorialActive", Boolean::class.java, jsonData)
+                if (jsonTutorialActive != null) this.tutorialActive = jsonTutorialActive
                 val jsonWelcomePopupShown = json.readValue("welcomePopupShown", Boolean::class.java, jsonData)
                 if (jsonWelcomePopupShown != null) this.welcomePopupShown = jsonWelcomePopupShown
                 val jsonCameraPopupShown = json.readValue("cameraPopupShown", Boolean::class.java, jsonData)
