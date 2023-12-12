@@ -58,6 +58,7 @@ object GameScreen : BaseScreen(), GestureListener
             PopUps.display()
             EquipmentStructure.display()
             TutorialPopups.display()
+            SpecialEventsPopups.display()
         }
         else
         {
