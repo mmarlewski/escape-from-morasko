@@ -19,9 +19,11 @@ class EnemyMimic : Entity, Enemy
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
+    override var attackDamage = 2
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -120,7 +122,7 @@ class EnemyMimic : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(2)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }

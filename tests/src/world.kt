@@ -18,9 +18,9 @@ class `world`
     {
         val level = Level("level")
         
-        assertTrue(World.getLevels().isEmpty())
+        assertTrue(World.levels.isEmpty())
         World.addLevel(level)
-        assertTrue(World.getLevels().isNotEmpty())
+        assertTrue(World.levels.isNotEmpty())
     }
     
     @Test fun `changeCurrentLevel test with World's Level`()
@@ -70,14 +70,14 @@ class `world`
         val level = Level("level")
         World.addLevel(level)
         World.changeCurrentLevel(level)
-        
+    
         val room1 = Room("room1", 2, 2)
         val room2 = Room("room2", 2, 2)
         level.addRoom(room1)
-        
+    
         World.changeCurrentRoom(room1)
         assertTrue(World.currentRoom === room1)
-        World.changeCurrentRoom(room1)
-        assertTrue(World.currentRoom === room1)
+        World.changeCurrentRoom(room2)
+        assertFalse(World.currentRoom === room2)
     }
 }

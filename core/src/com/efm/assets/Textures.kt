@@ -24,6 +24,9 @@ object Textures
     val translucentThreeQuarters = load("/backgrounds/translucent75percent.png")
     val translucentThreeQuartersBlack = load("/backgrounds/translucent75percentBlack.png")
     val pauseBackground = load("/backgrounds/pauseBackground.png")
+    val pauseBackgroundDarkGrey = load("/backgrounds/pauseBackgroundDarkGrey.png")
+    val pauseBackgroundWhite = load("/backgrounds/pauseBackgroundWhite.png")
+    val pauseBackgroundBlack = load("/backgrounds/pauseBackgroundBlack.png")
     
     val upNinePatch = NinePatch(up, 5, 5, 5, 5)
     val upLongNinePatch = NinePatch(upLong, 5, 5, 5, 5)
@@ -37,6 +40,9 @@ object Textures
     val translucentHalfNinePatch = NinePatch(translucentHalf, 5, 5, 5, 5)
     val translucentThreeQuartersNinePatch = NinePatch(translucentThreeQuarters, 5, 5, 5, 5)
     val pauseBackgroundNinePatch = NinePatch(pauseBackground, 5, 5, 5, 5)
+    val pauseBackgroundDarkGreyNinePatch = NinePatch(pauseBackgroundDarkGrey, 5, 5, 5, 5)
+    val pauseBackgroundWhiteNinePatch = NinePatch(pauseBackgroundWhite, 5, 5, 5, 5)
+    val pauseBackgroundBlackNinePatch = NinePatch(pauseBackgroundBlack, 5, 5, 5, 5)
     
     //knobs
     val knobBackground = load("/bars/knobBackground.png")
@@ -107,6 +113,7 @@ object Textures
     val itemUsable = load("/icons/itemUsable.png")
     val itemWeapon = load("/icons/itemWeapon.png")
     val delete = load("/icons/delete.png")
+    val move = load("/icons/move.png")
     
     //images
     val title = load("/images/title.png")
@@ -119,7 +126,10 @@ object Textures
     val creditsTitle = load("images/credits.png")
     
     // multiUseMapItems
-    val sword = load("items/sword1.png")
+    val woodenSword = load("items/sword1.png")
+    val ironSword = load("items/sword2.png")
+    val turquoiseSword = load("items/swordSmallHandle2.png")
+    val amberSword = load("items/swordSmallHandle3.png")
     val hammer = load("items/hammer2.png")
     val axe = load("items/axeDoubleBit2.png")
     val staff = load("items/staff1.png")
@@ -134,8 +144,10 @@ object Textures
     val apple = load("items/apple.png")
     val fish = load("items/fish1.png")
     val mushroom = load("items/mushroom2.png")
-    val potionSmall = load("items/potion1.png")
-    val potionBig = load("items/potion1.png")
+    val aPPotionSmall = load("items/potionLong2.png")
+    val aPpotionBig = load("items/potionBig2.png")
+    val hPPotionSmall = load("items/potion1.png")
+    val hPpotionBig = load("items/potionBig1.png")
     
     // skills
     
@@ -151,6 +163,15 @@ object Textures
     val shield = load("abilities/shield.png")
     val swap = load("abilities/swapPlaces.png")
     val waterwalking = load("abilities/waterwalking.png")
+    
+    // skill icons
+    
+    val skillHead = load("icons/skill_head.png")
+    val skillArmLeft = load("icons/skill_left_arm.png")
+    val skillArmRight = load("icons/skill_right_arm.png")
+    val skillLegLeft = load("icons/skill_left_leg.png")
+    val skillLegRight = load("icons/skill_right_leg.png")
+    val skillTorso = load("icons/skill_torso.png")
     
     private fun load(name : String) : Texture
     {

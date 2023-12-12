@@ -38,11 +38,26 @@ enum class Base(val tile : TiledMapTile, val isTreadableFor : (Entity) -> Boolea
     tiled2xy(Tiles.tiledFloor2xy),
     tiled3x(Tiles.tiledFloor3x),
     tiled3y(Tiles.tiledFloor3y),
-    tiled3xy(Tiles.tiledFloor3xy);
+    tiled3xy(Tiles.tiledFloor3xy),
+    grassDarkDrained1(Tiles.grassDarkFloorDrained1),
+    grassDarkDrained2(Tiles.grassDarkFloorDrained2),
+    grassLightDrained1(Tiles.grassLightFloorDrained1),
+    grassStoneDrained1(Tiles.grassStoneFloorDrained1),
+    grassStoneDrained2(Tiles.grassStoneFloorDrained2),
+    grassStoneDrained3(Tiles.grassStoneFloorDrained3);
     
     companion object
     {
         fun getOrdinal(base : Base) : Int = base.ordinal
         fun getBase(baseNumber : Int) = values()[baseNumber]
+        
+        val grassTiles = listOf(
+                grassDark1,
+                grassDark2,
+                grassLight1,
+                grassStone1,
+                grassStone2,
+                grassStone3
+                               )
     }
 }

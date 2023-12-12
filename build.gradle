@@ -19,7 +19,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '1.0'
+    version = '0.1'
     ext {
         appName = "escape-from-morasko"
         gdxVersion = '1.11.0'

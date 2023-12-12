@@ -10,9 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.*
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
+import com.efm.level.World
+import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
-import com.efm.ui.gameScreen.EquipmentStructure
-import com.efm.ui.gameScreen.PopUps
+import com.efm.skill.BodyPart
+import com.efm.skill.Skill
+import com.efm.state.State
+import com.efm.ui.gameScreen.*
 
 lateinit var musicSlider : Slider
 lateinit var soundSlider : Slider
@@ -345,7 +349,8 @@ fun windowAreaOf(
         fontType : BitmapFont,
         fontColor : Color,
         background : NinePatch,
-        onYes : () -> Unit
+        onYes : () -> Unit,
+        onNo : () -> Unit
                 ) : Window
 {
     val windowStyle = Window.WindowStyle()
@@ -373,7 +378,7 @@ fun windowAreaOf(
             Textures.focusedNinePatch
                                  )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_2.playOnce()
         window.isVisible = false
         onYes()
         PopUps.setBackgroundVisibility(true)
@@ -389,7 +394,8 @@ fun windowAreaOf(
                                 )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
+        Sounds.ui_3.playOnce()
+        onNo()
         PopUps.setBackgroundVisibility(true)
     }
     
@@ -438,7 +444,7 @@ fun settingsPause(
             Textures.materialKnobNinePatchAfter,
             Textures.materialKnobNinePatchBeforeBlack,
             Textures.materialKnobNinePatch
-                              )
+                          )
     
     soundSlider = sliderOf(
             0.0f,
@@ -463,8 +469,9 @@ fun settingsPause(
                                  )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         PopUps.setMenuVisibility(true)
+        LeftStructure.menuButton.isVisible = true
     }
     
     musicSlider.addListener(object : ChangeListener()
@@ -476,17 +483,17 @@ fun settingsPause(
                             })
     
     soundSlider.addListener(object : ChangeListener()
-                                        {
-                                            override fun changed(event : ChangeEvent, actor : Actor)
-                                            {
-                                                setSoundVolume(soundSlider.value)
-                                            }
-                                        })
+                            {
+                                override fun changed(event : ChangeEvent, actor : Actor)
+                                {
+                                    setSoundVolume(soundSlider.value)
+                                }
+                            })
     
     val buttonTable = Table()
     buttonTable.add(
             columnOf(
-                    rowOf( musicLabel,musicSlider),
+                    rowOf(musicLabel, musicSlider),
                     rowOf(soundEffectsLabel, soundSlider),
                     rowOf(backButton)
                     )
@@ -532,8 +539,9 @@ fun menuPopup(
                                    )
     {
         window.isVisible = false
-        Sounds.blop.playOnce()
-        PopUps.setBackgroundVisibility(true)
+        Sounds.ui_3.playOnce()
+        interfaceVisibilityWithTutorial()
+        
     }
     
     val equipmentButton = textButtonOf(
@@ -562,10 +570,10 @@ fun menuPopup(
             Textures.focusedNinePatch
                                      )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         window.isVisible = false
         PopUps.setSettingsVisibility(true)
-        PopUps.setBackgroundVisibility(true)
+        LeftStructure.menuButton.isVisible = false
         musicSlider.value = getMusicVolume()
         soundSlider.value = getSoundVolume()
     }
@@ -581,10 +589,11 @@ fun menuPopup(
             Textures.focusedNinePatch
                                        )
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         changeScreen(MenuScreen)
         window.isVisible = false
         PopUps.setBackgroundVisibility(true)
+        saveGame()
     }
     
     window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)
@@ -629,7 +638,7 @@ fun itemButtonWithHealthBar(
                             })
     imageButton.pad(10f)
     
-    var healthBar = progressBarOf(
+    val healthBar = progressBarOf(
             0f,
             maxHealth.toFloat(),
             1f,
@@ -683,9 +692,9 @@ fun itemButtonWithLabel(
     
     val imageButtonTmp = imageButtonOf(Textures.translucent1px, up, down, over, disabled, focused, onClicked)
     
-    var image = if (image != null) imageOf(image, Scaling.none) else null
+    val image = if (image != null) imageOf(image, Scaling.none) else null
     
-    var label = labelOf(
+    val label = labelOf(
             text,
             Fonts.pixeloid10,
             Color.BLACK,
@@ -707,7 +716,6 @@ fun itemButtonWithLabel(
                                     onClicked()
                                 }
                             })
-//    highlightSelection(imageButton, down, up)
     
     imageButton.add(stack)
     return imageButton
@@ -763,3 +771,298 @@ fun equipmentOverlay(
 
 const val EQUIPMENT_ROW_MAX = 5
 const val EQUIPMENT_ROWS = 5
+
+fun determineBodyPart(skill : Skill) : Texture
+{
+    return when (skill.bodyPart)
+    {
+        BodyPart.head      -> Textures.skillHead
+        BodyPart.leftHand  -> Textures.skillArmLeft
+        BodyPart.rightHand -> Textures.skillArmRight
+        BodyPart.torso     -> Textures.skillTorso
+        BodyPart.leftLeg   -> Textures.skillLegLeft
+        BodyPart.rightLeg  -> Textures.skillLegRight
+    }
+}
+
+fun skillAssignDisplay(skill : Skill, onClicked : (Skill) -> Unit) : Table
+{
+    val bodyPart = determineBodyPart(skill)
+    val skillIcon = imageOf(skill.texture, Scaling.none)
+    val bodyPartIcon = imageOf(bodyPart, Scaling.none)
+    val skillName = labelOf(skill.name, Fonts.pixeloid20, Colors.darkGray, Textures.translucentNinePatch)
+    val skillDescription = labelOf(skill.description, Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
+    val assignButton = textButtonOf(
+            "Assign", Fonts.pixeloid20, Colors.black,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch,
+                                   )
+    {
+        onClicked(skill)
+        PopUps.setSkillAssignmentVisibility(false)
+    }
+    
+    skillDescription.setFontScale(0.6f)
+    skillName.setFontScale(0.8f)
+    
+    skillDescription.setWrap(true)
+    skillDescription.setAlignment(Align.center)
+    
+    val table = Table()
+    table.add(skillIcon).padTop(64f).row()
+    table.add(bodyPartIcon).padTop(8f).row()
+    table.add(skillName).row()
+    table.add(skillDescription).width(160f).height(80f).row()
+    table.add(assignButton).width(160f).padBottom(24f).row()
+    
+    return table
+}
+
+fun skillReassignDisplay(skill : Skill, onClicked : (Skill) -> Unit) : Table
+{
+    val bodyPart = determineBodyPart(skill)
+    val skillIcon = imageOf(skill.texture, Scaling.none)
+    val bodyPartIcon = imageOf(bodyPart, Scaling.none)
+    val skillName = labelOf(skill.name, Fonts.pixeloid20, Colors.darkGray, Textures.translucentNinePatch)
+    val skillDescription = labelOf(skill.description, Fonts.pixeloid20, Colors.black, Textures.translucentNinePatch)
+    val reassignButton = textButtonOf(
+            "Reassign", Fonts.pixeloid20, Colors.black,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch,
+                                     )
+    {
+        onClicked(skill)
+        PopUps.setSkillAssignmentVisibility(false)
+    }
+    val reassignmentInfo = labelOf("Skill already assigned", Fonts.pixeloid10, Colors.red, Textures.translucentNinePatch)
+    
+    skillDescription.setFontScale(0.6f)
+    skillName.setFontScale(0.8f)
+    
+    
+    skillDescription.setWrap(true)
+    skillDescription.setAlignment(Align.center)
+    
+    val table = Table()
+    table.add(skillIcon).padTop(64f).row()
+    table.add(bodyPartIcon).padTop(8f).row()
+    table.add(skillName).row()
+    table.add(skillDescription).width(160f).height(80f).row()
+    table.add(reassignButton).width(160f).row()
+    table.add(reassignmentInfo).padBottom(24f - reassignmentInfo.height).row()
+    
+    return table
+}
+
+fun isAnySkillAssigned(skill : Skill) : Boolean
+{
+    return World.hero.bodyPartMap[skill.bodyPart] != null
+}
+
+fun skillsAssignmentOverlay(
+        skillLeft : Skill,
+        skillMiddle : Skill,
+        skillRight : Skill,
+        onAssign : (Skill) -> Unit,
+        onReassign : (Skill) -> Unit
+                           ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid30
+    windowStyle.titleFontColor = Colors.black
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundNinePatch)
+    
+    val window = Window("Congratulations! You defeated a boss", windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(75f)
+    val skillLeftToDisplay = if (isAnySkillAssigned(skillLeft))
+    {
+        skillReassignDisplay(skillLeft, onAssign).padLeft(64f)
+    }
+    else
+    {
+        skillAssignDisplay(skillLeft, onReassign).padLeft(64f)
+    }
+    
+    val skillMiddleToDisplay = if (isAnySkillAssigned(skillMiddle))
+    {
+        skillReassignDisplay(skillMiddle, onAssign).padLeft(96f)
+    }
+    else
+    {
+        skillAssignDisplay(skillMiddle, onReassign).padLeft(96f)
+    }
+    
+    val skillRightToDisplay = if (isAnySkillAssigned(skillRight))
+    {
+        skillReassignDisplay(skillRight, onAssign).padLeft(96f).padRight(64f)
+    }
+    else
+    {
+        skillAssignDisplay(skillRight, onReassign).padLeft(96f).padRight(64f)
+    }
+    
+    window.add(rowOf(skillLeftToDisplay, skillMiddleToDisplay, skillRightToDisplay))
+    return window
+}
+
+fun tutorialPopup(
+        title : String,
+        body : String,
+        onOK : () -> Unit
+                 ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid30
+    windowStyle.titleFontColor = Colors.white
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
+    
+    val window = Window(title, windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(48f)
+    
+    val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
+    delimiter.setFontScale(0.1f)
+    
+    val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    description.setWrap(true)
+    description.setAlignment(Align.center)
+    
+    val okButton = textButtonOf(
+            "OK",
+            Fonts.pixeloid20,
+            Colors.black,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch,
+            onOK
+                               )
+    
+    val table = Table()
+    table.add(delimiter).fillX().height(1f).padTop(40f).row()
+    table.add(description).width(558f).padTop(16f).row()
+    table.add(okButton).width(180f).padTop(16f).padBottom(8f).row()
+    
+    
+    
+    window.add(columnOf(table))
+    
+    return window
+}
+
+fun interfaceVisibilityWithTutorial()
+{
+    if (State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
+    {
+        if (!State.TutorialFlags.equipmentPopupShown)
+        {
+            LeftStructure.menuButton.isVisible = true
+            RightStructure.moveButton.isVisible = true
+            GameScreen.canBeInteractedWith = true
+        }
+        else
+        {
+            if (!State.TutorialFlags.healthAndAbilityPopupShown)
+            {
+                ItemsStructure.setVisibility(true)
+                LeftStructure.menuButton.isVisible = true
+                RightStructure.moveButton.isVisible = true
+                GameScreen.canBeInteractedWith = true
+            }
+            else
+            {
+                if (!State.TutorialFlags.turnsPopupShown)
+                {
+                    ProgressBars.setVisibilty(true)
+                    ItemsStructure.setVisibility(true)
+                    LeftStructure.menuButton.isVisible = true
+                    RightStructure.moveButton.isVisible = true
+                    GameScreen.canBeInteractedWith = true
+                }
+                else
+                {
+                    if (!State.TutorialFlags.combatPopupShown)
+                    {
+                        RightStructure.endTurnButton.isVisible = true
+                        ProgressBars.setVisibilty(true)
+                        ItemsStructure.setVisibility(true)
+                        LeftStructure.menuButton.isVisible = true
+                        RightStructure.moveButton.isVisible = true
+                        GameScreen.canBeInteractedWith = true
+                    }
+                    else
+                    {
+                        PopUps.setBackgroundVisibility(true)
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun interfaceDrawingWithTutorial()
+{
+    State.TutorialFlags.cameraPopupShown = true
+    if (State.TutorialFlags.cameraPopupShown || State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
+    {
+        if (!State.TutorialFlags.equipmentPopupShown)
+        {
+            LeftStructure.displayMenuButton()
+            RightStructure.displayMoveButton()
+            PopUps.display()
+            EquipmentStructure.display()
+        }
+        else
+        {
+            if (!State.TutorialFlags.healthAndAbilityPopupShown)
+            {
+                RightStructure.displayMoveButton()
+                PopUps.display()
+                EquipmentStructure.display()
+                ItemsStructure.display()
+                LeftStructure.display()
+                ItemsStructure.display()
+            }
+            else
+            {
+                if (!State.TutorialFlags.turnsPopupShown)
+                {
+                    RightStructure.displayMoveButton()
+                    ProgressBars.display()
+                    PopUps.display()
+                    EquipmentStructure.display()
+                    ItemsStructure.display()
+                    LeftStructure.display()
+                    ItemsStructure.display()
+                }
+                else
+                {
+                    if (!State.TutorialFlags.combatPopupShown)
+                    {
+                        RightStructure.display()
+                        ProgressBars.display()
+                        PopUps.display()
+                        EquipmentStructure.display()
+                        ItemsStructure.display()
+                        LeftStructure.display()
+                        ItemsStructure.display()
+                    }
+                    else
+                    {
+                        PopUps.setBackgroundVisibility(true)
+                    }
+                }
+            }
+        }
+    }
+}

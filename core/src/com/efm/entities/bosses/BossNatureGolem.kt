@@ -16,14 +16,16 @@ import com.efm.screens.GameScreen
 class BossNatureGolem : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 100
-    override var healthPoints = 10
+    override var maxHealthPoints = 50
+    override var healthPoints = 50
     override var alive = true
-    override val detectionRange = 1
-    override val attackRange = 1
-    override val stepsInOneTurn = 2
+    override val detectionRange = 2
+    override val attackRange = 5
+    override var attackDamage = 10
+    override val stepsInOneTurn = 5
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -83,32 +85,30 @@ class BossNatureGolem : Entity, Enemy
     
     override fun enemyAttack()
     {
-        val heroPosition = World.hero.position.copy()
-        val heroDirection = getDirection8(this.position, heroPosition)
-        val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
+        val golemPosition = this.position
+        val golemProjectile = Tiles.golemProjectile
         
         val animations = mutableListOf<Animation>()
         
-        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
-        animations += Animation.action { playSoundOnce(Sounds.golemAttack) }
-        animations += Animation.simultaneous(
-                listOf(
-                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f),
-                        Animation.cameraShake(1, 0.5f)
-                      )
-                                            )
-        animations += Animation.action {
-            
-            val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
-            val attackedEntity = attackedSpace?.getEntity()
-            when (attackedEntity)
+        animations.add(Animation.action { playSoundOnce(Sounds.golemAttack) })
+        for (i in 1..5)
+        {
+            val projectileSquare = mutableListOf<Animation>()
+            for (squarePerimeterPosition in getSquarePerimeterPositions(golemPosition, i))
             {
-                is Character ->
+                if (LineFinding.findLineWithGivenRoom(golemPosition, squarePerimeterPosition, World.currentRoom) != null)
                 {
-                    attackedEntity.damageCharacter(75)
+                    val space = World.currentRoom.getSpace(squarePerimeterPosition)
+                    val entity = space?.getEntity()
+                    projectileSquare.add(Animation.showTile(golemProjectile, squarePerimeterPosition, 0.2f))
+                    if (entity != null)
+                    {
+                        projectileSquare.add(Animation.showTile(Tiles.impact, squarePerimeterPosition, 0.2f))
+                        projectileSquare.add(Animation.action { if (entity is Character) entity.damageCharacter(attackDamage) })
+                    }
                 }
             }
+            animations.add(Animation.simultaneous(projectileSquare))
         }
         
         Animating.executeAnimations(animations)
@@ -116,68 +116,87 @@ class BossNatureGolem : Entity, Enemy
     
     override fun performTurn()
     {
-        var decision = -1
-        
-        val directPathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-        
-        var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
-        var minPathSpaces = directPathSpaces
-        
-        if (minPathSpaces == null)
+        if (!isFrozen)
         {
-            val squarePositions = getSquareAreaPositions(World.hero.position, 2)
-            for (squarePosition in squarePositions)
+            var decision = -1
+            
+            val directPathSpaces =
+                    PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+            
+            var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
+            var minPathSpaces = directPathSpaces
+            
+            if (minPathSpaces == null)
             {
-                val squareSpace = World.currentRoom.getSpace(squarePosition)
-                
-                if (squareSpace != null && squareSpace.isTraversableFor(this))
+                val squarePositions = getSquareAreaPositions(World.hero.position, 2)
+                for (squarePosition in squarePositions)
                 {
-                    val pathSpaces = PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom,this)
+                    val squareSpace = World.currentRoom.getSpace(squarePosition)
                     
-                    if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                    if (squareSpace != null && squareSpace.isTraversableFor(this))
                     {
-                        minPathLength = pathSpaces.size
-                        minPathSpaces = pathSpaces
+                        val pathSpaces =
+                                PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom, this)
+                        
+                        if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
+                        {
+                            minPathLength = pathSpaces.size
+                            minPathSpaces = pathSpaces
+                        }
                     }
                 }
             }
-        }
-        
-        for (pos in getSquareAreaPositions(position, attackRange))
-        {
-            if (pos == World.hero.position)
+            
+            for (pos in getSquareAreaPositions(position, attackRange))
             {
-                decision = 0
-            }
-        }
-        
-        if (decision != 0)
-        {
-            if (minPathSpaces != null)
-            {
-                val pathForThisTurn = minPathSpaces.take(stepsInOneTurn + 1)
-                decision = 1
-                
-                // Replace the tiles that golem goes through in this turn
-                for (space in pathForThisTurn)
+                if (pos == World.hero.position)
                 {
-                    replaceTileWithGrass(space.position)
+                    decision = 0
+                }
+            }
+            
+            if (decision != 0)
+            {
+                if (minPathSpaces != null)
+                {
+                    val pathForThisTurn = minPathSpaces.take(stepsInOneTurn + 1)
+                    decision = 1
+                    
+                    // Replace the tiles that golem goes through in this turn
+                    for (space in pathForThisTurn)
+                    {
+                        replaceTileWithGrass(space.position)
+                    }
+                }
+            }
+            
+            when (decision)
+            {
+                0 ->
+                {
+                    enemyAttack()
+                }
+                
+                1 ->
+                {
+                    moveTowardsHero(minPathSpaces)
                 }
             }
         }
-        
-        when (decision)
+        else
         {
-            0 ->
-            {
-                enemyAttack()
-            }
-            
-            1 ->
-            {
-                moveTowardsHero(minPathSpaces)
-            }
+            isFrozen = false
         }
+    }
+    
+    override fun onDeath()
+    {
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.NatureGolem)
+        }
+        increaseHeroStats(5, 3)
     }
     
     private fun replaceTileWithGrass(tilePosition : RoomPosition)

@@ -21,6 +21,7 @@ class Queen: Entity, Enemy
     override var maxHealthPoints = 5
     override var healthPoints = 5
     override var alive = true
+    override var isFrozen = false
     override fun getTile() : TiledMapTile?
     {
         return Tiles.chessQueenWhite
@@ -33,6 +34,7 @@ class Queen: Entity, Enemy
     
     override val detectionRange = 1
     override val attackRange = 0
+    override var attackDamage = 5
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -64,37 +66,45 @@ class Queen: Entity, Enemy
     
     override fun performTurn()
     {
-        val heroPos = World.hero.position
-        var attacked = false
-        for (pos in getPossibleAttackPositions())
+        if (!isFrozen)
         {
-            if (pos == heroPos)
+            val heroPos = World.hero.position
+            var attacked = false
+            for (pos in getPossibleAttackPositions())
             {
-                enemyAttack()
-                attacked = true
-            }
-        }
-        if (!attacked)
-        {
-            var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
-            for (pos in getPossibleMovePositions())
-            {
-                if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                if (pos == heroPos)
                 {
-                    var space = World.currentRoom.getSpace(pos)
-                    if (space != null) {
-                        if (space.getEntity() == null && space.isTraversableFor(this))
+                    enemyAttack()
+                    attacked = true
+                }
+            }
+            if (!attacked)
+            {
+                var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
+                for (pos in getPossibleMovePositions())
+                {
+                    if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                    {
+                        var space = World.currentRoom.getSpace(pos)
+                        if (space != null)
                         {
-                            if (checkPositionDistanceFromHero(pos) < checkPositionDistanceFromHero(bestMovePosition))
+                            if (space.getEntity() == null && space.isTraversableFor(this))
                             {
-                                bestMovePosition = pos
+                                if (checkPositionDistanceFromHero(pos) < checkPositionDistanceFromHero(bestMovePosition))
+                                {
+                                    bestMovePosition = pos
+                                }
                             }
                         }
                     }
                 }
+                val path : List<Space?> =
+                        listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+                moveEnemy(position, bestMovePosition, path, this)
             }
-            val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
-            moveEnemy(position, bestMovePosition, path, this)
+        } else
+        {
+            isFrozen = false
         }
     }
     
@@ -122,7 +132,7 @@ class Queen: Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(5)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }
@@ -137,6 +147,7 @@ class Queen: Entity, Enemy
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
         val result = mutableListOf<RoomPosition>()
+        result.add(position)
         var upLeftFound = false
         var upRightFound = false
         var downLeftFound = false

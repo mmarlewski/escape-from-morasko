@@ -10,8 +10,13 @@ import com.efm.room.RoomPosition
 class EnemyRollingStoneCorpse(position : RoomPosition = RoomPosition()) : EnemyCorpse(position)
 {
     override var maxItems : Int = 2
-    override val loot : PossibleItems = PossibleItems()
-    override val items : MutableList<Item> = loot.drawItems()
+    
+    init
+    {
+        loot = PossibleItems()
+    }
+    
+    override val items : MutableList<Item> = loot?.drawItems() ?: mutableListOf()
     
     override fun getTile() : TiledMapTile = Tiles.rockCorpse
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.rockCorpseOutlineYellow

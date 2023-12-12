@@ -33,6 +33,34 @@ object Tiles
     val selectBlue = load("selectBlue.png")
     val selectPurple = load("selectPurple.png")
     
+    // Npc
+    
+    val npc = load("npc.png")
+    val npcOutlineYellow = load("npcOutlineYellow.png")
+    val npcOutlineTeal = load("npcOutlineTeal.png")
+    
+    // Exit
+    
+    val ExitUpOutlineTeal = load("ExitUpOutlineTeal.png")
+    val ExitRightOutlineTeal = load("ExitRightOutlineTeal.png")
+    val ExitDownOutlineTeal = load("ExitDownOutlineTeal.png")
+    val ExitLeftOutlineTeal = load("ExitLeftOutlineTeal.png")
+    
+    val ExitUpOutlineRed = load("ExitUpOutlineRed.png")
+    val ExitRightOutlineRed = load("ExitRightOutlineRed.png")
+    val ExitDownOutlineRed = load("ExitDownOutlineRed.png")
+    val ExitLeftOutlineRed = load("ExitLeftOutlineRed.png")
+    
+    val ExitLevelUpOutlineTeal = load("ExitLevelUpOutlineTeal.png")
+    val ExitLevelRightOutlineTeal = load("ExitLevelRightOutlineTeal.png")
+    val ExitLevelDownOutlineTeal = load("ExitLevelDownOutlineTeal.png")
+    val ExitLevelLeftOutlineTeal = load("ExitLevelLeftOutlineTeal.png")
+    
+    val ExitLevelUpOutlineRed = load("ExitLevelUpOutlineRed.png")
+    val ExitLevelRightOutlineRed = load("ExitLevelRightOutlineRed.png")
+    val ExitLevelDownOutlineRed = load("ExitLevelDownOutlineRed.png")
+    val ExitLevelLeftOutlineRed = load("ExitLevelLeftOutlineRed.png")
+    
     // stoneWall
     
     val stoneWallUpRightDownLeft = load("stoneWallUpRightDownLeft.png")
@@ -55,21 +83,24 @@ object Tiles
     // stoneExit
     
     val stoneExitUp = load("stoneExitUp.png")
-    val stoneExitUpOutlineTeal = load("stoneExitUpOutlineTeal.png")
-    val stoneExitLevelUp = load("stoneExitLevelUp.png")
-    val stoneExitLevelUpOutlineTeal = load("stoneExitLevelUpOutlineTeal.png")
     val stoneExitRight = load("stoneExitRight.png")
-    val stoneExitRightOutlineTeal = load("stoneExitRightOutlineTeal.png")
-    val stoneExitLevelRight = load("stoneExitLevelRight.png")
-    val stoneExitLevelRightOutlineTeal = load("stoneExitLevelRightOutlineTeal.png")
     val stoneExitDown = load("stoneExitDown.png")
-    val stoneExitDownOutlineTeal = load("stoneExitDownOutlineTeal.png")
-    val stoneExitLevelDown = load("stoneExitLevelDown.png")
-    val stoneExitLevelDownOutlineTeal = load("stoneExitLevelDownOutlineTeal.png")
     val stoneExitLeft = load("stoneExitLeft.png")
-    val stoneExitLeftOutlineTeal = load("stoneExitLeftOutlineTeal.png")
+    
+    val stoneExitLevelUp = load("stoneExitLevelUp.png")
+    val stoneExitLevelRight = load("stoneExitLevelRight.png")
+    val stoneExitLevelDown = load("stoneExitLevelDown.png")
     val stoneExitLevelLeft = load("stoneExitLevelLeft.png")
-    val stoneExitLevelLeftOutlineTeal = load("stoneExitLevelLeftOutlineTeal.png")
+    
+    val stoneExitUpClosed = load("stoneExitUpClosed.png")
+    val stoneExitRightClosed = load("stoneExitRightClosed.png")
+    val stoneExitDownClosed = load("stoneExitDownClosed.png")
+    val stoneExitLeftClosed = load("stoneExitLeftClosed.png")
+    
+    val stoneExitLevelUpClosed = load("stoneExitLevelUpClosed.png")
+    val stoneExitLevelRightClosed = load("stoneExitLevelRightClosed.png")
+    val stoneExitLevelDownClosed = load("stoneExitLevelDownClosed.png")
+    val stoneExitLevelLeftClosed = load("stoneExitLevelLeftClosed.png")
     
     // metalWall
     
@@ -93,21 +124,24 @@ object Tiles
     // metalExit
     
     val metalExitUp = load("metalExitUp.png")
-    val metalExitUpOutlineTeal = load("metalExitUpOutlineTeal.png")
-    val metalExitLevelUp = load("metalExitLevelUp.png")
-    val metalExitLevelUpOutlineTeal = load("metalExitLevelUpOutlineTeal.png")
     val metalExitRight = load("metalExitRight.png")
-    val metalExitRightOutlineTeal = load("metalExitRightOutlineTeal.png")
-    val metalExitLevelRight = load("metalExitLevelRight.png")
-    val metalExitLevelRightOutlineTeal = load("metalExitLevelRightOutlineTeal.png")
     val metalExitDown = load("metalExitDown.png")
-    val metalExitDownOutlineTeal = load("metalExitDownOutlineTeal.png")
-    val metalExitLevelDown = load("metalExitLevelDown.png")
-    val metalExitLevelDownOutlineTeal = load("metalExitLevelDownOutlineTeal.png")
     val metalExitLeft = load("metalExitLeft.png")
-    val metalExitLeftOutlineTeal = load("metalExitLeftOutlineTeal.png")
+    
+    val metalExitLevelUp = load("metalExitLevelUp.png")
+    val metalExitLevelRight = load("metalExitLevelRight.png")
+    val metalExitLevelDown = load("metalExitLevelDown.png")
     val metalExitLevelLeft = load("metalExitLevelLeft.png")
-    val metalExitLevelLeftOutlineTeal = load("metalExitLevelLeftOutlineTeal.png")
+    
+    val metalExitUpClosed = load("metalExitUpClosed.png")
+    val metalExitRightClosed = load("metalExitRightClosed.png")
+    val metalExitDownClosed = load("metalExitDownClosed.png")
+    val metalExitLeftClosed = load("metalExitLeftClosed.png")
+    
+    val metalExitLevelUpClosed = load("metalExitLevelUpClosed.png")
+    val metalExitLevelRightClosed = load("metalExitLevelRightClosed.png")
+    val metalExitLevelDownClosed = load("metalExitLevelDownClosed.png")
+    val metalExitLevelLeftClosed = load("metalExitLevelLeftClosed.png")
     
     // rockWall
     
@@ -131,21 +165,24 @@ object Tiles
     // rockExit
     
     val rockExitUp = load("rockExitUp.png")
-    val rockExitUpOutlineTeal = load("rockExitUpOutlineTeal.png")
-    val rockExitLevelUp = load("rockExitLevelUp.png")
-    val rockExitLevelUpOutlineTeal = load("rockExitLevelUpOutlineTeal.png")
     val rockExitRight = load("rockExitRight.png")
-    val rockExitRightOutlineTeal = load("rockExitRightOutlineTeal.png")
-    val rockExitLevelRight = load("rockExitLevelRight.png")
-    val rockExitLevelRightOutlineTeal = load("rockExitLevelRightOutlineTeal.png")
     val rockExitDown = load("rockExitDown.png")
-    val rockExitDownOutlineTeal = load("rockExitDownOutlineTeal.png")
-    val rockExitLevelDown = load("rockExitLevelDown.png")
-    val rockExitLevelDownOutlineTeal = load("rockExitLevelDownOutlineTeal.png")
     val rockExitLeft = load("rockExitLeft.png")
-    val rockExitLeftOutlineTeal = load("rockExitLeftOutlineTeal.png")
+    
+    val rockExitLevelUp = load("rockExitLevelUp.png")
+    val rockExitLevelRight = load("rockExitLevelRight.png")
+    val rockExitLevelDown = load("rockExitLevelDown.png")
     val rockExitLevelLeft = load("rockExitLevelLeft.png")
-    val rockExitLevelLeftOutlineTeal = load("rockExitLevelLeftOutlineTeal.png")
+    
+    val rockExitUpClosed = load("rockExitUpClosed.png")
+    val rockExitRightClosed = load("rockExitRightClosed.png")
+    val rockExitDownClosed = load("rockExitDownClosed.png")
+    val rockExitLeftClosed = load("rockExitLeftClosed.png")
+    
+    val rockExitLevelUpClosed = load("rockExitLevelUpClosed.png")
+    val rockExitLevelRightClosed = load("rockExitLevelRightClosed.png")
+    val rockExitLevelDownClosed = load("rockExitLevelDownClosed.png")
+    val rockExitLevelLeftClosed = load("rockExitLevelLeftClosed.png")
     
     // hero
     
@@ -157,14 +194,30 @@ object Tiles
     val heroIdle1OutlineGreen = load("heroIdle1OutlineGreen.png")
     val heroMove1 = load("heroMove1.png")
     val heroMove1Invisible = load("heroMove1Invisible.png")
+    val heroMove1InvisibleInvincible = load("heroMove1InvisibleInvincible.png")
+    val heroMove1Invincible = load("heroMove1Invincible.png")
     val heroMove2 = load("heroMove2.png")
     val heroMove2Invisible = load("heroMove2Invisible.png")
+    val heroMove2InvisibleInvincible = load("heroMove2InvisibleInvincible.png")
+    val heroMove2Invincible = load("heroMove2Invincible.png")
     val heroMove3 = load("heroMove3.png")
     val heroMove3Invisible = load("heroMove3Invisible.png")
+    val heroMove3InvisibleInvincible = load("heroMove3InvisibleInvincible.png")
+    val heroMove3Invincible = load("heroMove3Invincible.png")
     val heroMove4 = load("heroMove4.png")
     val heroMove4Invisible = load("heroMove4Invisible.png")
+    val heroMove4InvisibleInvincible = load("heroMove4InvisibleInvincible.png")
+    val heroMove4Invincible = load("heroMove4Invincible.png")
     val heroCorpse = load("heroCorpse.png")
     val heroCorpseOutlineYellow = load("heroCorpseOutlineYellow.png")
+    val heroIdle1Invincible = load("heroIdle1Invincible.png")
+    val heroVinesInvincible = load("heroVinesInvincible.png")
+    val heroVinesInvisibleInvincible = load("heroVinesInvisibleInvincible.png")
+    val heroIdle1InvisibleInvincible = load("heroIdle1InvisibleInvincible.png")
+    val hpPlus = load("hpPlus.png")
+    val hpMinus = load("hpMinus.png")
+    val apPlus = load("apPlus.png")
+    val apMinus = load("apMinus.png")
     // for `map` tests
     val hero = heroIdle1
     
@@ -498,6 +551,9 @@ object Tiles
     val explodingBarrelOutlineYellow = load("explodingBarrelOutlineYellow.png")
     val explodingBarrelExplosion = load("explodingBarrelExplosion.png")
     
+    // frozenEnemy
+    val frozenEnemy = load("frozenEnemy.png")
+    
     // sword
     
     val swordUp = load("swordUp.png")
@@ -772,42 +828,53 @@ object Tiles
     // cobblestoneDarkWall
     val cobblestoneDarkWallDown = load(walls_folder_name + "cobblestoneDarkWallDown.png")
     val cobblestoneDarkWallRight = load(walls_folder_name + "cobblestoneDarkWallRight.png")
+    val cobblestoneDarkWallRightDown = load(walls_folder_name + "cobblestoneDarkWallRightDown.png")
     // cobblestoneLightTallWall
     val cobblestoneLightTallWallDown = load(walls_folder_name + "cobblestoneLightTallWallDown.png")
     val cobblestoneLightTallWallRight = load(walls_folder_name + "cobblestoneLightTallWallRight.png")
+    val cobblestoneLightTallWallRightDown = load(walls_folder_name + "cobblestoneLightTallWallRightDown.png")
     // cobblestoneDarkTallWall
     val cobblestoneDarkTallWallDown = load(walls_folder_name + "cobblestoneDarkTallWallDown.png")
     val cobblestoneDarkTallWallRight = load(walls_folder_name + "cobblestoneDarkTallWallRight.png")
+    val cobblestoneDarkTallWallRightDown = load(walls_folder_name + "cobblestoneDarkTallWallRightDown.png")
     
     // orange brick
     
     // brickOrangeLightWall
     val brickOrangeLightWallDown = load(walls_folder_name + "brickOrangeLightWallDown.png")
     val brickOrangeLightWallRight = load(walls_folder_name + "brickOrangeLightWallRight.png")
+    val brickOrangeLightWallRightDown = load(walls_folder_name + "brickOrangeLightWallRightDown.png")
     // brickOrangeDarkWall
     val brickOrangeDarkWallDown = load(walls_folder_name + "brickOrangeDarkWallDown.png")
     val brickOrangeDarkWallRight = load(walls_folder_name + "brickOrangeDarkWallRight.png")
+    val brickOrangeDarkWallRightDown = load(walls_folder_name + "brickOrangeDarkWallRightDown.png")
     // brickOrangeLightTallWall
     val brickOrangeLightTallWallDown = load(walls_folder_name + "brickOrangeLightTallWallDown.png")
     val brickOrangeLightTallWallRight = load(walls_folder_name + "brickOrangeLightTallWallRight.png")
+    val brickOrangeLightTallWallRightDown = load(walls_folder_name + "brickOrangeLightTallWallRightDown.png")
     // brickOrangeDarkTallWall
     val brickOrangeDarkTallWallDown = load(walls_folder_name + "brickOrangeDarkTallWallDown.png")
     val brickOrangeDarkTallWallRight = load(walls_folder_name + "brickOrangeDarkTallWallRight.png")
+    val brickOrangeDarkTallWallRightDown = load(walls_folder_name + "brickOrangeDarkTallWallRightDown.png")
     
     // red brick
     
     // brickRedLightWall
     val brickRedLightWallDown = load(walls_folder_name + "brickRedLightWallDown.png")
     val brickRedLightWallRight = load(walls_folder_name + "brickRedLightWallRight.png")
+    val brickRedLightWallRightDown = load(walls_folder_name + "brickRedLightWallRightDown.png")
     // brickRedDarkWall
     val brickRedDarkWallDown = load(walls_folder_name + "brickRedDarkWallDown.png")
     val brickRedDarkWallRight = load(walls_folder_name + "brickRedDarkWallRight.png")
+    val brickRedDarkWallRightDown = load(walls_folder_name + "brickRedDarkWallRightDown.png")
     // brickRedLightTallWall
     val brickRedLightTallWallDown = load(walls_folder_name + "brickRedLightTallWallDown.png")
     val brickRedLightTallWallRight = load(walls_folder_name + "brickRedLightTallWallRight.png")
+    val brickRedLightTallWallRightDown = load(walls_folder_name + "brickRedLightTallWallRightDown.png")
     // brickRedDarkTallWall
     val brickRedDarkTallWallDown = load(walls_folder_name + "brickRedDarkTallWallDown.png")
     val brickRedDarkTallWallRight = load(walls_folder_name + "brickRedDarkTallWallRight.png")
+    val brickRedDarkTallWallRightDown = load(walls_folder_name + "brickRedDarkTallWallRightDown.png")
     
     // grass floor tiles
     val grass_floor_tiles_folder_name = "new_floor_tiles/grass/"
@@ -818,6 +885,12 @@ object Tiles
     val grassStoneFloor1 = load(grass_floor_tiles_folder_name + "grass_floor_stone_1.png")
     val grassStoneFloor2 = load(grass_floor_tiles_folder_name + "grass_floor_stone_2.png")
     val grassStoneFloor3 = load(grass_floor_tiles_folder_name + "grass_floor_stone_3.png")
+    val grassDarkFloorDrained1 = load(grass_floor_tiles_folder_name + "grass_floor_dark_drained_1.png")
+    val grassDarkFloorDrained2 = load(grass_floor_tiles_folder_name + "grass_floor_dark_drained_2.png")
+    val grassLightFloorDrained1 = load(grass_floor_tiles_folder_name + "grass_floor_light_drained_1.png")
+    val grassStoneFloorDrained1 = load(grass_floor_tiles_folder_name + "grass_floor_stone_drained_1.png")
+    val grassStoneFloorDrained2 = load(grass_floor_tiles_folder_name + "grass_floor_stone_drained_2.png")
+    val grassStoneFloorDrained3 = load(grass_floor_tiles_folder_name + "grass_floor_stone_drained_3.png")
     
     // tiled floor tiles
     val tiled_floor_tiles_folder_name = "new_floor_tiles/tiled/"
@@ -890,6 +963,11 @@ object Tiles
     val tableMediumWineWine = load(props_composite_folder_name + "table_medium_wine_wine.png")
     val tableSmallWater = load(props_composite_folder_name + "table_small_water.png")
     val tableSmallWine = load(props_composite_folder_name + "table_small_wine.png")
+    
+    // dropped pockets
+    val droppedPockets = load("droppedPockets.png")
+    val droppedPocketsOutlineYellow = load("droppedPocketsOutlineYellow.png")
+    val droppedPocketsOutlineTeal = load("droppedPocketsOutlineTeal.png")
     
     fun load(name : String) : StaticTiledMapTile
     {

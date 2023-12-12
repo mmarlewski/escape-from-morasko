@@ -4,15 +4,19 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entities.enemies.EnemyBatCorpse
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
+import com.efm.skill.Skill
+import com.efm.skills.*
+import com.efm.ui.gameScreen.PopUps
 
 class BossDragon : Entity, Enemy
 {
@@ -22,11 +26,13 @@ class BossDragon : Entity, Enemy
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 3
+    override var attackDamage = 5
     override val stepsInOneTurn = 10
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     var isSitting = true
     var count = 0
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -164,8 +170,8 @@ class BossDragon : Entity, Enemy
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
-                this         -> Unit
-                null         ->
+                this -> Unit
+                null ->
                 {
                     attackedSpace?.changeBase(Base.lava)
                     GameScreen.updateMapBaseLayer()
@@ -211,7 +217,7 @@ class BossDragon : Entity, Enemy
                     {
                         is Character ->
                         {
-                            attackedEntity.damageCharacter(5)
+                            attackedEntity.damageCharacter(attackDamage)
                         }
                     }
                 })
@@ -224,95 +230,140 @@ class BossDragon : Entity, Enemy
     
     override fun performTurn()
     {
-        val doNothing = 0
-        val turnTileIntoLava = 1
-        val attackHero = 2
-        val goSitting = 3
-        val goFlying = 4
-        
-        var decision = doNothing
-        
-        if (isSitting)
+        if (!isFrozen)
         {
-            if (count >= 5)
+            val doNothing = 0
+            val turnTileIntoLava = 1
+            val attackHero = 2
+            val goSitting = 3
+            val goFlying = 4
+            
+            var decision = doNothing
+            
+            if (isSitting)
             {
-                count = 0
-                decision = goFlying
+                if (count >= 5)
+                {
+                    count = 0
+                    decision = goFlying
+                }
+                else
+                {
+                    count++
+                    decision = turnTileIntoLava
+                }
             }
             else
             {
-                count++
-                decision = turnTileIntoLava
+                if (count >= 5)
+                {
+                    count = 0
+                    decision = goSitting
+                }
+                else
+                {
+                    count++
+                    decision = attackHero
+                }
+            }
+            
+            when (decision)
+            {
+                turnTileIntoLava ->
+                {
+                    val attackAreaPositions = getSquareAreaPositions(position, attackRange)
+                    val validAttackAreaPositions = attackAreaPositions.filter {
+                        val space = World.currentRoom.getSpace(it)
+                        val entity = space?.getEntity()
+                        val base = space?.getBase()
+                        space != null && entity == null && base != Base.lava
+                    }
+                    val tilePosition = validAttackAreaPositions.random()
+                    turnTileIntoLava(tilePosition)
+                }
+                
+                attackHero       ->
+                {
+                    val attackAreaPositions = getSquareAreaPositions(position, attackRange)
+                    
+                    if (World.hero.position in attackAreaPositions)
+                    {
+                        breatheFire(World.hero.position)
+                    }
+                    else
+                    {
+                        val pathSpaces =
+                                PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+                        
+                        val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
+                        if (!stepsSpaces.isNullOrEmpty())
+                        {
+                            val stepsIndex =
+                                    if (stepsSpaces.size == pathSpaces.size) stepsSpaces.size - 1 else stepsSpaces.size
+                            getMoveSound()?.let { playSoundOnce(it) }
+                            moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
+                        }
+                    }
+                }
+                
+                goSitting        ->
+                {
+                    isSitting = true
+                }
+                
+                goFlying         ->
+                {
+                    isSitting = false
+                }
+                
+                else             ->
+                {
+                }
             }
         }
         else
         {
-            if (count >= 5)
-            {
-                count = 0
-                decision = goSitting
-            }
-            else
-            {
-                count++
-                decision = attackHero
-            }
-        }
-        
-        when (decision)
-        {
-            turnTileIntoLava ->
-            {
-                val attackAreaPositions = getSquareAreaPositions(position, attackRange)
-                val validAttackAreaPositions = attackAreaPositions.filter {
-                    val space = World.currentRoom.getSpace(it)
-                    val entity = space?.getEntity()
-                    val base = space?.getBase()
-                    space != null && entity == null && base != Base.lava
-                }
-                val tilePosition = validAttackAreaPositions.random()
-                turnTileIntoLava(tilePosition)
-            }
-            
-            attackHero       ->
-            {
-                val attackAreaPositions = getSquareAreaPositions(position, attackRange)
-                
-                if (World.hero.position in attackAreaPositions)
-                {
-                    breatheFire(World.hero.position)
-                }
-                else
-                {
-                    val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-                    
-                    val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
-                    if (!stepsSpaces.isNullOrEmpty())
-                    {
-                        val stepsIndex = if (stepsSpaces.size == pathSpaces.size) stepsSpaces.size - 1 else stepsSpaces.size
-                        getMoveSound()?.let { playSoundOnce(it) }
-                        moveEnemy(position, pathSpaces[stepsIndex].position, stepsSpaces, this)
-                    }
-                }
-            }
-            
-            goSitting        ->
-            {
-                isSitting = true
-            }
-            
-            goFlying         ->
-            {
-                isSitting = false
-            }
-            
-            else             ->
-            {
-            }
+            isFrozen = false
         }
     }
     
     override fun enemyAttack()
     {
+    }
+    
+    override fun onDeath()
+    {
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Dragon)
+        }
+        increaseHeroStats(5, 3)
+    }
+    
+    // for serializing
+    
+    override fun write(json : Json?)
+    {
+        super<Enemy>.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("isSitting", this.isSitting)
+            json.writeValue("count", this.count)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super<Enemy>.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonIsSitting = json.readValue("isSitting", Boolean::class.java, jsonData)
+            if (jsonIsSitting != null) this.isSitting = jsonIsSitting
+            val jsonCount = json.readValue("count", Int::class.java, jsonData)
+            if (jsonCount != null) this.count = jsonCount
+        }
     }
 }

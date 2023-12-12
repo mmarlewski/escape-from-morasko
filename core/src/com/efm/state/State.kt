@@ -1,13 +1,16 @@
 package com.efm.state
 
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
+import com.efm.exit.Exit
 import com.efm.item.*
-import com.efm.passage.Exit
+import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.skill.ActiveSkill
-import com.efm.skill.Skill
+import com.efm.ui.gameScreen.EquipmentStructure
 
 private var prevState : State = State.free.noSelection
 private var currState : State = State.free.noSelection
@@ -24,15 +27,119 @@ fun setState(newState : State)
     
     if (prevState != newState)
     {
-        println(currState.javaClass.canonicalName)
-        println()
+        println("new state: \n ${currState.javaClass.canonicalName}")
     }
+    
+}
+
+fun toggleTutorialActive()
+{
+    getState().tutorialFlags.tutorialActive = !getState().tutorialFlags.tutorialActive
 }
 
 sealed class State
 {
     var isHeroAlive = true
     var areEnemiesInRoom = false
+    
+    var tutorialFlags = TutorialFlags
+    
+    object TutorialFlags
+    {
+        var tutorialActive = true
+        var welcomePopupShown = false
+        var cameraPopupShown = false
+        //var playerMovedCamera = false
+        var movementPopupShown = false
+        var playerMoved = false
+        var lootingPopupShown = false
+        var playerLooted = false
+        var equipmentPopupShown = false
+        var playerSelectedSomethingFromEquipment = false
+        var healthAndAbilityPopupShown = false
+        var turnsPopupShown = false
+        var playerEndedTurn = false
+        var combatPopupShown = false
+    
+        fun setDefault()
+        {
+            tutorialActive = true
+            welcomePopupShown = false
+            cameraPopupShown = false
+            //playerMovedCamera = false
+            movementPopupShown = false
+            playerMoved = false
+            lootingPopupShown = false
+            playerLooted = false
+            equipmentPopupShown = false
+            playerSelectedSomethingFromEquipment = false
+            healthAndAbilityPopupShown = false
+            turnsPopupShown = false
+            playerEndedTurn = false
+            combatPopupShown = false
+        }
+        
+        // for serializing
+        
+        fun write1(json : Json?)
+        {
+            if (json != null)
+            {
+                json.writeValue("tutorialActive", this.tutorialActive)
+                json.writeValue("welcomePopupShown", this.welcomePopupShown)
+                json.writeValue("cameraPopupShown", this.cameraPopupShown)
+                //json.writeValue("playerMovedCamera", this.playerMovedCamera)
+                json.writeValue("movementPopupShown", this.movementPopupShown)
+                json.writeValue("playerMoved", this.playerMoved)
+                json.writeValue("lootingPopupShown", this.lootingPopupShown)
+                json.writeValue("playerLooted", this.playerLooted)
+                json.writeValue("equipmentPopupShown", this.equipmentPopupShown)
+                json.writeValue("playerSelectedSomethingFromEquipment", this.playerSelectedSomethingFromEquipment)
+                json.writeValue("healthAndAbilityPopupShown", this.healthAndAbilityPopupShown)
+                json.writeValue("turnsPopupShown", this.turnsPopupShown)
+                json.writeValue("playerEndedTurn", this.playerEndedTurn)
+                json.writeValue("combatPopupShown", this.combatPopupShown)
+            }
+        }
+        
+        fun read(json : Json?, jsonData : JsonValue?)
+        {
+            if (json != null)
+            {
+                val jsonTutorialActive = json.readValue("tutorialActive", Boolean::class.java, jsonData)
+                if (jsonTutorialActive != null) this.tutorialActive = jsonTutorialActive
+                val jsonWelcomePopupShown = json.readValue("welcomePopupShown", Boolean::class.java, jsonData)
+                if (jsonWelcomePopupShown != null) this.welcomePopupShown = jsonWelcomePopupShown
+                val jsonCameraPopupShown = json.readValue("cameraPopupShown", Boolean::class.java, jsonData)
+                if (jsonCameraPopupShown != null) this.cameraPopupShown = jsonCameraPopupShown
+                //val jsonPlayerMovedCamera = json.readValue("playerMovedCamera", Boolean::class.java, jsonData)
+                //if (jsonPlayerMovedCamera != null) this.playerMovedCamera = jsonPlayerMovedCamera
+                val jsonMovementPopupShown = json.readValue("movementPopupShown", Boolean::class.java, jsonData)
+                if (jsonMovementPopupShown != null) this.movementPopupShown = jsonMovementPopupShown
+                val jsonPlayerMoved = json.readValue("playerMoved", Boolean::class.java, jsonData)
+                if (jsonPlayerMoved != null) this.playerMoved = jsonPlayerMoved
+                val jsonLootingPopupShown = json.readValue("lootingPopupShown", Boolean::class.java, jsonData)
+                if (jsonLootingPopupShown != null) this.lootingPopupShown = jsonLootingPopupShown
+                val jsonPlayerLooted = json.readValue("playerLooted", Boolean::class.java, jsonData)
+                if (jsonPlayerLooted != null) this.playerLooted = jsonPlayerLooted
+                val jsonEquipmentPopupShown = json.readValue("equipmentPopupShown", Boolean::class.java, jsonData)
+                if (jsonEquipmentPopupShown != null) this.equipmentPopupShown = jsonEquipmentPopupShown
+                val jsonPlayerSelectedSomethingFromEquipment =
+                        json.readValue("playerSelectedSomethingFromEquipment", Boolean::class.java, jsonData)
+                if (jsonPlayerSelectedSomethingFromEquipment != null) this.playerSelectedSomethingFromEquipment =
+                        jsonPlayerSelectedSomethingFromEquipment
+                val jsonHealthAndAbilityPopupShown =
+                        json.readValue("healthAndAbilityPopupShown", Boolean::class.java, jsonData)
+                if (jsonHealthAndAbilityPopupShown != null) this.healthAndAbilityPopupShown = jsonHealthAndAbilityPopupShown
+                val jsonTurnsPopupShown = json.readValue("turnsPopupShown", Boolean::class.java, jsonData)
+                if (jsonTurnsPopupShown != null) this.turnsPopupShown = jsonTurnsPopupShown
+                val jsonPlayerEndedTurn = json.readValue("playerEndedTurn", Boolean::class.java, jsonData)
+                if (jsonPlayerEndedTurn != null) this.playerEndedTurn = jsonPlayerEndedTurn
+                val jsonCombatPopupShown = json.readValue("combatPopupShown", Boolean::class.java, jsonData)
+                if (jsonCombatPopupShown != null) this.combatPopupShown = jsonCombatPopupShown
+            }
+        }
+    }
     
     sealed class free : State()
     {
@@ -124,15 +231,15 @@ sealed class State
         {
             var chosenStackableSelfItem : StackableSelfItem? = null
         }
-    
+        
         // ActiveSkill
-    
+        
         object activeSkillChosen : free()
         {
             var chosenActiveSkill : ActiveSkill? = null
             var targetPositions : List<RoomPosition>? = null
         }
-    
+        
         object activeSkillTargetSelectedOnce : free()
         {
             var chosenActiveSkill : ActiveSkill? = null
@@ -140,7 +247,7 @@ sealed class State
             var selectedPosition = RoomPosition()
             var effectPositions : List<RoomPosition>? = null
         }
-    
+        
         object activeSkillTargetSelectedTwice : free()
         {
             var chosenActiveSkill : ActiveSkill? = null
@@ -246,15 +353,15 @@ sealed class State
         {
             var chosenStackableSelfItem : StackableSelfItem? = null
         }
-    
+        
         // ActiveSkill
-    
+        
         object activeSkillChosen : constrained()
         {
             var chosenActiveSkill : ActiveSkill? = null
             var targetPositions : List<RoomPosition>? = null
         }
-    
+        
         object activeSkillTargetSelectedOnce : constrained()
         {
             var chosenActiveSkill : ActiveSkill? = null
@@ -262,7 +369,7 @@ sealed class State
             var selectedPosition = RoomPosition()
             var effectPositions : List<RoomPosition>? = null
         }
-    
+        
         object activeSkillTargetSelectedTwice : constrained()
         {
             var chosenActiveSkill : ActiveSkill? = null
@@ -379,15 +486,15 @@ sealed class State
             {
                 var chosenStackableSelfItem : StackableSelfItem? = null
             }
-    
+            
             // ActiveSkill
-    
+            
             object activeSkillChosen : hero()
             {
                 var chosenActiveSkill : ActiveSkill? = null
                 var targetPositions : List<RoomPosition>? = null
             }
-    
+            
             object activeSkillTargetSelectedOnce : hero()
             {
                 var chosenActiveSkill : ActiveSkill? = null
@@ -395,7 +502,7 @@ sealed class State
                 var selectedPosition = RoomPosition()
                 var effectPositions : List<RoomPosition>? = null
             }
-    
+            
             object activeSkillTargetSelectedTwice : hero()
             {
                 var chosenActiveSkill : ActiveSkill? = null

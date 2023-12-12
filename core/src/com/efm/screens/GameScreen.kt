@@ -14,11 +14,7 @@ import com.efm.Map
 import com.efm.assets.Colors
 import com.efm.entity.Enemy
 import com.efm.level.World
-import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
-import com.efm.skills.*
-import com.efm.stackableMapItems.*
-import com.efm.stackableSelfItems.*
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
 
@@ -53,66 +49,21 @@ object GameScreen : BaseScreen(), GestureListener
         super.inputProcessor = inputMultiplexer
         
         // hud
-        ItemsStructure.display()
-        LeftStructure.display()
-        ProgressBars.display()
-        RightStructure.display()
-        PopUps.display()
-        EquipmentStructure.display()
-        
-        // map
-        updateMapBaseLayer()
-        updateMapEntityLayer()
-        
-        // camera
-        changeCameraZoom(currZoom)
-        focusCameraOnRoomPosition(World.hero.position)
-        
-        // hero
-        World.hero.inventory.addItem(SmallAxe())
-        World.hero.inventory.addItem(Sledgehammer())
-        World.hero.inventory.addItem(Bow())
-        World.hero.inventory.addItem(Staff())
-        World.hero.inventory.addItem(Bomb())
-        World.hero.inventory.addItem(Explosive())
-        World.hero.inventory.addItem(Explosive())
-        World.hero.inventory.addItem(Explosive())
-        World.hero.inventory.addItem(Apple())
-        World.hero.inventory.addItem(Fish())
-        World.hero.inventory.addItem(Mushroom())
-        World.hero.addSkill(LavaWalking)
-        World.hero.addSkill(Pull)
-        World.hero.addSkill(Invisibility)
-        World.hero.addSkill(Freeze)
-        World.hero.addSkill(Swap)
-        ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
-        // state
-        val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
-        val initState = when (areEnemiesInRoom)
+        if (!State.TutorialFlags.tutorialActive)
         {
-            true  -> State.constrained.noSelection
-            false -> State.free.noSelection
+            ItemsStructure.display()
+            LeftStructure.display()
+            ProgressBars.display()
+            RightStructure.display()
+            PopUps.display()
+            EquipmentStructure.display()
+            TutorialPopups.display()
         }
-        for (level in World.getLevels())
+        else
         {
-            for (room in level.getRooms())
-            {
-                for (enemy in room.getEnemies())
-                {
-                    enemy.createOwnHealthBar()
-                    enemy.hideOwnHealthBar()
-                }
-            }
+            TutorialPopups.display()
+            interfaceDrawingWithTutorial()
         }
-        for (enemy in World.currentRoom.getEnemies())
-        {
-            enemy.displayOwnHealthBar()
-        }
-        
-        
-        initState.areEnemiesInRoom = areEnemiesInRoom
-        setState(initState)
     }
     
     fun updateMapBaseLayer()
@@ -145,6 +96,17 @@ object GameScreen : BaseScreen(), GestureListener
         }
     }
     
+    fun updateMapOutlineLayer()
+    {
+        for (i in 0 until Map.mapHeightInTiles)
+        {
+            for (j in 0 until Map.mapWidthInTiles)
+            {
+                Map.changeTile(MapLayer.outline, j, i, null)
+            }
+        }
+    }
+    
     fun updateMapEnemyIdleAnimation()
     {
         for (i in 0 until Map.mapHeightInTiles)
@@ -167,15 +129,8 @@ object GameScreen : BaseScreen(), GestureListener
                                 !(state is State.combat.enemies.enemyAction && State.combat.enemies.enemyAction.currEnemy == entity)
                         )
                         {
-                            if (World.currentRoom.getFrozenEnemies().contains(entity))
-                            {
-                                Map.changeTile(MapLayer.entity, j, i, entity.getFreezeTile())
-                            } else
-                            {
-                                val tile = entity.getIdleTile()
-    
-                                Map.changeTile(MapLayer.entity, j, i, tile)
-                            }
+                            val tile = entity.getIdleTile()
+                            Map.changeTile(MapLayer.entity, j, i, tile)
                             
                         }
                     }

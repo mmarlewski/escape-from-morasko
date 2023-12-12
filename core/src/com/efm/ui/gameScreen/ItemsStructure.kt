@@ -22,7 +22,7 @@ object ItemsStructure
             Textures.disabledNinePatch,
             Textures.focusedNinePatch
                                        ) {
-        playSoundOnce(Sounds.blop)
+        playSoundOnce(Sounds.ui_1)
         LeftStructure.setVisibility(!LeftStructure.healingItemsButton.isVisible)
     }
     
@@ -53,7 +53,7 @@ object ItemsStructure
                     Textures.disabledNinePatch,
                     Textures.focusedNinePatch
                                            ) {
-                playSoundOnce(Sounds.blop)
+                playSoundOnce(Sounds.ui_4)
                 action()
             }
             return imageButton
@@ -107,7 +107,7 @@ object ItemsStructure
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                             ) {
-            playSoundOnce(Sounds.blop)
+            playSoundOnce(Sounds.ui_4)
             action()
         }
         
@@ -128,7 +128,7 @@ object ItemsStructure
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
                                         ) {
-            playSoundOnce(Sounds.blop)
+            playSoundOnce(Sounds.ui_4)
             action()
         }
         
@@ -193,7 +193,22 @@ object ItemsStructure
     fun attack(item : Item)
     {
         val currState = getState()
-        
+    
+        // tutorial popups
+        if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.equipmentPopupShown)
+            currState.tutorialFlags.playerSelectedSomethingFromEquipment = true
+        if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.playerSelectedSomethingFromEquipment && !currState.tutorialFlags.healthAndAbilityPopupShown)
+        {
+            // turnsPopup is shown directly after closing healthAndAbilityPopup
+            ProgressBars.display()
+            TutorialPopups.healthAndAbilityPopup.isVisible = true
+            PopUps.setBackgroundVisibility(false)
+            ProgressBars.setVisibilty(true)
+            LeftStructure.menuButton.isVisible = false
+            currState.tutorialFlags.healthAndAbilityPopupShown = true
+            currState.tutorialFlags.turnsPopupShown = true
+        }
+    
         val canBeUsed = when (currState)
         {
             is State.free                              -> true
@@ -201,7 +216,7 @@ object ItemsStructure
             {
                 World.hero.abilityPoints >= item.baseAPUseCost
             }
-            
+        
             else                                       -> false
         }
         

@@ -3,12 +3,18 @@ package com.efm
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
-import com.efm.ui.gameScreen.ItemsStructure
+import com.efm.ui.gameScreen.*
 
 fun endCurrentTurn()
 {
+    saveGame()
+    
     val isHeroVisible = World.hero.isVisible
     val currState = getState()
+    // tutorial popups
+    if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.turnsPopupShown)
+        currState.tutorialFlags.playerEndedTurn = true
+    var newState = currState
     
     when (currState)
     {
@@ -16,20 +22,35 @@ fun endCurrentTurn()
         {
             World.hero.regainAllAP()
             World.hero.updateActiveSkillCoolDown()
+            World.hero.incrementTurnsElapsed()
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             if (!isHeroVisible)
             {
-                setState(State.free.heroSelected.apply {
+                newState = State.free.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
-                })
+                }
+            }
+            // enemies roaming
+            for (enemy in World.currentRoom.getEnemies())
+            {
+                enemy.roam()
+            }
+            // tutorial popups
+            if (newState.tutorialFlags.tutorialActive && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
+            {
+                TutorialPopups.combatPopup.isVisible = true
+                PopUps.setBackgroundVisibility(false)
+                LeftStructure.menuButton.isVisible = false
+                newState.tutorialFlags.combatPopupShown = true
             }
         }
         
         is State.combat.hero ->
         {
             World.hero.updateActiveSkillCoolDown()
+            World.hero.incrementTurnsElapsed()
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
             
             Map.clearLayer(MapLayer.select)
@@ -37,17 +58,17 @@ fun endCurrentTurn()
             
             if (!isHeroVisible)
             {
-                setState(State.free.heroSelected.apply {
+                newState = State.free.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
-                })
+                }
             }
             else
             {
                 val animation = Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
                 Animating.executeAnimations(mutableListOf(animation))
-                
-                val newState = State.combat.enemies.enemyUnselected.apply {
+    
+                newState = State.combat.enemies.enemyUnselected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                     this.enemies = World.currentRoom.getEnemies()
@@ -62,7 +83,6 @@ fun endCurrentTurn()
                         }
                     }
                 }
-                setState(newState)
             }
         }
         
@@ -70,16 +90,17 @@ fun endCurrentTurn()
         {
             if (!isHeroVisible)
             {
-                setState(State.free.heroSelected.apply {
+                newState = State.free.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
-                })
+                }
             }
         }
     }
     
+    setState(newState)
+    
     World.hero.isVisible = true
     World.hero.setCanMoveToTrue()
-    World.currentRoom.clearFrozenEnemiesList()
     GameScreen.updateMapEntityLayer()
 }

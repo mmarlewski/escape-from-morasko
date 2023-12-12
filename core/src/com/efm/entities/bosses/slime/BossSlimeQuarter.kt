@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.Boss
+import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
@@ -14,14 +16,16 @@ import com.efm.room.RoomPosition
 class BossSlimeQuarter : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 25
-    override var healthPoints = 2
+    override var maxHealthPoints = 10
+    override var healthPoints = 10
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
+    override var attackDamage = 10
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -103,12 +107,26 @@ class BossSlimeQuarter : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(10)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }
         
         Animating.executeAnimations(animations)
+    }
+    
+    fun finalBossSlimeQuartersKilled()
+    {
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Slime)
+        }
+    }
+    
+    override fun onDeath()
+    {
+        increaseHeroStats(2, 1)
     }
     
 }

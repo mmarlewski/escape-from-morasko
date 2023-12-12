@@ -22,9 +22,11 @@ class BossWizard : Entity, Enemy
     override var alive = true
     override val detectionRange = 5
     override val attackRange = 5
+    override var attackDamage = 5
     override val stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -75,18 +77,23 @@ class BossWizard : Entity, Enemy
     
     override fun performTurn()
     {
-        val pathToHero = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom,this)
-        if(pathToHero != null && pathToHero.size < 4)
+        if (!isFrozen)
         {
-            areaOfEffectAttack()
-        }
-        else if (World.currentRoom.getEnemies().size <= 2)
-        {
-            summonMinions()
-        }
-        else
-        {
-            enemyAttack()
+            val pathToHero = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+            if (pathToHero != null && pathToHero.size < 4)
+            {
+                areaOfEffectAttack()
+            }
+            else if (World.currentRoom.getEnemies().size <= 2)
+            {
+                summonMinions()
+            }
+            else
+            {
+                enemyAttack()
+            }
+        } else {
+            isFrozen = false
         }
     }
     
@@ -126,13 +133,23 @@ class BossWizard : Entity, Enemy
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(5)
+                        attackedEntity.damageCharacter(attackDamage)
                     }
                 }
             })
         
             Animating.executeAnimations(animations)
         }
+    }
+    
+    override fun onDeath()
+    {
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Wizard)
+        }
+        increaseHeroStats(5, 3)
     }
     
     fun areaOfEffectAttack()

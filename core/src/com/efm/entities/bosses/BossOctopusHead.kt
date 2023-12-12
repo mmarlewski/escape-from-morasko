@@ -4,12 +4,14 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
+import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.level.World
-import com.efm.playSoundOnce
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
@@ -22,6 +24,7 @@ class BossOctopusHead : Entity, Enemy
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 0
+    override var attackDamage = 10
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -30,6 +33,7 @@ class BossOctopusHead : Entity, Enemy
     var showHeadIndefinitely = false
     var currTentacleNum = 0
     val tentacles = mutableListOf<BossOctopusTentacle>()
+    override var isFrozen = false
     
     fun addTentacle(newTentacle : BossOctopusTentacle)
     {
@@ -120,46 +124,53 @@ class BossOctopusHead : Entity, Enemy
     
     override fun performTurn()
     {
-        val tentaclesToRemove = mutableListOf<BossOctopusTentacle>()
-        for (tentacle in tentacles)
+        if (!isFrozen)
         {
-            if (!tentacle.alive)
+            val tentaclesToRemove = mutableListOf<BossOctopusTentacle>()
+            for (tentacle in tentacles)
             {
-                tentaclesToRemove.add(tentacle)
+                if (!tentacle.alive)
+                {
+                    tentaclesToRemove.add(tentacle)
+                }
             }
-        }
-        tentacles.removeAll(tentaclesToRemove)
-        
-        if (currTentacleNum > tentacles.size)
-        {
-            currTentacleNum = tentacles.size
-            showHeadNextTurn = true
-            if (currTentacleNum == 0)
+            tentacles.removeAll(tentaclesToRemove)
+            
+            if (currTentacleNum > tentacles.size)
             {
-                showHeadIndefinitely = true
+                currTentacleNum = tentacles.size
+                showHeadNextTurn = true
+                if (currTentacleNum == 0)
+                {
+                    showHeadIndefinitely = true
+                }
             }
-        }
-        
-        if (isShowingHead)
-        {
-            if (!showHeadIndefinitely)
+            
+            if (isShowingHead)
             {
-                playSoundOnce(Sounds.octopusHeadSubmerge)
-                World.currentRoom.changeBaseAt(Base.waterOctopus, this.position)
-                GameScreen.updateMapBaseLayer()
-                isShowingHead = false
+                if (!showHeadIndefinitely)
+                {
+                    playSoundOnce(Sounds.octopusHeadSubmerge)
+                    World.currentRoom.changeBaseAt(Base.waterOctopus, this.position)
+                    GameScreen.updateMapBaseLayer()
+                    isShowingHead = false
+                }
+            }
+            else
+            {
+                if (showHeadNextTurn)
+                {
+                    playSoundOnce(Sounds.octopusHeadEmerge)
+                    World.currentRoom.changeBaseAt(Base.water, this.position)
+                    GameScreen.updateMapBaseLayer()
+                    isShowingHead = true
+                    showHeadNextTurn = false
+                }
             }
         }
         else
         {
-            if (showHeadNextTurn)
-            {
-                playSoundOnce(Sounds.octopusHeadEmerge)
-                World.currentRoom.changeBaseAt(Base.water, this.position)
-                GameScreen.updateMapBaseLayer()
-                isShowingHead = true
-                showHeadNextTurn = false
-            }
+            isFrozen = false
         }
     }
     
@@ -171,6 +182,62 @@ class BossOctopusHead : Entity, Enemy
             if (this.healthPoints <= 0)
             {
                 this.alive = false
+            }
+        }
+    }
+    
+    override fun onDeath()
+    {
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.OctopusHead)
+        }
+        increaseHeroStats(5, 3)
+    }
+    
+    // for serializing
+    
+    override fun write(json : Json?)
+    {
+        super<Enemy>.write(json)
+        
+        if (json != null)
+        {
+            var isShowingHead = false
+            var showHeadNextTurn = false
+            var showHeadIndefinitely = false
+            var currTentacleNum = 0
+            val tentacles = mutableListOf<BossOctopusTentacle>()
+            json.writeValue("isShowingHead", this.isShowingHead)
+            json.writeValue("showHeadNextTurn", this.showHeadNextTurn)
+            json.writeValue("showHeadIndefinitely", this.showHeadIndefinitely)
+            json.writeValue("currTentacleNum", this.currTentacleNum)
+            json.writeValue("tentacles", this.tentacles)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super<Enemy>.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonIsShowingHead = json.readValue("isShowingHead", Boolean::class.java, jsonData)
+            if (jsonIsShowingHead != null) this.isShowingHead = jsonIsShowingHead
+            val jsonShowHeadNextTurn = json.readValue("showHeadNextTurn", Boolean::class.java, jsonData)
+            if (jsonShowHeadNextTurn != null) this.showHeadNextTurn = jsonShowHeadNextTurn
+            val jsonShowHeadIndefinitely = json.readValue("showHeadIndefinitely", Boolean::class.java, jsonData)
+            if (jsonShowHeadIndefinitely != null) this.showHeadIndefinitely = jsonShowHeadIndefinitely
+            val jsonCurrTentacleNum = json.readValue("currTentacleNum", Int::class.java, jsonData)
+            if (jsonCurrTentacleNum != null) this.currTentacleNum = jsonCurrTentacleNum
+            val jsonTentacles = json.readValue("tentacles", List::class.java, jsonData)
+            if (jsonTentacles != null)
+            {
+                for (tentacle in jsonTentacles)
+                {
+                    this.tentacles.add(tentacle as BossOctopusTentacle)
+                }
             }
         }
     }

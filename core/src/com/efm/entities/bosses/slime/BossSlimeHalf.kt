@@ -10,19 +10,20 @@ import com.efm.assets.Tiles
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import kotlin.random.Random
 
-class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
+open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 50
-    override var healthPoints = 5
+    override var maxHealthPoints = 25
+    override var healthPoints = 25
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
+    override var attackDamage = 20
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -104,7 +105,7 @@ class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(20)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }

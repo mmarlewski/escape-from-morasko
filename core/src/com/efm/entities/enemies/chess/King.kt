@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.Boss
+import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.Character
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
@@ -20,6 +22,7 @@ class King : Entity, Enemy
     override var maxHealthPoints = 5
     override var healthPoints = 5
     override var alive = true
+    override var isFrozen = false
     override fun getTile() : TiledMapTile?
     {
         return Tiles.chessKingWhite
@@ -32,6 +35,7 @@ class King : Entity, Enemy
     
     override val detectionRange = 1
     override val attackRange = 0
+    override var attackDamage = 5
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -63,37 +67,45 @@ class King : Entity, Enemy
     
     override fun performTurn()
     {
-        val heroPos = World.hero.position
-        var attacked = false
-        for (pos in getPossibleAttackPositions())
+        if (!isFrozen)
         {
-            if (pos == heroPos)
+            val heroPos = World.hero.position
+            var attacked = false
+            for (pos in getPossibleAttackPositions())
             {
-                enemyAttack()
-                attacked = true
-            }
-        }
-        if (!attacked)
-        {
-            var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
-            for (pos in getPossibleMovePositions())
-            {
-                if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                if (pos == heroPos)
                 {
-                    var space = World.currentRoom.getSpace(pos)
-                    if (space != null) {
-                        if (space.getEntity() == null && space.isTraversableFor(this))
+                    enemyAttack()
+                    attacked = true
+                }
+            }
+            if (!attacked)
+            {
+                var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
+                for (pos in getPossibleMovePositions())
+                {
+                    if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                    {
+                        var space = World.currentRoom.getSpace(pos)
+                        if (space != null)
                         {
-                            if (checkNbrOfPiecesAround(pos) < checkNbrOfPiecesAround(bestMovePosition))
+                            if (space.getEntity() == null && space.isTraversableFor(this))
                             {
-                                bestMovePosition = pos
+                                if (checkNbrOfPiecesAround(pos) < checkNbrOfPiecesAround(bestMovePosition))
+                                {
+                                    bestMovePosition = pos
+                                }
                             }
                         }
                     }
                 }
+                val path : List<Space?> =
+                        listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+                moveEnemy(position, bestMovePosition, path, this)
             }
-            val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
-            moveEnemy(position, bestMovePosition, path, this)
+        } else
+        {
+            isFrozen = false
         }
     }
     
@@ -121,11 +133,24 @@ class King : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(5)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }
         Animating.executeAnimations(animations)
+    }
+    
+    override fun onDeath()
+    {
+        for (enemy in World.currentRoom.getEnemies())
+        {
+            enemy.damageCharacter(enemy.healthPoints)
+        }
+        if (World.currentRoom.name != "finalRoom")
+        {
+            showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Chess)
+        }
     }
     
     fun getPossibleAttackPositions() : List<RoomPosition>

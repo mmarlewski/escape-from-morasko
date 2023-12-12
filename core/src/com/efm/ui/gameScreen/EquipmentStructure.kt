@@ -11,6 +11,7 @@ import com.efm.item.*
 import com.efm.item.Container
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.skills.Jump
 
 object EquipmentStructure
 {
@@ -30,7 +31,6 @@ object EquipmentStructure
     
     fun createReturnButton() : ImageButton
     {
-        
         val returnButton = imageButtonOf(
                 Textures.close,
                 Textures.upNinePatch,
@@ -38,14 +38,18 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                        ) {
-            Sounds.blop.playOnce()
-            ProgressBars.setVisibilty(true)
-            PopUps.setBackgroundVisibility(true)
-            LeftStructure.menuButton.isVisible = true
+                                        )
+        {
+            Sounds.ui_3.playOnce()
+            interfaceVisibilityWithTutorial()
             setVisibility(false)
+            LeftStructure.menuButton.isVisible = true
+            
+            saveGame()
         }
+        
         returnButton.isVisible = false
+        
         return returnButton
     }
     
@@ -58,8 +62,9 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                        ) {
-            Sounds.blop.playOnce()
+                                        )
+        {
+            Sounds.ui_2.playOnce()
             
             this.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
             
@@ -90,8 +95,9 @@ object EquipmentStructure
                 Textures.overNinePatch,
                 Textures.disabledNinePatch,
                 Textures.focusedNinePatch
-                                       ) {
-            Sounds.blop.playOnce()
+                                       )
+        {
+            Sounds.ui_2.playOnce()
             
             this.selectedButton?.style?.up = NinePatchDrawable(Textures.upNinePatch)
             
@@ -154,7 +160,7 @@ object EquipmentStructure
     
     fun showHeroEquipment()
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         if (containerOverlay in equipment.children)
         {
             equipment.removeActor(containerOverlay)
@@ -172,7 +178,7 @@ object EquipmentStructure
     
     fun showHeroAndContainerEquipments(containerEquipment : Container)
     {
-        Sounds.blop.playOnce()
+        Sounds.ui_1.playOnce()
         if (containerOverlay !in equipment.children)
         {
             equipment.addActor(containerOverlay)

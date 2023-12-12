@@ -21,6 +21,7 @@ class Knight: Entity, Enemy
     override var maxHealthPoints = 5
     override var healthPoints = 5
     override var alive = true
+    override var isFrozen = false
     override fun getTile() : TiledMapTile?
     {
         return Tiles.chessKnightWhite
@@ -33,6 +34,7 @@ class Knight: Entity, Enemy
     
     override val detectionRange = 1
     override val attackRange = 0
+    override var attackDamage = 5
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -64,37 +66,45 @@ class Knight: Entity, Enemy
     
     override fun performTurn()
     {
-        val heroPos = World.hero.position
-        var attacked = false
-        for (pos in getPossibleMovePositions())
+        if (!isFrozen)
         {
-            if (pos == heroPos)
-            {
-                enemyAttack()
-                attacked = true
-            }
-        }
-        if (!attacked)
-        {
-            var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
+            val heroPos = World.hero.position
+            var attacked = false
             for (pos in getPossibleMovePositions())
             {
-                if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                if (pos == heroPos)
                 {
-                    var space = World.currentRoom.getSpace(pos)
-                    if (space != null) {
-                        if (space.getEntity() == null && space.isTraversableFor(this))
+                    enemyAttack()
+                    attacked = true
+                }
+            }
+            if (!attacked)
+            {
+                var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
+                for (pos in getPossibleMovePositions())
+                {
+                    if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                    {
+                        var space = World.currentRoom.getSpace(pos)
+                        if (space != null)
                         {
-                            if (checkPositionDistanceFromHero(pos) < checkPositionDistanceFromHero(bestMovePosition))
+                            if (space.getEntity() == null && space.isTraversableFor(this))
                             {
-                                bestMovePosition = pos
+                                if (checkPositionDistanceFromHero(pos) < checkPositionDistanceFromHero(bestMovePosition))
+                                {
+                                    bestMovePosition = pos
+                                }
                             }
                         }
                     }
                 }
+                val path : List<Space?> =
+                        listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+                moveEnemy(position, bestMovePosition, path, this)
             }
-            val path  : List<Space?> = listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
-            moveEnemy(position, bestMovePosition, path, this)
+        } else
+        {
+            isFrozen = false
         }
     }
     
@@ -121,7 +131,7 @@ class Knight: Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(5)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }
@@ -131,6 +141,7 @@ class Knight: Entity, Enemy
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
         var possibleMovePositions = mutableListOf<RoomPosition>()
+        possibleMovePositions.add(position)
         //add -2x positions
         possibleMovePositions.add(RoomPosition(position.x - 2, position.y + 1))
         possibleMovePositions.add(RoomPosition(position.x - 2, position.y - 1))

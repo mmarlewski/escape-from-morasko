@@ -6,15 +6,19 @@ import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
+import com.efm.exit.Exit
+import com.efm.exit.LevelExit
 import com.efm.level.World
-import com.efm.passage.Exit
+import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.*
 
 fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -23,7 +27,7 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -54,9 +58,10 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
+            
             is Hero  ->
             {
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -89,6 +94,7 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
+            
             is Enemy ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -102,6 +108,7 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
                     this.selectedEnemy = selectedEntity
                 }
             }
+            
             else     ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -123,8 +130,10 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
 
 fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -133,7 +142,7 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -156,9 +165,10 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
         }
+        
         is Hero  ->
         {
-            RightStructure.xButtonVisibility(true)
+            RightStructure.moveButtonVisibility(true)
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
             Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -169,6 +179,7 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
             }
         }
+        
         is Enemy ->
         {
             Map.clearLayer(MapLayer.select)
@@ -182,6 +193,7 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
                 this.selectedEnemy = selectedEntity
             }
         }
+        
         else     ->
         {
             Map.clearLayer(MapLayer.select)
@@ -202,8 +214,10 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
 
 fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -212,7 +226,7 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -237,9 +251,10 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
             }
+            
             is Hero  ->
             {
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -250,6 +265,7 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
+            
             is Enemy ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -263,6 +279,7 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
                     this.selectedEnemy = selectedEntity
                 }
             }
+            
             else     ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -284,8 +301,10 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
 
 fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -294,7 +313,7 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -319,9 +338,10 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
             }
+            
             is Hero  ->
             {
-                RightStructure.xButtonVisibility(true)
+                RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
@@ -332,6 +352,7 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
+            
             is Enemy ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -345,6 +366,7 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
                     this.selectedEnemy = selectedEntity
                 }
             }
+            
             else     ->
             {
                 Map.clearLayer(MapLayer.select)
@@ -366,8 +388,10 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
 
 fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -379,7 +403,7 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
         
         Map.clearLayer(MapLayer.select)
         Map.clearLayer(MapLayer.outline)
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -403,6 +427,7 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
             {
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
             }
+            
             else    ->
             {
                 val pathSpaces = PathFinding.findPathInRoomForEntity(
@@ -411,36 +436,62 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
                         World.currentRoom,
                         World.hero
                                                                     )
-                if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
+                if (pathSpaces != null && World.hero.abilityPoints > 0)
                 {
+                    val canReach = (pathSpaces.size + 1 <= World.hero.abilityPoints)
+                    val possiblePathSpaces = pathSpaces.take(World.hero.abilityPoints)
+                    
                     Map.clearLayer(MapLayer.select)
                     Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                     ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - (pathSpaces.size + 1)
                     for (space in pathSpaces)
                     {
+                        Map.changeTile(MapLayer.select, space.position, Tiles.selectRed)
+                    }
+                    for (space in possiblePathSpaces)
+                    {
                         Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
                     }
                     Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
-                    if (selectedEntity is Interactive)
-                    {
-                        Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
-                    }
                     
-                    val isMoveToAnotherRoom = (selectedEntity is Exit)
-                    val isMoveToAnotherLevel = when (selectedEntity)
+                    if (canReach)
                     {
-                        is Exit -> selectedEntity.isPassageToAnotherLevel()
-                        else    -> false
+                        if (selectedEntity is Interactive)
+                        {
+                            Map.changeTile(
+                                    MapLayer.outline,
+                                    GameScreen.roomTouchPosition,
+                                    selectedEntity.getOutlineTealTile()
+                                          )
+                        }
+                        val isMoveToAnotherRoom = (selectedEntity is Exit)
+                        val isMoveToAnotherLevel = when (selectedEntity)
+                        {
+                            is Exit -> selectedEntity is LevelExit
+                            else    -> false
+                        }
+                        
+                        return State.combat.hero.moveSelectedOnce.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                            this.selectedPosition.set(selectedPosition)
+                            this.pathSpaces = pathSpaces
+                            this.isMoveToAnotherRoom = isMoveToAnotherRoom
+                            this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                        }
                     }
-                    
-                    return State.combat.hero.moveSelectedOnce.apply {
-                        this.isHeroAlive = currState.isHeroAlive
-                        this.areEnemiesInRoom = currState.areEnemiesInRoom
-                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                        this.selectedPosition.set(selectedPosition)
-                        this.pathSpaces = pathSpaces
-                        this.isMoveToAnotherRoom = isMoveToAnotherRoom
-                        this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                    else
+                    {
+                        return State.combat.hero.moveSelectedOnce.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                            this.selectedPosition.set(selectedPosition)
+                            this.pathSpaces = possiblePathSpaces
+                            this.isMoveToAnotherRoom = false
+                            this.isMoveToAnotherLevel = false
+                        }
                     }
                 }
             }
@@ -452,8 +503,10 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
 
 fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedOnce) : State
 {
-    if (!currState.isHeroAlive)
+    if (!World.hero.alive)
     {
+        changeScreen(GameOverScreen)
+        
         return State.over
     }
     
@@ -462,7 +515,7 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         ProgressBars.abilityBar.isVisible = false
         ProgressBars.abilityBarForFlashing.isVisible = false
         ProgressBars.abilityBarLabel.isVisible = false
-    
+        
         World.hero.removeCoolDownFromAllActiveSkills()
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         
@@ -482,13 +535,17 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         if (selectedPosition == currState.selectedPosition)
         {
             Map.clearLayer(MapLayer.select)
-            moveHero(World.hero.position, currState.selectedPosition, currState.pathSpaces)
+            
+            val canReach = (currState.pathSpaces.size + 1 <= World.hero.abilityPoints)
+            val movePosition = if (canReach) selectedPosition else currState.pathSpaces.last().position
+            
+            moveHero(World.hero.position, movePosition, currState.pathSpaces)
             
             return State.combat.hero.moveSelectedTwice.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
                 this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                this.entityOnPosition = selectedEntity
+                this.entityOnPosition = if (canReach) selectedEntity else null
                 this.pathSpaces = currState.pathSpaces
                 this.isMoveToAnotherRoom = currState.isMoveToAnotherRoom
                 this.isMoveToAnotherLevel = currState.isMoveToAnotherLevel
@@ -496,38 +553,64 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
         }
         else if (selectedPosition != World.hero.position)
         {
-            val pathSpaces =
-                    PathFinding.findPathInRoomForEntity(World.hero.position, selectedPosition, World.currentRoom, World.hero)
-            if (pathSpaces != null && pathSpaces.size + 1 <= World.hero.abilityPoints)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(
+                    World.hero.position,
+                    selectedPosition,
+                    World.currentRoom,
+                    World.hero
+                                                                )
+            if (pathSpaces != null && World.hero.abilityPoints > 0)
             {
+                val canReach = (pathSpaces.size + 1 <= World.hero.abilityPoints)
+                val possiblePathSpaces = pathSpaces.take(World.hero.abilityPoints)
+                
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
                 ProgressBars.abilityBarForFlashing.value = ProgressBars.abilityBar.value - (pathSpaces.size + 1)
                 for (space in pathSpaces)
                 {
+                    Map.changeTile(MapLayer.select, space.position, Tiles.selectRed)
+                }
+                for (space in possiblePathSpaces)
+                {
                     Map.changeTile(MapLayer.select, space.position, Tiles.selectTeal)
                 }
                 Map.changeTile(MapLayer.select, GameScreen.roomTouchPosition, Tiles.selectYellow)
-                if (selectedEntity is Interactive)
-                {
-                    Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
-                }
                 
-                val isMoveToAnotherRoom = (selectedEntity is Exit)
-                val isMoveToAnotherLevel = when (selectedEntity)
+                if (canReach)
                 {
-                    is Exit -> selectedEntity.isPassageToAnotherLevel()
-                    else    -> false
+                    if (selectedEntity is Interactive)
+                    {
+                        Map.changeTile(MapLayer.outline, GameScreen.roomTouchPosition, selectedEntity.getOutlineTealTile())
+                    }
+                    val isMoveToAnotherRoom = (selectedEntity is Exit)
+                    val isMoveToAnotherLevel = when (selectedEntity)
+                    {
+                        is Exit -> selectedEntity is LevelExit
+                        else    -> false
+                    }
+                    
+                    return State.combat.hero.moveSelectedOnce.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.selectedPosition.set(selectedPosition)
+                        this.pathSpaces = pathSpaces
+                        this.isMoveToAnotherRoom = isMoveToAnotherRoom
+                        this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                    }
                 }
-                
-                return State.combat.hero.moveSelectedOnce.apply {
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
-                    this.selectedPosition.set(selectedPosition)
-                    this.pathSpaces = pathSpaces
-                    this.isMoveToAnotherRoom = isMoveToAnotherRoom
-                    this.isMoveToAnotherLevel = isMoveToAnotherLevel
+                else
+                {
+                    return State.combat.hero.moveSelectedOnce.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.selectedPosition.set(selectedPosition)
+                        this.pathSpaces = possiblePathSpaces
+                        this.isMoveToAnotherRoom = false
+                        this.isMoveToAnotherLevel = false
+                    }
                 }
             }
         }
@@ -545,9 +628,9 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
         if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
         
         World.hero.spendAP(currState.pathSpaces.size + 1)
-        for (level in World.getLevels())
+        for (level in World.levels)
         {
-            for (room in level.getRooms())
+            for (room in level.rooms)
             {
                 for (enemy in room.getEnemies())
                 {
@@ -575,6 +658,7 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
                     ProgressBars.abilityBarForFlashing.isVisible = true
                     ProgressBars.abilityBarLabel.isVisible = true
                 }
+                
                 false ->
                 {
                     ProgressBars.abilityBar.isVisible = false
@@ -591,7 +675,7 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
                 ProgressBars.abilityBar.isVisible = false
                 ProgressBars.abilityBarForFlashing.isVisible = false
                 ProgressBars.abilityBarLabel.isVisible = false
-    
+                
                 World.hero.removeCoolDownFromAllActiveSkills()
                 ItemsStructure.fillItemsStructureWithItemsAndSkills()
                 
@@ -600,6 +684,7 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
                     this.areEnemiesInRoom = areEnemiesInRoom
                 }
             }
+            
             true  ->
             {
                 GameScreen.roomTouchPosition.set(World.hero.position)
@@ -750,6 +835,23 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         
+        currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
+        
+        if (!currState.areEnemiesInRoom)
+        {
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false
+            
+            World.hero.removeCoolDownFromAllActiveSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+            
+            return State.free.noSelection.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+        
         val item = currState.chosenMultiUseItem
         item?.lowerDurability()
         if (item != null && item.durability < 1)
@@ -764,8 +866,6 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
             }
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
-        currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
         
         val canBeUsedAgain = when (val chosenItem = currState.chosenMultiUseItem)
         {
@@ -922,6 +1022,23 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
         World.currentRoom.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         
+        currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
+        
+        if (!currState.areEnemiesInRoom)
+        {
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false
+            
+            World.hero.removeCoolDownFromAllActiveSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+            
+            return State.free.noSelection.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+        
         val item = currState.chosenStackableMapItem
         item?.lowerAmountByOne()
         if (item != null && item.amount < 1)
@@ -936,8 +1053,6 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
             }
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
-        currState.areEnemiesInRoom = World.currentRoom.getEnemies().isNotEmpty()
         
         val canBeUsedAgain = when (val chosenItem = currState.chosenStackableMapItem)
         {

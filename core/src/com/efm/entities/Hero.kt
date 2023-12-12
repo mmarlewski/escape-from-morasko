@@ -1,17 +1,20 @@
 package com.efm.entities
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.maps.tiled.TiledMapTile
-import com.efm.IdleAnimation
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.assets.Tiles
 import com.efm.entity.Character
-import com.efm.item.Container
-import com.efm.item.Item
+import com.efm.getSquareAreaPositions
+import com.efm.item.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.screens.GameScreen
 import com.efm.skill.*
+import com.efm.skills.Pockets
 import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
-import kotlin.random.Random
 
 /**
  * Hero has its own turn and is controlled by the player.
@@ -22,26 +25,42 @@ class Hero(
 {
     override val position = RoomPosition()
     
-    var maxAbilityPoints : Int = 14
-    var abilityPoints : Int = 14
+    var maxAbilityPoints : Int = 8
+    var abilityPoints : Int = 8
     
     var apDrainInNextTurn = 0
     var canMoveNextTurn = true
     var isVisible = true
     
-    val inventory = HeroInventory()
+    var inventory = HeroInventory()
     
     val bodyPartMap = mutableMapOf<BodyPart, Skill?>().apply { BodyPart.values().forEach { this[it] = null } }
+    
+    var turnsElapsed : Int = 0
+    
+    var isInvincible = false
+        set(value)
+        {
+            field = value
+            GameScreen.updateMapEntityLayer()
+        }
     
     override fun getTile() : TiledMapTile?
     {
         return when
         {
-            !canMoveNextTurn && !isVisible -> Tiles.heroVinesInvisible
-            !canMoveNextTurn && isVisible  -> Tiles.heroVines
-            canMoveNextTurn && !isVisible  -> Tiles.heroIdle1Invisible
-            canMoveNextTurn && isVisible   -> Tiles.heroIdle1
-            else                           -> null
+            canMoveNextTurn && isVisible && !isInvincible   -> Tiles.heroIdle1
+            
+            !canMoveNextTurn && isVisible && !isInvincible  -> Tiles.heroVines
+            !canMoveNextTurn && !isVisible && !isInvincible -> Tiles.heroVinesInvisible
+            !canMoveNextTurn && isVisible && isInvincible   -> Tiles.heroVinesInvincible
+            !canMoveNextTurn && !isVisible && isInvincible  -> Tiles.heroVinesInvisibleInvincible
+            
+            canMoveNextTurn && !isVisible && !isInvincible  -> Tiles.heroIdle1Invisible
+            canMoveNextTurn && !isVisible && isInvincible   -> Tiles.heroIdle1InvisibleInvincible
+            
+            //canMoveNextTurn && isVisible && isInvincible
+            else                                            -> Tiles.heroIdle1Invincible
         }
     }
     
@@ -49,17 +68,24 @@ class Hero(
     {
         return when
         {
-            !canMoveNextTurn && !isVisible -> Tiles.heroVinesInvisible
-            !canMoveNextTurn && isVisible  -> Tiles.heroVines
-            canMoveNextTurn && !isVisible  -> Tiles.heroIdle1Invisible
-            canMoveNextTurn && isVisible   -> Tiles.heroIdle1
-            else                           -> null
+            canMoveNextTurn && isVisible && !isInvincible   -> Tiles.heroIdle1
+    
+            !canMoveNextTurn && isVisible && !isInvincible  -> Tiles.heroVines
+            !canMoveNextTurn && !isVisible && !isInvincible -> Tiles.heroVinesInvisible
+            !canMoveNextTurn && isVisible && isInvincible   -> Tiles.heroVinesInvincible
+            !canMoveNextTurn && !isVisible && isInvincible  -> Tiles.heroVinesInvisibleInvincible
+    
+            canMoveNextTurn && !isVisible && !isInvincible  -> Tiles.heroIdle1Invisible
+            canMoveNextTurn && !isVisible && isInvincible   -> Tiles.heroIdle1InvisibleInvincible
+    
+            //canMoveNextTurn && isVisible && isInvincible
+            else                                            -> Tiles.heroIdle1Invincible
         }
     }
     
     fun getMoveTile(n : Int) : TiledMapTile?
     {
-        if (isVisible)
+        if (isVisible && !isInvincible)
         {
             return when (n)
             {
@@ -70,7 +96,7 @@ class Hero(
                 else -> Tiles.heroMove1
             }
         }
-        else
+        else if (!isVisible && !isInvincible)
         {
             return when (n)
             {
@@ -79,6 +105,28 @@ class Hero(
                 3    -> Tiles.heroMove3Invisible
                 4    -> Tiles.heroMove4Invisible
                 else -> Tiles.heroMove1Invisible
+            }
+        }
+        else if (isVisible && isInvincible)
+        {
+            return when (n)
+            {
+                1    -> Tiles.heroMove1Invincible
+                2    -> Tiles.heroMove2Invincible
+                3    -> Tiles.heroMove3Invincible
+                4    -> Tiles.heroMove4Invincible
+                else -> Tiles.heroMove1Invincible
+            }
+        }
+        else
+        {
+            return when (n)
+            {
+                1    -> Tiles.heroMove1InvisibleInvincible
+                2    -> Tiles.heroMove2InvisibleInvincible
+                3    -> Tiles.heroMove3InvisibleInvincible
+                4    -> Tiles.heroMove4InvisibleInvincible
+                else -> Tiles.heroMove1InvisibleInvincible
             }
         }
     }
@@ -95,9 +143,12 @@ class Hero(
     
     override fun damageCharacter(dmgAmount : Int)
     {
-        super.damageCharacter(dmgAmount)
-        ProgressBars.healthBar.value = this.healthPoints.toFloat()
-        ProgressBars.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
+        if (!isInvincible)
+        {
+            super.damageCharacter(dmgAmount)
+            ProgressBars.healthBar.value = this.healthPoints.toFloat()
+            ProgressBars.healthBarLabel.setText("${this.healthPoints} / ${this.maxHealthPoints}")
+        }
     }
     
     override fun healCharacter(healAmount : Int)
@@ -199,11 +250,19 @@ class Hero(
     fun addSkill(skill : Skill)
     {
         bodyPartMap[skill.bodyPart] = skill
+        if (skill is Pockets)
+        {
+            this.inventory.maxItems += Pockets.additionalInventorySlotsAmount
+        }
     }
     
     fun removeSkill(skill : Skill)
     {
         bodyPartMap[skill.bodyPart] = null
+        if (skill is Pockets)
+        {
+            this.inventory.maxItems -= Pockets.additionalInventorySlotsAmount
+        }
     }
     
     fun hasSkill(skill : Skill) : Boolean
@@ -214,10 +273,131 @@ class Hero(
         }
         return false
     }
+    
+    fun incrementTurnsElapsed()
+    {
+        turnsElapsed += 1
+    }
+    
+    fun getAmountOfTurnsElapsed() : Int
+    {
+        return turnsElapsed
+    }
+    
+    // for serializing
+    
+    override fun write(json : Json?)
+    {
+        super.write(json)
+        
+        if (json != null)
+        {
+            json.writeValue("maxAbilityPoints", this.maxAbilityPoints)
+            json.writeValue("abilityPoints", this.abilityPoints)
+            json.writeValue("apDrainInNextTurn", this.apDrainInNextTurn)
+            json.writeValue("canMoveNextTurn", this.canMoveNextTurn)
+            json.writeValue("isVisible", this.isVisible)
+            json.writeValue("inventory", this.inventory)
+            val skillNames = mutableListOf<String>()
+            this.bodyPartMap.values.forEach { skillNames.add(it?.name ?: "") }
+            json.writeValue("skillNames", skillNames)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        super.read(json, jsonData)
+        
+        if (json != null)
+        {
+            val jsonMaxAbilityPoints = json.readValue("maxAbilityPoints", Int::class.java, jsonData)
+            if (jsonMaxAbilityPoints != null) this.maxAbilityPoints = jsonMaxAbilityPoints
+            val jsonAbilityPoints = json.readValue("abilityPoints", Int::class.java, jsonData)
+            if (jsonAbilityPoints != null) this.abilityPoints = jsonAbilityPoints
+            val jsonApDrainInNextTurn = json.readValue("apDrainInNextTurn", Int::class.java, jsonData)
+            if (jsonApDrainInNextTurn != null) this.apDrainInNextTurn = jsonApDrainInNextTurn
+            val jsonCanMoveNextTurn = json.readValue("canMoveNextTurn", Boolean::class.java, jsonData)
+            if (jsonCanMoveNextTurn != null) this.canMoveNextTurn = jsonCanMoveNextTurn
+            val jsonIsVisible = json.readValue("isVisible", Boolean::class.java, jsonData)
+            if (jsonIsVisible != null) this.isVisible = jsonIsVisible
+            val jsonInventory = json.readValue("inventory", HeroInventory::class.java, jsonData)
+            if (jsonInventory != null) this.inventory = jsonInventory
+            val jsonSkillNames = json.readValue("skillNames", List::class.java, jsonData)
+            if (jsonSkillNames != null)
+            {
+                for (jsonSkillName in jsonSkillNames)
+                {
+                    if (jsonSkillName is String)
+                    {
+                        val skill = getSkillFromName(jsonSkillName)
+                        if (skill != null)
+                        {
+                            this.addSkill(skill)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 class HeroInventory : Container
 {
-    override val items : MutableList<Item> = mutableListOf<Item>()
+    override val items : MutableList<Item> = mutableListOf()
     override var maxItems : Int = 10
+        set(value)
+        {
+            if (items.size > value)
+            {
+                val droppedPockets = DroppedPockets()
+                droppedPockets.maxItems = 2 * (this.items.size - value)
+                while (items.size > value)
+                {
+                    val item = items.last()
+                    moveItem(item, this, droppedPockets)
+                }
+                for (pos in getSquareAreaPositions(World.hero.position, 1))
+                {
+                    val space = World.currentRoom.getSpace(pos)
+                    if (space != null && space.isTraversableFor(World.hero))
+                    {
+                        World.currentRoom.addEntityAt(droppedPockets, pos)
+                        World.currentRoom.updateSpacesEntities()
+                        GameScreen.updateMapBaseLayer()
+                        GameScreen.updateMapEntityLayer()
+                        break
+                    }
+                }
+            }
+            field = value
+            Gdx.app.log("HeroInventory", "set maxItems = $value")
+        }
+    /*
+    // var maxItems done with Delegates.observable
+    override var maxItems : Int by kotlin.properties.Delegates.observable(10) { _, _, newValue ->
+        if (items.size > newValue)
+        {
+            val droppedPockets = DroppedPockets()
+            droppedPockets.maxItems = 2 * (this.items.size - newValue)
+            while (items.size > newValue)
+            {
+                val item = items.last()
+                moveItem(item, this, droppedPockets)
+            }
+            for (pos in getSquareAreaPositions(World.hero.position, 1))
+            {
+                val space = World.currentRoom.getSpace(pos)
+                if (space != null && space.isTraversableFor(World.hero))
+                {
+                    World.currentRoom.addEntityAt(droppedPockets, pos)
+                    World.currentRoom.updateSpacesEntities()
+                    GameScreen.updateMapBaseLayer()
+                    GameScreen.updateMapEntityLayer()
+                    break
+                }
+            }
+        }
+        Gdx.app.log("HeroInventory", "set maxItems = $newValue")
+    }
+    */
 }

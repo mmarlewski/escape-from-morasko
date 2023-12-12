@@ -1,22 +1,20 @@
 package com.efm.level
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.Array
 import com.efm.entities.Hero
-import com.efm.passage.Passage
+import com.efm.entities.bosses.spawnAllBossesInOneRoom
 import com.efm.room.Room
+import com.efm.state.State
+import com.efm.state.setState
 
 object World
 {
-    private val levels = mutableListOf<Level>()
-    private val passages = mutableListOf<Passage>()
+    val levels = mutableListOf<Level>()
     
-    val hero = Hero()
+    var hero = Hero()
     lateinit var currentLevel : Level
     lateinit var currentRoom : Room
-    
-    fun getLevels() : List<Level>
-    {
-        return levels
-    }
     
     fun addLevel(level : Level)
     {
@@ -38,9 +36,22 @@ object World
     
     fun changeCurrentRoom(newCurrentRoom : Room)
     {
-        if (newCurrentRoom in currentLevel.getRooms())
+        if (newCurrentRoom in currentLevel.rooms)
         {
+            if (newCurrentRoom.name == "finalRoom")
+            {
+                spawnAllBossesInOneRoom(newCurrentRoom)
+            }
+            if (newCurrentRoom.areEnemiesInRoom())
+            {
+                for (enemy in newCurrentRoom.getEnemies())
+                {
+                    enemy.scaleOwnStats()
+                    Gdx.app.log("Scaling", "Scaling HP and DMG of enemy : " + enemy.javaClass.name)
+                }
+            }
             currentRoom = newCurrentRoom
+            
         }
     }
 }

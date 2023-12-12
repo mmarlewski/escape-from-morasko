@@ -1,5 +1,6 @@
 package com.efm
 
+import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -11,8 +12,10 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
     val action = {
         enemy.position.set(endPosition)
         World.currentRoom.updateSpacesEntities()
-        GameScreen.updateMapBaseLayer()
         GameScreen.updateMapEntityLayer()
+        GameScreen.updateMapBaseLayer()
+        GameScreen.updateMapOutlineLayer()
+        Map.clearLayer(MapLayer.select)
     }
     val animations = mutableListOf<Animation>()
     animations += Animation.action { enemy.hideOwnHealthBar() }
@@ -32,11 +35,13 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
                     0.1f
                                                            )
             animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
+            animations += Animation.action {GameScreen.updateMapOutlineLayer()}
             prevMovePosition.set(space.position)
         }
     }
     animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
     animations += Animation.action { enemy.displayOwnHealthBar() }
+    animations += Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
     Animating.executeAnimations(animations)
 }

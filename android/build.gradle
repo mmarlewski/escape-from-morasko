@@ -1,6 +1,6 @@
 android {
     buildToolsVersion "33.0.0"
-    compileSdkVersion 32
+    compileSdkVersion 33
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -21,9 +21,9 @@ android {
     defaultConfig {
         applicationId "com.efm"
         minSdkVersion 14
-        targetSdkVersion 32
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 33
+        versionCode 3
+        versionName "0.1"
     }
     buildTypes {
         release {

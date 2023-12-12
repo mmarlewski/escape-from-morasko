@@ -1,10 +1,13 @@
 package com.efm.room
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import com.efm.Map
 import com.efm.MapLayer
+import com.efm.entities.Hero
+import com.efm.entities.bosses.slime.BossSlimeQuarter
 import com.efm.entity.*
-import com.efm.passage.Passage
 
 /**
  * Part of a level. Only one is displayed on screen at any given time.
@@ -12,7 +15,7 @@ import com.efm.passage.Passage
  * @property spaceList List of all Spaces in the spacesArray.
  * @property characters List of Characters (Entities with a turn) inside the Room.
  */
-class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
+class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int) : Json.Serializable
 {
     fun isPositionWithinBounds(x : Int, y : Int) : Boolean
     {
@@ -30,10 +33,8 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     private val entities = mutableListOf<Entity>()
     private val characters = mutableListOf<Character>()
     private val enemies = mutableListOf<Enemy>()
-    private val passages = mutableListOf<Passage>()
     
     private val entitiesToBeAdded = mutableListOf<Entity>()
-    private var enemiesThatCannotMove = mutableListOf<Enemy>()
     
     init
     {
@@ -50,6 +51,11 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         }
         updateSpaceList()
         updateSpacesEntities()
+    }
+    
+    fun getSpaces() : List<Space>
+    {
+        return spaceList
     }
     
     fun deleteSpaceAt(x : Int, y : Int)
@@ -107,7 +113,6 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         {
             if (!character.alive)
             {
-                println(character)
                 character.onDeath()
                 killedCharacters.add(character)
                 if (character is Enemy)
@@ -123,6 +128,50 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         characters.removeAll(killedCharacters)
         entities.removeAll(killedCharacters)
         for (corpse in corpsesToAdd) addEntityAt(corpse, corpse.position)
+        val howManyKilledCharactersAreQuarterSlime = howManyKilledCharactersAreQuarterSlime(killedCharacters)
+        val getAllQuarterSlimeCharacterInRoom = getAllQuarterSlimeCharacterInRoom()
+        if (howManyKilledCharactersAreQuarterSlime > 0 && getAllQuarterSlimeCharacterInRoom == 0 && enemies.isEmpty())
+        {
+            triggerQuarterSlimeOnDeath(killedCharacters)
+        }
+    }
+    
+    private fun triggerQuarterSlimeOnDeath(killedCharacters : MutableList<Character>)
+    {
+        for (enemy in killedCharacters)
+        {
+            if (enemy is BossSlimeQuarter)
+            {
+                enemy.finalBossSlimeQuartersKilled()
+                return
+            }
+        }
+    }
+    
+    private fun howManyKilledCharactersAreQuarterSlime(corpsesToAdd : MutableList<Character>) : Int
+    {
+        var killedQuarterSlimes = 0
+        for (enemy in corpsesToAdd)
+        {
+            if (enemy is BossSlimeQuarter)
+            {
+                killedQuarterSlimes += 1
+            }
+        }
+        return killedQuarterSlimes
+    }
+    
+    private fun getAllQuarterSlimeCharacterInRoom() : Int
+    {
+        var enemiesThatAreSlimeQuarter = 0
+        for (enemy in enemies)
+        {
+            if (enemy is BossSlimeQuarter)
+            {
+                enemiesThatAreSlimeQuarter += 1
+            }
+        }
+        return enemiesThatAreSlimeQuarter
     }
     
     /** adding entities to room can mess things up, so it happens in its own time **/
@@ -134,17 +183,17 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
     /** adding entities to room can mess things up, so it happens in its own time **/
     fun addToBeAddedEntitiesToRoom()
     {
-        for(entityToBeAdded in entitiesToBeAdded)
+        for (entityToBeAdded in entitiesToBeAdded)
         {
             var isEntityAlreadyInPosition = false
-            for(entityAlreadyInRoom in entities)
+            for (entityAlreadyInRoom in entities)
             {
-                if(entityAlreadyInRoom.position == entityToBeAdded.position)
+                if (entityAlreadyInRoom.position == entityToBeAdded.position)
                 {
                     isEntityAlreadyInPosition = true
                 }
             }
-            if(!isEntityAlreadyInPosition)
+            if (!isEntityAlreadyInPosition)
             {
                 addEntity(entityToBeAdded)
             }
@@ -255,24 +304,85 @@ class Room(val name : String, val heightInSpaces : Int, val widthInSpaces : Int)
         return false
     }
     
-    fun freezeEnemy(enemy : Enemy)
+    // for serializing
+    
+    constructor() : this("", 0, 0)
+    
+    override fun write(json : Json?)
     {
-        for (entity in getEntities())
+        if (json != null)
         {
-            if (entity == enemy)
-            {
-                enemiesThatCannotMove.add(enemy)
-            }
+            json.writeValue("name", this.name)
+            json.writeValue("heightInSpaces", this.heightInSpaces)
+            json.writeValue("widthInSpaces", this.widthInSpaces)
+            json.writeValue("spaceList", this.spaceList)
+            json.writeValue("entities", this.entities)
         }
     }
     
-    fun getFrozenEnemies() : MutableList<Enemy>
+    override fun read(json : Json?, jsonData : JsonValue?)
     {
-        return enemiesThatCannotMove
-    }
-    
-    fun clearFrozenEnemiesList()
-    {
-        enemiesThatCannotMove.clear()
+        if (json != null)
+        {
+            val jsonName = json.readValue("name", String::class.java, jsonData)
+            if (jsonName != null) this.name = jsonName
+            
+            val jsonHeightInSpaces = json.readValue("heightInSpaces", Int::class.java, jsonData)
+            if (jsonHeightInSpaces != null) this.heightInSpaces = jsonHeightInSpaces
+            
+            val jsonWidthInSpaces = json.readValue("widthInSpaces", Int::class.java, jsonData)
+            if (jsonWidthInSpaces != null) this.widthInSpaces = jsonWidthInSpaces
+            
+            for (i in 0 until this.heightInSpaces)
+            {
+                var spaceRow = arrayOf<Space?>()
+                
+                for (j in 0 until this.widthInSpaces)
+                {
+                    spaceRow += Space(j, i)
+                }
+                
+                this.spaceArray += spaceRow
+            }
+            
+            val jsonSpaceList = json.readValue("spaceList", List::class.java, jsonData)
+            if (jsonSpaceList != null)
+            {
+                for (jsonSpace in jsonSpaceList)
+                {
+                    if (jsonSpace is Space)
+                    {
+                        this.spaceList.add(jsonSpace)
+                        this.spaceArray[jsonSpace.position.y][jsonSpace.position.x] = jsonSpace
+                    }
+                }
+            }
+            
+            val jsonEntities = json.readValue("entities", List::class.java, jsonData)
+            if (jsonEntities != null)
+            {
+                for (jsonEntity in jsonEntities)
+                {
+                    if (jsonEntity !is Hero)
+                    {
+                        if (jsonEntity is Entity)
+                        {
+                            this.entities.add(jsonEntity)
+                        }
+                        if (jsonEntity is Character)
+                        {
+                            this.characters.add(jsonEntity)
+                        }
+                        if (jsonEntity is Enemy)
+                        {
+                            this.enemies.add(jsonEntity)
+                        }
+                    }
+                }
+            }
+            
+            updateSpaceList()
+            updateSpacesEntities()
+        }
     }
 }

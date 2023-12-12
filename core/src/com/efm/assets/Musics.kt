@@ -7,14 +7,15 @@ object Musics
 {
     val assetManager = AssetManager()
     
-    val medical = load("medical.mp3")
-    val executive = load("executive.mp3")
-    val voyager = load("voyager.mp3")
+    val ambient_1 = load("ambient_1.mp3")
+//    val ambient_2 = load("ambient_2.flac")
+    val ambient_3 = load("ambient_3.ogg")
+    val ambient_4 = load("ambient_4.ogg")
+    val ambient_5 = load("ambient_5.mp3")
     
-    val versaLifeAmbient = load("versaLifeAmbient.mp3")
-    val versaLifeCombat = load("versaLifeCombat.mp3")
-    val enemyWithinAmbient = load("enemyWithinAmbient.mp3")
-    val enemyWithinCombat = load("enemyWithinCombat.mp3")
+    val combat_1 = load("combat_1.ogg")
+    val combat_2 = load("combat_2.ogg")
+    val combat_3 = load("combat_3.ogg")
     
     private fun load(name : String) : Music
     {

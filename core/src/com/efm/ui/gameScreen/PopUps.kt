@@ -1,10 +1,13 @@
 package com.efm.ui.gameScreen
 
+import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.assets.*
+import com.efm.level.World
 import com.efm.screens.GameScreen
-import javax.swing.event.ChangeListener
+import com.efm.skill.Skill
+import com.efm.skills.*
 
 object PopUps
 {
@@ -12,18 +15,39 @@ object PopUps
     lateinit var endTurn : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var menuPause : com.badlogic.gdx.scenes.scene2d.ui.Window
     lateinit var settings : com.badlogic.gdx.scenes.scene2d.ui.Window
+    lateinit var skillAssignment : Window
     
     fun setBackgroundVisibility(boolean : Boolean)
     {
         GameScreen.canBeInteractedWith = boolean
         
         RightStructure.setVisibility(boolean)
-    
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
         ItemsStructure.setVisibility(boolean)
-        if(boolean) ItemsStructure.setWeaponDisplay()
+        if (boolean) ItemsStructure.setWeaponDisplay()
+        ProgressBars.setVisibilty(boolean)
+        LeftStructure.setVisibility(boolean)
+    }
+    
+    fun skillAssignment(leftSkill : Skill, middleSkill : Skill, rightSkill : Skill) : Window
+    {
+        val skillAssignmentPopup = skillsAssignmentOverlay(leftSkill, middleSkill, rightSkill,
+                                                           {
+                                                               //when skill assigned
+                                                               playSoundOnce(Sounds.ui_2)
+                                                               World.hero.addSkill(it)
+                                                               setBackgroundVisibility(true)
+                                                           },
+                                                           {
+                                                               //when skill reassigned
+                                                               playSoundOnce(Sounds.ui_2)
+                                                               World.hero.addSkill(it)
+                                                               setBackgroundVisibility(true)
+                                                           })
         
-        LeftStructure.setVisibility(false)
+        skillAssignmentPopup.isVisible = false
+        
+        return skillAssignmentPopup
     }
     
     fun endTurn() : com.badlogic.gdx.scenes.scene2d.ui.Window
@@ -32,12 +56,14 @@ object PopUps
                 "End turn?\n\nYou still have some AP left",
                 Fonts.pixeloid20,
                 Colors.black,
-                Textures.pauseBackgroundNinePatch
+                Textures.pauseBackgroundNinePatch,
+                {
+                    endCurrentTurn()
+                    LeftStructure.menuButton.isVisible = true
+                },
+                { LeftStructure.menuButton.isVisible = true }
                                        )
-        {
-            endCurrentTurn()
-        }
-    
+        
         endTurnPopUp.isVisible = false
         
         return endTurnPopUp
@@ -57,7 +83,7 @@ object PopUps
     
     fun menuPause() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
-    
+        
         val menuPausePopUp = menuPopup(
                 "PAUSE",
                 Fonts.pixeloid30,
@@ -65,8 +91,8 @@ object PopUps
                 Textures.pauseBackgroundNinePatch
                                       )
         menuPausePopUp.isVisible = false
-    
-    
+        
+        
         return menuPausePopUp
     }
     
@@ -75,6 +101,13 @@ object PopUps
         endTurn = endTurn()
         menuPause = menuPause()
         settings = settings()
+        
+        skillAssignment = skillAssignment(Jump, Jump, Jump)
+    }
+    
+    fun setSkillAssignmentVisibility(visibility : Boolean)
+    {
+        skillAssignment.isVisible = visibility
     }
     
     fun setEndTurnVisibility(visibility : Boolean)
@@ -97,14 +130,18 @@ object PopUps
         val endTurnWindow = columnOf(rowOf(endTurn)).align(Align.center)
         val pauseWindow = columnOf(rowOf(menuPause)).align(Align.center)
         val settingsWindow = columnOf(rowOf(settings)).align(Align.center)
+        val skillAssignmentWindow = columnOf(rowOf(skillAssignment)).align(Align.center)
+        
         
         settingsWindow.setFillParent(true)
         endTurnWindow.setFillParent(true)
         pauseWindow.setFillParent(true)
+        skillAssignmentWindow.setFillParent(true)
         
         GameScreen.stage.addActor(endTurnWindow)
         GameScreen.stage.addActor(settingsWindow)
         GameScreen.stage.addActor(pauseWindow)
+        GameScreen.stage.addActor(skillAssignmentWindow)
         
     }
 }

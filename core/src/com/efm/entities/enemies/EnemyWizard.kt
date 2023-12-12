@@ -20,9 +20,11 @@ class EnemyWizard : Enemy
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 3
+    override var attackDamage = 20
     override val stepsInOneTurn = 5
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     val apDrain = 5
     
     override fun getTile() : TiledMapTile?
@@ -90,7 +92,7 @@ class EnemyWizard : Enemy
         
         animations += Animation.action { playSoundOnce(Sounds.wizardAttack) }
         animations += Animation.moveTileWithArch(projectileTile, position, World.hero.position, 1.0f, 1.0f)
-        animations += Animation.ascendTile(projectileTile, heroPosition.copy(), 0.5f, 0.1f)
+        animations += Animation.descendTile(Tiles.apMinus, heroPosition.copy(), 0.5f, 0.1f)
         animations += Animation.action {
             val attackedPosition = heroPosition
             val attackedSpace = World.currentRoom.getSpace(attackedPosition)

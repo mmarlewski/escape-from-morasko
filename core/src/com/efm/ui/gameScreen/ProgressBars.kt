@@ -40,9 +40,9 @@ object ProgressBars
     {
         var bar = progressBarOf(
                 0f,
-                currentHealth.toFloat(),
-                1f,
                 maxHealth.toFloat(),
+                1f,
+                currentHealth.toFloat(),
                 Textures.knobBackgroundNinePatch,
                 colorTexture,
                 Textures.translucentNinePatch,
@@ -137,6 +137,33 @@ object ProgressBars
         abilityBarLabel = createLabel(World.hero.abilityPoints, World.hero.maxAbilityPoints)
     }
     
+    fun updateHeroApHpBars()
+    {
+        healthBar = createBar(
+                24f,
+                Textures.knobHealthbarAfterNinePatch,
+                World.hero.healthPoints,
+                World.hero.maxHealthPoints
+                             )
+        healthBarLabel = createLabel(World.hero.healthPoints, World.hero.maxHealthPoints)
+    
+        abilityBar = createBar(
+                24f,
+                Textures.knobAbilitybarAfterNinePatch,
+                World.hero.abilityPoints,
+                World.hero.maxAbilityPoints
+                              )
+        abilityBarForFlashing = createBar(
+                24f,
+                Textures.knobAbilitybarAfterNinePatch,
+                World.hero.abilityPoints,
+                World.hero.maxAbilityPoints
+                                         )
+        abilityBarForFlashing.setColor(8f, 196f, 252f, 1f)
+        abilityBarLabel = createLabel(World.hero.abilityPoints, World.hero.maxAbilityPoints)
+        display()
+    }
+    
     fun display()
     {
         
@@ -167,61 +194,73 @@ object ProgressBars
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.constrained.enemySelected           ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.constrained.entitySelected          ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.constrained.noSelection             ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.constrained.nothingSelected         ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.constrained.stackableSelfItemChosen ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.combat.hero.moveSelectedTwice       ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.combat.hero.enemySelected           ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.combat.hero.entitySelected          ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.combat.hero.noSelection             ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.combat.hero.nothingSelected         ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             is State.combat.hero.stackableSelfItemChosen ->
             {
                 flashTimer = 0.0
                 abilityBar.setColor(8f, 196f, 252f, 1f)
             }
+            
             else                                         ->
             {
                 abilityBar.setColor(8f, 196f, 252f, cos(flashTimer).toFloat())

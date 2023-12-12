@@ -7,22 +7,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.Boss
+import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import kotlin.random.Random
 
-class BossSlime : Entity, Enemy
+open class BossSlime : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 100
-    override var healthPoints = 10
+    override var maxHealthPoints = 50
+    override var healthPoints = 50
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
+    override var attackDamage = 40
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
+    override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
@@ -104,7 +107,7 @@ class BossSlime : Entity, Enemy
             {
                 is Character ->
                 {
-                    attackedEntity.damageCharacter(40)
+                    attackedEntity.damageCharacter(attackDamage)
                 }
             }
         }
@@ -163,6 +166,7 @@ class BossSlime : Entity, Enemy
             World.currentRoom.addEntityToBeAddedEntities(slimeHalf2)
         }
         World.currentRoom.updateSpacesEntities()
+        addBossToDefeatedBossesList(Boss.Slime)
     }
     
     override fun getCorpse() : EnemyCorpse?
