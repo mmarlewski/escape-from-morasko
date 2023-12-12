@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.*
+import com.efm.state.State
 
 object SettingsScreen : BaseScreen()
 {
@@ -24,6 +25,8 @@ object SettingsScreen : BaseScreen()
     var musicSlider : Slider
     var soundSlider : Slider
     var backButton : TextButton
+    var skipTutorialLabel : Label
+    var skipTutorialCheckbox : CheckBox
     
     init
     {
@@ -39,6 +42,7 @@ object SettingsScreen : BaseScreen()
         
         musicLabel = labelOf("music", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         soundEffectsLabel = labelOf("sound", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+        skipTutorialLabel = labelOf("skip tutorial", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         
         musicSlider = sliderOf(
                 0.0f,
@@ -60,7 +64,18 @@ object SettingsScreen : BaseScreen()
                 Textures.materialKnobNinePatchAfter,
                 Textures.materialKnobNinePatchBeforeBlue,
                 Textures.materialKnobNinePatch
-                                                  )
+                              )
+        skipTutorialCheckbox = checkBoxOf(
+                "",
+                Fonts.pixeloid10,
+                Colors.white,
+                Textures.checkBoxOn,
+                Textures.checkBoxOff,
+                Textures.checkBoxOn,
+                Textures.checkBoxOff,
+                Textures.checkBoxOn,
+                Textures.checkBoxOff
+                                         )
         
         backButton = textButtonOf(
                 "back",
@@ -81,6 +96,7 @@ object SettingsScreen : BaseScreen()
                 rowOf(settingsTitle),
                 rowOf(musicLabel, musicSlider),
                 rowOf(soundEffectsLabel, soundSlider),
+                rowOf(skipTutorialLabel, columnOf(skipTutorialCheckbox).padLeft(8f)),
                 rowOf(backButton)
                              )
         column.setFillParent(true)
@@ -95,12 +111,21 @@ object SettingsScreen : BaseScreen()
                                 })
         
         soundSlider.addListener(object : ChangeListener()
-                                            {
-                                                override fun changed(event : ChangeEvent, actor : Actor)
-                                                {
-                                                    setSoundVolume(soundSlider.value)
-                                                }
-                                            })
+                                {
+                                    override fun changed(event : ChangeEvent, actor : Actor)
+                                    {
+                                        setSoundVolume(soundSlider.value)
+                                    }
+                                })
+        
+        skipTutorialCheckbox.addListener(object : ChangeListener()
+                                         {
+                                             override fun changed(event : ChangeEvent?, actor : Actor)
+                                             {
+                                                 State.TutorialFlags.tutorialActive = !skipTutorialCheckbox.isChecked
+                                                 interfaceDrawingWithTutorial()
+                                             }
+                                         })
         
     }
     
