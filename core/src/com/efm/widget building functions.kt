@@ -1082,7 +1082,7 @@ fun specialEventPopup(
     windowStyle.titleFontColor = Colors.white
     windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
     
-    val window = Window("Wise man", windowStyle)
+    val window = Window("Elderly Stranger Offers You a Deal", windowStyle)
     val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
     titleLabel.setAlignment(Align.center)
     window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(48f)
@@ -1126,7 +1126,7 @@ fun specialEventPopup(
     
     val table = Table()
     table.add(delimiter).fillX().height(1f).padTop(40f).row()
-    table.add(description).width(558f).padTop(16f).row()
+    table.add(description).width(664f).padTop(16f).row()
     table.add(rowOf(rowOf(yesButton).padRight(64f), rowOf(noButton).padLeft(64f))).padTop(16f).padBottom(8f).row()
     
     
