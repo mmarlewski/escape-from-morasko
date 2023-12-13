@@ -43,7 +43,7 @@ enum class Modifier(val function : () -> Unit, val popupSubtitle : String, val p
                 ),
     SwapWaterAndLava(
             {
-                for (room in World.currentLevel.rooms)
+                for (room in World.currentLevel?.rooms ?: listOf())
                 {
                     for (space in room.getSpaces())
                     {
