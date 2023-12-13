@@ -43,7 +43,7 @@ sealed class State
     
     var tutorialFlags = TutorialFlags
     
-    object TutorialFlags
+    object TutorialFlags : Json.Serializable
     {
         var tutorialActive = !SettingsScreen.skipTutorialCheckbox.isChecked
         var welcomePopupShown = false
@@ -80,7 +80,7 @@ sealed class State
         
         // for serializing
         
-        fun write1(json : Json?)
+        override fun write(json : Json?)
         {
             if (json != null)
             {
@@ -101,7 +101,7 @@ sealed class State
             }
         }
         
-        fun read(json : Json?, jsonData : JsonValue?)
+        override fun read(json : Json?, jsonData : JsonValue?)
         {
             if (json != null)
             {
