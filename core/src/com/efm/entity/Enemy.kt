@@ -212,7 +212,7 @@ interface Enemy : Character
     fun roam(focusCameraOnHero : Boolean = false)
     {
         val worldCurrentRoom = World.currentRoom ?: return
-        
+    
         for (i in 0..stepsInOneTurn)
         {
             val moveTo = randomWalk()
@@ -224,11 +224,38 @@ interface Enemy : Character
         }
     }
     
+    fun getRoamingAnimations(focusCameraOnHero : Boolean = false) : MutableList<Animation>
+    {
+        val animations = mutableListOf<Animation>()
+        
+        val currentRoom = World.currentRoom
+        if (currentRoom != null)
+        {
+            for (i in 0..stepsInOneTurn)
+            {
+                val moveTo = randomWalk()
+                val path = PathFinding.findPathInRoomForEntity(position, moveTo, currentRoom, this)
+                if (path != null)
+                {
+                    animations += getAnimationsUsedInMoveEnemy(
+                            position,
+                            moveTo,
+                            path,
+                            this,
+                            focusCameraOnHero = focusCameraOnHero
+                                                              )
+                }
+            }
+        }
+        
+        return animations
+    }
+    
     fun randomWalk() : RoomPosition
     {
-        val worldCurrentRoom = World.currentRoom ?: return RoomPosition(0,0)
+        val worldCurrentRoom = World.currentRoom ?: return RoomPosition(0, 0)
         
-        var possibleSteps = mutableListOf<RoomPosition>()
+        val possibleSteps = mutableListOf<RoomPosition>()
         var pos = RoomPosition(position.x - 1, position.y - 1)
         var space = worldCurrentRoom.getSpace(pos)
         if (space != null)
