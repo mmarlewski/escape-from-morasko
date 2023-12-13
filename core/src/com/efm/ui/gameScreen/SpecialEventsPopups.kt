@@ -8,12 +8,14 @@ import com.efm.screens.GameScreen
 
 object SpecialEventsPopups
 {
-    fun createPopup(subtitle : String, description : String) : Window
+    fun createPopup(subtitle : String, description : String, onYes : () -> Unit, onNo : () -> Unit) : Window
     {
-        val modifierPopup = specialEventPopup(subtitle,
-                                              description,
-                                              {},
-                                              {})
+        val modifierPopup = specialEventPopup(
+                subtitle,
+                description,
+                onYes,
+                onNo
+                                             )
         return modifierPopup
     }
     
@@ -27,7 +29,12 @@ object SpecialEventsPopups
     
     fun display()
     {
-        addPopupToDisplay(createPopup(Modifier.GainHpLoseAp.popupSubtitle, Modifier.GainHpLoseAp.popupDescription))
+        addPopupToDisplay(
+                createPopup(Modifier.GainHpLoseAp.popupSubtitle,
+                            Modifier.GainHpLoseAp.popupDescription,
+                            {},
+                            {})
+                         )
     }
     
 }
