@@ -1,5 +1,6 @@
 package com.efm
 
+import com.badlogic.gdx.Gdx
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
@@ -24,7 +25,7 @@ fun endCurrentTurn()
             World.hero.updateActiveSkillCoolDown()
             World.hero.incrementTurnsElapsed()
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
+    
             if (!isHeroVisible)
             {
                 newState = State.free.heroSelected.apply {
@@ -33,9 +34,20 @@ fun endCurrentTurn()
                 }
             }
             // enemies roaming
-            for (enemy in World.currentRoom?.getEnemies() ?: listOf())
+            val enemyIterator = World.currentRoom?.getEnemies()?.iterator() ?: listOf<Enemy>().iterator()
+            while (enemyIterator.hasNext())
             {
-                enemy.roam()
+                val enemy = enemyIterator.next()
+                if (enemyIterator.hasNext())
+                {
+                    Gdx.app.log("Roaming", enemy::class.simpleName)
+                    enemy.roam()
+                }
+                else
+                {
+                    Gdx.app.log("Roaming last", enemy::class.simpleName)
+                    enemy.roam(focusCameraOnHero = true)
+                }
             }
             // tutorial popups
             if (newState.tutorialFlags.tutorialActive && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)

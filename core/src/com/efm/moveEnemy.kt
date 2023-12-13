@@ -1,13 +1,18 @@
 package com.efm
 
-import com.efm.assets.Tiles
+import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.screens.GameScreen
-import com.efm.entity.Enemy
 
-fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : List<Space?>, enemy : Enemy)
+fun moveEnemy(
+        startPosition : RoomPosition,
+        endPosition : RoomPosition,
+        path : List<Space?>,
+        enemy : Enemy,
+        focusCameraOnHero : Boolean = false
+             )
 {
     val action = {
         enemy.position.set(endPosition)
@@ -42,6 +47,6 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
     animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
     animations += Animation.action { enemy.displayOwnHealthBar() }
-    animations += Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
+    if (focusCameraOnHero) animations += Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
     Animating.executeAnimations(animations)
 }
