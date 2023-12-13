@@ -65,6 +65,8 @@ class Rook: Entity, Enemy
     
     override fun performTurn()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         if (!isFrozen)
         {
             val heroPos = World.hero.position
@@ -82,9 +84,9 @@ class Rook: Entity, Enemy
                 var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
                 for (pos in getPossibleMovePositions())
                 {
-                    if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                    if (worldCurrentRoom.isPositionWithinBounds(pos.x, pos.y))
                     {
-                        var space = World.currentRoom.getSpace(pos)
+                        var space = worldCurrentRoom.getSpace(pos)
                         if (space != null)
                         {
                             if (space.getEntity() == null && space.isTraversableFor(this))
@@ -98,7 +100,7 @@ class Rook: Entity, Enemy
                     }
                 }
                 val path : List<Space?> =
-                        listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+                        listOf(worldCurrentRoom.getSpace(position), worldCurrentRoom.getSpace(bestMovePosition))
                 moveEnemy(position, bestMovePosition, path, this)
             }
         } else
@@ -125,7 +127,7 @@ class Rook: Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
@@ -145,11 +147,13 @@ class Rook: Entity, Enemy
     
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
+        val worldCurrentRoom = World.currentRoom ?: return mutableListOf()
+        
         val result = mutableListOf<RoomPosition>()
         result.add(position)
         for (posX in position.x - 1 downTo 1)
         {
-            var space = World.currentRoom.getSpace(RoomPosition(posX, position.y))
+            var space = worldCurrentRoom.getSpace(RoomPosition(posX, position.y))
             if (space != null)
             {
                 if (space.getEntity() == null && space.isTraversableFor(this))
@@ -161,9 +165,9 @@ class Rook: Entity, Enemy
                 }
             }
         }
-        for (posX in position.x + 1 until  World.currentRoom.widthInSpaces)
+        for (posX in position.x + 1 until  worldCurrentRoom.widthInSpaces)
         {
-            var space = World.currentRoom.getSpace(RoomPosition(posX, position.y))
+            var space = worldCurrentRoom.getSpace(RoomPosition(posX, position.y))
             if (space != null)
             {
                 if (space.getEntity() == null && space.isTraversableFor(this))
@@ -177,7 +181,7 @@ class Rook: Entity, Enemy
         }
         for (posY in position.y - 1 downTo 1)
         {
-            var space = World.currentRoom.getSpace(RoomPosition(position.x, posY))
+            var space = worldCurrentRoom.getSpace(RoomPosition(position.x, posY))
             if (space != null)
             {
                 if (space.getEntity() == null && space.isTraversableFor(this))
@@ -189,9 +193,9 @@ class Rook: Entity, Enemy
                 }
             }
         }
-        for (posY in position.y + 1 until World.currentRoom.heightInSpaces)
+        for (posY in position.y + 1 until worldCurrentRoom.heightInSpaces)
         {
-            var space = World.currentRoom.getSpace(RoomPosition(position.x, posY))
+            var space = worldCurrentRoom.getSpace(RoomPosition(position.x, posY))
             if (space != null)
             {
                 if (space.getEntity() == null && space.isTraversableFor(this))

@@ -84,7 +84,14 @@ class EnemyRollingStone : Entity, Enemy
     
         // position before charging
         var initialPosition = position
-        val pathSpaces = PathFinding.findPathInRoomForEntity(initialPosition, World.hero.position, World.currentRoom,this)
+        val worldCurrentRoom = World.currentRoom
+        val pathSpaces = if (worldCurrentRoom != null) PathFinding.findPathInRoomForEntity(
+                initialPosition,
+                World.hero.position,
+                worldCurrentRoom,
+                this
+                                                                                          )
+        else null
         val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
         if (!stepsSpaces.isNullOrEmpty())
         {
@@ -100,7 +107,7 @@ class EnemyRollingStone : Entity, Enemy
             val enemy = this
             val action = {
                 enemy.position.set(endPosition)
-                World.currentRoom.updateSpacesEntities()
+                World.currentRoom?.updateSpacesEntities()
                 GameScreen.updateMapBaseLayer()
                 GameScreen.updateMapEntityLayer()
             }
@@ -129,7 +136,7 @@ class EnemyRollingStone : Entity, Enemy
         val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
         animations += Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
         animations += Animation.action {
-            val attackedSpace = World.currentRoom.getSpace(heroPosition)
+            val attackedSpace = World.currentRoom?.getSpace(heroPosition)
             when (val attackedEntity = attackedSpace?.getEntity())
             {
                 is Character ->
@@ -152,7 +159,14 @@ class EnemyRollingStone : Entity, Enemy
     {
         if (!isFrozen)
         {
-            val pathSpaces = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+            val worldCurrentRoom = World.currentRoom
+            val pathSpaces = if (worldCurrentRoom != null) PathFinding.findPathInRoomForEntity(
+                    position,
+                    World.hero.position,
+                    worldCurrentRoom,
+                    this
+                                                                                              )
+            else null
             if (checkIfHeroHasSameXorY(pathSpaces))
             {
                 this.stepsInOneTurn = 100

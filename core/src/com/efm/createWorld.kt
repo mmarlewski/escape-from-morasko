@@ -674,8 +674,8 @@ fun World.createWorldBoarTest()
     
     // level with starting point
     l1.rooms.addAll(l1Rooms)
-    l1.changeStartingRoom(l1r1)
-    l1.changeStartingPosition(6, 2)
+    l1.startingRoom = l1r1
+    l1.startingPosition.set(6, 2)
     
     // entities
     val chest = Chest()
@@ -859,8 +859,8 @@ fun World.createWorldPrototypeThree()
         (l1r5.getSpace(0, 7)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         // starting position
         //
-        changeStartingRoom(l1r1)
-        changeStartingPosition(1, 3)
+        startingRoom = l1r1
+        startingPosition.set(1, 3)
         // level exit
         l1r5.replaceEntityAt(
                 LevelExit(
@@ -1151,8 +1151,8 @@ fun World.createWorldPrototypeThree()
         (l2r8.getSpace(5, 0)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         // starting position
         //
-        changeStartingRoom(l2r1)
-        changeStartingPosition(8, l2r1.heightInSpaces - 1)
+        startingRoom = l2r1
+        startingPosition.set(8, l2r1.heightInSpaces - 1)
         // level exit
     }
     // add level to World
@@ -1433,8 +1433,8 @@ fun World.createWorldPrototypeThree()
         (l3r8.getSpace(7, 10)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
         // starting position
         //
-        changeStartingRoom(l3r1)
-        changeStartingPosition(2, 6)
+        startingRoom = l3r1
+        startingPosition.set(2, 6)
         // level exit
     }
     // add level to World

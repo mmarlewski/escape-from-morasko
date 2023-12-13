@@ -33,7 +33,7 @@ enum class Modifier(val function : () -> Unit)
                      ProgressBars.updateHeroApHpBars()
                  }),
     SwapWaterAndLava({
-                         for (room in World.currentLevel.rooms)
+                         for (room in World.currentLevel?.rooms ?: listOf())
                          {
                              for (space in room.getSpaces())
                              {

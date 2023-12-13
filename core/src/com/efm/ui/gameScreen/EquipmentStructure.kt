@@ -70,7 +70,7 @@ object EquipmentStructure
             
             if (this.selectedItem != null)
             {
-                this.currEquipment?.items?.remove(this.selectedItem!!)
+                this.currEquipment?.items?.remove(this.selectedItem)
                 this.fillEquipmentStructureWithItems(this.currEquipment!!)
                 
                 this.selectedItem = null

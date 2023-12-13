@@ -13,39 +13,13 @@ import com.efm.room.RoomPosition
  */
 class Level(var name : String) : Json.Serializable
 {
-    private lateinit var startingRoom : Room
-    private val startingPosition = RoomPosition()
+    var startingRoom : Room? = null
+    val startingPosition = RoomPosition()
     val rooms : MutableList<Room> = mutableListOf()
     
     fun addRoom(room : Room)
     {
         rooms.add(room)
-    }
-    
-    fun getStartingRoom() : Room
-    {
-        return startingRoom
-    }
-    
-    fun changeStartingRoom(room : Room)
-    {
-        startingRoom = room
-    }
-    
-    fun getStartingPosition() : RoomPosition
-    {
-        return startingPosition
-    }
-    
-    fun changeStartingPosition(x : Int, y : Int)
-    {
-        startingPosition.x = x
-        startingPosition.y = y
-    }
-    
-    fun changeStartingPosition(position : RoomPosition)
-    {
-        startingPosition.set(position)
     }
     
     // for serializing
@@ -57,7 +31,7 @@ class Level(var name : String) : Json.Serializable
         if (json != null)
         {
             json.writeValue("name", this.name)
-            json.writeValue("startingRoomName", this.startingRoom.name)
+            json.writeValue("startingRoomName", this.startingRoom?.name ?: "")
             json.writeValue("startingPosition", this.startingPosition)
             json.writeValue("rooms", this.rooms)
         }
@@ -84,7 +58,7 @@ class Level(var name : String) : Json.Serializable
             }
             
             val jsonStartingRoomName = json.readValue("startingRoomName", String::class.java, jsonData)
-            if (jsonStartingRoomName != null) this.startingRoom = this.rooms.find { it.name == jsonStartingRoomName }!!
+            if (jsonStartingRoomName != null) this.startingRoom = this.rooms.find { it.name == jsonStartingRoomName }
         }
     }
 }

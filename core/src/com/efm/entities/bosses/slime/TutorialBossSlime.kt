@@ -27,7 +27,7 @@ class TutorialBossSlime : BossSlime()
         {
             val squarePerimeterPositions = getSquarePerimeterPositions(this.position, radius)
             val possibleSpawnPositions = squarePerimeterPositions.filter {
-                World.currentRoom.getSpace(it)?.isTraversableFor(slimeHalf1) ?: false
+                World.currentRoom?.getSpace(it)?.isTraversableFor(slimeHalf1) ?: false
             }
             
             when (possibleSpawnPositions.size)
@@ -56,15 +56,15 @@ class TutorialBossSlime : BossSlime()
         {
             slimeHalf1.position.set(spawnPosition1)
             slimeHalf1.createOwnHealthBar()
-            World.currentRoom.addEntityToBeAddedEntities(slimeHalf1)
+            World.currentRoom?.addEntityToBeAddedEntities(slimeHalf1)
         }
         if (spawnPosition2 != null)
         {
             slimeHalf2.position.set(spawnPosition2)
             slimeHalf2.createOwnHealthBar()
-            World.currentRoom.addEntityToBeAddedEntities(slimeHalf2)
+            World.currentRoom?.addEntityToBeAddedEntities(slimeHalf2)
         }
-        World.currentRoom.updateSpacesEntities()
+        World.currentRoom?.updateSpacesEntities()
         addBossToDefeatedBossesList(Boss.Slime)
     }
 }

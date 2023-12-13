@@ -38,8 +38,13 @@ class Bow : MultiUseMapItem
         val squarePositions = getSquareAreaPositions(source, 5)
         for (squarePosition in squarePositions)
         {
-            val linePositions =
-                    LineFinding.findLineWithGivenRoom(World.hero.position.copy(), squarePosition.copy(), World.currentRoom)
+            val worldCurrentRoom = World.currentRoom
+            val linePositions = if (worldCurrentRoom != null) LineFinding.findLineWithGivenRoom(
+                    World.hero.position.copy(),
+                    squarePosition.copy(),
+                    worldCurrentRoom
+                                                                                               )
+            else null
             if (linePositions != null)
             {
                 targetPositions.add(squarePosition)
@@ -53,8 +58,13 @@ class Bow : MultiUseMapItem
     {
         val affectedPositions = mutableListOf<RoomPosition>()
         
-        val linePositions =
-                LineFinding.findLineWithGivenRoom(World.hero.position.copy(), targetPosition.copy(), World.currentRoom)
+        val worldCurrentRoom = World.currentRoom
+        val linePositions = if (worldCurrentRoom != null) LineFinding.findLineWithGivenRoom(
+                World.hero.position.copy(),
+                targetPosition.copy(),
+                worldCurrentRoom
+                                                                                           )
+        else null
         if (linePositions != null)
         {
             affectedPositions.add(World.hero.position.copy())
@@ -68,8 +78,13 @@ class Bow : MultiUseMapItem
     override fun use(room : Room, targetPosition : RoomPosition)
     {
         val heroPosition = World.hero.position.copy()
-        val linePositions =
-                LineFinding.findLineWithGivenRoom(heroPosition.copy(), targetPosition.copy(), World.currentRoom)
+        val worldCurrentRoom = World.currentRoom
+        val linePositions = if (worldCurrentRoom != null) LineFinding.findLineWithGivenRoom(
+                World.hero.position.copy(),
+                targetPosition.copy(),
+                worldCurrentRoom
+                                                                                           )
+        else null
         if (linePositions != null)
         {
             val targetDirection = getDirection8(World.hero.position, targetPosition)

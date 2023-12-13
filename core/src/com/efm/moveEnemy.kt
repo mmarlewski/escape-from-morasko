@@ -11,7 +11,7 @@ fun moveEnemy(startPosition : RoomPosition, endPosition : RoomPosition, path : L
 {
     val action = {
         enemy.position.set(endPosition)
-        World.currentRoom.updateSpacesEntities()
+        World.currentRoom?.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         GameScreen.updateMapBaseLayer()
         GameScreen.updateMapOutlineLayer()

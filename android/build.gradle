@@ -22,7 +22,7 @@ android {
         applicationId "com.efm"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 3
+        versionCode 4
         versionName "0.1"
     }
     buildTypes {

@@ -68,10 +68,11 @@ object PopUpsMenu
         World.createWorldPrototypeThree()
         // set currentLevel and currentRoom
         val startingLevel = World.levels.first()
+        val startingRoom = startingLevel.startingRoom
         World.changeCurrentLevel(startingLevel)
-        World.changeCurrentRoom(startingLevel.getStartingRoom())
+        if (startingRoom != null) World.changeCurrentRoom(startingRoom)
         // add Hero to currentRoom
-        World.currentRoom.addEntityAt(World.hero, startingLevel.getStartingPosition())
+        World.currentRoom?.addEntityAt(World.hero, startingLevel.startingPosition)
         // reset Hero
         World.hero.alive = true
         World.hero.healthPoints = World.hero.maxHealthPoints
@@ -91,10 +92,10 @@ object PopUpsMenu
 //                    World.hero.addSkill(Jump)
 //                    World.hero.addSkill(Shield)
         // set State
-        val areEnemiesInRoom = World.currentRoom.areEnemiesInRoom()
+        val areEnemiesInRoom = World.currentRoom?.areEnemiesInRoom() ?: false
         val initState = when (areEnemiesInRoom)
         {
-            true  -> State.constrained.noSelection
+            true -> State.constrained.noSelection
             false -> State.free.noSelection
         }
         initState.areEnemiesInRoom = areEnemiesInRoom
@@ -113,12 +114,12 @@ object PopUpsMenu
             }
         }
         // display new enemy health stacks
-        for (enemy in World.currentRoom.getEnemies())
+        for (enemy in World.currentRoom?.getEnemies() ?: listOf())
         {
             enemy.displayOwnHealthBar()
         }
         // update Room, Map, UI
-        World.currentRoom.updateSpacesEntities()
+        World.currentRoom?.updateSpacesEntities()
         Map.clearAllLayers()
         GameScreen.updateMapBaseLayer()
         GameScreen.updateMapEntityLayer()

@@ -69,7 +69,9 @@ open class LevelExit(
     
     override fun interact()
     {
-        if (!activeWhenNoEnemiesAreInRoom || !World.currentRoom.areEnemiesInRoom())
+        val worldCurrentRoom = World.currentRoom ?: return
+        
+        if (!activeWhenNoEnemiesAreInRoom || !worldCurrentRoom.areEnemiesInRoom())
         {
             showNextLevelPopup()
             Gdx.app.log("Exit", "adjusting camera")
@@ -103,14 +105,16 @@ open class LevelExit(
     
     private fun travelBetweenLevels()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         val newLevel = World.levels.find { it.name == endLevelName }
-        val newPosition = newLevel?.getStartingPosition()
-        val newRoom = newLevel?.getStartingRoom()
+        val newPosition = newLevel?.startingPosition
+        val newRoom = newLevel?.startingRoom
         Gdx.app.log("Exit", "travelling...")
-        World.currentRoom.removeEntity(World.hero)
+        worldCurrentRoom.removeEntity(World.hero)
         if (newLevel != null) World.changeCurrentLevel(newLevel)
         if (newRoom != null) World.changeCurrentRoom(newRoom)
-        if (newPosition != null) World.currentRoom.addEntityAt(World.hero, newPosition)
+        if (newPosition != null) World.currentRoom?.addEntityAt(World.hero, newPosition)
         Gdx.app.log("Exit", "travelled")
         Gdx.app.log("Exit", "adjusting camera again")
         adjustCameraAfterMoving()

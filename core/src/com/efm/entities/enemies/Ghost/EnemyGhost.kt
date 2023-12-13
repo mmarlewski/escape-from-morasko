@@ -190,48 +190,49 @@ class EnemyGhost(
     
     private fun findPositionsWhereGhostCanDisappear() : MutableList<RoomPosition>
     {
+        val worldCurrentRoom = World.currentRoom ?: return mutableListOf()
         // edges
         val upEdge = 0
-        val downEdge = World.currentRoom.heightInSpaces
+        val downEdge = worldCurrentRoom.heightInSpaces
         val leftEdge = 0
-        val rightEdge = World.currentRoom.widthInSpaces
+        val rightEdge = worldCurrentRoom.widthInSpaces
         
-        val disappearSpacesLeft = Array<Int?>(World.currentRoom.heightInSpaces) { null }
+        val disappearSpacesLeft = Array<Int?>(worldCurrentRoom.heightInSpaces) { null }
         for (x in leftEdge until rightEdge)
         {
             for (y in upEdge until downEdge)
             {
-                if (World.currentRoom.getSpace(x, y)
+                if (worldCurrentRoom.getSpace(x, y)
                                 ?.getBase()?.isTreadableFor?.invoke(this) == true && disappearSpacesLeft[y] == null
                 ) disappearSpacesLeft[y] = x
             }
         }
-        val disappearSpacesRight = Array<Int?>(World.currentRoom.heightInSpaces) { null }
+        val disappearSpacesRight = Array<Int?>(worldCurrentRoom.heightInSpaces) { null }
         for (x in rightEdge - 1 downTo leftEdge)
         {
             for (y in upEdge until downEdge)
             {
-                if (World.currentRoom.getSpace(x, y)
+                if (worldCurrentRoom.getSpace(x, y)
                                 ?.getBase()?.isTreadableFor?.invoke(this) == true && disappearSpacesRight[y] == null
                 ) disappearSpacesRight[y] = x
             }
         }
-        val disappearSpacesUp = Array<Int?>(World.currentRoom.widthInSpaces) { null }
+        val disappearSpacesUp = Array<Int?>(worldCurrentRoom.widthInSpaces) { null }
         for (y in upEdge until downEdge)
         {
             for (x in leftEdge until rightEdge)
             {
-                if (World.currentRoom.getSpace(x, y)
+                if (worldCurrentRoom.getSpace(x, y)
                                 ?.getBase()?.isTreadableFor?.invoke(this) == true && disappearSpacesUp[x] == null
                 ) disappearSpacesUp[x] = y
             }
         }
-        val disappearSpacesDown = Array<Int?>(World.currentRoom.widthInSpaces) { null }
+        val disappearSpacesDown = Array<Int?>(worldCurrentRoom.widthInSpaces) { null }
         for (y in downEdge - 1 downTo upEdge)
         {
             for (x in leftEdge until rightEdge)
             {
-                if (World.currentRoom.getSpace(x, y)
+                if (worldCurrentRoom.getSpace(x, y)
                                 ?.getBase()?.isTreadableFor?.invoke(this) == true && disappearSpacesDown[x] == null
                 ) disappearSpacesDown[x] = y
             }
@@ -243,22 +244,22 @@ class EnemyGhost(
         Gdx.app.log("EnemyGhost",disappearSpacesDown.contentToString())
         */
         val disappearSpaces = mutableListOf<RoomPosition>()
-        for (y in 0 until World.currentRoom.heightInSpaces)
+        for (y in 0 until worldCurrentRoom.heightInSpaces)
         {
             val x = disappearSpacesLeft[y]
             if (x != null) disappearSpaces.add(RoomPosition(x, y))
         }
-        for (y in 0 until World.currentRoom.heightInSpaces)
+        for (y in 0 until worldCurrentRoom.heightInSpaces)
         {
             val x = disappearSpacesRight[y]
             if (x != null) disappearSpaces.add(RoomPosition(x, y))
         }
-        for (x in 0 until World.currentRoom.widthInSpaces)
+        for (x in 0 until worldCurrentRoom.widthInSpaces)
         {
             val y = disappearSpacesUp[x]
             if (y != null) disappearSpaces.add(RoomPosition(x, y))
         }
-        for (x in 0 until World.currentRoom.widthInSpaces)
+        for (x in 0 until worldCurrentRoom.widthInSpaces)
         {
             val y = disappearSpacesDown[x]
             if (y != null) disappearSpaces.add(RoomPosition(x, y))
@@ -269,6 +270,7 @@ class EnemyGhost(
     
     private fun tryToDisappear()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
         Gdx.app.log("EnemyGhost", "try to disappear")
         
         // initialize animations
@@ -284,7 +286,7 @@ class EnemyGhost(
         {
             // disappear (go into edge)
             this.healthBar.remove()
-            World.currentRoom.removeEntity(this)
+            worldCurrentRoom.removeEntity(this)
             return
         }
         else
@@ -295,7 +297,7 @@ class EnemyGhost(
             val pom = closestDisappearPosition
             val reachable = if (pom != null)
             {
-                !PathFinding.findPathInRoomForEntity(position, pom, World.currentRoom,this).isNullOrEmpty()
+                !PathFinding.findPathInRoomForEntity(position, pom, worldCurrentRoom,this).isNullOrEmpty()
             }
             else false
             
@@ -305,8 +307,8 @@ class EnemyGhost(
                 var maxDistance = Int.MAX_VALUE
                 for (pos in positionsWhereGhostCanDisappear!!)
                 {
-                    val path = PathFinding.findPathInRoomForEntity(position, pos, World.currentRoom,this)
-                    if (!path.isNullOrEmpty() && World.currentRoom.getSpace(pos)?.isTraversableFor(this) == true)
+                    val path = PathFinding.findPathInRoomForEntity(position, pos, worldCurrentRoom,this)
+                    if (!path.isNullOrEmpty() && worldCurrentRoom.getSpace(pos)?.isTraversableFor(this) == true)
                     {
                         val distance = path.size
                         if (distance < maxDistance)
@@ -321,7 +323,7 @@ class EnemyGhost(
     
             // move to closest disappear position
     
-            val pathSpaces = PathFinding.findPathInRoomForEntity(position, closestDisappearPosition!!, World.currentRoom,this)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(position, closestDisappearPosition!!, worldCurrentRoom,this)
             // move slower when disappearing
             val stepsSpaces = pathSpaces?.take((0.75 * stepsInOneTurn).roundToInt())
             if (!stepsSpaces.isNullOrEmpty())
@@ -339,13 +341,13 @@ class EnemyGhost(
                 val enemy = this
                 
                 val beforeMoveAction = {
-                    World.currentRoom.getSpace(enemy.position)?.clearEntity()
+                    worldCurrentRoom.getSpace(enemy.position)?.clearEntity()
                     GameScreen.updateMapBaseLayer()
                     GameScreen.updateMapEntityLayer()
                 }
                 val afterMoveAction = {
                     enemy.position.set(endPosition)
-                    World.currentRoom.updateSpacesEntities()
+                    worldCurrentRoom.updateSpacesEntities()
                     GameScreen.updateMapBaseLayer()
                     GameScreen.updateMapEntityLayer()
                 }
@@ -375,6 +377,8 @@ class EnemyGhost(
     
     private fun attackThenRunAwayFromHero()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         Gdx.app.log("EnemyGhost", "attack then run away")
     
         // initialize animations
@@ -390,7 +394,7 @@ class EnemyGhost(
         animations += Animation.action { playSoundOnce(getAttackSound()) }
         animations += Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
         animations += Animation.action {
-            val attackedSpace = World.currentRoom.getSpace(heroPosition)
+            val attackedSpace = worldCurrentRoom.getSpace(heroPosition)
             when (val attackedEntity = attackedSpace?.getEntity())
             {
                 is Character -> attackedEntity.damageCharacter(20)
@@ -402,14 +406,14 @@ class EnemyGhost(
         // find position that Ghost can move to that is furthest from Hero
         var positionFurthestFromHero = position
         var maxDistanceFromHero =
-                PathFinding.findPathInRoomForEntity(World.hero.position, position, World.currentRoom,this)?.size ?: Int.MAX_VALUE
+                PathFinding.findPathInRoomForEntity(World.hero.position, position, worldCurrentRoom,this)?.size ?: Int.MAX_VALUE
         for (pos in getSquareAreaPositions(position, stepsInOneTurn))
         {
             // maybe change to distanceBetween if performance is bad?
-            val reachable = !PathFinding.findPathInRoomForEntity(position, pos, World.currentRoom,this)
-                    .isNullOrEmpty() && World.currentRoom.getSpace(pos)?.isTraversableFor(this) == true    // do not go into walls
+            val reachable = !PathFinding.findPathInRoomForEntity(position, pos, worldCurrentRoom,this)
+                    .isNullOrEmpty() && worldCurrentRoom.getSpace(pos)?.isTraversableFor(this) == true    // do not go into walls
             val distanceFromHero =
-                    PathFinding.findPathInRoomForEntity(World.hero.position, pos, World.currentRoom,this)?.size ?: Int.MAX_VALUE
+                    PathFinding.findPathInRoomForEntity(World.hero.position, pos, worldCurrentRoom,this)?.size ?: Int.MAX_VALUE
             if (distanceFromHero > maxDistanceFromHero && reachable)
             {
                 maxDistanceFromHero = distanceFromHero
@@ -420,7 +424,7 @@ class EnemyGhost(
         // do not move from and to same place
         if (position != positionFurthestFromHero)
         {
-            val pathSpaces = PathFinding.findPathInRoomForEntity(position, positionFurthestFromHero, World.currentRoom,this)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(position, positionFurthestFromHero, worldCurrentRoom,this)
             // move slower after attackig
             val stepsSpaces = pathSpaces?.take((0.75 * stepsInOneTurn).roundToInt())
             if (!stepsSpaces.isNullOrEmpty())
@@ -437,13 +441,13 @@ class EnemyGhost(
                 val enemy = this
             
                 val beforeMoveAction = {
-                    World.currentRoom.getSpace(enemy.position)?.clearEntity()
+                    worldCurrentRoom.getSpace(enemy.position)?.clearEntity()
                     GameScreen.updateMapBaseLayer()
                     GameScreen.updateMapEntityLayer()
                 }
                 val afterMoveAction = {
                     enemy.position.set(endPosition)
-                    World.currentRoom.updateSpacesEntities()
+                    worldCurrentRoom.updateSpacesEntities()
                     GameScreen.updateMapBaseLayer()
                     GameScreen.updateMapEntityLayer()
                 }
@@ -472,6 +476,8 @@ class EnemyGhost(
     
     private fun runAwayFromHero()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         Gdx.app.log("EnemyGhost", "run away")
     
         // initialize animations
@@ -483,14 +489,14 @@ class EnemyGhost(
         // find position that Ghost can move to that is furthest from Hero
         var positionFurthestFromHero = position
         var maxDistanceFromHero =
-                PathFinding.findPathInRoomForEntity(World.hero.position, position, World.currentRoom,this)?.size ?: Int.MAX_VALUE
+                PathFinding.findPathInRoomForEntity(World.hero.position, position, worldCurrentRoom,this)?.size ?: Int.MAX_VALUE
         for (pos in getSquareAreaPositions(position, stepsInOneTurn))
         {
             // maybe change to distanceBetween if performance is bad?
-            val reachable = !PathFinding.findPathInRoomForEntity(position, pos, World.currentRoom,this)
-                    .isNullOrEmpty() && World.currentRoom.getSpace(pos)?.isTraversableFor(this) == true    // do not go into walls
+            val reachable = !PathFinding.findPathInRoomForEntity(position, pos, worldCurrentRoom,this)
+                    .isNullOrEmpty() && worldCurrentRoom.getSpace(pos)?.isTraversableFor(this) == true    // do not go into walls
             val distanceFromHero =
-                    PathFinding.findPathInRoomForEntity(World.hero.position, pos, World.currentRoom,this)?.size ?: Int.MAX_VALUE
+                    PathFinding.findPathInRoomForEntity(World.hero.position, pos, worldCurrentRoom,this)?.size ?: Int.MAX_VALUE
             if (distanceFromHero > maxDistanceFromHero && reachable)
             {
                 maxDistanceFromHero = distanceFromHero
@@ -501,7 +507,7 @@ class EnemyGhost(
         // do not move from and to same place
         if (position != positionFurthestFromHero)
         {
-            val pathSpaces = PathFinding.findPathInRoomForEntity(position, positionFurthestFromHero, World.currentRoom,this)
+            val pathSpaces = PathFinding.findPathInRoomForEntity(position, positionFurthestFromHero, worldCurrentRoom,this)
             val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
             if (!stepsSpaces.isNullOrEmpty())
             {
@@ -517,13 +523,13 @@ class EnemyGhost(
                 val enemy = this
             
                 val beforeMoveAction = {
-                    World.currentRoom.getSpace(enemy.position)?.clearEntity()
+                    worldCurrentRoom.getSpace(enemy.position)?.clearEntity()
                     GameScreen.updateMapBaseLayer()
                     GameScreen.updateMapEntityLayer()
                 }
                 val afterMoveAction = {
                     enemy.position.set(endPosition)
-                    World.currentRoom.updateSpacesEntities()
+                    worldCurrentRoom.updateSpacesEntities()
                     GameScreen.updateMapBaseLayer()
                     GameScreen.updateMapEntityLayer()
                 }

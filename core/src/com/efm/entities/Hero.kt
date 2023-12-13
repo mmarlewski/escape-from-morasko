@@ -358,11 +358,11 @@ class HeroInventory : Container
                 }
                 for (pos in getSquareAreaPositions(World.hero.position, 1))
                 {
-                    val space = World.currentRoom.getSpace(pos)
+                    val space = World.currentRoom?.getSpace(pos)
                     if (space != null && space.isTraversableFor(World.hero))
                     {
-                        World.currentRoom.addEntityAt(droppedPockets, pos)
-                        World.currentRoom.updateSpacesEntities()
+                        World.currentRoom?.addEntityAt(droppedPockets, pos)
+                        World.currentRoom?.updateSpacesEntities()
                         GameScreen.updateMapBaseLayer()
                         GameScreen.updateMapEntityLayer()
                         break

@@ -33,7 +33,7 @@ fun endCurrentTurn()
                 }
             }
             // enemies roaming
-            for (enemy in World.currentRoom.getEnemies())
+            for (enemy in World.currentRoom?.getEnemies() ?: listOf())
             {
                 enemy.roam()
             }
@@ -67,11 +67,11 @@ fun endCurrentTurn()
             {
                 val animation = Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
                 Animating.executeAnimations(mutableListOf(animation))
-    
+                
                 newState = State.combat.enemies.enemyUnselected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.enemies = World.currentRoom.getEnemies()
+                    this.enemies = World.currentRoom?.getEnemies() ?: listOf()
                     this.enemyIterator = this.enemies?.iterator()
                     this.currEnemy = when (val enemyIterator = this.enemyIterator)
                     {

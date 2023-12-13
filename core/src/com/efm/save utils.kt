@@ -25,8 +25,8 @@ fun saveGame()
             getSoundVolume(),
             getMusicVolume(),
             getState(),
-            World.currentLevel.name,
-            World.currentRoom.name,
+            World.currentLevel?.name ?: "",
+            World.currentRoom?.name ?: "",
             World.hero,
             World.levels,
             defeatedBosses
@@ -102,8 +102,8 @@ fun loadGame()
         {
             World.levels.add(level as Level)
         }
-        World.currentLevel = World.levels.find { it.name == saveCurrentLevelName }!!
-        World.currentRoom = World.currentLevel.rooms.find { it.name == saveCurrentRoomName }!!
+        World.currentLevel = World.levels.find { it.name == saveCurrentLevelName }
+        World.currentRoom = World.currentLevel?.rooms?.find { it.name == saveCurrentRoomName }
         
         //
         

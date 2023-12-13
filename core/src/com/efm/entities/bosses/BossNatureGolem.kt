@@ -96,9 +96,15 @@ class BossNatureGolem : Entity, Enemy
             val projectileSquare = mutableListOf<Animation>()
             for (squarePerimeterPosition in getSquarePerimeterPositions(golemPosition, i))
             {
-                if (LineFinding.findLineWithGivenRoom(golemPosition, squarePerimeterPosition, World.currentRoom) != null)
+                val worldCurrentRoom = World.currentRoom
+                if (worldCurrentRoom != null && LineFinding.findLineWithGivenRoom(
+                                golemPosition,
+                                squarePerimeterPosition,
+                                worldCurrentRoom
+                                                                                 ) != null
+                )
                 {
-                    val space = World.currentRoom.getSpace(squarePerimeterPosition)
+                    val space = worldCurrentRoom.getSpace(squarePerimeterPosition)
                     val entity = space?.getEntity()
                     projectileSquare.add(Animation.showTile(golemProjectile, squarePerimeterPosition, 0.2f))
                     if (entity != null)
@@ -120,8 +126,14 @@ class BossNatureGolem : Entity, Enemy
         {
             var decision = -1
             
-            val directPathSpaces =
-                    PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+            val worldCurrentRoom = World.currentRoom
+            val directPathSpaces = if (worldCurrentRoom != null) PathFinding.findPathInRoomForEntity(
+                    position,
+                    World.hero.position,
+                    worldCurrentRoom,
+                    this
+                                                                                                    )
+            else null
             
             var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
             var minPathSpaces = directPathSpaces
@@ -131,12 +143,16 @@ class BossNatureGolem : Entity, Enemy
                 val squarePositions = getSquareAreaPositions(World.hero.position, 2)
                 for (squarePosition in squarePositions)
                 {
-                    val squareSpace = World.currentRoom.getSpace(squarePosition)
+                    val squareSpace = worldCurrentRoom?.getSpace(squarePosition)
                     
                     if (squareSpace != null && squareSpace.isTraversableFor(this))
                     {
-                        val pathSpaces =
-                                PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom, this)
+                        val pathSpaces = PathFinding.findPathInRoomForEntity(
+                                position,
+                                squarePosition,
+                                worldCurrentRoom,
+                                this
+                                                                            )
                         
                         if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
                         {
@@ -191,7 +207,7 @@ class BossNatureGolem : Entity, Enemy
     
     override fun onDeath()
     {
-        if (World.currentRoom.name != "finalRoom")
+        if (World.currentRoom?.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
             addBossToDefeatedBossesList(Boss.NatureGolem)
@@ -201,7 +217,7 @@ class BossNatureGolem : Entity, Enemy
     
     private fun replaceTileWithGrass(tilePosition : RoomPosition)
     {
-        val currentPosition = World.currentRoom.getSpace(tilePosition)
+        val currentPosition = World.currentRoom?.getSpace(tilePosition)
         currentPosition?.changeBase(Base.grass)
         GameScreen.updateMapBaseLayer()
     }

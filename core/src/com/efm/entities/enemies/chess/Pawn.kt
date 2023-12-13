@@ -66,6 +66,8 @@ class Pawn: Entity, Enemy
     
     override fun performTurn()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         if (!isFrozen)
         {
             val heroPos = World.hero.position
@@ -82,9 +84,9 @@ class Pawn: Entity, Enemy
             {
                 for (pos in getPossibleMovePositions())
                 {
-                    if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                    if (worldCurrentRoom.isPositionWithinBounds(pos.x, pos.y))
                     {
-                        var space = World.currentRoom.getSpace(pos)
+                        var space = worldCurrentRoom.getSpace(pos)
                         if (space != null)
                         {
                             var entity = space.getEntity()
@@ -93,13 +95,13 @@ class Pawn: Entity, Enemy
                                 val queen = Queen()
                                 queen.setChessPieceDirection(direction)
                                 queen.createOwnHealthBar()
-                                World.currentRoom.replaceEntityAt(queen, position)
+                                worldCurrentRoom.replaceEntityAt(queen, position)
                                 break
                             }
                             else if (entity == null && space.isTraversableFor(this))
                             {
                                 val path : List<Space?> =
-                                        listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(pos))
+                                        listOf(worldCurrentRoom.getSpace(position), worldCurrentRoom.getSpace(pos))
                                 moveEnemy(position, space.position, path, this)
                                 break
                             }
@@ -131,7 +133,7 @@ class Pawn: Entity, Enemy
         animations += Animation.action {
         
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
