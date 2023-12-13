@@ -126,7 +126,10 @@ object Textures
     val creditsTitle = load("images/credits.png")
     
     // multiUseMapItems
-    val sword = load("items/sword1.png")
+    val woodenSword = load("items/sword1.png")
+    val ironSword = load("items/sword2.png")
+    val turquoiseSword = load("items/swordSmallHandle2.png")
+    val amberSword = load("items/swordSmallHandle3.png")
     val hammer = load("items/hammer2.png")
     val axe = load("items/axeDoubleBit2.png")
     val staff = load("items/staff1.png")
@@ -141,8 +144,10 @@ object Textures
     val apple = load("items/apple.png")
     val fish = load("items/fish1.png")
     val mushroom = load("items/mushroom2.png")
-    val potionSmall = load("items/potion1.png")
-    val potionBig = load("items/potion1.png")
+    val aPPotionSmall = load("items/potionLong2.png")
+    val aPpotionBig = load("items/potionBig2.png")
+    val hPPotionSmall = load("items/potion1.png")
+    val hPpotionBig = load("items/potionBig1.png")
     
     // skills
     

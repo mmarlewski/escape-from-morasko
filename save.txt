@@ -8,7 +8,9 @@
 	value: 1
 }
 {
-	class: com.efm.state.State$free$heroSelected
+	class: com.efm.state.State$combat$hero$multiUseMapItemTargetSelectedTwice
+	areEnemiesInRoom: true
+	areAnyActionPointsLeft: true
 }
 {
 	class: java.lang.String
@@ -16,30 +18,33 @@
 }
 {
 	class: java.lang.String
-	value: 1
+	value: 3
 }
 {
 	class: com.efm.entities.Hero
 	position: {
-		x: 3
+		x: 4
 		y: 3
 	}
-	maxHealthPoints: 100
-	healthPoints: 100
+	maxHealthPoints: 60
+	healthPoints: 60
 	alive: true
-	maxAbilityPoints: 14
-	abilityPoints: 14
+	maxAbilityPoints: 8
+	abilityPoints: 8
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
 	inventory: {
 		items: [
 			{
-				class: com.efm.multiUseMapItems.WoodenSword
+				class: com.efm.multiUseMapItems.Bow
+			}
+			{
+				class: com.efm.multiUseMapItems.IronSword
+				durability: 19
 			}
 			{
 				class: com.efm.stackableSelfItems.Apple
-				amount: 2
 			}
 		]
 	}
@@ -69,6 +74,7 @@
 			value: ""
 		}
 	]
+	weaponDamageMultiplier: 3
 }
 [
 	{
@@ -656,6 +662,9 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.WoodenSword
+							}
+							{
 								class: com.efm.stackableSelfItems.Fish
 								amount: 2
 							}
@@ -681,58 +690,6 @@
 							y: 7
 						}
 						endDirection: right
-					}
-					{
-						class: com.efm.entities.Hero
-						position: {
-							x: 3
-							y: 3
-						}
-						maxHealthPoints: 100
-						healthPoints: 100
-						alive: true
-						maxAbilityPoints: 14
-						abilityPoints: 14
-						apDrainInNextTurn: 0
-						canMoveNextTurn: true
-						isVisible: true
-						inventory: {
-							items: [
-								{
-									class: com.efm.multiUseMapItems.WoodenSword
-								}
-								{
-									class: com.efm.stackableSelfItems.Apple
-									amount: 2
-								}
-							]
-						}
-						skillNames: [
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-						]
 					}
 				]
 			}
@@ -1981,13 +1938,27 @@
 					{
 						class: com.efm.entities.enemies.EnemyMushroom
 						position: {
-							x: 6
+							x: 8
 							y: 4
 						}
 						maxHealthPoints: 10
 						healthPoints: 10
 						alive: true
 						isFrozen: false
+					}
+					{
+						class: com.efm.entities.TutorialChest
+						position: {
+							x: 4
+							y: 3
+						}
+						items: [
+							{
+								class: com.efm.stackableSelfItems.HPPotionSmall
+								amount: 2
+							}
+						]
+						maxItems: 5
 					}
 					{
 						class: com.efm.exit.RoomExit
@@ -2541,18 +2512,18 @@
 							x: 2
 							y: 1
 						}
-						maxHealthPoints: 5
-						healthPoints: 5
+						maxHealthPoints: 13
+						healthPoints: 13
 						alive: true
 						isFrozen: false
 					}
 					{
 						class: com.efm.entities.enemies.EnemyBat
 						position: {
-							x: 5
-							y: 6
+							x: 4
+							y: 5
 						}
-						maxHealthPoints: 5
+						maxHealthPoints: 13
 						healthPoints: 5
 						alive: true
 						isFrozen: false
@@ -2565,14 +2536,11 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.Bow
+								class: com.efm.stackableSelfItems.APPotionSmall
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
 								amount: 3
-							}
-							{
-								class: com.efm.stackableSelfItems.PotionSmall
 							}
 						]
 						maxItems: 5
@@ -2616,6 +2584,62 @@
 							y: 3
 						}
 						endDirection: right
+					}
+					{
+						class: com.efm.entities.Hero
+						position: {
+							x: 4
+							y: 3
+						}
+						maxHealthPoints: 60
+						healthPoints: 60
+						alive: true
+						maxAbilityPoints: 8
+						abilityPoints: 8
+						apDrainInNextTurn: 0
+						canMoveNextTurn: true
+						isVisible: true
+						inventory: {
+							items: [
+								{
+									class: com.efm.multiUseMapItems.Bow
+								}
+								{
+									class: com.efm.multiUseMapItems.IronSword
+									durability: 19
+								}
+								{
+									class: com.efm.stackableSelfItems.Apple
+								}
+							]
+						}
+						skillNames: [
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+						]
+						weaponDamageMultiplier: 3
 					}
 				]
 			}
@@ -3857,8 +3881,8 @@
 							x: 4
 							y: 8
 						}
-						maxHealthPoints: 40
-						healthPoints: 40
+						maxHealthPoints: 46
+						healthPoints: 46
 						alive: true
 						isFrozen: false
 					}
@@ -3868,10 +3892,37 @@
 							x: 7
 							y: 5
 						}
-						maxHealthPoints: 10
-						healthPoints: 10
+						maxHealthPoints: 16
+						healthPoints: 16
 						alive: true
 						isFrozen: false
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 6
+							y: 5
+						}
+						items: [
+							{
+								class: com.efm.multiUseMapItems.WoodenSword
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.entities.Npc
+						position: {
+							x: 6
+							y: 1
+						}
+					}
+					{
+						class: com.efm.entities.Npc
+						position: {
+							x: 7
+							y: 1
+						}
 					}
 					{
 						class: com.efm.exit.RoomExit
@@ -5456,13 +5507,13 @@
 						]
 					}
 					{
-						class: com.efm.entities.bosses.BossNatureGolem
+						class: com.efm.entities.bosses.slime.TutorialBossSlime
 						position: {
 							x: 6
 							y: 6
 						}
-						maxHealthPoints: 50
-						healthPoints: 50
+						maxHealthPoints: 30
+						healthPoints: 30
 						alive: true
 						isFrozen: false
 					}
@@ -7956,8 +8007,31 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.WoodenSword
+							}
+							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 8
+							}
+							{
+								class: com.efm.stackableSelfItems.Mushroom
+								amount: 2
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 7
+							y: 14
+						}
+						items: [
+							{
+								class: com.efm.multiUseMapItems.IronSword
+							}
+							{
+								class: com.efm.stackableSelfItems.HPPotionSmall
+								amount: 3
 							}
 						]
 						maxItems: 5
@@ -10739,13 +10813,10 @@
 						items: [
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 4
+								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-							}
-							{
-								class: com.efm.stackableSelfItems.PotionSmall
 								amount: 3
 							}
 						]
@@ -12535,12 +12606,8 @@
 						}
 						items: [
 							{
-								class: com.efm.stackableMapItems.Shuriken
-								amount: 3
-							}
-							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 4
+								amount: 2
 							}
 						]
 						maxItems: 5
@@ -16213,7 +16280,7 @@
 						class: com.efm.entities.bosses.slime.BossSlime
 						position: {
 							x: 9
-							y: 2
+							y: 1
 						}
 						maxHealthPoints: 50
 						healthPoints: 50
@@ -16251,6 +16318,7220 @@
 						endRoomName: 8
 						endPosition: {
 							x: 5
+							y: 0
+						}
+						endDirection: down
+					}
+				]
+			}
+		]
+	}
+	{
+		class: com.efm.level.Level
+		name: 3
+		startingRoomName: 1
+		startingPosition: {
+			x: 2
+			y: 6
+		}
+		rooms: [
+			{
+				class: com.efm.room.Room
+				name: 1
+				heightInSpaces: 7
+				widthInSpaces: 7
+				spaceList: [
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 6
+						}
+						base: null
+					}
+				]
+				entities: [
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 1
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 2
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 3
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 4
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 5
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 6
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 1
+							y: 3
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 3
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 0
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 4
+							y: 0
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 5
+							y: 0
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 6
+							y: 0
+						}
+						style: cobblestoneLight
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 1
+							y: 6
+						}
+						items: [
+							{
+								class: com.efm.multiUseMapItems.WoodenSword
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.entities.enemies.Boar.EnemyBoar
+						position: {
+							x: 5
+							y: 1
+						}
+						maxHealthPoints: 20
+						healthPoints: 20
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 6
+							y: 1
+						}
+						activeWhenNoEnemiesAreInRoom: true
+						position: {
+							x: 6
+							y: 1
+						}
+						direction: left
+						style: rock
+						endRoomName: 4
+						endPosition: {
+							x: 3
+							y: 6
+						}
+						endDirection: right
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 6
+							y: 4
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 6
+							y: 4
+						}
+						direction: left
+						style: rock
+						endRoomName: 2
+						endPosition: {
+							x: 2
+							y: 2
+						}
+						endDirection: right
+					}
+				]
+			}
+			{
+				class: com.efm.room.Room
+				name: 2
+				heightInSpaces: 7
+				widthInSpaces: 8
+				spaceList: [
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 6
+						}
+						base: rock
+					}
+				]
+				entities: [
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 1
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 3
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 4
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 5
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 6
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 1
+							y: 3
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 3
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 0
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 4
+							y: 0
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 5
+							y: 0
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 6
+							y: 0
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 7
+							y: 0
+						}
+						style: cobblestoneDark
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 1
+							y: 5
+						}
+						items: [
+							{
+								class: com.efm.stackableMapItems.Shuriken
+								amount: 4
+							}
+							{
+								class: com.efm.stackableSelfItems.HPPotionBig
+							}
+							{
+								class: com.efm.stackableSelfItems.Mushroom
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.entities.enemies.EnemyMushroom
+						position: {
+							x: 4
+							y: 4
+						}
+						maxHealthPoints: 10
+						healthPoints: 10
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemyMushroom
+						position: {
+							x: 6
+							y: 4
+						}
+						maxHealthPoints: 10
+						healthPoints: 10
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 2
+							y: 2
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 2
+							y: 2
+						}
+						direction: right
+						style: rock
+						endRoomName: 1
+						endPosition: {
+							x: 6
+							y: 4
+						}
+						endDirection: left
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 7
+							y: 1
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 7
+							y: 1
+						}
+						direction: left
+						style: rock
+						endRoomName: 3
+						endPosition: {
+							x: 0
+							y: 5
+						}
+						endDirection: right
+					}
+				]
+			}
+			{
+				class: com.efm.room.Room
+				name: 3
+				heightInSpaces: 9
+				widthInSpaces: 8
+				spaceList: [
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 8
+						}
+						base: null
+					}
+				]
+				entities: [
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 2
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 3
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 4
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 6
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 7
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 1
+							y: 2
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 2
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 2
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 4
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 5
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 6
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 7
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 7
+							y: 3
+						}
+						items: [
+							{
+								class: com.efm.stackableSelfItems.APPotionBig
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.entities.enemies.EnemyBat
+						position: {
+							x: 3
+							y: 5
+						}
+						maxHealthPoints: 5
+						healthPoints: 5
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemySkeleton
+						position: {
+							x: 5
+							y: 4
+						}
+						maxHealthPoints: 10
+						healthPoints: 10
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 0
+							y: 5
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 0
+							y: 5
+						}
+						direction: right
+						style: rock
+						endRoomName: 2
+						endPosition: {
+							x: 7
+							y: 1
+						}
+						endDirection: left
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 3
+							y: 1
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 3
+							y: 1
+						}
+						direction: right
+						style: rock
+						endRoomName: 5
+						endPosition: {
+							x: 5
+							y: 5
+						}
+						endDirection: left
+					}
+				]
+			}
+			{
+				class: com.efm.room.Room
+				name: 4
+				heightInSpaces: 7
+				widthInSpaces: 6
+				spaceList: [
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 6
+						}
+						base: rock
+					}
+				]
+				entities: [
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 1
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 2
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 3
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 4
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 5
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 1
+							y: 0
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 0
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 4
+							y: 0
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 5
+							y: 0
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 5
+							y: 3
+						}
+						items: [
+							{
+								class: com.efm.stackableMapItems.Shuriken
+								amount: 2
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 3
+							y: 6
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 3
+							y: 6
+						}
+						direction: right
+						style: rock
+						endRoomName: 1
+						endPosition: {
+							x: 6
+							y: 1
+						}
+						endDirection: left
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 3
+							y: 0
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 3
+							y: 0
+						}
+						direction: down
+						style: rock
+						endRoomName: 7
+						endPosition: {
+							x: 5
+							y: 10
+						}
+						endDirection: up
+					}
+				]
+			}
+			{
+				class: com.efm.room.Room
+				name: 5
+				heightInSpaces: 7
+				widthInSpaces: 6
+				spaceList: [
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 6
+						}
+						base: rock
+					}
+				]
+				entities: [
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 1
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 2
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 3
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 4
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 5
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 6
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 1
+							y: 0
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 0
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 4
+							y: 0
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 5
+							y: 0
+						}
+						style: cobblestoneLightTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 1
+							y: 3
+						}
+						items: [
+							{
+								class: com.efm.stackableMapItems.Shuriken
+								amount: 4
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.entities.enemies.EnemyMushroom
+						position: {
+							x: 3
+							y: 2
+						}
+						maxHealthPoints: 10
+						healthPoints: 10
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemySlimeQuarter
+						position: {
+							x: 3
+							y: 3
+						}
+						maxHealthPoints: 10
+						healthPoints: 10
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 5
+							y: 5
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 5
+							y: 5
+						}
+						direction: left
+						style: rock
+						endRoomName: 3
+						endPosition: {
+							x: 3
+							y: 1
+						}
+						endDirection: right
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 2
+							y: 0
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 2
+							y: 0
+						}
+						direction: down
+						style: rock
+						endRoomName: 7
+						endPosition: {
+							x: 9
+							y: 10
+						}
+						endDirection: up
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 5
+							y: 1
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 5
+							y: 1
+						}
+						direction: left
+						style: rock
+						endRoomName: 6
+						endPosition: {
+							x: 3
+							y: 5
+						}
+						endDirection: right
+					}
+				]
+			}
+			{
+				class: com.efm.room.Room
+				name: 6
+				heightInSpaces: 8
+				widthInSpaces: 10
+				spaceList: [
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 7
+						}
+						base: rock
+					}
+				]
+				entities: [
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 1
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 2
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 3
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 4
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 6
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 7
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 1
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 4
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 5
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 7
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 8
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 9
+							y: 0
+						}
+						style: cobblestoneDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 3
+							y: 1
+						}
+						items: [
+							{
+								class: com.efm.multiUseMapItems.SmallAxe
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.entities.enemies.EnemySlimeQuarter
+						position: {
+							x: 2
+							y: 2
+						}
+						maxHealthPoints: 10
+						healthPoints: 10
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemyPlant
+						position: {
+							x: 4
+							y: 2
+						}
+						maxHealthPoints: 25
+						healthPoints: 25
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemyRollingStone
+						position: {
+							x: 7
+							y: 4
+						}
+						maxHealthPoints: 15
+						healthPoints: 15
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 3
+							y: 5
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 3
+							y: 5
+						}
+						direction: right
+						style: rock
+						endRoomName: 5
+						endPosition: {
+							x: 5
+							y: 1
+						}
+						endDirection: left
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 6
+							y: 0
+						}
+						activeWhenNoEnemiesAreInRoom: true
+						position: {
+							x: 6
+							y: 0
+						}
+						direction: down
+						style: rock
+						endRoomName: 8
+						endPosition: {
+							x: 7
+							y: 10
+						}
+						endDirection: up
+					}
+				]
+			}
+			{
+				class: com.efm.room.Room
+				name: 7
+				heightInSpaces: 11
+				widthInSpaces: 12
+				spaceList: [
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 9
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 10
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 10
+						}
+						base: rock
+					}
+				]
+				entities: [
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 6
+							y: 1
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 6
+							y: 2
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 6
+							y: 3
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 4
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 5
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 6
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 7
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 8
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 9
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 10
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 1
+							y: 3
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 3
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 3
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 4
+							y: 3
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 5
+							y: 3
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 6
+							y: 3
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 7
+							y: 0
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 8
+							y: 0
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 9
+							y: 0
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 10
+							y: 0
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 11
+							y: 0
+						}
+						style: brickRedDarkTall
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.Chest
+						position: {
+							x: 7
+							y: 1
+						}
+						items: [
+							{
+								class: com.efm.multiUseMapItems.IronSword
+							}
+							{
+								class: com.efm.stackableMapItems.Bomb
+							}
+						]
+						maxItems: 5
+					}
+					{
+						class: com.efm.entities.enemies.Boar.EnemyGhost
+						position: {
+							x: 5
+							y: 6
+						}
+						maxHealthPoints: 40
+						healthPoints: 40
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemyBat
+						position: {
+							x: 6
+							y: 8
+						}
+						maxHealthPoints: 5
+						healthPoints: 5
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemySlimeQuarter
+						position: {
+							x: 10
+							y: 7
+						}
+						maxHealthPoints: 10
+						healthPoints: 10
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemySlimeQuarter
+						position: {
+							x: 8
+							y: 3
+						}
+						maxHealthPoints: 10
+						healthPoints: 10
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 9
+							y: 10
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 9
+							y: 10
+						}
+						direction: up
+						style: rock
+						endRoomName: 5
+						endPosition: {
+							x: 2
+							y: 0
+						}
+						endDirection: down
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 5
+							y: 10
+						}
+						activeWhenNoEnemiesAreInRoom: false
+						position: {
+							x: 5
+							y: 10
+						}
+						direction: up
+						style: rock
+						endRoomName: 4
+						endPosition: {
+							x: 3
+							y: 0
+						}
+						endDirection: down
+					}
+				]
+			}
+			{
+				class: com.efm.room.Room
+				name: 8
+				heightInSpaces: 11
+				widthInSpaces: 13
+				spaceList: [
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 0
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 1
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 1
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 2
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 2
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 3
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 3
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 4
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 4
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 5
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 5
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 6
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 6
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 7
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 7
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 8
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 8
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 9
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 9
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 0
+							y: 10
+						}
+						base: null
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 1
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 2
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 3
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 4
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 5
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 6
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 7
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 8
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 9
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 10
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 11
+							y: 10
+						}
+						base: rock
+					}
+					{
+						class: com.efm.room.Space
+						position: {
+							x: 12
+							y: 10
+						}
+						base: rock
+					}
+				]
+				entities: [
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 1
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 2
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 3
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 4
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 5
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 6
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 7
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 8
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 9
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 0
+							y: 10
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: right
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 1
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 2
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 3
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 4
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 5
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 6
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 8
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 9
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 10
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 11
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.walls.Wall
+						position: {
+							x: 12
+							y: 0
+						}
+						style: stone
+						directions: [
+							{
+								class: com.efm.Direction4
+								value: down
+							}
+						]
+					}
+					{
+						class: com.efm.entities.enemies.EnemyRollingStone
+						position: {
+							x: 2
+							y: 3
+						}
+						maxHealthPoints: 15
+						healthPoints: 15
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.enemies.EnemyRollingStone
+						position: {
+							x: 9
+							y: 3
+						}
+						maxHealthPoints: 15
+						healthPoints: 15
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.entities.bosses.BossNatureGolem
+						position: {
+							x: 6
+							y: 2
+						}
+						maxHealthPoints: 50
+						healthPoints: 50
+						alive: true
+						isFrozen: false
+					}
+					{
+						class: com.efm.exit.LevelExit
+						position: {
+							x: 7
+							y: 0
+						}
+						activeWhenNoEnemiesAreInRoom: true
+						position: {
+							x: 7
+							y: 0
+						}
+						direction: down
+						style: stone
+						endLevelName: 4
+					}
+					{
+						class: com.efm.exit.RoomExit
+						position: {
+							x: 7
+							y: 10
+						}
+						activeWhenNoEnemiesAreInRoom: true
+						position: {
+							x: 7
+							y: 10
+						}
+						direction: up
+						style: rock
+						endRoomName: 6
+						endPosition: {
+							x: 6
 							y: 0
 						}
 						endDirection: down

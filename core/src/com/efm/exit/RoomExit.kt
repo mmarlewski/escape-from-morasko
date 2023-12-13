@@ -9,6 +9,7 @@ import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import com.efm.screens.GameScreen
 import com.efm.state.State
 import com.efm.state.getState
 
@@ -73,9 +74,12 @@ open class RoomExit(
     
     override fun interact()
     {
-        if (!activeWhenNoEnemiesAreInRoom || !World.currentRoom.areEnemiesInRoom())
+        val worldCurrentLevel = World.currentLevel ?: return
+        val worldCurrentRoom = World.currentRoom ?: return
+        
+        if (!activeWhenNoEnemiesAreInRoom || !worldCurrentRoom.areEnemiesInRoom())
         {
-            val targetRoom : Room? = World.currentLevel.rooms.find { it.name == endRoomName }
+            val targetRoom : Room? = worldCurrentLevel.rooms.find { it.name == endRoomName }
             // do not allow travel that would change state combat to state free
             if (!(getState() is State.combat && targetRoom?.areEnemiesInRoom() == false))
             {
@@ -89,18 +93,21 @@ open class RoomExit(
     
     private fun travelBetweenRooms()
     {
-        val newRoom : Room? = World.currentLevel.rooms.find { it.name == endRoomName }
+        val worldCurrentLevel = World.currentLevel ?: return
+        val worldCurrentRoom = World.currentRoom ?: return
+        
+        val newRoom : Room? = worldCurrentLevel.rooms.find { it.name == endRoomName }
         val newPosition : RoomPosition = endPosition.adjacentPosition(endDirection)
         
         println("endRoomName : $endRoomName")
         println("newRoom : $newRoom")
-        println("World.currentRoom.name : ${World.currentRoom.name}")
+        println("World.currentRoom.name : ${World.currentRoom?.name}")
         
         if (newRoom == null) throw Exception("Cannot find the Room that the Exit leads to.")
         
-        World.currentRoom.removeEntity(World.hero)
+        worldCurrentRoom.removeEntity(World.hero)
         World.changeCurrentRoom(newRoom)
-        World.currentRoom.addEntityAt(World.hero, newPosition)
+        World.currentRoom?.addEntityAt(World.hero, newPosition)
         
         saveGame()
     }

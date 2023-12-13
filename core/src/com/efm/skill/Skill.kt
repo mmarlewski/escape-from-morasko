@@ -56,3 +56,18 @@ fun getSkillFromName(name : String) : Skill?
         else              -> null
     }
 }
+
+val allSkills = listOf(
+        BarrelThrowing,
+        Freeze,
+        Invisibility,
+        Jump,
+        Pull,
+        Push,
+        Shield,
+        Swap,
+        GrassHealing,
+        Pockets,
+        WaterWalking,
+        LavaWalking
+                      )

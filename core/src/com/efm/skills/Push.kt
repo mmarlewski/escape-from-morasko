@@ -25,19 +25,19 @@ object Push : ActiveSkill(
         val positions = mutableListOf<RoomPosition>()
         
         val upPosition = source.adjacentPosition(Direction4.up)
-        val upSpace = World.currentRoom.getSpace(upPosition)
+        val upSpace = World.currentRoom?.getSpace(upPosition)
         if (upSpace?.getEntity() != null) positions.add(upPosition)
         
         val rightPosition = source.adjacentPosition(Direction4.right)
-        val rightSpace = World.currentRoom.getSpace(rightPosition)
+        val rightSpace = World.currentRoom?.getSpace(rightPosition)
         if (rightSpace?.getEntity() != null) positions.add(rightPosition)
         
         val downPosition = source.adjacentPosition(Direction4.down)
-        val downSpace = World.currentRoom.getSpace(downPosition)
+        val downSpace = World.currentRoom?.getSpace(downPosition)
         if (downSpace?.getEntity() != null) positions.add(downPosition)
         
         val leftPosition = source.adjacentPosition(Direction4.left)
-        val leftSpace = World.currentRoom.getSpace(leftPosition)
+        val leftSpace = World.currentRoom?.getSpace(leftPosition)
         if (leftSpace?.getEntity() != null) positions.add(leftPosition)
         
         return positions
@@ -57,7 +57,7 @@ object Push : ActiveSkill(
     {
         val animations = mutableListOf<Animation>()
         
-        val targetSpace = World.currentRoom.getSpace(targetPosition)
+        val targetSpace = World.currentRoom?.getSpace(targetPosition)
         val targetEntity = targetSpace?.getEntity()
         val direction = getDirection8(World.hero.position, targetPosition)
         if (targetEntity != null && direction != null)
@@ -66,13 +66,13 @@ object Push : ActiveSkill(
             animations.add(Animation.showTile(impactTile, targetPosition, 0.5f))
             
             val directionPosition = targetPosition.adjacentPosition(direction)
-            val directionSpace = World.currentRoom.getSpace(directionPosition)
+            val directionSpace = World.currentRoom?.getSpace(directionPosition)
             if (directionSpace != null)
             {
                 // disappear entity
                 animations.add(Animation.action {
                     targetEntity.position.set(-1, -1)
-                    World.currentRoom.updateSpacesEntities()
+                    World.currentRoom?.updateSpacesEntities()
                     GameScreen.updateMapEntityLayer()
                 })
                 
@@ -86,7 +86,7 @@ object Push : ActiveSkill(
                     // change entity position ot new
                     animations.add(Animation.action {
                         targetEntity.position.set(directionPosition)
-                        World.currentRoom.updateSpacesEntities()
+                        World.currentRoom?.updateSpacesEntities()
                         GameScreen.updateMapEntityLayer()
                     })
                     
@@ -113,5 +113,4 @@ object Push : ActiveSkill(
         
         Animating.executeAnimations(animations)
     }
-    
 }
