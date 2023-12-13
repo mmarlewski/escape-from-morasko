@@ -8,9 +8,7 @@
 	value: 1
 }
 {
-	class: com.efm.state.State$combat$hero$heroSelected
-	areEnemiesInRoom: true
-	areAnyActionPointsLeft: true
+	class: com.efm.state.State$free$noSelection
 }
 {
 	class: java.lang.String
@@ -18,19 +16,19 @@
 }
 {
 	class: java.lang.String
-	value: 4
+	value: 3
 }
 {
 	class: com.efm.entities.Hero
 	position: {
-		x: 10
-		y: 4
+		x: 3
+		y: 5
 	}
-	maxHealthPoints: 100
-	healthPoints: 93
+	maxHealthPoints: 80
+	healthPoints: 80
 	alive: true
 	maxAbilityPoints: 8
-	abilityPoints: 6
+	abilityPoints: 2
 	apDrainInNextTurn: 0
 	canMoveNextTurn: true
 	isVisible: true
@@ -38,6 +36,7 @@
 		items: [
 			{
 				class: com.efm.multiUseMapItems.WoodenSword
+				durability: 9
 			}
 			{
 				class: com.efm.stackableSelfItems.Apple
@@ -70,6 +69,7 @@
 			value: ""
 		}
 	]
+	weaponDamageMultiplier: 2
 }
 [
 	{
@@ -1931,7 +1931,7 @@
 						class: com.efm.entities.enemies.EnemyMushroom
 						position: {
 							x: 5
-							y: 3
+							y: 4
 						}
 						maxHealthPoints: 10
 						healthPoints: 10
@@ -2502,28 +2502,6 @@
 						]
 					}
 					{
-						class: com.efm.entities.enemies.EnemyBat
-						position: {
-							x: 2
-							y: 1
-						}
-						maxHealthPoints: 7
-						healthPoints: 7
-						alive: true
-						isFrozen: false
-					}
-					{
-						class: com.efm.entities.enemies.EnemyBat
-						position: {
-							x: 5
-							y: 6
-						}
-						maxHealthPoints: 7
-						healthPoints: 7
-						alive: true
-						isFrozen: false
-					}
-					{
 						class: com.efm.entities.Chest
 						position: {
 							x: 3
@@ -2535,11 +2513,11 @@
 							}
 							{
 								class: com.efm.stackableSelfItems.APPotionSmall
-								amount: 3
+								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 3
+								amount: 4
 							}
 						]
 						maxItems: 5
@@ -2583,6 +2561,91 @@
 							y: 3
 						}
 						endDirection: right
+					}
+					{
+						class: com.efm.entities.enemies.EnemyBatCorpse
+						position: {
+							x: 5
+							y: 6
+						}
+						position: {
+							x: 5
+							y: 6
+						}
+						maxHealthPoints: 1
+						healthPoints: 1
+						alive: true
+						items: []
+						maxItems: 2
+					}
+					{
+						class: com.efm.entities.Hero
+						position: {
+							x: 3
+							y: 5
+						}
+						maxHealthPoints: 80
+						healthPoints: 80
+						alive: true
+						maxAbilityPoints: 8
+						abilityPoints: 2
+						apDrainInNextTurn: 0
+						canMoveNextTurn: true
+						isVisible: true
+						inventory: {
+							items: [
+								{
+									class: com.efm.multiUseMapItems.WoodenSword
+									durability: 9
+								}
+								{
+									class: com.efm.stackableSelfItems.Apple
+								}
+							]
+						}
+						skillNames: [
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+							{
+								class: java.lang.String
+								value: ""
+							}
+						]
+						weaponDamageMultiplier: 2
+					}
+					{
+						class: com.efm.entities.enemies.EnemyBatCorpse
+						position: {
+							x: 2
+							y: 5
+						}
+						position: {
+							x: 2
+							y: 5
+						}
+						maxHealthPoints: 1
+						healthPoints: 1
+						alive: true
+						items: []
+						maxItems: 2
 					}
 				]
 			}
@@ -3366,7 +3429,7 @@
 							x: 8
 							y: 8
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3374,7 +3437,7 @@
 							x: 9
 							y: 8
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3382,7 +3445,7 @@
 							x: 10
 							y: 8
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3438,7 +3501,7 @@
 							x: 6
 							y: 9
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3446,7 +3509,7 @@
 							x: 7
 							y: 9
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3454,7 +3517,7 @@
 							x: 8
 							y: 9
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3462,7 +3525,7 @@
 							x: 9
 							y: 9
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3470,7 +3533,7 @@
 							x: 10
 							y: 9
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3518,7 +3581,7 @@
 							x: 5
 							y: 10
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3526,7 +3589,7 @@
 							x: 6
 							y: 10
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3534,7 +3597,7 @@
 							x: 7
 							y: 10
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3542,7 +3605,7 @@
 							x: 8
 							y: 10
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3550,7 +3613,7 @@
 							x: 9
 							y: 10
 						}
-						base: lava
+						base: water
 					}
 					{
 						class: com.efm.room.Space
@@ -3558,7 +3621,7 @@
 							x: 10
 							y: 10
 						}
-						base: lava
+						base: water
 					}
 				]
 				entities: [
@@ -3821,11 +3884,11 @@
 					{
 						class: com.efm.entities.enemies.Boar.EnemyGhost
 						position: {
-							x: 2
-							y: 10
+							x: 4
+							y: 8
 						}
-						maxHealthPoints: 42
-						healthPoints: 42
+						maxHealthPoints: 43
+						healthPoints: 43
 						alive: true
 						isFrozen: false
 					}
@@ -3835,8 +3898,8 @@
 							x: 7
 							y: 5
 						}
-						maxHealthPoints: 12
-						healthPoints: 12
+						maxHealthPoints: 13
+						healthPoints: 13
 						alive: true
 						isFrozen: false
 					}
@@ -3919,57 +3982,6 @@
 							y: 7
 						}
 						endDirection: right
-					}
-					{
-						class: com.efm.entities.Hero
-						position: {
-							x: 10
-							y: 4
-						}
-						maxHealthPoints: 100
-						healthPoints: 93
-						alive: true
-						maxAbilityPoints: 8
-						abilityPoints: 6
-						apDrainInNextTurn: 0
-						canMoveNextTurn: true
-						isVisible: true
-						inventory: {
-							items: [
-								{
-									class: com.efm.multiUseMapItems.WoodenSword
-								}
-								{
-									class: com.efm.stackableSelfItems.Apple
-								}
-							]
-						}
-						skillNames: [
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-							{
-								class: java.lang.String
-								value: ""
-							}
-						]
 					}
 				]
 			}
@@ -4129,7 +4141,7 @@
 							x: 4
 							y: 1
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4137,7 +4149,7 @@
 							x: 5
 							y: 1
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4145,7 +4157,7 @@
 							x: 6
 							y: 1
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4153,7 +4165,7 @@
 							x: 7
 							y: 1
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4161,7 +4173,7 @@
 							x: 8
 							y: 1
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4273,7 +4285,7 @@
 							x: 8
 							y: 2
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4281,7 +4293,7 @@
 							x: 9
 							y: 2
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4625,7 +4637,7 @@
 							x: 10
 							y: 5
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4633,7 +4645,7 @@
 							x: 11
 							y: 5
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4737,7 +4749,7 @@
 							x: 10
 							y: 6
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4745,7 +4757,7 @@
 							x: 11
 							y: 6
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4793,7 +4805,7 @@
 							x: 3
 							y: 7
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4801,7 +4813,7 @@
 							x: 4
 							y: 7
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4841,7 +4853,7 @@
 							x: 9
 							y: 7
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4849,7 +4861,7 @@
 							x: 10
 							y: 7
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4857,7 +4869,7 @@
 							x: 11
 							y: 7
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4905,7 +4917,7 @@
 							x: 3
 							y: 8
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4913,7 +4925,7 @@
 							x: 4
 							y: 8
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4937,7 +4949,7 @@
 							x: 7
 							y: 8
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4945,7 +4957,7 @@
 							x: 8
 							y: 8
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4953,7 +4965,7 @@
 							x: 9
 							y: 8
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4961,7 +4973,7 @@
 							x: 10
 							y: 8
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -4969,7 +4981,7 @@
 							x: 11
 							y: 8
 						}
-						base: water
+						base: lava
 					}
 					{
 						class: com.efm.room.Space
@@ -7994,14 +8006,11 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.Sledgehammer
-							}
-							{
-								class: com.efm.multiUseMapItems.SmallAxe
+								class: com.efm.multiUseMapItems.WoodenSword
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 9
+								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.APPotionSmall
@@ -10802,15 +10811,18 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.IronSword
+							}
+							{
 								class: com.efm.multiUseMapItems.Sledgehammer
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 2
+								amount: 4
 							}
 							{
-								class: com.efm.stackableSelfItems.Mushroom
-								amount: 4
+								class: com.efm.stackableSelfItems.HPPotionSmall
+								amount: 2
 							}
 						]
 						maxItems: 5
@@ -12599,16 +12611,20 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.IronSword
+							}
+							{
+								class: com.efm.multiUseMapItems.SmallAxe
+							}
+							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 4
+								amount: 6
 							}
 							{
 								class: com.efm.stackableSelfItems.APPotionSmall
-								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
-								amount: 4
 							}
 						]
 						maxItems: 5
@@ -17610,14 +17626,17 @@
 						}
 						items: [
 							{
+								class: com.efm.multiUseMapItems.Sledgehammer
+							}
+							{
 								class: com.efm.multiUseMapItems.WoodenSword
 							}
 							{
-								class: com.efm.stackableMapItems.Bomb
+								class: com.efm.multiUseMapItems.WoodenSword
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 4
+								amount: 2
 							}
 							{
 								class: com.efm.stackableSelfItems.Mushroom
@@ -18453,6 +18472,10 @@
 						}
 						items: [
 							{
+								class: com.efm.stackableMapItems.Shuriken
+								amount: 5
+							}
+							{
 								class: com.efm.stackableSelfItems.APPotionBig
 								amount: 3
 							}
@@ -19001,11 +19024,14 @@
 						}
 						items: [
 							{
-								class: com.efm.stackableMapItems.Shuriken
-								amount: 2
+								class: com.efm.multiUseMapItems.WoodenSword
 							}
 							{
-								class: com.efm.stackableSelfItems.APPotionSmall
+								class: com.efm.stackableMapItems.Shuriken
+								amount: 6
+							}
+							{
+								class: com.efm.stackableSelfItems.HPPotionSmall
 								amount: 3
 							}
 						]
@@ -19545,11 +19571,14 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.SmallAxe
+								class: com.efm.multiUseMapItems.AmberSword
 							}
 							{
 								class: com.efm.stackableMapItems.Shuriken
-								amount: 4
+								amount: 2
+							}
+							{
+								class: com.efm.stackableSelfItems.APPotionSmall
 							}
 						]
 						maxItems: 5
@@ -20490,11 +20519,7 @@
 						}
 						items: [
 							{
-								class: com.efm.multiUseMapItems.SmallAxe
-							}
-							{
 								class: com.efm.stackableSelfItems.APPotionSmall
-								amount: 3
 							}
 						]
 						maxItems: 5

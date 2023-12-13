@@ -6,13 +6,10 @@ import com.badlogic.gdx.utils.Json
 import com.efm.entities.Hero
 import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.defeatedBosses
-import com.efm.entity.Enemy
 import com.efm.level.Level
 import com.efm.level.World
 import com.efm.skill.BodyPart
-import com.efm.stackableSelfItems.Apple
 import com.efm.state.*
-import kotlin.reflect.KClass
 
 val json = Json()
 
@@ -86,6 +83,11 @@ fun loadGame()
         World.hero.healCharacter(0)
         World.hero.abilityPoints = saveHero.abilityPoints
         World.hero.gainAP(0)
+        World.hero.apDrainInNextTurn = saveHero.apDrainInNextTurn
+        World.hero.canMoveNextTurn = saveHero.canMoveNextTurn
+        World.hero.isVisible = saveHero.isVisible
+        World.hero.turnsElapsed = saveHero.turnsElapsed
+        World.hero.weaponDamageMultiplier = saveHero.weaponDamageMultiplier
         World.hero.inventory.items.clear()
         World.hero.inventory.items.addAll(saveHero.inventory.items)
         BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }

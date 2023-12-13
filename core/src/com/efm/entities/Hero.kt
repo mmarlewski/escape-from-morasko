@@ -45,6 +45,8 @@ class Hero(
             GameScreen.updateMapEntityLayer()
         }
     
+    var weaponDamageMultiplier = 1
+    
     override fun getTile() : TiledMapTile?
     {
         return when
@@ -69,15 +71,15 @@ class Hero(
         return when
         {
             canMoveNextTurn && isVisible && !isInvincible   -> Tiles.heroIdle1
-    
+            
             !canMoveNextTurn && isVisible && !isInvincible  -> Tiles.heroVines
             !canMoveNextTurn && !isVisible && !isInvincible -> Tiles.heroVinesInvisible
             !canMoveNextTurn && isVisible && isInvincible   -> Tiles.heroVinesInvincible
             !canMoveNextTurn && !isVisible && isInvincible  -> Tiles.heroVinesInvisibleInvincible
-    
+            
             canMoveNextTurn && !isVisible && !isInvincible  -> Tiles.heroIdle1Invisible
             canMoveNextTurn && !isVisible && isInvincible   -> Tiles.heroIdle1InvisibleInvincible
-    
+            
             //canMoveNextTurn && isVisible && isInvincible
             else                                            -> Tiles.heroIdle1Invincible
         }
@@ -301,6 +303,7 @@ class Hero(
             val skillNames = mutableListOf<String>()
             this.bodyPartMap.values.forEach { skillNames.add(it?.name ?: "") }
             json.writeValue("skillNames", skillNames)
+            json.writeValue("weaponDamageMultiplier", this.weaponDamageMultiplier)
         }
     }
     
@@ -337,6 +340,8 @@ class Hero(
                     }
                 }
             }
+            val jsonWeaponDamageMultiplier = json.readValue("weaponDamageMultiplier", Int::class.java, jsonData)
+            if (jsonWeaponDamageMultiplier != null) this.weaponDamageMultiplier = jsonWeaponDamageMultiplier
         }
     }
 }

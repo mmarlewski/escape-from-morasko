@@ -75,6 +75,11 @@ object PopUpsMenu
         World.hero.healCharacter(0)
         World.hero.abilityPoints = World.hero.maxAbilityPoints
         World.hero.gainAP(0)
+        World.hero.apDrainInNextTurn = 0
+        World.hero.canMoveNextTurn = true
+        World.hero.isVisible = true
+        World.hero.turnsElapsed = 0
+        World.hero.weaponDamageMultiplier = 1
         World.hero.inventory.items.clear()
         BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
         // add Items to Hero
