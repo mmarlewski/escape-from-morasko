@@ -9,8 +9,7 @@ import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 import com.efm.skill.*
-import com.efm.ui.gameScreen.ItemsStructure
-import com.efm.ui.gameScreen.ProgressBars
+import com.efm.ui.gameScreen.*
 
 enum class Modifier(val function : () -> Unit, val popupSubtitle : String, val popupDescription : String)
 {
@@ -107,7 +106,7 @@ enum class Modifier(val function : () -> Unit, val popupSubtitle : String, val p
     
     StrongerWeaponsLoseHp(
             {
-                World.hero.weaponDamageMultiplier = 2
+                World.hero.weaponDamageMultiplier += 1
                 
                 World.hero.maxHealthPoints -= 20
                 if (World.hero.healthPoints > World.hero.maxHealthPoints)
@@ -148,8 +147,19 @@ class Npc : Entity, Interactive
     {
         if (!wasUsed)
         {
-            wasUsed = true
-            modifier.function()
+            val popup = SpecialEventsPopups.createPopup(
+                    modifier.popupSubtitle,
+                    modifier.popupDescription,
+                    {
+                        wasUsed = true
+                        modifier.function()
+                    },
+                    {
+                        //
+                    }
+                                                       )
+            SpecialEventsPopups.addPopupToDisplay(popup)
+            popup.isVisible = true
         }
     }
 }

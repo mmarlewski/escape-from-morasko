@@ -29,12 +29,6 @@ object SpecialEventsPopups
     
     fun display()
     {
-        addPopupToDisplay(
-                createPopup(Modifier.GainHpLoseAp.popupSubtitle,
-                            Modifier.GainHpLoseAp.popupDescription,
-                            {},
-                            {})
-                         )
+        //
     }
-    
 }
