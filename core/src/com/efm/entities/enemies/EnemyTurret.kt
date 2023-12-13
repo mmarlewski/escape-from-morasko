@@ -95,7 +95,7 @@ class EnemyTurret : Entity, Enemy
         animations += Animation.simultaneous(impact)
         animations += Animation.action {
             val attackedPosition = heroPosition
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {

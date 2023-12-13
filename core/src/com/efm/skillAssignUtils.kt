@@ -21,25 +21,21 @@ fun showSkillAssignPopUpAfterBossKill(bossKilled : Enemy)
         val twoRandomSkills = getAmountOfRandomSkills(2)
         val bossAssignedSkill = getBossAssignedSkill(bossKilled)
         PopUps.skillAssignment = PopUps.skillAssignment(twoRandomSkills[0], bossAssignedSkill, twoRandomSkills[1])
-        showSkillAssignmentWindow(bossKilled)
+        showSkillAssignmentWindow()
     } else
     {
         val threeRandomSkills = getAmountOfRandomSkills(3)
         PopUps.skillAssignment = PopUps.skillAssignment(threeRandomSkills[0], threeRandomSkills[1], threeRandomSkills[2])
-        showSkillAssignmentWindow(bossKilled)
+        showSkillAssignmentWindow()
     }
-    
-    
-   
 }
 
-fun showSkillAssignmentWindow(bossKilled : Enemy)
+fun showSkillAssignmentWindow()
 {
     val skillAssignmentWindow = columnOf(rowOf(PopUps.skillAssignment)).align(Align.center)
     skillAssignmentWindow.setFillParent(true)
     GameScreen.stage.addActor(skillAssignmentWindow)
     PopUps.setSkillAssignmentVisibility(true)
-    addBossToDefeatedBossesList(bossKilled)
 }
 
 fun getBossAssignedSkill(bossKilled : Enemy) : Skill

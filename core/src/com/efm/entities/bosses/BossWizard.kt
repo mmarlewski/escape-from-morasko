@@ -45,23 +45,23 @@ class BossWizard : Entity, Enemy
     
     override fun getIdleTile(n : Int) : TiledMapTile?
     {
-        return when(n)
+        return when (n)
         {
-            1->Tiles.skeletonIdle1
-            2->Tiles.skeletonIdle2
-            3->Tiles.skeletonIdle3
-            else->null
+            1    -> Tiles.skeletonIdle1
+            2    -> Tiles.skeletonIdle2
+            3    -> Tiles.skeletonIdle3
+            else -> null
         }
     }
     
     override fun getMoveTile(n : Int) : TiledMapTile?
     {
-        return when(n)
+        return when (n)
         {
-            1->Tiles.skeletonMove1
-            2->Tiles.skeletonMove2
-            3->Tiles.skeletonMove1
-            else->null
+            1    -> Tiles.skeletonMove1
+            2    -> Tiles.skeletonMove2
+            3    -> Tiles.skeletonMove1
+            else -> null
         }
     }
     
@@ -79,12 +79,19 @@ class BossWizard : Entity, Enemy
     {
         if (!isFrozen)
         {
-            val pathToHero = PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+            val worldCurrentRoom = World.currentRoom
+            val pathToHero = if (worldCurrentRoom != null) PathFinding.findPathInRoomForEntity(
+                    position,
+                    World.hero.position,
+                    worldCurrentRoom,
+                    this
+                                                                                              )
+            else null
             if (pathToHero != null && pathToHero.size < 4)
             {
                 areaOfEffectAttack()
             }
-            else if (World.currentRoom.getEnemies().size <= 2)
+            else if ((World.currentRoom?.getEnemies()?.size ?: 0) <= 2)
             {
                 summonMinions()
             }
@@ -92,7 +99,9 @@ class BossWizard : Entity, Enemy
             {
                 enemyAttack()
             }
-        } else {
+        }
+        else
+        {
             isFrozen = false
         }
     }
@@ -100,17 +109,22 @@ class BossWizard : Entity, Enemy
     override fun enemyAttack()
     {
         val heroPosition = World.hero.position.copy()
-        val linePositions =
-                LineFinding.findLineWithGivenRoom(position, heroPosition.copy(), World.currentRoom)
+        val worldCurrentRoom = World.currentRoom
+        val linePositions = if (worldCurrentRoom != null) LineFinding.findLineWithGivenRoom(
+                position,
+                heroPosition.copy(),
+                worldCurrentRoom
+                                                                                           )
+        else null
         if (linePositions != null)
         {
             val targetDirection = getDirection8(position, heroPosition.copy())
             val staffTile = if (targetDirection == null) null else Tiles.getStaffTile(targetDirection)
             val arrowTile = if (targetDirection == null) null else Tiles.getArrowTile(targetDirection)
             val impactTile = if (targetDirection == null) null else Tiles.getImpactTile(targetDirection)
-        
+            
             val animations = mutableListOf<Animation>()
-        
+            
             val animationSeconds = linePositions.size * 0.05f
             animations.add(Animation.showTile(staffTile, heroPosition.copy(), 0.2f))
             animations.add(Animation.action { playSoundOnce(Sounds.beam) })
@@ -125,9 +139,9 @@ class BossWizard : Entity, Enemy
                                           )
                           )
             animations.add(Animation.action {
-            
+                
                 val attackedPosition = heroPosition.copy()
-                val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+                val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
                 val attackedEntity = attackedSpace?.getEntity()
                 when (attackedEntity)
                 {
@@ -137,16 +151,17 @@ class BossWizard : Entity, Enemy
                     }
                 }
             })
-        
+            
             Animating.executeAnimations(animations)
         }
     }
     
     override fun onDeath()
     {
-        if (World.currentRoom.name != "finalRoom")
+        if (World.currentRoom?.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.Wizard)
         }
         increaseHeroStats(5, 3)
     }
@@ -156,7 +171,7 @@ class BossWizard : Entity, Enemy
         val attackedPositions = mutableListOf<RoomPosition>()
         attackedPositions.add(position)
         attackedPositions.addAll(getSquarePerimeterPositions(position, 2))
-    
+        
         for (attackedPosition in attackedPositions)
         {
             if (attackedPosition == World.hero.position)
@@ -168,17 +183,20 @@ class BossWizard : Entity, Enemy
     
     fun summonMinions()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
         var count = 0
         while (count < 2)
         {
-            val posX = (0 until World.currentRoom.heightInSpaces - 2).random()
-            val posY = (0 until World.currentRoom.widthInSpaces - 2).random()
-            if (World.currentRoom.isPositionWithinBounds(posX, posY) && World.currentRoom.getSpace(posX, posY)?.getEntity() == null
-                    && World.currentRoom.getSpace(posX, posY)?.isTraversableFor(this) != false)
+            val posX = (0 until worldCurrentRoom.heightInSpaces - 2).random()
+            val posY = (0 until worldCurrentRoom.widthInSpaces - 2).random()
+            if (worldCurrentRoom.isPositionWithinBounds(posX, posY) && worldCurrentRoom.getSpace(posX, posY)
+                            ?.getEntity() == null
+                    && worldCurrentRoom.getSpace(posX, posY)?.isTraversableFor(this) != false
+            )
             {
                 val minion = EnemyBat()
                 minion.createOwnHealthBar()
-                World.currentRoom.addEntityAt(minion, posX, posY)
+                worldCurrentRoom.addEntityAt(minion, posX, posY)
                 val currState = getState()
                 if (currState is State.combat.enemies)
                 {
@@ -194,7 +212,7 @@ class BossWizard : Entity, Enemy
                         }
                     }
                 }
-                count ++
+                count++
             }
             else
             {

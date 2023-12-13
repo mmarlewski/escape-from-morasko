@@ -10,8 +10,10 @@ import com.efm.skills.GrassHealing
 
 fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : List<Space>)
 {
-    val startSpace = World.currentRoom.getSpace(startPosition)
-    val endSpace = World.currentRoom.getSpace(endPosition)
+    val worldCurrentRoom = World.currentRoom ?: return
+    
+    val startSpace = worldCurrentRoom.getSpace(startPosition)
+    val endSpace = worldCurrentRoom.getSpace(endPosition)
     var animateToEndSpace = true
     
     if (startSpace == endSpace) return
@@ -48,8 +50,8 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         }
         
         val action = {
-            World.currentRoom.removeEntity(World.hero)
-            World.currentRoom.addEntityAt(World.hero, newPosition)
+            worldCurrentRoom.removeEntity(World.hero)
+            worldCurrentRoom.addEntityAt(World.hero, newPosition)
             adjustCameraAfterMoving()
             adjustMapLayersAfterMoving()
         }
@@ -58,7 +60,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         animations += Animation.action { Map.changeTile(MapLayer.entity, World.hero.position, null) }
         if (World.hero.hasSkill(GrassHealing))
         {
-            val space = World.currentRoom.getSpace(World.hero.position)
+            val space = worldCurrentRoom.getSpace(World.hero.position)
             if (space != null && space.getBase() in Base.grassTiles)
             {
                 changeBaseIfDrained(space)
@@ -94,7 +96,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
                                                            )
             if (World.hero.hasSkill(GrassHealing))
             {
-                val space = World.currentRoom.getSpace(endPosition)
+                val space = worldCurrentRoom.getSpace(endPosition)
                 if (space != null && space.getBase() in Base.grassTiles)
                 {
                     changeBaseIfDrained(space)
@@ -147,7 +149,7 @@ fun changeBaseIfDrained(space : Space)
 
 fun adjustMapLayersAfterMoving()
 {
-    World.currentRoom.updateSpacesEntities()
+    World.currentRoom?.updateSpacesEntities()
     GameScreen.updateMapBaseLayer()
     GameScreen.updateMapEntityLayer()
     Map.clearLayer(MapLayer.select)

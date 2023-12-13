@@ -11,6 +11,7 @@ import com.efm.item.*
 import com.efm.item.Container
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.skills.Jump
 
 object EquipmentStructure
 {
@@ -42,6 +43,7 @@ object EquipmentStructure
             Sounds.ui_3.playOnce()
             interfaceVisibilityWithTutorial()
             setVisibility(false)
+            LeftStructure.menuButton.isVisible = true
             
             saveGame()
         }
@@ -68,7 +70,7 @@ object EquipmentStructure
             
             if (this.selectedItem != null)
             {
-                this.currEquipment?.items?.remove(this.selectedItem!!)
+                this.currEquipment?.items?.remove(this.selectedItem)
                 this.fillEquipmentStructureWithItems(this.currEquipment!!)
                 
                 this.selectedItem = null

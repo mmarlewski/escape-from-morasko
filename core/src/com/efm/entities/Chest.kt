@@ -102,6 +102,6 @@ class TutorialChest : Chest()
 {
     override fun interact()
     {
-        if (!getState().tutorialFlags.tutorialOn || getState().tutorialFlags.lootingPopupShown) super.interact()
+        if (!getState().tutorialFlags.tutorialActive || getState().tutorialFlags.lootingPopupShown) super.interact()
     }
 }

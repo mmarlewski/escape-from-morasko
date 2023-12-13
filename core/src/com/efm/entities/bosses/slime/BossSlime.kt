@@ -7,12 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
+import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class BossSlime : Entity, Enemy
+open class BossSlime : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50
@@ -100,7 +101,7 @@ class BossSlime : Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
@@ -127,7 +128,7 @@ class BossSlime : Entity, Enemy
         {
             val squarePerimeterPositions = getSquarePerimeterPositions(this.position, radius)
             val possibleSpawnPositions = squarePerimeterPositions.filter {
-                World.currentRoom.getSpace(it)?.isTraversableFor(slimeHalf1) ?: false
+                World.currentRoom?.getSpace(it)?.isTraversableFor(slimeHalf1) ?: false
             }
             
             when (possibleSpawnPositions.size)
@@ -156,21 +157,20 @@ class BossSlime : Entity, Enemy
         {
             slimeHalf1.position.set(spawnPosition1)
             slimeHalf1.createOwnHealthBar()
-            World.currentRoom.addEntityToBeAddedEntities(slimeHalf1)
+            World.currentRoom?.addEntityToBeAddedEntities(slimeHalf1)
         }
         if (spawnPosition2 != null)
         {
             slimeHalf2.position.set(spawnPosition2)
             slimeHalf2.createOwnHealthBar()
-            World.currentRoom.addEntityToBeAddedEntities(slimeHalf2)
+            World.currentRoom?.addEntityToBeAddedEntities(slimeHalf2)
         }
-        World.currentRoom.updateSpacesEntities()
-        addBossToDefeatedBossesList(BossSlime())
+        World.currentRoom?.updateSpacesEntities()
+        addBossToDefeatedBossesList(Boss.Slime)
     }
     
     override fun getCorpse() : EnemyCorpse?
     {
         return null
     }
-    
 }

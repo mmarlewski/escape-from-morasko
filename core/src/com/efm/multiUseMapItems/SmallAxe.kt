@@ -131,7 +131,7 @@ class SmallAxe : MultiUseMapItem
                 {
                     is Character ->
                     {
-                        slashEntity.damageCharacter(damage)
+                        slashEntity.damageCharacter(damage * World.hero.weaponDamageMultiplier)
                     }
                 }
             }

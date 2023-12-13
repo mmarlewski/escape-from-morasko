@@ -62,12 +62,14 @@ interface Enemy : Character
     
     fun performTurn()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         if (!isFrozen)
         {
             var decision = -1
             
             val directPathSpaces =
-                    PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+                    PathFinding.findPathInRoomForEntity(position, World.hero.position, worldCurrentRoom, this)
             
             var minPathLength = directPathSpaces?.size ?: Int.MAX_VALUE
             var minPathSpaces = directPathSpaces
@@ -77,12 +79,12 @@ interface Enemy : Character
                 val squarePositions = getSquareAreaPositions(World.hero.position, 2)
                 for (squarePosition in squarePositions)
                 {
-                    val squareSpace = World.currentRoom.getSpace(squarePosition)
+                    val squareSpace = worldCurrentRoom.getSpace(squarePosition)
                     
                     if (squareSpace != null && squareSpace.isTraversableFor(this))
                     {
                         val pathSpaces =
-                                PathFinding.findPathInRoomForEntity(position, squarePosition, World.currentRoom, this)
+                                PathFinding.findPathInRoomForEntity(position, squarePosition, worldCurrentRoom, this)
                         
                         if (!pathSpaces.isNullOrEmpty() && pathSpaces.size < minPathLength)
                         {
@@ -209,10 +211,12 @@ interface Enemy : Character
     
     fun roam(focusCameraOnHero : Boolean = false)
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         for (i in 0..stepsInOneTurn)
         {
             val moveTo = randomWalk()
-            val path = PathFinding.findPathInRoomForEntity(position, moveTo, World.currentRoom, this)
+            val path = PathFinding.findPathInRoomForEntity(position, moveTo, worldCurrentRoom, this)
             if (path != null)
             {
                 moveEnemy(position, moveTo, path, this, focusCameraOnHero = focusCameraOnHero)
@@ -222,9 +226,11 @@ interface Enemy : Character
     
     fun randomWalk() : RoomPosition
     {
+        val worldCurrentRoom = World.currentRoom ?: return RoomPosition(0,0)
+        
         var possibleSteps = mutableListOf<RoomPosition>()
         var pos = RoomPosition(position.x - 1, position.y - 1)
-        var space = World.currentRoom.getSpace(pos)
+        var space = worldCurrentRoom.getSpace(pos)
         if (space != null)
         {
             if (space.isTraversableFor(this) && space.getEntity() == null)
@@ -233,7 +239,7 @@ interface Enemy : Character
             }
         }
         pos = RoomPosition(position.x - 1, position.y + 1)
-        space = World.currentRoom.getSpace(pos)
+        space = worldCurrentRoom.getSpace(pos)
         if (space != null)
         {
             if (space.isTraversableFor(this) && space.getEntity() == null)
@@ -242,7 +248,7 @@ interface Enemy : Character
             }
         }
         pos = RoomPosition(position.x + 1, position.y - 1)
-        space = World.currentRoom.getSpace(pos)
+        space = worldCurrentRoom.getSpace(pos)
         if (space != null)
         {
             if (space.isTraversableFor(this) && space.getEntity() == null)
@@ -251,7 +257,7 @@ interface Enemy : Character
             }
         }
         pos = RoomPosition(position.x + 1, position.y + 1)
-        space = World.currentRoom.getSpace(pos)
+        space = worldCurrentRoom.getSpace(pos)
         if (space != null)
         {
             if (space.isTraversableFor(this) && space.getEntity() == null)

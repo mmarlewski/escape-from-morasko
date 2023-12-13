@@ -19,7 +19,7 @@ class EnemyMushroom : Entity, Enemy
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
-    override var attackDamage = 2
+    override var attackDamage = 5
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
@@ -99,7 +99,7 @@ class EnemyMushroom : Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {

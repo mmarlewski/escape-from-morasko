@@ -10,9 +10,8 @@ import com.efm.assets.Tiles
 import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
-import kotlin.random.Random
 
-class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
+open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 25
@@ -100,7 +99,7 @@ class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
@@ -127,7 +126,7 @@ class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
         {
             val squarePerimeterPositions = getSquarePerimeterPositions(this.position, radius)
             val possibleSpawnPositions = squarePerimeterPositions.filter {
-                World.currentRoom.getSpace(it)?.isTraversableFor(slimeQuarter1) ?: false
+                World.currentRoom?.getSpace(it)?.isTraversableFor(slimeQuarter1) ?: false
             }
             
             when (possibleSpawnPositions.size)
@@ -156,13 +155,13 @@ class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
         {
             slimeQuarter1.position.set(spawnPosition1)
             slimeQuarter1.createOwnHealthBar()
-            World.currentRoom.addEntityToBeAddedEntities(slimeQuarter1)
+            World.currentRoom?.addEntityToBeAddedEntities(slimeQuarter1)
         }
         if(spawnPosition2 != null)
         {
             slimeQuarter2.position.set(spawnPosition2)
             slimeQuarter2.createOwnHealthBar()
-            World.currentRoom.addEntityToBeAddedEntities(slimeQuarter2)
+            World.currentRoom?.addEntityToBeAddedEntities(slimeQuarter2)
         }
     }
     

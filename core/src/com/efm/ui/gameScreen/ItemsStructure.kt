@@ -195,9 +195,9 @@ object ItemsStructure
         val currState = getState()
     
         // tutorial popups
-        if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.equipmentPopupShown)
+        if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.equipmentPopupShown)
             currState.tutorialFlags.playerSelectedSomethingFromEquipment = true
-        if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.playerSelectedSomethingFromEquipment && !currState.tutorialFlags.healthAndAbilityPopupShown)
+        if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.playerSelectedSomethingFromEquipment && !currState.tutorialFlags.healthAndAbilityPopupShown)
         {
             // turnsPopup is shown directly after closing healthAndAbilityPopup
             ProgressBars.display()

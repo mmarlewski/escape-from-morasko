@@ -95,7 +95,7 @@ class EnemyWizard : Enemy
         animations += Animation.descendTile(Tiles.apMinus, heroPosition.copy(), 0.5f, 0.1f)
         animations += Animation.action {
             val attackedPosition = heroPosition
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {

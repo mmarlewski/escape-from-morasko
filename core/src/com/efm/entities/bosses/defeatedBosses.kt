@@ -10,47 +10,49 @@ import com.efm.room.*
 import kotlin.random.Random
 import kotlin.reflect.KClass
 
-val bossClasses = listOf<KClass<out Enemy>>(
-        BossDragon::class,
-        BossNatureGolem::class,
-        BossOctopusHead::class,
-        BossSlime::class,
-        BossWizard::class,
-        King::class
-                                           )
-
-val defeatedBosses = mutableListOf<KClass<out Enemy>>()
-
-fun addBossToDefeatedBossesList(boss : Enemy)
+enum class Boss(val bossClass : KClass<out Enemy>)
 {
-    defeatedBosses.add(boss::class)
+    Dragon(BossDragon::class),
+    NatureGolem(BossNatureGolem::class),
+    OctopusHead(BossOctopusHead::class),
+    Slime(BossSlime::class),
+    Wizard(BossWizard::class),
+    Chess(King::class)
 }
 
-fun getDefeatedBossesList() : MutableList<KClass<out Enemy>>
+val defeatedBosses = mutableListOf<Boss>()
+
+fun addBossToDefeatedBossesList(boss : Boss)
+{
+    defeatedBosses.add(boss)
+}
+
+fun getDefeatedBossesList() : MutableList<Boss>
 {
     return defeatedBosses
 }
 
-private fun chooseRandomBossClass(random : Random = Random(Random.nextInt())) : KClass<out Enemy>
+private fun chooseRandomBoss(random : Random = Random(Random.nextInt())) : Boss
 {
-    return bossClasses.random(random)
+    return Boss.values().random(random)
 }
 
-private fun chooseRandomUndefeatedBossClass(random : Random = Random(Random.nextInt())) : KClass<out Enemy>
+private fun chooseRandomUndefeatedBoss(random : Random = Random(Random.nextInt())) : Boss
 {
-    return bossClasses.filter { it !in defeatedBosses }.random(random)
+    return Boss.values().filter { it !in defeatedBosses }.random(random)
 }
 
 fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : Direction4 = Direction4.left)
 {
-    val bossClass = chooseRandomUndefeatedBossClass()
-    when (bossClass)
+    val boss = chooseRandomUndefeatedBoss()
+    when (boss)
     {
-        King::class            ->
+        Boss.Chess       ->
         {
             spawnChessSet(position.x, position.y, direction, room)
         }
-        BossOctopusHead::class ->
+        
+        Boss.OctopusHead ->
         {
             val head = BossOctopusHead()
             val tentacle1 = BossOctopusTentacle()
@@ -66,22 +68,22 @@ fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : 
             room.changeBaseAt(Base.water, position.x + 2, position.y)
             room.addEntityAt(tentacle2, position.x + 2, position.y)
         }
-        else                   ->
+        
+        else             ->
         {
-            val boss = Class.forName(bossClass.qualifiedName).getConstructor().newInstance() as Enemy
-            room.addEntityAt(boss, position)
+            val bossInstance = Class.forName(boss.bossClass.qualifiedName).getConstructor().newInstance() as Enemy
+            room.addEntityAt(bossInstance, position)
         }
     }
-    //Gdx.app.log("bosses", "$bossClass")
 }
 
 fun spawnAllBossesInOneRoom(finalRoom : Room)
 {
-    for (bossClass in getDefeatedBossesList())
+    for (boss in getDefeatedBossesList())
     {
-        when (bossClass)
+        when (boss)
         {
-            King::class            ->
+            Boss.Chess       ->
             {
                 var bossNotSpawned = true
                 while (bossNotSpawned)
@@ -101,7 +103,8 @@ fun spawnAllBossesInOneRoom(finalRoom : Room)
                     }
                 }
             }
-            BossOctopusHead::class ->
+            
+            Boss.OctopusHead ->
             {
                 val head = BossOctopusHead()
                 head.createOwnHealthBar()
@@ -136,7 +139,8 @@ fun spawnAllBossesInOneRoom(finalRoom : Room)
                     }
                 }
             }
-            else                   ->
+            
+            else             ->
             {
                 var bossNotSpawned = true
                 while (bossNotSpawned)
@@ -145,9 +149,10 @@ fun spawnAllBossesInOneRoom(finalRoom : Room)
                     val posY = Random.nextInt(1, finalRoom.heightInSpaces - 1)
                     try
                     {
-                        val boss = Class.forName(bossClass.qualifiedName).getConstructor().newInstance() as Enemy
-                        boss.createOwnHealthBar()
-                        finalRoom.addEntityAt(boss, RoomPosition(posX, posY))
+                        val bossInstance =
+                                Class.forName(boss.bossClass.qualifiedName).getConstructor().newInstance() as Enemy
+                        bossInstance.createOwnHealthBar()
+                        finalRoom.addEntityAt(bossInstance, RoomPosition(posX, posY))
                     }
                     finally
                     {
@@ -159,6 +164,5 @@ fun spawnAllBossesInOneRoom(finalRoom : Room)
                 }
             }
         }
-        
     }
 }
