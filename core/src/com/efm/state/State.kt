@@ -6,11 +6,10 @@ import com.efm.entity.Enemy
 import com.efm.entity.Entity
 import com.efm.exit.Exit
 import com.efm.item.*
-import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
+import com.efm.screens.SettingsScreen
 import com.efm.skill.ActiveSkill
-import com.efm.ui.gameScreen.EquipmentStructure
 
 private var prevState : State = State.free.noSelection
 private var currState : State = State.free.noSelection
@@ -44,9 +43,9 @@ sealed class State
     
     var tutorialFlags = TutorialFlags
     
-    object TutorialFlags : Json.Serializable
+    object TutorialFlags
     {
-        var tutorialActive = true
+        var tutorialActive = !SettingsScreen.skipTutorialCheckbox.isChecked
         var welcomePopupShown = false
         var cameraPopupShown = false
         //var playerMovedCamera = false
@@ -63,7 +62,7 @@ sealed class State
     
         fun setDefault()
         {
-            tutorialActive = true
+            tutorialActive = !SettingsScreen.skipTutorialCheckbox.isChecked
             welcomePopupShown = false
             cameraPopupShown = false
             //playerMovedCamera = false
@@ -81,7 +80,7 @@ sealed class State
         
         // for serializing
         
-        override fun write(json : Json?)
+        fun write1(json : Json?)
         {
             if (json != null)
             {
@@ -102,7 +101,7 @@ sealed class State
             }
         }
         
-        override fun read(json : Json?, jsonData : JsonValue?)
+        fun read(json : Json?, jsonData : JsonValue?)
         {
             if (json != null)
             {

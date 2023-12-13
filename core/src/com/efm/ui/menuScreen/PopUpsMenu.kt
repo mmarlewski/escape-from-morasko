@@ -3,12 +3,10 @@ package com.efm.ui.menuScreen
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
-import com.efm.assets.*
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 import com.efm.skill.BodyPart
-import com.efm.skills.*
 import com.efm.stackableSelfItems.Apple
 import com.efm.state.State
 import com.efm.state.setState
@@ -19,18 +17,16 @@ object PopUpsMenu
     var overwriteSave : com.badlogic.gdx.scenes.scene2d.ui.Window
     fun overwriteSave() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
-        val overwriteSavePopup = windowAreaOf(
-                "You're about to overwrite your\nexisting save. \nYour progress will be lost.\n Do you want to continue?",
-                Fonts.pixeloid20,
-                Colors.black,
-                Textures.pauseBackgroundNinePatch,
+        val overwriteSavePopup = yesNoPopup(
+                "Overwrite save?",
+                "You're about to overwrite your existing save. Your progress will be lost. Do you want to continue?",
                 {
                     startNewGame()
                 },
                 {
                     TitleAndButtons.setButtonsVisibility(true)
                 }
-                                             )
+                                           )
         
         overwriteSavePopup.isVisible = false
         
