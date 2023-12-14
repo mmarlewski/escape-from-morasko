@@ -209,21 +209,6 @@ interface Enemy : Character
         isFrozen = value
     }
     
-    fun roam(focusCameraOnHero : Boolean = false)
-    {
-        val worldCurrentRoom = World.currentRoom ?: return
-    
-        for (i in 0..stepsInOneTurn)
-        {
-            val moveTo = randomWalk()
-            val path = PathFinding.findPathInRoomForEntity(position, moveTo, worldCurrentRoom, this)
-            if (path != null)
-            {
-                moveEnemy(position, moveTo, path, this, focusCameraOnHero = focusCameraOnHero)
-            }
-        }
-    }
-    
     fun getRoamingAnimations(focusCameraOnHero : Boolean = false) : MutableList<Animation>
     {
         val animations = mutableListOf<Animation>()
@@ -231,32 +216,33 @@ interface Enemy : Character
         val currentRoom = World.currentRoom
         if (currentRoom != null)
         {
-            for (i in 0..stepsInOneTurn)
+            var moveTo = position
+            for (i in 0 until stepsInOneTurn)
             {
-                val moveTo = randomWalk()
-                val path = PathFinding.findPathInRoomForEntity(position, moveTo, currentRoom, this)
-                if (path != null)
-                {
-                    animations += getAnimationsUsedInMoveEnemy(
-                            position,
-                            moveTo,
-                            path,
-                            this,
-                            focusCameraOnHero = focusCameraOnHero
-                                                              )
-                }
+                moveTo = randomWalk(moveTo)
+            }
+            val path = PathFinding.findPathInRoomForEntity(position, moveTo, currentRoom, this)
+            if (path != null)
+            {
+                animations += getAnimationsUsedInMoveEnemy(
+                        position,
+                        moveTo,
+                        path,
+                        this,
+                        focusCameraOnHero = focusCameraOnHero
+                                                          )
             }
         }
         
         return animations
     }
     
-    fun randomWalk() : RoomPosition
+    fun randomWalk(moveTo : RoomPosition) : RoomPosition
     {
         val worldCurrentRoom = World.currentRoom ?: return RoomPosition(0, 0)
         
         val possibleSteps = mutableListOf<RoomPosition>()
-        var pos = RoomPosition(position.x - 1, position.y - 1)
+        var pos = RoomPosition(moveTo.x - 1, moveTo.y - 1)
         var space = worldCurrentRoom.getSpace(pos)
         if (space != null)
         {
@@ -265,7 +251,7 @@ interface Enemy : Character
                 possibleSteps.add(pos)
             }
         }
-        pos = RoomPosition(position.x - 1, position.y + 1)
+        pos = RoomPosition(moveTo.x - 1, moveTo.y + 1)
         space = worldCurrentRoom.getSpace(pos)
         if (space != null)
         {
@@ -274,7 +260,7 @@ interface Enemy : Character
                 possibleSteps.add(pos)
             }
         }
-        pos = RoomPosition(position.x + 1, position.y - 1)
+        pos = RoomPosition(moveTo.x + 1, moveTo.y - 1)
         space = worldCurrentRoom.getSpace(pos)
         if (space != null)
         {
@@ -283,7 +269,7 @@ interface Enemy : Character
                 possibleSteps.add(pos)
             }
         }
-        pos = RoomPosition(position.x + 1, position.y + 1)
+        pos = RoomPosition(moveTo.x + 1, moveTo.y + 1)
         space = worldCurrentRoom.getSpace(pos)
         if (space != null)
         {
@@ -292,7 +278,15 @@ interface Enemy : Character
                 possibleSteps.add(pos)
             }
         }
-        return possibleSteps.random()
+        return if (possibleSteps.isNotEmpty())
+        {
+            possibleSteps.random()
+        }
+        else
+        {
+            moveTo
+        }
+        
     }
     
     //scaling
