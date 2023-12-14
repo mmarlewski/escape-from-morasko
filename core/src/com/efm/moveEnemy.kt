@@ -84,8 +84,8 @@ fun getAnimationsUsedInMoveEnemy(
                     space.position.copy(),
                     0.1f
                                                            )
-            animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
-            animations += Animation.action { GameScreen.updateMapOutlineLayer() }
+            //animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
+            //animations += Animation.action { GameScreen.updateMapOutlineLayer() }
             prevMovePosition.set(space.position)
         }
     }
