@@ -102,5 +102,5 @@ class EnemyPlant : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemyBatCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemyRollingStoneCorpse(this.position)
 }

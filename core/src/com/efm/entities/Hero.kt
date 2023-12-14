@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
+import com.efm.*
 import com.efm.assets.Tiles
 import com.efm.entity.Character
-import com.efm.getSquareAreaPositions
 import com.efm.item.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
@@ -20,13 +20,15 @@ import com.efm.ui.gameScreen.ProgressBars
  * Hero has its own turn and is controlled by the player.
  */
 class Hero(
-        override var maxHealthPoints : Int = 100, override var healthPoints : Int = 100, override var alive : Boolean = true
+        override var maxHealthPoints : Int = defaultHeroMaxHp,
+        override var healthPoints : Int = defaultHeroMaxHp,
+        override var alive : Boolean = true
           ) : Character
 {
     override val position = RoomPosition()
     
-    var maxAbilityPoints : Int = 8
-    var abilityPoints : Int = 8
+    var maxAbilityPoints : Int = defaultHeroMaxAp
+    var abilityPoints : Int = defaultHeroMaxAp
     
     var apDrainInNextTurn = 0
     var canMoveNextTurn = true

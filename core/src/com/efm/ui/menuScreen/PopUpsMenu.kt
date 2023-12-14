@@ -11,6 +11,7 @@ import com.efm.stackableSelfItems.Apple
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
+import com.efm.ui.gameScreen.ProgressBars
 
 object PopUpsMenu
 {
@@ -71,9 +72,11 @@ object PopUpsMenu
         World.currentRoom?.addEntityAt(World.hero, startingLevel.startingPosition)
         // reset Hero
         World.hero.alive = true
-        World.hero.healthPoints = World.hero.maxHealthPoints
+        World.hero.healthPoints = defaultHeroMaxHp
+        World.hero.maxHealthPoints = defaultHeroMaxHp
         World.hero.healCharacter(0)
-        World.hero.abilityPoints = World.hero.maxAbilityPoints
+        World.hero.abilityPoints = defaultHeroMaxAp
+        World.hero.maxAbilityPoints = defaultHeroMaxAp
         World.hero.gainAP(0)
         World.hero.apDrainInNextTurn = 0
         World.hero.canMoveNextTurn = true

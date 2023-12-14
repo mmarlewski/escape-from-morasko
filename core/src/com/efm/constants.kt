@@ -10,3 +10,6 @@ const val minScreenHeight = 720f
 
 const val maxScreenWidth = 1280f
 const val maxScreenHeight = 1024f
+
+const val defaultHeroMaxHp = 100
+const val defaultHeroMaxAp = 8

@@ -1,6 +1,7 @@
 package com.efm
 
 import com.badlogic.gdx.Gdx
+import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*

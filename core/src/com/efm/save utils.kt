@@ -85,8 +85,10 @@ fun loadGame()
         World.hero.alive = saveHero.alive
         World.hero.position.set(saveHero.position)
         World.hero.healthPoints = saveHero.healthPoints
+        World.hero.maxHealthPoints = saveHero.maxHealthPoints
         World.hero.healCharacter(0)
         World.hero.abilityPoints = saveHero.abilityPoints
+        World.hero.maxAbilityPoints = saveHero.maxAbilityPoints
         World.hero.gainAP(0)
         World.hero.apDrainInNextTurn = saveHero.apDrainInNextTurn
         World.hero.canMoveNextTurn = saveHero.canMoveNextTurn
