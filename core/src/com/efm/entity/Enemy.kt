@@ -209,21 +209,22 @@ interface Enemy : Character
     
     fun roam(focusCameraOnHero : Boolean = false)
     {
+        var moveTo = position
         for (i in 0..stepsInOneTurn)
         {
-            val moveTo = randomWalk()
-            val path = PathFinding.findPathInRoomForEntity(position, moveTo, World.currentRoom, this)
-            if (path != null)
-            {
-                moveEnemy(position, moveTo, path, this, focusCameraOnHero = focusCameraOnHero)
-            }
+            moveTo = randomWalk(moveTo)
+        }
+        val path = PathFinding.findPathInRoomForEntity(position, moveTo, World.currentRoom, this)
+        if (path != null)
+        {
+            moveEnemy(position, moveTo, path, this, focusCameraOnHero = focusCameraOnHero)
         }
     }
     
-    fun randomWalk() : RoomPosition
+    fun randomWalk(moveTo : RoomPosition) : RoomPosition
     {
         var possibleSteps = mutableListOf<RoomPosition>()
-        var pos = RoomPosition(position.x - 1, position.y - 1)
+        var pos = RoomPosition(moveTo.x - 1, moveTo.y - 1)
         var space = World.currentRoom.getSpace(pos)
         if (space != null)
         {
@@ -232,7 +233,7 @@ interface Enemy : Character
                 possibleSteps.add(pos)
             }
         }
-        pos = RoomPosition(position.x - 1, position.y + 1)
+        pos = RoomPosition(moveTo.x - 1, moveTo.y + 1)
         space = World.currentRoom.getSpace(pos)
         if (space != null)
         {
@@ -241,7 +242,7 @@ interface Enemy : Character
                 possibleSteps.add(pos)
             }
         }
-        pos = RoomPosition(position.x + 1, position.y - 1)
+        pos = RoomPosition(moveTo.x + 1, moveTo.y - 1)
         space = World.currentRoom.getSpace(pos)
         if (space != null)
         {
@@ -250,7 +251,7 @@ interface Enemy : Character
                 possibleSteps.add(pos)
             }
         }
-        pos = RoomPosition(position.x + 1, position.y + 1)
+        pos = RoomPosition(moveTo.x + 1, moveTo.y + 1)
         space = World.currentRoom.getSpace(pos)
         if (space != null)
         {
