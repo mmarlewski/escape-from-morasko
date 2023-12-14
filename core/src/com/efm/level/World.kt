@@ -13,8 +13,8 @@ object World
     val levels = mutableListOf<Level>()
     
     var hero = Hero()
-    lateinit var currentLevel : Level
-    lateinit var currentRoom : Room
+    var currentLevel : Level? = null
+    var currentRoom : Room? = null
     
     fun addLevel(level : Level)
     {
@@ -36,7 +36,9 @@ object World
     
     fun changeCurrentRoom(newCurrentRoom : Room)
     {
-        if (newCurrentRoom in currentLevel.rooms)
+        val worldCurrentLevel = currentLevel ?: return
+        
+        if (newCurrentRoom in worldCurrentLevel.rooms)
         {
             if (newCurrentRoom.name == "finalRoom")
             {

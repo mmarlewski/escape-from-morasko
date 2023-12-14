@@ -26,8 +26,13 @@ object Swap : ActiveSkill(
         val squarePositions = getSquareAreaPositions(source, 10)
         for (squarePosition in squarePositions)
         {
-            val linePositions =
-                    LineFinding.findLineWithGivenRoom(World.hero.position.copy(), squarePosition.copy(), World.currentRoom)
+            val worldCurrentRoom = World.currentRoom
+            val linePositions = if (worldCurrentRoom != null) LineFinding.findLineWithGivenRoom(
+                    World.hero.position.copy(),
+                    squarePosition.copy(),
+                    worldCurrentRoom
+                                                                                               )
+            else null
             if (linePositions != null)
             {
                 targetPositions.add(squarePosition)
@@ -44,15 +49,22 @@ object Swap : ActiveSkill(
     
     override fun use(room : Room, targetPosition : RoomPosition)
     {
-        val space = World.currentRoom.getSpace(targetPosition)
-        val entity = space?.getEntity()
-        if (entity is Enemy)
+        val heroSpace = World.currentRoom?.getSpace(World.hero.position)
+        val targetSpace = World.currentRoom?.getSpace(targetPosition)
+        val targetEntity = targetSpace?.getEntity()
+        if (targetEntity is Enemy)
         {
-            World.currentRoom.removeEntity(entity)
+            World.currentRoom?.removeEntity(targetEntity)
             val heroPos = World.hero.position
-            World.currentRoom.removeEntity(World.hero)
-            World.currentRoom.addEntityAt(entity, heroPos)
-            World.currentRoom.addEntityAt(World.hero, targetPosition)
+            World.currentRoom?.removeEntity(World.hero)
+            World.currentRoom?.addEntityAt(targetEntity, heroPos)
+            World.currentRoom?.addEntityAt(World.hero, targetPosition)
+            
+            val heroBase = heroSpace?.getBase()
+            if (heroBase != null && !heroBase.isTreadableFor(targetEntity))
+            {
+                targetEntity.alive = false
+            }
         }
     }
 }

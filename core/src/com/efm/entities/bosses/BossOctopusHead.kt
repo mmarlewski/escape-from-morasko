@@ -151,7 +151,7 @@ class BossOctopusHead : Entity, Enemy
                 if (!showHeadIndefinitely)
                 {
                     playSoundOnce(Sounds.octopusHeadSubmerge)
-                    World.currentRoom.changeBaseAt(Base.waterOctopus, this.position)
+                    World.currentRoom?.changeBaseAt(Base.waterOctopus, this.position)
                     GameScreen.updateMapBaseLayer()
                     isShowingHead = false
                 }
@@ -161,7 +161,7 @@ class BossOctopusHead : Entity, Enemy
                 if (showHeadNextTurn)
                 {
                     playSoundOnce(Sounds.octopusHeadEmerge)
-                    World.currentRoom.changeBaseAt(Base.water, this.position)
+                    World.currentRoom?.changeBaseAt(Base.water, this.position)
                     GameScreen.updateMapBaseLayer()
                     isShowingHead = true
                     showHeadNextTurn = false
@@ -188,9 +188,10 @@ class BossOctopusHead : Entity, Enemy
     
     override fun onDeath()
     {
-        if (World.currentRoom.name != "finalRoom")
+        if (World.currentRoom?.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
+            addBossToDefeatedBossesList(Boss.OctopusHead)
         }
         increaseHeroStats(5, 3)
     }

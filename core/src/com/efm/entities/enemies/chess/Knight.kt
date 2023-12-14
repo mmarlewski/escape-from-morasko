@@ -66,6 +66,8 @@ class Knight: Entity, Enemy
     
     override fun performTurn()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         if (!isFrozen)
         {
             val heroPos = World.hero.position
@@ -83,9 +85,9 @@ class Knight: Entity, Enemy
                 var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
                 for (pos in getPossibleMovePositions())
                 {
-                    if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                    if (worldCurrentRoom.isPositionWithinBounds(pos.x, pos.y))
                     {
-                        var space = World.currentRoom.getSpace(pos)
+                        var space = worldCurrentRoom.getSpace(pos)
                         if (space != null)
                         {
                             if (space.getEntity() == null && space.isTraversableFor(this))
@@ -99,7 +101,7 @@ class Knight: Entity, Enemy
                     }
                 }
                 val path : List<Space?> =
-                        listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+                        listOf(worldCurrentRoom.getSpace(position), worldCurrentRoom.getSpace(bestMovePosition))
                 moveEnemy(position, bestMovePosition, path, this)
             }
         } else
@@ -126,7 +128,7 @@ class Knight: Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             when (val attackedEntity = attackedSpace?.getEntity())
             {
                 is Character ->

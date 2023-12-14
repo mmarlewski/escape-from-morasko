@@ -65,6 +65,7 @@ class Bishop: Entity, Enemy
     
     override fun performTurn()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
         if (!isFrozen)
         {
             val heroPos = World.hero.position
@@ -82,9 +83,9 @@ class Bishop: Entity, Enemy
                 var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
                 for (pos in getPossibleMovePositions())
                 {
-                    if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                    if (worldCurrentRoom.isPositionWithinBounds(pos.x, pos.y))
                     {
-                        var space = World.currentRoom.getSpace(pos)
+                        var space = worldCurrentRoom.getSpace(pos)
                         if (space != null)
                         {
                             if (space.getEntity() == null && space.isTraversableFor(this))
@@ -98,7 +99,7 @@ class Bishop: Entity, Enemy
                     }
                 }
                 val path : List<Space?> =
-                        listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+                        listOf(worldCurrentRoom.getSpace(position), worldCurrentRoom.getSpace(bestMovePosition))
                 moveEnemy(position, bestMovePosition, path, this)
             }
         } else
@@ -125,7 +126,7 @@ class Bishop: Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
@@ -145,6 +146,8 @@ class Bishop: Entity, Enemy
     
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
+        val worldCurrentRoom = World.currentRoom ?: return mutableListOf()
+        
         val result = mutableListOf<RoomPosition>()
         result.add(position)
         var upLeftFound = false
@@ -156,9 +159,9 @@ class Bishop: Entity, Enemy
         {
             if (!upLeftFound)
             {
-                if (World.currentRoom.isPositionWithinBounds(RoomPosition(position.x - i, position.y - i)))
+                if (worldCurrentRoom.isPositionWithinBounds(RoomPosition(position.x - i, position.y - i)))
                 {
-                    spaceBeingChecked = World.currentRoom.getSpace(RoomPosition(position.x - i, position.y - i))!!
+                    spaceBeingChecked = worldCurrentRoom.getSpace(RoomPosition(position.x - i, position.y - i))!!
                     if (spaceBeingChecked.getEntity() == null && spaceBeingChecked.isTraversableFor(this))
                     {
                         result.add(RoomPosition(position.x - i, position.y - i))
@@ -173,9 +176,9 @@ class Bishop: Entity, Enemy
             }
             if (!upRightFound)
             {
-                if (World.currentRoom.isPositionWithinBounds(RoomPosition(position.x + i, position.y - i)))
+                if (worldCurrentRoom.isPositionWithinBounds(RoomPosition(position.x + i, position.y - i)))
                 {
-                    spaceBeingChecked = World.currentRoom.getSpace(RoomPosition(position.x + i, position.y - i))!!
+                    spaceBeingChecked = worldCurrentRoom.getSpace(RoomPosition(position.x + i, position.y - i))!!
                     if (spaceBeingChecked.getEntity() == null && spaceBeingChecked.isTraversableFor(this))
                     {
                         result.add(RoomPosition(position.x + i, position.y - i))
@@ -190,9 +193,9 @@ class Bishop: Entity, Enemy
             }
             if (!downLeftFound)
             {
-                if (World.currentRoom.isPositionWithinBounds(RoomPosition(position.x - i, position.y + i)))
+                if (worldCurrentRoom.isPositionWithinBounds(RoomPosition(position.x - i, position.y + i)))
                 {
-                    spaceBeingChecked = World.currentRoom.getSpace(RoomPosition(position.x - i, position.y + i))!!
+                    spaceBeingChecked = worldCurrentRoom.getSpace(RoomPosition(position.x - i, position.y + i))!!
                     if (spaceBeingChecked.getEntity() == null && spaceBeingChecked.isTraversableFor(this))
                     {
                         result.add(RoomPosition(position.x - i, position.y + i))
@@ -207,9 +210,9 @@ class Bishop: Entity, Enemy
             }
             if (!downRightFound)
             {
-                if (World.currentRoom.isPositionWithinBounds(RoomPosition(position.x + i, position.y + i)))
+                if (worldCurrentRoom.isPositionWithinBounds(RoomPosition(position.x + i, position.y + i)))
                 {
-                    spaceBeingChecked = World.currentRoom.getSpace(RoomPosition(position.x + i, position.y + i))!!
+                    spaceBeingChecked = worldCurrentRoom.getSpace(RoomPosition(position.x + i, position.y + i))!!
                     if (spaceBeingChecked.getEntity() == null && spaceBeingChecked.isTraversableFor(this))
                     {
                         result.add(RoomPosition(position.x + i, position.y + i))

@@ -24,7 +24,7 @@ class TutorialRoomExit(
     
     override fun interact()
     {
-        if (!getState().tutorialFlags.tutorialOn)
+        if (!getState().tutorialFlags.tutorialActive)
         {
             super.interact()
         }
@@ -32,7 +32,7 @@ class TutorialRoomExit(
         {
             super.interact()
             // focus camera on enemy and show equipmentPopup
-            val enemy = World.currentRoom.getEnemies().firstOrNull()
+            val enemy = World.currentRoom?.getEnemies()?.firstOrNull()
             if (enemy != null && !getState().tutorialFlags.equipmentPopupShown)
             {
                 GameScreen.focusCameraOnRoomPosition(enemy.position)

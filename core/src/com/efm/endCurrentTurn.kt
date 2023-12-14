@@ -1,6 +1,7 @@
 package com.efm
 
 import com.badlogic.gdx.Gdx
+import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
@@ -13,7 +14,7 @@ fun endCurrentTurn()
     val isHeroVisible = World.hero.isVisible
     val currState = getState()
     // tutorial popups
-    if (currState.tutorialFlags.tutorialOn && currState.tutorialFlags.turnsPopupShown)
+    if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.turnsPopupShown)
         currState.tutorialFlags.playerEndedTurn = true
     var newState = currState
     
@@ -34,23 +35,25 @@ fun endCurrentTurn()
                 }
             }
             // enemies roaming
-            val enemyIterator = World.currentRoom.getEnemies().iterator()
+            val enemyRoamingAnimations = mutableListOf<Animation>()
+            val enemyIterator = World.currentRoom?.getEnemies()?.iterator() ?: listOf<Enemy>().iterator()
             while (enemyIterator.hasNext())
             {
                 val enemy = enemyIterator.next()
                 if (enemyIterator.hasNext())
                 {
                     Gdx.app.log("Roaming", enemy::class.simpleName)
-                    enemy.roam()
+                    enemyRoamingAnimations += enemy.getRoamingAnimations()
                 }
                 else
                 {
                     Gdx.app.log("Roaming last", enemy::class.simpleName)
-                    enemy.roam(focusCameraOnHero = true)
+                    enemyRoamingAnimations += enemy.getRoamingAnimations(focusCameraOnHero = true)
                 }
             }
+            Animating.executeAnimations(enemyRoamingAnimations)
             // tutorial popups
-            if (newState.tutorialFlags.tutorialOn && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
+            if (newState.tutorialFlags.tutorialActive && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
             {
                 TutorialPopups.combatPopup.isVisible = true
                 PopUps.setBackgroundVisibility(false)
@@ -79,11 +82,11 @@ fun endCurrentTurn()
             {
                 val animation = Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
                 Animating.executeAnimations(mutableListOf(animation))
-    
+                
                 newState = State.combat.enemies.enemyUnselected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.enemies = World.currentRoom.getEnemies()
+                    this.enemies = World.currentRoom?.getEnemies() ?: listOf()
                     this.enemyIterator = this.enemies?.iterator()
                     this.currEnemy = when (val enemyIterator = this.enemyIterator)
                     {

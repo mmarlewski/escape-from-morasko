@@ -60,7 +60,7 @@ object TitleAndButtons
             // load game
             loadGame()
             // add Hero to currentRoom
-            World.currentRoom.addEntityAt(World.hero, World.hero.position)
+            World.currentRoom?.addEntityAt(World.hero, World.hero.position)
             // set new enemy health stacks
             for (level in World.levels)
             {
@@ -74,12 +74,12 @@ object TitleAndButtons
                 }
             }
             // display new enemy health stacks
-            for (enemy in World.currentRoom.getEnemies())
+            for (enemy in World.currentRoom?.getEnemies() ?: listOf())
             {
                 enemy.displayOwnHealthBar()
             }
             // update Room, Map, UI
-            World.currentRoom.updateSpacesEntities()
+            World.currentRoom?.updateSpacesEntities()
             Map.clearAllLayers()
             GameScreen.updateMapBaseLayer()
             GameScreen.updateMapEntityLayer()

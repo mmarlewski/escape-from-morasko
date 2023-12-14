@@ -49,7 +49,10 @@ interface Container
             // means original should have 0 amount
             if (item is StackableItem) item.amount = 0
         }
-        else throw ContainerFullException("Cannot add any more items to container.")
+        
+        // it was throwing error at 'start again' in 'World.createWorldPrototypeThree'
+        // didn't know why, so I just commented it out
+        // else throw ContainerFullException("Cannot add any more items to container.")
     }
     
     private fun addStackableItem(item : StackableItem)

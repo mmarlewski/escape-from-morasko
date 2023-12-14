@@ -962,28 +962,32 @@ fun tutorialPopup(
 
 fun interfaceVisibilityWithTutorial()
 {
-    if (State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
+    if (!State.TutorialFlags.tutorialActive)
     {
-        if (!State.TutorialFlags.equipmentPopupShown)
+        ItemsStructure.display()
+        LeftStructure.display()
+        ProgressBars.display()
+        RightStructure.display()
+        PopUps.display()
+        EquipmentStructure.display()
+        TutorialPopups.display()
+        SpecialEventsPopups.display()
+        PopUps.setBackgroundVisibility(true)
+    }
+    else
+    {
+        if (State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
         {
-            LeftStructure.menuButton.isVisible = true
-            RightStructure.moveButton.isVisible = true
-            GameScreen.canBeInteractedWith = true
-        }
-        else
-        {
-            if (!State.TutorialFlags.healthAndAbilityPopupShown)
+            if (!State.TutorialFlags.equipmentPopupShown)
             {
-                ItemsStructure.setVisibility(true)
                 LeftStructure.menuButton.isVisible = true
                 RightStructure.moveButton.isVisible = true
                 GameScreen.canBeInteractedWith = true
             }
             else
             {
-                if (!State.TutorialFlags.turnsPopupShown)
+                if (!State.TutorialFlags.healthAndAbilityPopupShown)
                 {
-                    ProgressBars.setVisibilty(true)
                     ItemsStructure.setVisibility(true)
                     LeftStructure.menuButton.isVisible = true
                     RightStructure.moveButton.isVisible = true
@@ -991,9 +995,8 @@ fun interfaceVisibilityWithTutorial()
                 }
                 else
                 {
-                    if (!State.TutorialFlags.combatPopupShown)
+                    if (!State.TutorialFlags.turnsPopupShown)
                     {
-                        RightStructure.endTurnButton.isVisible = true
                         ProgressBars.setVisibilty(true)
                         ItemsStructure.setVisibility(true)
                         LeftStructure.menuButton.isVisible = true
@@ -1002,7 +1005,19 @@ fun interfaceVisibilityWithTutorial()
                     }
                     else
                     {
-                        PopUps.setBackgroundVisibility(true)
+                        if (!State.TutorialFlags.combatPopupShown)
+                        {
+                            RightStructure.endTurnButton.isVisible = true
+                            ProgressBars.setVisibilty(true)
+                            ItemsStructure.setVisibility(true)
+                            LeftStructure.menuButton.isVisible = true
+                            RightStructure.moveButton.isVisible = true
+                            GameScreen.canBeInteractedWith = true
+                        }
+                        else
+                        {
+                            PopUps.setBackgroundVisibility(true)
+                        }
                     }
                 }
             }
@@ -1012,57 +1027,212 @@ fun interfaceVisibilityWithTutorial()
 
 fun interfaceDrawingWithTutorial()
 {
-    State.TutorialFlags.cameraPopupShown = true
-    if (State.TutorialFlags.cameraPopupShown || State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
+    if (!State.TutorialFlags.tutorialActive)
     {
-        if (!State.TutorialFlags.equipmentPopupShown)
+        ItemsStructure.display()
+        LeftStructure.display()
+        ProgressBars.display()
+        RightStructure.display()
+        PopUps.display()
+        EquipmentStructure.display()
+        TutorialPopups.display()
+        SpecialEventsPopups.display()
+        PopUps.setBackgroundVisibility(true)
+    }
+    else
+    {
+        State.TutorialFlags.cameraPopupShown = true
+        if (State.TutorialFlags.cameraPopupShown || State.TutorialFlags.movementPopupShown || State.TutorialFlags.lootingPopupShown)
         {
-            LeftStructure.displayMenuButton()
-            RightStructure.displayMoveButton()
-            PopUps.display()
-            EquipmentStructure.display()
-        }
-        else
-        {
-            if (!State.TutorialFlags.healthAndAbilityPopupShown)
+            if (!State.TutorialFlags.equipmentPopupShown)
             {
+                LeftStructure.displayMenuButton()
                 RightStructure.displayMoveButton()
                 PopUps.display()
                 EquipmentStructure.display()
-                ItemsStructure.display()
-                LeftStructure.display()
-                ItemsStructure.display()
+                SpecialEventsPopups.display()
             }
             else
             {
-                if (!State.TutorialFlags.turnsPopupShown)
+                if (!State.TutorialFlags.healthAndAbilityPopupShown)
                 {
                     RightStructure.displayMoveButton()
-                    ProgressBars.display()
                     PopUps.display()
                     EquipmentStructure.display()
                     ItemsStructure.display()
                     LeftStructure.display()
                     ItemsStructure.display()
+                    SpecialEventsPopups.display()
                 }
                 else
                 {
-                    if (!State.TutorialFlags.combatPopupShown)
+                    if (!State.TutorialFlags.turnsPopupShown)
                     {
-                        RightStructure.display()
+                        RightStructure.displayMoveButton()
                         ProgressBars.display()
                         PopUps.display()
                         EquipmentStructure.display()
                         ItemsStructure.display()
                         LeftStructure.display()
                         ItemsStructure.display()
+                        SpecialEventsPopups.display()
                     }
                     else
                     {
-                        PopUps.setBackgroundVisibility(true)
+                        if (!State.TutorialFlags.combatPopupShown)
+                        {
+                            RightStructure.display()
+                            ProgressBars.display()
+                            PopUps.display()
+                            EquipmentStructure.display()
+                            ItemsStructure.display()
+                            LeftStructure.display()
+                            ItemsStructure.display()
+                            SpecialEventsPopups.display()
+                        }
+                        else
+                        {
+                            PopUps.setBackgroundVisibility(true)
+                        }
                     }
                 }
             }
         }
     }
+}
+
+fun specialEventPopup(
+        subtitle : String,
+        body : String,
+        onYes : () -> Unit,
+        onNo : () -> Unit
+                     ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid30
+    windowStyle.titleFontColor = Colors.white
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
+    
+    val window = Window("Elderly Stranger Offers You a Deal", windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(48f)
+    
+    val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
+    delimiter.setFontScale(0.1f)
+    
+    val subtitle = labelOf(subtitle, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    subtitle.setFontScale(1.25f)
+    
+    val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    description.setWrap(true)
+    description.setAlignment(Align.center)
+    
+    val yesButton = imageButtonOf(
+            Textures.check,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                 )
+    {
+        Sounds.ui_2.playOnce()
+        window.isVisible = false
+        onYes()
+        PopUps.setBackgroundVisibility(true)
+    }
+    
+    val noButton = imageButtonOf(
+            Textures.close,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                )
+    {
+        window.isVisible = false
+        Sounds.ui_3.playOnce()
+        onNo()
+        PopUps.setBackgroundVisibility(true)
+    }
+    
+    val table = Table()
+    table.add(delimiter).fillX().height(1f).padTop(40f).row()
+    table.add(subtitle).padTop(16f).row()
+    table.add(description).width(664f).padTop(16f).row()
+    table.add(rowOf(rowOf(yesButton).padRight(64f), rowOf(noButton).padLeft(64f))).padTop(16f).padBottom(8f).row()
+    
+    
+    
+    window.add(columnOf(table))
+    
+    return window
+}
+
+fun yesNoPopup(
+        title : String,
+        body : String,
+        onYes : () -> Unit,
+        onNo : () -> Unit
+              ) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid30
+    windowStyle.titleFontColor = Colors.white
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
+    
+    val window = Window(title, windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).width(Value.percentWidth(1f, window.titleTable)).padTop(48f)
+    
+    val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
+    delimiter.setFontScale(0.1f)
+    
+    val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    description.setWrap(true)
+    description.setAlignment(Align.center)
+    
+    val yesButton = imageButtonOf(
+            Textures.check,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                 )
+    {
+        Sounds.ui_2.playOnce()
+        window.isVisible = false
+        onYes()
+        PopUps.setBackgroundVisibility(true)
+    }
+    
+    val noButton = imageButtonOf(
+            Textures.close,
+            Textures.upNinePatch,
+            Textures.downNinePatch,
+            Textures.overNinePatch,
+            Textures.disabledNinePatch,
+            Textures.focusedNinePatch
+                                )
+    {
+        window.isVisible = false
+        Sounds.ui_3.playOnce()
+        onNo()
+        PopUps.setBackgroundVisibility(true)
+    }
+    
+    val table = Table()
+    table.add(delimiter).fillX().height(1f).padTop(40f).row()
+    table.add(description).width(496f).padTop(16f).row()
+    table.add(rowOf(rowOf(yesButton).padRight(64f), rowOf(noButton).padLeft(64f))).padTop(16f).padBottom(8f).row()
+    
+    
+    
+    window.add(columnOf(table))
+    
+    return window
 }
