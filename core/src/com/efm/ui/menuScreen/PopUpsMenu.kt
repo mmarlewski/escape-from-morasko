@@ -46,7 +46,6 @@ object PopUpsMenu
     
     fun startNewGame()
     {
-        TitleAndButtons.setButtonsVisibility(true)
         // remove enemy health stacks
         for (level in World.levels)
         {

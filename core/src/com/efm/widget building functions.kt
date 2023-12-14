@@ -17,6 +17,7 @@ import com.efm.skill.BodyPart
 import com.efm.skill.Skill
 import com.efm.state.State
 import com.efm.ui.gameScreen.*
+import com.efm.ui.menuScreen.TitleAndButtons
 
 lateinit var musicSlider : Slider
 lateinit var soundSlider : Slider
@@ -590,6 +591,7 @@ fun menuPopup(
                                        )
     {
         Sounds.ui_1.playOnce()
+        TitleAndButtons.setButtonsVisibility(true)
         changeScreen(MenuScreen)
         window.isVisible = false
         PopUps.setBackgroundVisibility(true)

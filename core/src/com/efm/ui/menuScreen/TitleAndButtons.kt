@@ -111,14 +111,13 @@ object TitleAndButtons
             playMusicIfNotAlreadyPlaying(Musics.ambient_5)
             if (playButton.isVisible)
             {
+                setButtonsVisibility(false)
                 PopUpsMenu.setOverwriteSaveVisibility(true)
             }
             else
             {
                 PopUpsMenu.startNewGame()
             }
-            setButtonsVisibility(false)
-            
         }
         
         return startAgainTextButton
