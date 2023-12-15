@@ -99,7 +99,7 @@ enum class Modifier(val function : () -> Unit, val popupSubtitle : String, val p
                 ItemsStructure.fillItemsStructureWithItemsAndSkills()
             },
             "Body and Soul Exchange",
-            "Exchange your skills on a specific body part. A gamble with the unknown," +
+            "Exchange your skills on a body part. A gamble with the unknown," +
                     " as you let go of familiarity for the potential of newfound strength. " +
                     "Do you accept this offer?"
                   ),

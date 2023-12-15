@@ -783,8 +783,7 @@ fun World.createWorldPrototypeThree()
                                  )
                              )
             addEntityAt(chest, 6, 5)
-            addEntityAt(Npc(), 6, 1)
-            addEntityAt(Npc(), 7, 1)
+            addEntityAt(Npc().apply { modifier = Modifier.AddRandomSkill }, 6, 1)
         }
         // add room to level
         addRoom(l1r4)
@@ -937,6 +936,7 @@ fun World.createWorldPrototypeThree()
             // entities
             addEntityAt(EnemyMushroom(), 2, 5)
             addEntityAt(EnemyMushroom(), 4, 3)
+            addEntityAt(Npc().apply { modifier = Modifier.StrongerWeaponsLoseHp }, 1, 1)
         }
         // add room to level
         addRoom(l2r3)
