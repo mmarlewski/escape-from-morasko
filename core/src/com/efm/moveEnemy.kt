@@ -40,7 +40,7 @@ fun moveEnemy(
                     0.1f
                                                            )
             animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
-            animations += Animation.action {GameScreen.updateMapOutlineLayer()}
+            animations += Animation.action { GameScreen.updateMapOutlineLayer() }
             prevMovePosition.set(space.position)
         }
     }
@@ -49,4 +49,50 @@ fun moveEnemy(
     animations += Animation.action { enemy.displayOwnHealthBar() }
     if (focusCameraOnHero) animations += Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
     Animating.executeAnimations(animations)
+}
+
+fun getAnimationsUsedInMoveEnemy(
+        startPosition : RoomPosition,
+        endPosition : RoomPosition,
+        path : List<Space?>,
+        enemy : Enemy,
+        focusCameraOnHero : Boolean = false
+                                ) : MutableList<Animation>
+{
+    val action = {
+        enemy.position.set(endPosition)
+        World.currentRoom?.updateSpacesEntities()
+        GameScreen.updateMapEntityLayer()
+        GameScreen.updateMapBaseLayer()
+        GameScreen.updateMapOutlineLayer()
+        Map.clearLayer(MapLayer.select)
+    }
+    val animations = mutableListOf<Animation>()
+    animations += Animation.action { enemy.hideOwnHealthBar() }
+    animations += Animation.action { Map.changeTile(MapLayer.entity, enemy.position, null) }
+    val prevMovePosition = startPosition.copy()
+    path.forEachIndexed { index, space ->
+        
+        val n = (index % IdleAnimation.numberOfMoveAnimations) + 1
+        val moveTile = enemy.getMoveTile(n)
+        
+        if (space != null)
+        {
+            animations += Animation.moveTileWithCameraFocus(
+                    moveTile,
+                    prevMovePosition.copy(),
+                    space.position.copy(),
+                    0.1f
+                                                           )
+            //animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
+            //animations += Animation.action { GameScreen.updateMapOutlineLayer() }
+            prevMovePosition.set(space.position)
+        }
+    }
+    animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
+    animations += Animation.action(action)
+    animations += Animation.action { enemy.displayOwnHealthBar() }
+    if (focusCameraOnHero) animations += Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
+    
+    return animations
 }
