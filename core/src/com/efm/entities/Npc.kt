@@ -160,6 +160,8 @@ class Npc : Entity, Interactive
                                                        )
             SpecialEventsPopups.addPopupToDisplay(popup)
             popup.isVisible = true
+            PopUps.setBackgroundVisibility(false)
+            LeftStructure.menuButton.isVisible = false
         }
     }
 }
