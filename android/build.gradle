@@ -22,17 +22,19 @@ android {
         applicationId "com.efm"
         minSdkVersion 14
         targetSdkVersion 33
-        versionCode 5
+        versionCode 8
         versionName "0.1"
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            ndk {
+//                debugSymbolLevel 'SYMBOL_TABLE'
+//            }
         }
     }
 }
-
 
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
