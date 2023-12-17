@@ -26,14 +26,19 @@ object Freeze : ActiveSkill(
         val squarePositions = getSquareAreaPositions(source, 10)
         for (squarePosition in squarePositions)
         {
-            val linePositions =
-                    LineFinding.findLineWithGivenRoom(World.hero.position.copy(), squarePosition.copy(), World.currentRoom)
+            val worldCurrentRoom = World.currentRoom
+            val linePositions = if (worldCurrentRoom != null) LineFinding.findLineWithGivenRoom(
+                    World.hero.position.copy(),
+                    squarePosition.copy(),
+                    worldCurrentRoom
+                                                                                               )
+            else null
             if (linePositions != null)
             {
                 targetPositions.add(squarePosition)
             }
         }
-    
+        
         return targetPositions
     }
     
@@ -45,7 +50,8 @@ object Freeze : ActiveSkill(
     override fun use(room : Room, targetPosition : RoomPosition)
     {
         val space = room.getSpace(targetPosition)
-        if (space != null) {
+        if (space != null)
+        {
             val entity = space.getEntity()
             if (entity != null)
             {

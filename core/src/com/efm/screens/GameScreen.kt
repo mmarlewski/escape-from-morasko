@@ -58,6 +58,7 @@ object GameScreen : BaseScreen(), GestureListener
             PopUps.display()
             EquipmentStructure.display()
             TutorialPopups.display()
+            SpecialEventsPopups.display()
         }
         else
         {
@@ -72,7 +73,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             for (j in 0 until Map.mapWidthInTiles)
             {
-                val space = World.currentRoom.getSpace(j, i)
+                val space = World.currentRoom?.getSpace(j, i)
                 
                 val tile = space?.getBase()?.tile
                 
@@ -87,7 +88,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             for (j in 0 until Map.mapWidthInTiles)
             {
-                val space = World.currentRoom.getSpace(j, i)
+                val space = World.currentRoom?.getSpace(j, i)
                 
                 val tile = space?.getEntity()?.getTile()
                 
@@ -113,7 +114,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             for (j in 0 until Map.mapWidthInTiles)
             {
-                val space = World.currentRoom.getSpace(j, i)
+                val space = World.currentRoom?.getSpace(j, i)
                 
                 if (space != null)
                 {
@@ -145,7 +146,7 @@ object GameScreen : BaseScreen(), GestureListener
         {
             for (j in 0 until Map.mapWidthInTiles)
             {
-                val space = World.currentRoom.getSpace(j, i)
+                val space = World.currentRoom?.getSpace(j, i)
                 
                 if (space != null)
                 {
@@ -249,7 +250,7 @@ object GameScreen : BaseScreen(), GestureListener
         gameCamera.update()
         mapRenderer.setView(gameCamera)
         mapRenderer.render()
-        for (enemy in World.currentRoom.getEnemies())
+        for (enemy in World.currentRoom?.getEnemies() ?: listOf())
         {
             enemy.changeOwnHealthBarPos()
         }

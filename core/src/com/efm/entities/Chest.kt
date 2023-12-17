@@ -56,7 +56,15 @@ open class Chest(possibleItems : PossibleItems? = null, seed : Int = Random.next
             val drawnItems = possibleItems.drawItems(seed)
             for (item in drawnItems)
             {
-                addItem(item)
+                try
+                {
+                    addItem(item)
+                }
+                catch (e : ContainerFullException)
+                {
+                    // filled container
+                    break
+                }
             }
         }
     }

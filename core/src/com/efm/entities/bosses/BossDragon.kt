@@ -166,7 +166,7 @@ class BossDragon : Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = tilePosition
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
@@ -211,7 +211,7 @@ class BossDragon : Entity, Enemy
                 showFireTiles.add(Animation.action {
                     
                     val attackedPosition = position
-                    val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+                    val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
                     val attackedEntity = attackedSpace?.getEntity()
                     when (attackedEntity)
                     {
@@ -273,7 +273,7 @@ class BossDragon : Entity, Enemy
                 {
                     val attackAreaPositions = getSquareAreaPositions(position, attackRange)
                     val validAttackAreaPositions = attackAreaPositions.filter {
-                        val space = World.currentRoom.getSpace(it)
+                        val space = World.currentRoom?.getSpace(it)
                         val entity = space?.getEntity()
                         val base = space?.getBase()
                         space != null && entity == null && base != Base.lava
@@ -292,8 +292,14 @@ class BossDragon : Entity, Enemy
                     }
                     else
                     {
-                        val pathSpaces =
-                                PathFinding.findPathInRoomForEntity(position, World.hero.position, World.currentRoom, this)
+                        val worldCurrentRoom = World.currentRoom
+                        val pathSpaces = if (worldCurrentRoom != null) PathFinding.findPathInRoomForEntity(
+                                position,
+                                World.hero.position,
+                                worldCurrentRoom,
+                                this
+                                                                                                          )
+                        else null
                         
                         val stepsSpaces = pathSpaces?.take(stepsInOneTurn)
                         if (!stepsSpaces.isNullOrEmpty())
@@ -333,7 +339,7 @@ class BossDragon : Entity, Enemy
     
     override fun onDeath()
     {
-        if (World.currentRoom.name != "finalRoom")
+        if (World.currentRoom?.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
             addBossToDefeatedBossesList(Boss.Dragon)

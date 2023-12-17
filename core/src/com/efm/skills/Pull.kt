@@ -30,7 +30,7 @@ object Pull : ActiveSkill(
             direction@ for (i in 1..5)
             {
                 val position = source.positionOffsetBy(i, direction)
-                val space = World.currentRoom.getSpace(position)
+                val space = World.currentRoom?.getSpace(position)
                 val entity = space?.getEntity()
                 if (entity != null)
                 {
@@ -82,7 +82,7 @@ object Pull : ActiveSkill(
             for (i in 1..5)
             {
                 val position = heroPosition.positionOffsetBy(i, direction)
-                val space = World.currentRoom.getSpace(position)
+                val space = World.currentRoom?.getSpace(position)
                 val entity = space?.getEntity()
                 val showAnimations = mutableListOf<Animation>()
                 for (j in 1 until i)
@@ -108,7 +108,7 @@ object Pull : ActiveSkill(
             // disappear entity
             animations.add(Animation.action {
                 pullEntity.position.set(-1, -1)
-                World.currentRoom.updateSpacesEntities()
+                World.currentRoom?.updateSpacesEntities()
                 GameScreen.updateMapEntityLayer()
             })
             
@@ -116,7 +116,7 @@ object Pull : ActiveSkill(
             for (i in pullEntityIndex - 1 downTo 1)
             {
                 val position = heroPosition.positionOffsetBy(i, direction)
-                val space = World.currentRoom.getSpace(position)
+                val space = World.currentRoom?.getSpace(position)
                 val base = space?.getBase()
                 val showAnimations = mutableListOf<Animation>()
                 for (j in 1 until i)

@@ -89,7 +89,7 @@ class EnemyPlant : Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
@@ -102,5 +102,5 @@ class EnemyPlant : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemyBatCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemyPlantCorpse(this.position)
 }

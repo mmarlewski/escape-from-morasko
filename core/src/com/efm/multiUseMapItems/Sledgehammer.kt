@@ -85,7 +85,7 @@ class Sledgehammer : MultiUseMapItem
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(this.damage)
+                        attackedEntity.damageCharacter(this.damage * World.hero.weaponDamageMultiplier)
                     }
                 }
             }

@@ -116,7 +116,7 @@ class EnemyMimic : Entity, Enemy
         animations += Animation.action {
         
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {

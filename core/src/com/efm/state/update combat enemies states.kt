@@ -65,9 +65,9 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
 {
     if (!Animating.isAnimating())
     {
-        World.currentRoom.removeKilledCharacters()
-        World.currentRoom.addToBeAddedEntitiesToRoom()
-        World.currentRoom.updateSpacesEntities()
+        World.currentRoom?.removeKilledCharacters()
+        World.currentRoom?.addToBeAddedEntitiesToRoom()
+        World.currentRoom?.updateSpacesEntities()
         GameScreen.updateMapEntityLayer()
         
         val nextEnemy = when (val enemyIterator = currState.enemyIterator)

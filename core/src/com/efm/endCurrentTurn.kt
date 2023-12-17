@@ -1,5 +1,7 @@
 package com.efm
 
+import com.badlogic.gdx.Gdx
+import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
@@ -24,7 +26,7 @@ fun endCurrentTurn()
             World.hero.updateActiveSkillCoolDown()
             World.hero.incrementTurnsElapsed()
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
+    
             if (!isHeroVisible)
             {
                 newState = State.free.heroSelected.apply {
@@ -33,10 +35,23 @@ fun endCurrentTurn()
                 }
             }
             // enemies roaming
-            for (enemy in World.currentRoom.getEnemies())
+            val enemyRoamingAnimations = mutableListOf<Animation>()
+            val enemyIterator = World.currentRoom?.getEnemies()?.iterator() ?: listOf<Enemy>().iterator()
+            while (enemyIterator.hasNext())
             {
-                enemy.roam()
+                val enemy = enemyIterator.next()
+                if (enemyIterator.hasNext())
+                {
+                    Gdx.app.log("Roaming", enemy::class.simpleName)
+                    enemyRoamingAnimations += enemy.getRoamingAnimations()
+                }
+                else
+                {
+                    Gdx.app.log("Roaming last", enemy::class.simpleName)
+                    enemyRoamingAnimations += enemy.getRoamingAnimations(focusCameraOnHero = true)
+                }
             }
+            Animating.executeAnimations(enemyRoamingAnimations)
             // tutorial popups
             if (newState.tutorialFlags.tutorialActive && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
             {
@@ -67,11 +82,11 @@ fun endCurrentTurn()
             {
                 val animation = Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
                 Animating.executeAnimations(mutableListOf(animation))
-    
+                
                 newState = State.combat.enemies.enemyUnselected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.enemies = World.currentRoom.getEnemies()
+                    this.enemies = World.currentRoom?.getEnemies() ?: listOf()
                     this.enemyIterator = this.enemies?.iterator()
                     this.currEnemy = when (val enemyIterator = this.enemyIterator)
                     {

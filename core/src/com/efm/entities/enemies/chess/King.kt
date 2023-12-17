@@ -67,6 +67,8 @@ class King : Entity, Enemy
     
     override fun performTurn()
     {
+        val worldCurrentRoom = World.currentRoom ?: return
+        
         if (!isFrozen)
         {
             val heroPos = World.hero.position
@@ -84,9 +86,9 @@ class King : Entity, Enemy
                 var bestMovePosition : RoomPosition = getPossibleMovePositions()[0]
                 for (pos in getPossibleMovePositions())
                 {
-                    if (World.currentRoom.isPositionWithinBounds(pos.x, pos.y))
+                    if (worldCurrentRoom.isPositionWithinBounds(pos.x, pos.y))
                     {
-                        var space = World.currentRoom.getSpace(pos)
+                        var space = worldCurrentRoom.getSpace(pos)
                         if (space != null)
                         {
                             if (space.getEntity() == null && space.isTraversableFor(this))
@@ -100,7 +102,7 @@ class King : Entity, Enemy
                     }
                 }
                 val path : List<Space?> =
-                        listOf(World.currentRoom.getSpace(position), World.currentRoom.getSpace(bestMovePosition))
+                        listOf(worldCurrentRoom.getSpace(position), worldCurrentRoom.getSpace(bestMovePosition))
                 moveEnemy(position, bestMovePosition, path, this)
             }
         } else
@@ -127,7 +129,7 @@ class King : Entity, Enemy
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
@@ -142,11 +144,11 @@ class King : Entity, Enemy
     
     override fun onDeath()
     {
-        for (enemy in World.currentRoom.getEnemies())
+        for (enemy in World.currentRoom?.getEnemies() ?: listOf())
         {
             enemy.damageCharacter(enemy.healthPoints)
         }
-        if (World.currentRoom.name != "finalRoom")
+        if (World.currentRoom?.name != "finalRoom")
         {
             showSkillAssignPopUpAfterBossKill(this)
             addBossToDefeatedBossesList(Boss.Chess)
@@ -173,9 +175,9 @@ class King : Entity, Enemy
         var count = 0
         for (currPosBeingChecked in pos.surroundingPositions(2))
         {
-            if (World.currentRoom.isPositionWithinBounds(currPosBeingChecked))
+            if (World.currentRoom?.isPositionWithinBounds(currPosBeingChecked) != null)
             {
-                if (World.currentRoom.getSpace(currPosBeingChecked)?.getEntity() != null)
+                if (World.currentRoom?.getSpace(currPosBeingChecked)?.getEntity() != null)
                 {
                     count += 1
                 }
@@ -183,5 +185,4 @@ class King : Entity, Enemy
         }
         return count
     }
-    
 }

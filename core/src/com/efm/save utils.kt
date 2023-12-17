@@ -6,13 +6,10 @@ import com.badlogic.gdx.utils.Json
 import com.efm.entities.Hero
 import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.defeatedBosses
-import com.efm.entity.Enemy
 import com.efm.level.Level
 import com.efm.level.World
 import com.efm.skill.BodyPart
-import com.efm.stackableSelfItems.Apple
 import com.efm.state.*
-import kotlin.reflect.KClass
 
 val json = Json()
 
@@ -25,11 +22,12 @@ fun saveGame()
             getSoundVolume(),
             getMusicVolume(),
             getState(),
-            World.currentLevel.name,
-            World.currentRoom.name,
+            World.currentLevel?.name ?: "",
+            World.currentRoom?.name ?: "",
             World.hero,
             World.levels,
-            defeatedBosses
+            defeatedBosses,
+            getState().tutorialFlags
                               )
     file.writeString(json.prettyPrint(saveList), false)
     
@@ -53,39 +51,50 @@ fun loadGame()
         val saveHero = saveList[5] as Hero
         val saveLevels = saveList[6] as Array<*>
         val saveDefeatedBosses = saveList[7] as Array<*>
+        val saveTutorialFlags = saveList[8] as State.TutorialFlags
         
         setSoundVolume(saveSoundVolume)
         setMusicVolume(saveMusicVolume)
         
-        when (saveState)
+        val newState = when (saveState)
         {
-            is State.free        -> setState(State.free.noSelection.apply {
+        
+            is State.free        -> State.free.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
-            })
-            
-            is State.constrained -> setState(State.constrained.noSelection.apply {
+            }
+        
+            is State.constrained -> State.constrained.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
                 this.isHeroDetected = saveState.isHeroDetected
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
-            })
-            
-            is State.combat.hero -> setState(State.combat.hero.noSelection.apply {
+            }
+        
+            is State.combat.hero -> State.combat.hero.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
-            })
-            
-            else                 -> setState(State.over)
-        }
+            }
         
+            else                 -> State.over
+        }
+        newState.tutorialFlags = saveTutorialFlags
+        setState(newState)
+    
         World.hero.alive = saveHero.alive
         World.hero.position.set(saveHero.position)
         World.hero.healthPoints = saveHero.healthPoints
+        World.hero.maxHealthPoints = saveHero.maxHealthPoints
         World.hero.healCharacter(0)
         World.hero.abilityPoints = saveHero.abilityPoints
+        World.hero.maxAbilityPoints = saveHero.maxAbilityPoints
         World.hero.gainAP(0)
+        World.hero.apDrainInNextTurn = saveHero.apDrainInNextTurn
+        World.hero.canMoveNextTurn = saveHero.canMoveNextTurn
+        World.hero.isVisible = saveHero.isVisible
+        World.hero.turnsElapsed = saveHero.turnsElapsed
+        World.hero.weaponDamageMultiplier = saveHero.weaponDamageMultiplier
         World.hero.inventory.items.clear()
         World.hero.inventory.items.addAll(saveHero.inventory.items)
         BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
@@ -102,8 +111,8 @@ fun loadGame()
         {
             World.levels.add(level as Level)
         }
-        World.currentLevel = World.levels.find { it.name == saveCurrentLevelName }!!
-        World.currentRoom = World.currentLevel.rooms.find { it.name == saveCurrentRoomName }!!
+        World.currentLevel = World.levels.find { it.name == saveCurrentLevelName }
+        World.currentRoom = World.currentLevel?.rooms?.find { it.name == saveCurrentRoomName }
         
         //
         

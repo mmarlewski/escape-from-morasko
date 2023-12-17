@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
+import com.efm.*
 import com.efm.assets.Tiles
 import com.efm.entity.Character
-import com.efm.getSquareAreaPositions
 import com.efm.item.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
@@ -20,13 +20,15 @@ import com.efm.ui.gameScreen.ProgressBars
  * Hero has its own turn and is controlled by the player.
  */
 class Hero(
-        override var maxHealthPoints : Int = 100, override var healthPoints : Int = 100, override var alive : Boolean = true
+        override var maxHealthPoints : Int = defaultHeroMaxHp,
+        override var healthPoints : Int = defaultHeroMaxHp,
+        override var alive : Boolean = true
           ) : Character
 {
     override val position = RoomPosition()
     
-    var maxAbilityPoints : Int = 8
-    var abilityPoints : Int = 8
+    var maxAbilityPoints : Int = defaultHeroMaxAp
+    var abilityPoints : Int = defaultHeroMaxAp
     
     var apDrainInNextTurn = 0
     var canMoveNextTurn = true
@@ -44,6 +46,8 @@ class Hero(
             field = value
             GameScreen.updateMapEntityLayer()
         }
+    
+    var weaponDamageMultiplier = 1
     
     override fun getTile() : TiledMapTile?
     {
@@ -69,15 +73,15 @@ class Hero(
         return when
         {
             canMoveNextTurn && isVisible && !isInvincible   -> Tiles.heroIdle1
-    
+            
             !canMoveNextTurn && isVisible && !isInvincible  -> Tiles.heroVines
             !canMoveNextTurn && !isVisible && !isInvincible -> Tiles.heroVinesInvisible
             !canMoveNextTurn && isVisible && isInvincible   -> Tiles.heroVinesInvincible
             !canMoveNextTurn && !isVisible && isInvincible  -> Tiles.heroVinesInvisibleInvincible
-    
+            
             canMoveNextTurn && !isVisible && !isInvincible  -> Tiles.heroIdle1Invisible
             canMoveNextTurn && !isVisible && isInvincible   -> Tiles.heroIdle1InvisibleInvincible
-    
+            
             //canMoveNextTurn && isVisible && isInvincible
             else                                            -> Tiles.heroIdle1Invincible
         }
@@ -301,6 +305,7 @@ class Hero(
             val skillNames = mutableListOf<String>()
             this.bodyPartMap.values.forEach { skillNames.add(it?.name ?: "") }
             json.writeValue("skillNames", skillNames)
+            json.writeValue("weaponDamageMultiplier", this.weaponDamageMultiplier)
         }
     }
     
@@ -337,6 +342,8 @@ class Hero(
                     }
                 }
             }
+            val jsonWeaponDamageMultiplier = json.readValue("weaponDamageMultiplier", Int::class.java, jsonData)
+            if (jsonWeaponDamageMultiplier != null) this.weaponDamageMultiplier = jsonWeaponDamageMultiplier
         }
     }
 }
@@ -358,11 +365,11 @@ class HeroInventory : Container
                 }
                 for (pos in getSquareAreaPositions(World.hero.position, 1))
                 {
-                    val space = World.currentRoom.getSpace(pos)
+                    val space = World.currentRoom?.getSpace(pos)
                     if (space != null && space.isTraversableFor(World.hero))
                     {
-                        World.currentRoom.addEntityAt(droppedPockets, pos)
-                        World.currentRoom.updateSpacesEntities()
+                        World.currentRoom?.addEntityAt(droppedPockets, pos)
+                        World.currentRoom?.updateSpacesEntities()
                         GameScreen.updateMapBaseLayer()
                         GameScreen.updateMapEntityLayer()
                         break

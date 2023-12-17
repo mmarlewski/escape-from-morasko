@@ -28,7 +28,7 @@ object AppInfoScreen : BaseScreen()
                                   )
     
         val versionLabel =
-                labelOf("current version: 0.1 (alpha)", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+                labelOf("current version: 1.0", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         
         val backButton = textButtonOf(
                 "back",

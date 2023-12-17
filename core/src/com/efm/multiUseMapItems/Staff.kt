@@ -127,7 +127,7 @@ class Staff : MultiUseMapItem
                         val lineEntity = lineSpace.getEntity()
                         if (lineEntity is Character)
                         {
-                            lineEntity.damageCharacter(damage)
+                            lineEntity.damageCharacter(damage * World.hero.weaponDamageMultiplier)
                         }
                     }
                 }

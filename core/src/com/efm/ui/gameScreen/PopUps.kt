@@ -7,7 +7,7 @@ import com.efm.assets.*
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.skill.Skill
-import com.efm.skills.*
+import com.efm.skills.Jump
 
 object PopUps
 {
@@ -52,17 +52,15 @@ object PopUps
     
     fun endTurn() : com.badlogic.gdx.scenes.scene2d.ui.Window
     {
-        val endTurnPopUp = windowAreaOf(
-                "End turn?\n\nYou still have some AP left",
-                Fonts.pixeloid20,
-                Colors.black,
-                Textures.pauseBackgroundNinePatch,
+        val endTurnPopUp = yesNoPopup(
+                "End turn?",
+                "You still have some AP left.",
                 {
                     endCurrentTurn()
                     LeftStructure.menuButton.isVisible = true
                 },
                 { LeftStructure.menuButton.isVisible = true }
-                                       )
+                                     )
         
         endTurnPopUp.isVisible = false
         

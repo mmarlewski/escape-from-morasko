@@ -99,7 +99,7 @@ open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Ene
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
-            val attackedSpace = World.currentRoom.getSpace(attackedPosition)
+            val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
             when (attackedEntity)
             {
@@ -126,7 +126,7 @@ open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Ene
         {
             val squarePerimeterPositions = getSquarePerimeterPositions(this.position, radius)
             val possibleSpawnPositions = squarePerimeterPositions.filter {
-                World.currentRoom.getSpace(it)?.isTraversableFor(slimeQuarter1) ?: false
+                World.currentRoom?.getSpace(it)?.isTraversableFor(slimeQuarter1) ?: false
             }
             
             when (possibleSpawnPositions.size)
@@ -155,13 +155,13 @@ open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Ene
         {
             slimeQuarter1.position.set(spawnPosition1)
             slimeQuarter1.createOwnHealthBar()
-            World.currentRoom.addEntityToBeAddedEntities(slimeQuarter1)
+            World.currentRoom?.addEntityToBeAddedEntities(slimeQuarter1)
         }
         if(spawnPosition2 != null)
         {
             slimeQuarter2.position.set(spawnPosition2)
             slimeQuarter2.createOwnHealthBar()
-            World.currentRoom.addEntityToBeAddedEntities(slimeQuarter2)
+            World.currentRoom?.addEntityToBeAddedEntities(slimeQuarter2)
         }
     }
     

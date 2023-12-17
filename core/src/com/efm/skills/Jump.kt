@@ -25,7 +25,7 @@ object Jump : ActiveSkill(
                     // jumps in straight line are the longest
                     checkPositionDistanceFrom(source, it) <= tilesThatCanBeJumpedOver * 10 &&
                     // space is safe to land on
-                    (World.currentRoom.getSpace(it)?.isTraversableFor(user) == true)
+                    (World.currentRoom?.getSpace(it)?.isTraversableFor(user) == true)
         }
     }
     
@@ -53,8 +53,8 @@ object Jump : ActiveSkill(
                 Tiles.heroIdle1, startPosition, endPosition, jumpDuration, jumpHeight
                                                               )
         animations += Animation.action {
-            World.currentRoom.removeEntity(World.hero)
-            World.currentRoom.addEntityAt(World.hero, endPosition)
+            World.currentRoom?.removeEntity(World.hero)
+            World.currentRoom?.addEntityAt(World.hero, endPosition)
             adjustCameraAfterMoving()
             adjustMapLayersAfterMoving()
         }
