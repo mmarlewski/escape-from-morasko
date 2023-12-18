@@ -33,10 +33,10 @@ class HPPotionSmall(
     
     override fun use()
     {
-        World.hero.gainAP(apBoost)
+        World.hero.healCharacter(hpBoost)
         Animating.executeAnimations(
                 mutableListOf(
-                        Animation.ascendTile(Tiles.apPlus, World.hero.position, 0.5f, 0.25f)
+                        Animation.ascendTile(Tiles.hpPlus, World.hero.position, 0.5f, 0.25f)
                              )
                                    )
     }

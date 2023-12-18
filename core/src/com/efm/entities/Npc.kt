@@ -68,32 +68,15 @@ enum class Modifier(val function : () -> Unit, val popupSubtitle : String, val p
                     ),
     AddRandomSkill(
             {
-                val freeBodyParts = mutableListOf<BodyPart>()
+                val newSkills = mutableListOf<Skill>()
+                newSkills.addAll(allSkills.toList())
                 for ((bodyPart, skill) in World.hero.bodyPartMap)
                 {
-                    if (skill == null)
-                    {
-                        freeBodyParts.add(bodyPart)
-                    }
+                    newSkills.remove(skill)
                 }
-                
-                if (freeBodyParts.isNotEmpty())
+                if (newSkills.isNotEmpty())
                 {
-                    val randomFreeBodyPart = freeBodyParts.random()
-                    
-                    val bodyPartSkills = mutableListOf<Skill>()
-                    for (skill in allSkills)
-                    {
-                        if (skill.bodyPart == randomFreeBodyPart)
-                        {
-                            bodyPartSkills.add(skill)
-                        }
-                    }
-                    
-                    if (bodyPartSkills.isNotEmpty())
-                    {
-                        World.hero.addSkill(bodyPartSkills.random())
-                    }
+                    World.hero.addSkill(newSkills.random())
                 }
                 
                 ItemsStructure.fillItemsStructureWithItemsAndSkills()
