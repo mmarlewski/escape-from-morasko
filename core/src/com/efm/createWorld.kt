@@ -1683,7 +1683,7 @@ private fun createRoomFromFile(name : String, fileHandle : FileHandle) : Room
     return room
 }
 
-private fun Room.addWalls(wallStyle : WallStyle = WallStyle.stone)
+public fun Room.addWalls(wallStyle : WallStyle = WallStyle.stone)
 {
     // edges
     val upEdge = 0

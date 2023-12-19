@@ -1,3 +1,8 @@
+import com.efm.addWalls
+import com.efm.entities.walls.WallStyle
+import com.efm.level.Level
+import com.efm.level.World
+import com.efm.room.*
 import kotlin.random.Random
 
 class Node(
@@ -119,7 +124,7 @@ fun displayMap(roomData: Array<IntArray>) {
     }
 }
 
-fun main() {
+fun World.createProcGenWorld() {
     val mapWidth = 80
     val mapHeight = 80
     val minRoomSize = 10
@@ -152,7 +157,168 @@ fun main() {
     val patchCenters = findPatchCenters(roomData)
     println("Patch Centers:")
     patchCenters.forEach { println("Patch ${it.x}, ${it.y}") }
+    
+    val min_room_val = 1
+    val max_room_val = getMaxValInMatrix(roomData)
+    val level = Level("1")
+    var rooms = mutableListOf<Room>()
+    for (i in min_room_val..max_room_val)
+    {
+        val x1 = getRoomX1(i, roomData)
+        val x2 = getRoomX2(i, roomData)
+        val y1 = getRoomY1(i, roomData)
+        val y2 = getRoomY2(i, roomData)
+        val height = x2 - x1
+        val width = y2 - y1
+        val room = Room(i.toString(), height, width)
+        val roomBasesArray = getMatrixBasedOnCoordinates(roomData, x1, x2, y1, y2, i)
+        //val roomBasesArray = Array(width) { IntArray(height) { 0 } }
+        //fillBaseArrayBasedOnRoomData(roomBasesArray, roomData, i ,x1, x2, y1, y2)
+        for (y in roomBasesArray.indices)
+        {
+            for (x in roomBasesArray[y].indices)
+            {
+                val baseNumber = roomBasesArray[y][x]
+                if (baseNumber != 0)
+                {
+                    val base = Base.getBase(baseNumber)
+                    room.changeBaseAt(base, x, y)
+                }
+                else
+                {
+                    // delete base and space
+                    room.changeBaseAt(null, x, y)
+                    room.deleteSpaceAt(x, y)
+                }
+            }
+        }
+    
+    
+    
+        room.addWalls(WallStyle.brickRedDark)
+        level.addRoom(room)
+        rooms.add(room)
+    }
+    level.startingRoom = rooms[0]
+    level.startingPosition.set(RoomPosition(2, 2))
+    addLevel(level)
     //displayMap(roomData)
+}
+
+fun getMatrixBasedOnCoordinates(roomData : Array<IntArray>, x1 : Int, x2 : Int, y1 : Int, y2 : Int, i : Int) : Array<IntArray>
+{
+    var result = Array(x2- x1) { IntArray(y2 - y1) { 0 } }
+    for (x in x1 until  x2)
+    {
+        for (y in y1 until  y2)
+        {
+            if (roomData[x][y] == i)
+            {
+                print("x1 : $x1 x : $x y1 : $y1 y : $y")
+                result[x - x1][y - y1] = i
+            }
+        }
+    }
+    return result
+}
+
+fun fillBaseArrayBasedOnRoomData(roomBasesArray : Array<IntArray>, roomData : Array<IntArray>, i : Int, x1 : Int, x2 : Int, y1 : Int, y2 : Int)
+{
+    var relativeX = 0
+    var relativeY = 0
+    for (x in x1 until  x2)
+    {
+        for (y in y1 until  y2)
+        {
+            if (roomData[x][y] == i)
+            {
+                roomBasesArray[relativeX][relativeY] = i
+            }
+            relativeY += 1
+        }
+        relativeY = 0
+        relativeX += 1
+    }
+}
+
+fun getRoomY2(i : Int, roomData : Array<IntArray>) : Int
+{
+    var highestY = 0
+    for (x in roomData.indices)
+    {
+        for (y in 0 until  roomData[0].size)
+        {
+            if (roomData[x][y] == i && x > highestY)
+            {
+                highestY = x
+            }
+        }
+    }
+    return highestY
+}
+
+fun getRoomX2(i : Int, roomData : Array<IntArray>) : Int
+{
+    var highestX = 0
+    for (element in roomData)
+    {
+        for (y in 0 until  roomData[0].size)
+        {
+            if (element[y] == i && y > highestX)
+            {
+                highestX = y
+            }
+        }
+    }
+    return highestX
+}
+
+fun getRoomY1(i : Int, roomData : Array<IntArray>) : Int
+{
+    var lowestY = 1000
+    for (x in roomData.indices)
+    {
+        for (y in 0 until roomData[0].size)
+        {
+            if (roomData[x][y] == i && x < lowestY)
+            {
+                lowestY = x
+            }
+        }
+    }
+    return lowestY
+}
+
+fun getRoomX1(i : Int, roomData : Array<IntArray>) : Int
+{
+    var lowestX = 1000
+    for (element in roomData)
+    {
+        for (y in 0 until  roomData[0].size)
+        {
+            if (element[y] == i && y < lowestX)
+            {
+                lowestX = y
+            }
+        }
+    }
+    return lowestX
+}
+
+fun getMaxValInMatrix(roomData : Array<IntArray>) : Int
+{
+    var max_found = 1
+    for (i in roomData)
+    {
+        for (j in i)
+        {
+            if (j > max_found)
+            {
+                max_found = j
+            }
+        }
+    }
+    return max_found
 }
 
 fun generatePerlinNoiseMap(width: Int, height: Int, scale: Int, seed: Int): Array<DoubleArray> {

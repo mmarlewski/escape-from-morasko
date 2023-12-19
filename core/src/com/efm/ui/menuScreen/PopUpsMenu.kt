@@ -13,6 +13,7 @@ import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
 import com.efm.ui.gameScreen.ProgressBars
+import createProcGenWorld
 
 object PopUpsMenu
 {
@@ -62,7 +63,8 @@ object PopUpsMenu
         World.levels.clear()
         //World.createWorldPrototypeTwo()
         //World.createWorldBoarTest()
-        World.createWorldPrototypeThree()
+        //World.createWorldPrototypeThree()
+        World.createProcGenWorld()
         // set currentLevel and currentRoom
         val startingLevel = World.levels.first()
         val startingRoom = startingLevel.startingRoom
