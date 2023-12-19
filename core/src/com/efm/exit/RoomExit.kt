@@ -71,22 +71,41 @@ open class RoomExit(
         }
     }
     
+    /** do not allow travel that would change state combat to state free **/
+    private fun travelWouldChangeStateCombatToStateFree(targetRoom : Room) : Boolean
+    {
+        val stateIsStateCombat = getState() is State.combat
+        val targetRoomIsEmpty = !targetRoom.areEnemiesInRoom()
+        return stateIsStateCombat && targetRoomIsEmpty
+    }
+    
+    override fun isOpen() : Boolean
+    {
+        val worldCurrentLevel = World.currentLevel
+        val worldCurrentRoom = World.currentRoom
+        
+        val isOpen = if (worldCurrentLevel != null && worldCurrentRoom != null)
+        {
+            val targetRoom = worldCurrentLevel.rooms.find { it.name == endRoomName }
+            if (targetRoom != null)
+            {
+                super.isOpen() && !travelWouldChangeStateCombatToStateFree(targetRoom)
+            }
+            else false
+        }
+        else false
+        
+        return isOpen
+    }
+    
     override fun interact()
     {
-        val worldCurrentLevel = World.currentLevel ?: return
-        val worldCurrentRoom = World.currentRoom ?: return
-        
-        if (!activeWhenNoEnemiesAreInRoom || !worldCurrentRoom.areEnemiesInRoom())
+        if (isOpen())
         {
-            val targetRoom : Room? = worldCurrentLevel.rooms.find { it.name == endRoomName }
-            // do not allow travel that would change state combat to state free
-            if (!(getState() is State.combat && targetRoom?.areEnemiesInRoom() == false))
-            {
-                travelBetweenRooms()
-                Gdx.app.log("Exit", "adjusting camera")
-                adjustCameraAfterMoving()
-                adjustMapLayersAfterMoving()
-            }
+            travelBetweenRooms()
+            Gdx.app.log("Exit", "adjusting camera")
+            adjustCameraAfterMoving()
+            adjustMapLayersAfterMoving()
         }
     }
     

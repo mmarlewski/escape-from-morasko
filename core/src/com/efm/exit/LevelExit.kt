@@ -69,9 +69,7 @@ open class LevelExit(
     
     override fun interact()
     {
-        val worldCurrentRoom = World.currentRoom ?: return
-        
-        if (!activeWhenNoEnemiesAreInRoom || !worldCurrentRoom.areEnemiesInRoom())
+        if (isOpen())
         {
             showNextLevelPopup()
             Gdx.app.log("Exit", "adjusting camera")
