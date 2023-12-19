@@ -35,8 +35,11 @@ class Mushroom(
     {
         World.hero.healCharacter(hpBoost)
         World.hero.gainAP(apBoost)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.hpPlus, World.hero.position, 0.5f, 0.25f),
-                Animation.ascendTile(Tiles.apPlus, World.hero.position, 0.5f, 0.25f)))
+        Animating.executeAnimations(
+                mutableListOf(
+                        Animation.ascendTile(Tiles.hpPlus, World.hero.position, 0.5f, 0.25f),
+                        Animation.ascendTile(Tiles.apPlus, World.hero.position, 0.5f, 0.25f)
+                             )
+                                   )
     }
 }

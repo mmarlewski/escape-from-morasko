@@ -7,8 +7,8 @@ class WoodenSword : Sword()
 {
     override val name : String = "Wooden Sword"
     override var baseAPUseCost : Int = 1
-    override var durability : Int = 15
-    override var maxDurability : Int = 15
+    override var durability : Int = 25
+    override var maxDurability : Int = 25
     override val durabilityUseCost : Int = 1
     override val damage : Int = 2
     

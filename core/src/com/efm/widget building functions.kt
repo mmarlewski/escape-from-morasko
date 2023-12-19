@@ -1143,6 +1143,7 @@ fun specialEventPopup(
         window.isVisible = false
         onYes()
         PopUps.setBackgroundVisibility(true)
+        LeftStructure.menuButton.isVisible = true
     }
     
     val noButton = imageButtonOf(
@@ -1158,6 +1159,7 @@ fun specialEventPopup(
         Sounds.ui_3.playOnce()
         onNo()
         PopUps.setBackgroundVisibility(true)
+        LeftStructure.menuButton.isVisible = true
     }
     
     val table = Table()

@@ -10,7 +10,7 @@ import com.efm.level.World
 
 class Apple(
         override var amount : Int = 1
-              ) : StackableSelfItem
+           ) : StackableSelfItem
 {
     override val name : String = "Apple"
     override val maxAmount : Int = 16
@@ -34,7 +34,10 @@ class Apple(
     override fun use()
     {
         World.hero.healCharacter(hpBoost)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.hpPlus,World.hero.position,0.5f,0.25f)))
+        Animating.executeAnimations(
+                mutableListOf(
+                        Animation.ascendTile(Tiles.hpPlus, World.hero.position, 0.5f, 0.25f)
+                             )
+                                   )
     }
 }

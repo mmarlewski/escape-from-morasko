@@ -34,7 +34,10 @@ class APPotionSmall(
     override fun use()
     {
         World.hero.gainAP(apBoost)
-        Animating.executeAnimations(mutableListOf(
-                Animation.ascendTile(Tiles.apPlus, World.hero.position, 0.5f, 0.25f)))
+        Animating.executeAnimations(
+                mutableListOf(
+                        Animation.ascendTile(Tiles.apPlus, World.hero.position, 0.5f, 0.25f)
+                             )
+                                   )
     }
 }

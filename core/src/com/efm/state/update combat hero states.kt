@@ -541,7 +541,7 @@ fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedO
             val canReach = (currState.pathSpaces.size + 1 <= World.hero.abilityPoints)
             val movePosition = if (canReach) selectedPosition else currState.pathSpaces.last().position
             
-            moveHero(World.hero.position, movePosition, currState.pathSpaces)
+            moveHero(World.hero.position.copy(), movePosition.copy(), currState.pathSpaces)
             
             return State.combat.hero.moveSelectedTwice.apply {
                 this.isHeroAlive = currState.isHeroAlive

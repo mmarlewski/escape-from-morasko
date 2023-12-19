@@ -7,6 +7,7 @@ import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 import com.efm.skill.BodyPart
+import com.efm.skills.BarrelThrowing
 import com.efm.stackableSelfItems.Apple
 import com.efm.state.State
 import com.efm.state.setState
