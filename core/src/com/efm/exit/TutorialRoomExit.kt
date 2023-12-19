@@ -14,7 +14,7 @@ class TutorialRoomExit(
         endPosition : RoomPosition,
         style : ExitStyle,
         endDirection : Direction4 = direction.opposite(),
-        activeWhenNoEnemiesAreInRoom : Boolean = true
+        activeWhenNoEnemiesAreInRoom : Boolean = false
                       ) : RoomExit(
         position, direction, endRoomName, endPosition, style, endDirection, activeWhenNoEnemiesAreInRoom
                                   )

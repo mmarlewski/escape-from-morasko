@@ -117,6 +117,7 @@ fun loadGame()
         //
         
         println("loaded game")
+        // getState().tutorialFlags.print()
     }
     else
     {

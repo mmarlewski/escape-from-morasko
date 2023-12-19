@@ -31,11 +31,6 @@ fun setState(newState : State)
     
 }
 
-fun toggleTutorialActive()
-{
-    getState().tutorialFlags.tutorialActive = !getState().tutorialFlags.tutorialActive
-}
-
 sealed class State
 {
     var isHeroAlive = true
@@ -77,9 +72,27 @@ sealed class State
             playerEndedTurn = false
             combatPopupShown = false
         }
-        
+    
+        fun print()
+        {
+            println(tutorialActive)
+            println(welcomePopupShown)
+            println(cameraPopupShown)
+            //println(playerMovedCamera)
+            println(movementPopupShown)
+            println(playerMoved)
+            println(lootingPopupShown)
+            println(playerLooted)
+            println(equipmentPopupShown)
+            println(playerSelectedSomethingFromEquipment)
+            println(healthAndAbilityPopupShown)
+            println(turnsPopupShown)
+            println(playerEndedTurn)
+            println(combatPopupShown)
+        }
+    
         // for serializing
-        
+    
         override fun write(json : Json?)
         {
             if (json != null)
