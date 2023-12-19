@@ -372,7 +372,7 @@ fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
         if (selectedPosition == currState.selectedPosition)
         {
             Map.clearLayer(MapLayer.select)
-            moveHero(World.hero.position, currState.selectedPosition, currState.pathSpaces)
+            moveHero(World.hero.position.copy(), currState.selectedPosition.copy(), currState.pathSpaces)
             
             return State.free.moveSelectedTwice.apply {
                 this.isHeroAlive = currState.isHeroAlive

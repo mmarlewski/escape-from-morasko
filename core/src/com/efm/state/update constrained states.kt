@@ -608,7 +608,7 @@ fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelected
             val canReach = (currState.pathSpaces.size + 1 <= World.hero.abilityPoints)
             val movePosition = if (canReach) selectedPosition else currState.pathSpaces.last().position
             
-            moveHero(World.hero.position, movePosition, currState.pathSpaces)
+            moveHero(World.hero.position.copy(), movePosition.copy(), currState.pathSpaces)
             for (enemy in World.currentRoom?.getEnemies() ?: listOf())
             {
                 enemy.healthStack.isVisible = false
