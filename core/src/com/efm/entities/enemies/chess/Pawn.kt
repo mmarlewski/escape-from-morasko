@@ -7,10 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entities.walls.*
-import com.efm.entity.Character
-import com.efm.entity.Enemy
-import com.efm.entity.Entity
+import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -18,8 +15,8 @@ import com.efm.room.Space
 class Pawn: Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 15
-    override var healthPoints = 15
+    override var maxHealthPoints = 5
+    override var healthPoints = 5
     override var alive = true
     override var isFrozen = false
     override fun getTile() : TiledMapTile?

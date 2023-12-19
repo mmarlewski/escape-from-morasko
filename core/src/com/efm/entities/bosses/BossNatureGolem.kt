@@ -21,7 +21,7 @@ class BossNatureGolem : Entity, Enemy
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 5
-    override var attackDamage = 10
+    override var attackDamage = 20
     override val stepsInOneTurn = 5
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

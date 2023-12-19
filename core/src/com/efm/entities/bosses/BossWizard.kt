@@ -17,12 +17,12 @@ import com.efm.state.getState
 class BossWizard : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 10
-    override var healthPoints = 10
+    override var maxHealthPoints = 30
+    override var healthPoints = 30
     override var alive = true
     override val detectionRange = 5
     override val attackRange = 5
-    override var attackDamage = 5
+    override var attackDamage = 20
     override val stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

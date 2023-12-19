@@ -24,7 +24,7 @@ class BossOctopusHead : Entity, Enemy
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 0
-    override var attackDamage = 10
+    override var attackDamage = 30
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

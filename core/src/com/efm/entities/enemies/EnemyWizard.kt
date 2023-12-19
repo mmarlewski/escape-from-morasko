@@ -15,12 +15,12 @@ import com.efm.room.RoomPosition
 class EnemyWizard : Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 10
-    override var healthPoints = 10
+    override var maxHealthPoints = 15
+    override var healthPoints = 15
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 3
-    override var attackDamage = 20
+    override var attackDamage = 15
     override val stepsInOneTurn = 5
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

@@ -7,9 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entity.Character
-import com.efm.entity.Enemy
-import com.efm.entity.Entity
+import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -18,8 +16,8 @@ import kotlin.math.pow
 class Queen: Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 5
-    override var healthPoints = 5
+    override var maxHealthPoints = 35
+    override var healthPoints = 35
     override var alive = true
     override var isFrozen = false
     override fun getTile() : TiledMapTile?
@@ -34,7 +32,7 @@ class Queen: Entity, Enemy
     
     override val detectionRange = 1
     override val attackRange = 0
-    override var attackDamage = 5
+    override var attackDamage = 25
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

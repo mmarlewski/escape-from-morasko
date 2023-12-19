@@ -23,7 +23,7 @@ class EnemyBoar(
     
     override val detectionRange : Int = 3
     override val attackRange : Int = 3
-    override var attackDamage = 20
+    override var attackDamage = 15
     override val stepsInOneTurn : Int = 2
     
     override lateinit var healthBar : ProgressBar
@@ -228,7 +228,7 @@ class EnemyBoar(
                 is Character ->
                 {
                     // the longer the charge, the stronger the attack
-                    attackedEntity.damageCharacter(20 + (stepsSpaces?.size?.times(10) ?: 0))
+                    attackedEntity.damageCharacter(attackDamage + (stepsSpaces?.size?.times(10) ?: 0))
                 }
             }
         }
@@ -312,17 +312,17 @@ class EnemyBoar(
                         // intimidating pose before charging
                         animations += Animation.showTileWithCameraFocus(enemy.getIdleTile(1), pom, 0.33f)
                         animations += Animation.showTileWithCameraFocus(enemy.getIdleTile(2), pom, 0.33f)
-                        
+    
                         // charge
-                        
+    
                         Gdx.app.log("EnemyBoar", "charge")
-                        val worldCurrentRoom = World.currentRoom
-                        val pathSpaces2 = if (worldCurrentRoom != null) PathFinding.findPathInRoomForEntity(
+                        val worldCurrentRoom2 = World.currentRoom
+                        val pathSpaces2 = if (worldCurrentRoom2 != null) PathFinding.findPathInRoomForEntity(
                                 endPosition,
                                 World.hero.position,
-                                worldCurrentRoom,
+                                worldCurrentRoom2,
                                 this
-                                                                                                          )
+                                                                                                            )
                         else null
                         val stepsSpaces2 = pathSpaces2?.take(attackRange)
                         if (!stepsSpaces2.isNullOrEmpty())
@@ -389,7 +389,7 @@ class EnemyBoar(
                             is Character ->
                             {
                                 // the longer the charge, the stronger the attack
-                                attackedEntity.damageCharacter(20 + stepsSpaces.size.times(10))
+                                attackedEntity.damageCharacter(attackDamage + stepsSpaces.size.times(10))
                             }
                         }
                     }
