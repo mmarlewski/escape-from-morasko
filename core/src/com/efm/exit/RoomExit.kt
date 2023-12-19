@@ -9,7 +9,6 @@ import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
-import com.efm.screens.GameScreen
 import com.efm.state.State
 import com.efm.state.getState
 
@@ -24,33 +23,9 @@ open class RoomExit(
         override var active : Boolean = true
                    ) : Exit
 {
-    override fun getOutlineTealTile() : TiledMapTile?
-    {
-        return if (!activeWhenNoEnemiesAreInRoom)
-        {
-            when (direction)
-            {
-                Direction4.up    -> Tiles.ExitUpOutlineTeal
-                Direction4.right -> Tiles.ExitRightOutlineTeal
-                Direction4.down  -> Tiles.ExitDownOutlineTeal
-                Direction4.left  -> Tiles.ExitLeftOutlineTeal
-            }
-        }
-        else
-        {
-            when (direction)
-            {
-                Direction4.up    -> Tiles.ExitUpOutlineRed
-                Direction4.right -> Tiles.ExitRightOutlineRed
-                Direction4.down  -> Tiles.ExitDownOutlineRed
-                Direction4.left  -> Tiles.ExitLeftOutlineRed
-            }
-        }
-    }
-    
     override fun getTile() : TiledMapTile?
     {
-        return if (!activeWhenNoEnemiesAreInRoom)
+        return if (isOpen())
         {
             when (direction)
             {
@@ -68,6 +43,30 @@ open class RoomExit(
                 Direction4.right -> style.tiles.exitRightClosed
                 Direction4.down  -> style.tiles.exitDownClosed
                 Direction4.left  -> style.tiles.exitLeftClosed
+            }
+        }
+    }
+    
+    override fun getOutlineTealTile() : TiledMapTile?
+    {
+        return if (isOpen())
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitUpOutlineTeal
+                Direction4.right -> Tiles.ExitRightOutlineTeal
+                Direction4.down  -> Tiles.ExitDownOutlineTeal
+                Direction4.left  -> Tiles.ExitLeftOutlineTeal
+            }
+        }
+        else
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitUpOutlineRed
+                Direction4.right -> Tiles.ExitRightOutlineRed
+                Direction4.down  -> Tiles.ExitDownOutlineRed
+                Direction4.left  -> Tiles.ExitLeftOutlineRed
             }
         }
     }
