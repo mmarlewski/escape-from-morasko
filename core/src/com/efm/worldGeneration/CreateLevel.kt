@@ -3,6 +3,7 @@ import com.efm.entities.walls.WallStyle
 import com.efm.level.Level
 import com.efm.level.World
 import com.efm.room.*
+import kotlin.math.*
 import kotlin.random.Random
 
 class Node(
@@ -115,19 +116,10 @@ fun calculateAveragePerlinValue(room: Node, perlinMap: Array<DoubleArray>): Doub
     return totalPerlinValue / (roomWidth * roomHeight)
 }
 
-fun displayMap(roomData: Array<IntArray>) {
-    for (element in roomData) {
-        for (j in 0 until roomData[0].size) {
-            print("${element[j]} ")
-        }
-        println()  // Move to the next line after each row
-    }
-}
-
 fun World.createProcGenWorld() {
-    val mapWidth = 80
-    val mapHeight = 80
-    val minRoomSize = 10
+    val mapWidth = 60
+    val mapHeight = 60
+    val minRoomSize = 8
     val bufferSize = 1
     
     val roomNumber = 1
@@ -141,7 +133,7 @@ fun World.createProcGenWorld() {
     
     // Generate Perlin Noise map
     val perlinMap = generatePerlinNoiseMap(mapWidth, mapHeight, scale, seed)
-    val perlinThreshold = 0.15
+    val perlinThreshold = -2.0
     
     // Filter rooms based on Perlin Noise
     filterRoomsByPerlinThreshold(root, perlinMap, perlinThreshold)
@@ -152,17 +144,17 @@ fun World.createProcGenWorld() {
     // Merge rooms
     mergeRooms(roomData)
     
-    // Now 'rooms' is a list of Room objects with their x and y coordinates
     roomData = labelRooms(roomData)
     val patchCenters = findPatchCenters(roomData)
     println("Patch Centers:")
     patchCenters.forEach { println("Patch ${it.x}, ${it.y}") }
     
-    val min_room_val = 1
+    val min_room_val = getMinValInMatrix(roomData)
     val max_room_val = getMaxValInMatrix(roomData)
+    var possibleRoomsValues = getPossibleRoomValues(roomData, min_room_val, max_room_val)
     val level = Level("1")
     var rooms = mutableListOf<Room>()
-    for (i in min_room_val..max_room_val)
+    for (i in possibleRoomsValues)
     {
         val x1 = getRoomX1(i, roomData)
         val x2 = getRoomX2(i, roomData)
@@ -172,8 +164,6 @@ fun World.createProcGenWorld() {
         val width = y2 - y1
         val room = Room(i.toString(), height, width)
         val roomBasesArray = getMatrixBasedOnCoordinates(roomData, x1, x2, y1, y2, i)
-        //val roomBasesArray = Array(width) { IntArray(height) { 0 } }
-        //fillBaseArrayBasedOnRoomData(roomBasesArray, roomData, i ,x1, x2, y1, y2)
         for (y in roomBasesArray.indices)
         {
             for (x in roomBasesArray[y].indices)
@@ -194,51 +184,142 @@ fun World.createProcGenWorld() {
         }
     
     
-    
         room.addWalls(WallStyle.brickRedDark)
+        
+        
         level.addRoom(room)
         rooms.add(room)
     }
+    //add Passages
+    createPassages(rooms, patchCenters, possibleRoomsValues)
+    
     level.startingRoom = rooms[0]
     level.startingPosition.set(RoomPosition(2, 2))
     addLevel(level)
-    //displayMap(roomData)
+}
+
+fun getPossibleRoomValues(roomData : Array<IntArray>, minRoomVal : Int, maxRoomVal : Int) : List<Int>
+{
+    var possibleRoomValues = mutableListOf<Int>()
+    for (i in roomData)
+    {
+        for (j in i)
+        {
+            if (j != 0 && j !in possibleRoomValues)
+            {
+                possibleRoomValues.add(j)
+            }
+        }
+    }
+    return possibleRoomValues
+}
+
+fun createPassages(rooms : MutableList<Room>, patchCenters : List<PatchCenter>, possibleRoomsValues : List<Int>)
+{
+    var connections = mutableListOf<Int>()
+    while (!areAllRoomsConnected(connections, possibleRoomsValues))
+    {
+        for (i in patchCenters)
+        {
+            val currentRoom = findRoomByName(i.value.toString(), rooms)
+            val closestPatch = findClosestPatchThatIsNotInConnections(connections, patchCenters, i)
+            val closestPatchValue = closestPatch.value
+            val closestRoomName = closestPatchValue.toString()
+            val closestRoom = findRoomByName(closestRoomName, rooms)
+            createPassagesBasedOnRelativePosition(i, closestPatch)
+        }
+    }
+    
+}
+
+fun createPassagesBasedOnRelativePosition(currentRoomVal : PatchCenter, closestRoomVal : PatchCenter)
+{
+    if (currentRoomVal.x > closestRoomVal.x)
+    {
+        if (currentRoomVal.y > closestRoomVal.y)
+        {
+            //top-left for curr room, bott-right for closest
+        }
+        else
+        {
+            //top-right curr, bott-left closest
+        }
+    }
+    else
+    {
+        if (currentRoomVal.y > closestRoomVal.y)
+        {
+            //bott-left curr, top-right closest
+        }
+        else
+        {
+            //bott-right curr, top-left closest
+        }
+    }
+}
+
+fun findRoomByName(closestRoomName : String, rooms : MutableList<Room>) : Room?
+{
+    for (i in rooms)
+    {
+        if (i.name == closestRoomName)
+        {
+            return i
+        }
+    }
+    return null
+}
+
+fun findClosestPatchThatIsNotInConnections(connections : MutableList<Int>, patchCenters : List<PatchCenter>, i : PatchCenter) : PatchCenter
+{
+    var closestPatchDist = 1000.0
+    lateinit var closestPatch : PatchCenter
+    for (patch in patchCenters)
+    {
+        if (patch.value != i.value && patch.value !in connections)
+        {
+            val currentDistBetweenPatches = findDistanceBetweenPatches(i, patch)
+            if (currentDistBetweenPatches < closestPatchDist)
+            {
+                closestPatchDist = currentDistBetweenPatches
+                closestPatch = patch
+            }
+        }
+    }
+    return closestPatch
+}
+
+fun findDistanceBetweenPatches(i : PatchCenter, patch : PatchCenter) : Double
+{
+    return sqrt((abs(i.x - patch.x) * abs(i.x - patch.x) + abs(i.y - patch.y) * abs(i.y - patch.y)).toDouble())
+}
+
+fun areAllRoomsConnected(connections : MutableList<Int>, possibleRoomsValues : List<Int>) : Boolean
+{
+    for (i in possibleRoomsValues)
+    {
+        if (i !in connections)
+        {
+            return false
+        }
+    }
+    return true
 }
 
 fun getMatrixBasedOnCoordinates(roomData : Array<IntArray>, x1 : Int, x2 : Int, y1 : Int, y2 : Int, i : Int) : Array<IntArray>
 {
-    var result = Array(x2- x1) { IntArray(y2 - y1) { 0 } }
+    var result = Array(x2 - x1 + 1) { IntArray(y2 - y1 + 1) { 0 } }
     for (x in x1 until  x2)
     {
         for (y in y1 until  y2)
         {
             if (roomData[x][y] == i)
             {
-                print("x1 : $x1 x : $x y1 : $y1 y : $y")
-                result[x - x1][y - y1] = i
+                result[x - x1 + 1][y - y1 + 1] = i
             }
         }
     }
     return result
-}
-
-fun fillBaseArrayBasedOnRoomData(roomBasesArray : Array<IntArray>, roomData : Array<IntArray>, i : Int, x1 : Int, x2 : Int, y1 : Int, y2 : Int)
-{
-    var relativeX = 0
-    var relativeY = 0
-    for (x in x1 until  x2)
-    {
-        for (y in y1 until  y2)
-        {
-            if (roomData[x][y] == i)
-            {
-                roomBasesArray[relativeX][relativeY] = i
-            }
-            relativeY += 1
-        }
-        relativeY = 0
-        relativeX += 1
-    }
 }
 
 fun getRoomY2(i : Int, roomData : Array<IntArray>) : Int
@@ -321,6 +402,25 @@ fun getMaxValInMatrix(roomData : Array<IntArray>) : Int
     return max_found
 }
 
+fun getMinValInMatrix(roomData : Array<IntArray>) : Int
+{
+    var min_found = 100
+    for (i in roomData)
+    {
+        for (j in i)
+        {
+            if (j > 0)
+            {
+                if (j < min_found)
+                {
+                    min_found = j
+                }
+            }
+        }
+    }
+    return min_found
+}
+
 fun generatePerlinNoiseMap(width: Int, height: Int, scale: Int, seed: Int): Array<DoubleArray> {
     val random = Random(seed)
     var permutationTable = (0 until 256).shuffled(random).toIntArray()
@@ -339,7 +439,7 @@ fun generatePerlinNoiseMap(width: Int, height: Int, scale: Int, seed: Int): Arra
     return perlinMap
 }
 
-data class PatchCenter(val x: Double, val y: Double, val value: Int)
+data class PatchCenter(val x: Int, val y: Int, val value: Int)
 
 fun findPatchCenters(roomData: Array<IntArray>): List<PatchCenter> {
     val patchCenters = mutableListOf<PatchCenter>()
@@ -382,9 +482,8 @@ fun calculatePatchCenter(startX: Int, startY: Int, roomData: Array<IntArray>): P
         }
     }
     
-    // Calculate the average x and y coordinates
-    val centerX = patchValues.map { it.first }.average()
-    val centerY = patchValues.map { it.second }.average()
+    val centerX = patchValues.map { it.first }.average().roundToInt()
+    val centerY = patchValues.map { it.second }.average().roundToInt()
     
     return PatchCenter(centerX, centerY, roomData[startX][startY])
 }
@@ -413,9 +512,9 @@ fun lerp(t: Double, a: Double, b: Double): Double = a + t * (b - a)
 
 fun grad(hashValue: Int, x: Double): Double {
     val h = hashValue and 15
-    var grad = 1.0 + (h and 7)  // Gradient value 1-8
+    var grad = 1.0 + (h and 7)
     if (h and 8 != 0) {
-        grad = -grad  // Randomly invert half of the gradients
+        grad = -grad
     }
     return grad * x
 }
@@ -471,7 +570,7 @@ fun labelRooms(roomData: Array<IntArray>): Array<IntArray> {
 }
 
 fun dfs(x: Int, y: Int, roomData: Array<IntArray>, labeledData: Array<IntArray>, label: Int) {
-    if (x in 0 until roomData.size &&
+    if (x in roomData.indices &&
             y in 0 until roomData[0].size &&
             roomData[x][y] == 1 &&
             labeledData[x][y] == 0
@@ -483,3 +582,5 @@ fun dfs(x: Int, y: Int, roomData: Array<IntArray>, labeledData: Array<IntArray>,
         dfs(x, y - 1, roomData, labeledData, label)
     }
 }
+
+
