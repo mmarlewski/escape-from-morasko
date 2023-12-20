@@ -19,33 +19,9 @@ open class LevelExit(
         override var active : Boolean = true
                     ) : Exit
 {
-    override fun getOutlineTealTile() : TiledMapTile?
-    {
-        return if (!activeWhenNoEnemiesAreInRoom)
-        {
-            when (direction)
-            {
-                Direction4.up    -> Tiles.ExitLevelUpOutlineTeal
-                Direction4.right -> Tiles.ExitLevelRightOutlineTeal
-                Direction4.down  -> Tiles.ExitLevelDownOutlineTeal
-                Direction4.left  -> Tiles.ExitLevelLeftOutlineTeal
-            }
-        }
-        else
-        {
-            when (direction)
-            {
-                Direction4.up    -> Tiles.ExitLevelUpOutlineRed
-                Direction4.right -> Tiles.ExitLevelRightOutlineRed
-                Direction4.down  -> Tiles.ExitLevelDownOutlineRed
-                Direction4.left  -> Tiles.ExitLevelLeftOutlineRed
-            }
-        }
-    }
-    
     override fun getTile() : TiledMapTile?
     {
-        return if (!activeWhenNoEnemiesAreInRoom)
+        return if (isOpen())
         {
             when (direction)
             {
@@ -67,11 +43,33 @@ open class LevelExit(
         }
     }
     
+    override fun getOutlineTealTile() : TiledMapTile?
+    {
+        return if (isOpen())
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitLevelUpOutlineTeal
+                Direction4.right -> Tiles.ExitLevelRightOutlineTeal
+                Direction4.down  -> Tiles.ExitLevelDownOutlineTeal
+                Direction4.left  -> Tiles.ExitLevelLeftOutlineTeal
+            }
+        }
+        else
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitLevelUpOutlineRed
+                Direction4.right -> Tiles.ExitLevelRightOutlineRed
+                Direction4.down  -> Tiles.ExitLevelDownOutlineRed
+                Direction4.left  -> Tiles.ExitLevelLeftOutlineRed
+            }
+        }
+    }
+    
     override fun interact()
     {
-        val worldCurrentRoom = World.currentRoom ?: return
-        
-        if (!activeWhenNoEnemiesAreInRoom || !worldCurrentRoom.areEnemiesInRoom())
+        if (isOpen())
         {
             showNextLevelPopup()
             Gdx.app.log("Exit", "adjusting camera")
