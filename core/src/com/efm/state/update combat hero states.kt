@@ -627,11 +627,19 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
 {
     if (!Animating.isAnimating())
     {
-        // interact with Interactive Entity if it was selected in ConstrainedMoveSelectedOnce
         val entityOnPositionHeroWalkedTowards = currState.entityOnPosition
-        if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
+        if (entityOnPositionHeroWalkedTowards == null)  // Hero stops at selectedPosition
+        {
+            World.hero.spendAP(currState.pathSpaces.size + 1)
         
-        World.hero.spendAP(currState.pathSpaces.size + 1)
+        }
+        else    // Hero stops next to the Entity that is at selectedPosition
+        {
+            World.hero.spendAP(currState.pathSpaces.size)
+            // interact with Interactive Entity if it was selected in ConstrainedMoveSelectedOnce
+            if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
+        }
+    
         for (level in World.levels)
         {
             for (room in level.rooms)
