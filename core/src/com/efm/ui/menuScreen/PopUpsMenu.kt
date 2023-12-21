@@ -7,12 +7,9 @@ import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 import com.efm.skill.BodyPart
-import com.efm.skills.BarrelThrowing
-import com.efm.stackableSelfItems.Apple
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
-import com.efm.ui.gameScreen.ProgressBars
 
 object PopUpsMenu
 {
@@ -21,7 +18,7 @@ object PopUpsMenu
     {
         val overwriteSavePopup = yesNoPopup(
                 "Overwrite save?",
-                "You're about to overwrite your existing save. Your progress will be lost. Do you want to continue?",
+                "Your progress will be lost! Do you want to continue?",
                 {
                     startNewGame()
                 },
@@ -83,10 +80,11 @@ object PopUpsMenu
         World.hero.isVisible = true
         World.hero.turnsElapsed = 0
         World.hero.weaponDamageMultiplier = 1
-        World.hero.inventory.items.clear()
         BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
         // add Items to Hero
-        World.hero.inventory.addItem(Apple(2))
+        World.hero.setStartingInventory()
+        // set godmode
+        // World.hero.godMode()
         // add Skills to Hero
 //                    World.hero.addSkill(LavaWalking)
 //                    World.hero.addSkill(Push)

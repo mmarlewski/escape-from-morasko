@@ -9,14 +9,14 @@ import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 
-class Bomb(
+open class Bomb(
         override var amount : Int = 1
-          ) : StackableMapItem
+               ) : StackableMapItem
 {
     override val name : String = "Bomb"
     override val maxAmount : Int = 4
     override val baseAPUseCost : Int = 1
-    val damage : Int = 11
+    open val damage : Int = 11
     
     override fun getTexture() : Texture
     {
