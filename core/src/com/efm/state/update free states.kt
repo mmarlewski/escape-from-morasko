@@ -88,8 +88,13 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
-                
+                if (selectedEntity is Interactive) Map.changeTile(
+                        MapLayer.outline,
+                        selectedPosition,
+                        selectedEntity.getOutlineTealTile()
+                                                                 )
+                else Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
+    
                 return State.free.entitySelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -116,7 +121,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
         ProgressBars.abilityBar.isVisible = true
         ProgressBars.abilityBarForFlashing.isVisible = true
         ProgressBars.abilityBarLabel.isVisible = true
-        
+    
         return State.constrained.noSelection.apply {
             this.isHeroAlive = currState.isHeroAlive
             this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -124,27 +129,28 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
             this.areAnyActionPointsLeft = true
         }
     }
-    
-    val selectedPosition = GameScreen.roomTouchPosition
-    val selectedSpace = World.currentRoom?.getSpace(selectedPosition)
-    val selectedEntity = selectedSpace?.getEntity()
-    
-    Map.clearLayer(MapLayer.outline)
-    
-    when (selectedEntity)
+    if (GameScreen.isTouched)
     {
-        null     ->
-        {
-            Map.clearLayer(MapLayer.select)
-            Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-        }
+        val selectedPosition = GameScreen.roomTouchPosition
+        val selectedSpace = World.currentRoom?.getSpace(selectedPosition)
+        val selectedEntity = selectedSpace?.getEntity()
         
-        is Hero  ->
+        Map.clearLayer(MapLayer.outline)
+        
+        when (selectedEntity)
         {
-            RightStructure.moveButtonVisibility(true)
-            Map.clearLayer(MapLayer.select)
-            Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
-            Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
+            null    ->
+            {
+                Map.clearLayer(MapLayer.select)
+                Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+            }
+            
+            is Hero ->
+            {
+                RightStructure.moveButtonVisibility(true)
+                Map.clearLayer(MapLayer.select)
+                Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
+                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
             
             return State.free.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
@@ -169,8 +175,13 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
         {
             Map.clearLayer(MapLayer.select)
             Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-            Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
-            
+            if (selectedEntity is Interactive) Map.changeTile(
+                    MapLayer.outline,
+                    selectedPosition,
+                    selectedEntity.getOutlineTealTile()
+                                                             )
+            else Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
+    
             return State.free.entitySelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -178,7 +189,7 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
             }
         }
     }
-    
+    }
     return currState
 }
 
@@ -218,6 +229,11 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+    
+                return State.free.nothingSelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                }
             }
             
             is Hero ->
@@ -237,8 +253,24 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
-                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
-                
+                if (selectedEntity is Interactive)
+                {
+                    Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTealTile())
+                    if (selectedEntity == currState.selectedEntity && World.hero.position.isAdjacentTo(selectedEntity.position))
+                    {
+                        // Using Exits this way would require more work
+                        if (selectedEntity !is Exit)
+                            selectedEntity.interact()
+                    }
+                    Map.clearLayer(MapLayer.select)
+                    Map.clearLayer(MapLayer.outline)
+                    return State.free.nothingSelected.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    }
+                }
+                else Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
+    
                 return State.free.entitySelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -287,7 +319,12 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
         {
             is Hero ->
             {
-                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
+                Map.clearLayer(MapLayer.select)
+    
+                return State.free.nothingSelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                }
             }
             
             else    ->

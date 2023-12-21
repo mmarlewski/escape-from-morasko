@@ -62,7 +62,7 @@ data class RoomPosition(var x : Int = 0, var y : Int = 0) : Json.Serializable
     
     fun surroundingPositions(radius : Int) : List<RoomPosition>
     {
-        var result = mutableListOf<RoomPosition>()
+        val result = mutableListOf<RoomPosition>()
         for (i in -radius..radius)
         {
             for (j in -radius..radius)
@@ -72,6 +72,8 @@ data class RoomPosition(var x : Int = 0, var y : Int = 0) : Json.Serializable
         }
         return result
     }
+    
+    fun isAdjacentTo(position : RoomPosition) : Boolean = this.surroundingPositions(1).contains(position)
     
     // for serializing
     

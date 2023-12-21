@@ -4,8 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
-import com.efm.assets.Sounds
-import com.efm.assets.Textures
+import com.efm.assets.*
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.state.*
@@ -38,27 +37,66 @@ object RightStructure
             
             val newState = when (val currState = getState())
             {
-                is State.free        -> State.free.heroSelected.apply {
-                    Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                is State.free        ->
+                {
+                    when (currState)
+                    {
+                        is State.free.heroSelected -> State.free.nothingSelected.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        }
+            
+                        else                       -> State.free.heroSelected.apply {
+                            Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+                            Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        }
+                    }
                 }
-                
-                is State.constrained -> State.constrained.heroSelected.apply {
-                    Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.isHeroDetected = currState.isHeroDetected
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+    
+                is State.constrained ->
+                {
+                    when (currState)
+                    {
+                        is State.constrained.heroSelected -> State.constrained.nothingSelected.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.isHeroDetected = currState.isHeroDetected
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        }
+            
+                        else                              -> State.constrained.heroSelected.apply {
+                            Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+                            Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.isHeroDetected = currState.isHeroDetected
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        }
+                    }
                 }
-                
-                is State.combat.hero -> State.combat.hero.heroSelected.apply {
-                    Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
-                    this.isHeroAlive = currState.isHeroAlive
-                    this.areEnemiesInRoom = currState.areEnemiesInRoom
-                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+    
+                is State.combat.hero ->
+                {
+                    when (currState)
+                    {
+                        is State.combat.hero.heroSelected -> State.combat.hero.nothingSelected.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        }
+            
+                        else                              -> State.combat.hero.heroSelected.apply {
+                            Map.changeTile(MapLayer.select, World.hero.position, Tiles.selectGreen)
+                            Map.changeTile(MapLayer.outline, World.hero.position, World.hero.getOutlineGreenTile())
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        }
+                    }
                 }
-                
+    
                 else                 -> currState
             }
             setState(newState)
