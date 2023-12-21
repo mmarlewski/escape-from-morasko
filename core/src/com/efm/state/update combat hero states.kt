@@ -8,6 +8,7 @@ import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.exit.Exit
 import com.efm.exit.LevelExit
+import com.efm.item.Container
 import com.efm.level.World
 import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
@@ -637,7 +638,13 @@ fun updateCombatHeroMoveSelectedTwice(currState : State.combat.hero.moveSelected
         {
             World.hero.spendAP(currState.pathSpaces.size)
             // interact with Interactive Entity if it was selected in ConstrainedMoveSelectedOnce
-            if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
+            if (entityOnPositionHeroWalkedTowards is Interactive)
+            {
+                entityOnPositionHeroWalkedTowards.interact()
+                // tutorial flags
+                if (entityOnPositionHeroWalkedTowards is Container)
+                    currState.tutorialFlags.playerLooted = true
+            }
         }
     
         for (level in World.levels)

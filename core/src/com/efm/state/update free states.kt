@@ -439,10 +439,9 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         if (entityOnPositionHeroWalkedTowards is Interactive)
         {
             entityOnPositionHeroWalkedTowards.interact()
+            // tutorial flags
             if (entityOnPositionHeroWalkedTowards is Container)
-            {
                 currState.tutorialFlags.playerLooted = true
-            }
         }
         
         GameScreen.roomTouchPosition.set(World.hero.position)

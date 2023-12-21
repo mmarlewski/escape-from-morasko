@@ -8,14 +8,13 @@ import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.exit.Exit
 import com.efm.exit.LevelExit
+import com.efm.item.Container
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.*
-import kotlin.math.max
-import kotlin.math.min
 
 fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : State
 {
@@ -752,11 +751,25 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
 {
     if (!Animating.isAnimating())
     {
-        // interact with Interactive Entity if it was selected in ConstrainedMoveSelectedOnce
         val entityOnPositionHeroWalkedTowards = currState.entityOnPosition
-        if (entityOnPositionHeroWalkedTowards is Interactive) entityOnPositionHeroWalkedTowards.interact()
+        if (entityOnPositionHeroWalkedTowards == null)  // Hero stops at selectedPosition
+        {
+            World.hero.spendAP(currState.pathSpaces.size + 1)
         
-        World.hero.spendAP(currState.pathSpaces.size + 1)
+        }
+        else    // Hero stops next to the Entity that is at selectedPosition
+        {
+            World.hero.spendAP(currState.pathSpaces.size)
+            // interact with Interactive Entity if it was selected in ConstrainedMoveSelectedOnce
+            if (entityOnPositionHeroWalkedTowards is Interactive)
+            {
+                entityOnPositionHeroWalkedTowards.interact()
+                // tutorial flags
+                if (entityOnPositionHeroWalkedTowards is Container)
+                    currState.tutorialFlags.playerLooted = true
+            }
+        }
+    
         for (level in World.levels)
         {
             for (room in level.rooms)
