@@ -736,7 +736,7 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.cobblestoneDarkTall)
             // entities
-            addEntityAt(EnemyMushroom(), 6, 4)
+            addEntityAt(EnemyMushroom(), 5, 4)
             val chest = TutorialChest()
             chest.addItem(IronSword())
             chest.addItem(HPPotionSmall(2))
@@ -773,7 +773,7 @@ fun World.createWorldPrototypeThree()
             // walls
             addWalls(WallStyle.cobblestoneLight)
             // entities
-            addEntityAt(EnemyGhost(), 4, 8)
+            addEntityAt(EnemyMushroom(), 4, 8)
             addEntityAt(EnemySkeleton(), 7, 5)
             val chest = Chest(
                     PossibleItems(
@@ -783,7 +783,6 @@ fun World.createWorldPrototypeThree()
                                  )
                              )
             addEntityAt(chest, 6, 5)
-            addEntityAt(Npc().apply { modifier = Modifier.AddRandomSkill }, 6, 1)
         }
         // add room to level
         addRoom(l1r4)
@@ -809,20 +808,20 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(6, 3),
                 Direction4.left,
                 l1r2.name,
-                RoomPosition(0, 7),
+                RoomPosition(0, 6),
                 ExitStyle.metal,
                 exitBBase = Base.stone
                       )
         
         // after going through exit focus camera on tutorial enemy
         val tutorialExit =
-                TutorialRoomExit(RoomPosition(6, 3), Direction4.left, l1r2.name, RoomPosition(0, 7), ExitStyle.metal)
+                TutorialRoomExit(RoomPosition(6, 3), Direction4.left, l1r2.name, RoomPosition(0, 6), ExitStyle.metal)
         l1r1.replaceEntityAt(tutorialExit, 6, 3)
         
         addRoomPassage(
                 this,
                 l1r2.name,
-                RoomPosition(l1r2.widthInSpaces - 1, 3),
+                RoomPosition(l1r2.widthInSpaces - 1, 2),
                 Direction4.left,
                 l1r3.name,
                 RoomPosition(0, 3),
@@ -831,10 +830,10 @@ fun World.createWorldPrototypeThree()
         addRoomPassage(
                 this,
                 l1r2.name,
-                RoomPosition(l1r2.widthInSpaces - 1, 9),
+                RoomPosition(l1r2.widthInSpaces - 1, 7),
                 Direction4.left,
                 l1r4.name,
-                RoomPosition(0, 9),
+                RoomPosition(0, 8),
                 ExitStyle.stone
                       )
         addRoomPassage(
@@ -902,6 +901,8 @@ fun World.createWorldPrototypeThree()
                     PossibleItems(
                             mutableListOf(
                                     PossibleItem(IronSword(), 1f, 1..1),
+                                    PossibleItem(Bow(), 0.5f, 1..1),
+                                    PossibleItem(Explosive(), 0.4f, 0..3),
                                     PossibleItem(HPPotionSmall(), 0.5f, 1..4)
                                          )
                                  )
@@ -950,12 +951,12 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(IronSword(), 0.3f, 1..1),
-                                    PossibleItem(Sledgehammer(), 0.3f, 1..1),
+                                    PossibleItem(IronSword(), 0.4f, 1..1),
+                                    PossibleItem(Sledgehammer(), 0.4f, 1..1),
                                     PossibleItem(Shuriken(), 1f, 0..6),
                                     PossibleItem(Mushroom(), 1f, 0..4),
-                                    PossibleItem(APPotionSmall(), 0.3f, 1..3),
-                                    PossibleItem(HPPotionSmall(), 0.3f, 1..3)
+                                    PossibleItem(APPotionSmall(), 0.4f, 1..3),
+                                    PossibleItem(HPPotionSmall(), 0.4f, 1..3)
                                          )
                                  )
                              )
@@ -986,8 +987,8 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(SmallAxe(), 0.3f, 1..1),
-                                    PossibleItem(IronSword(), 0.3f, 1..1),
+                                    PossibleItem(SmallAxe(), 0.5f, 1..1),
+                                    PossibleItem(IronSword(), 0.5f, 1..1),
                                     PossibleItem(Shuriken(), 1f, 0..6),
                                     PossibleItem(Mushroom(), 1f, 0..4),
                                     PossibleItem(APPotionSmall(), 0.3f, 1..3),
@@ -1171,7 +1172,9 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(WoodenSword(), 1f, 1..2)
+                                    PossibleItem(AmberSword(), 1f, 1..2),
+                                    PossibleItem(Explosive(), 0.5f, 1..3),
+                                    PossibleItem(Apple(), 0.5f, 1..4)
                                          )
                                  )
                              )
@@ -1191,12 +1194,12 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(WoodenSword(), 0.9f, 1..2),
-                                    PossibleItem(Sledgehammer(), 0.3f, 1..1),
+                                    PossibleItem(WoodenSword(), 1f, 1..2),
+                                    PossibleItem(Sledgehammer(), 0.4f, 1..1),
                                     PossibleItem(Shuriken(), 1f, 0..6),
-                                    PossibleItem(Mushroom(), 0.5f, 1..2),
-                                    PossibleItem(Bomb(), 0.3f, 1..2),
-                                    PossibleItem(HPPotionBig(), 0.4f, 1..3)
+                                    PossibleItem(Mushroom(), 0.6f, 1..2),
+                                    PossibleItem(Bomb(), 0.5f, 1..2),
+                                    PossibleItem(HPPotionBig(), 0.5f, 1..3)
                                          )
                                  )
                              )
@@ -1217,9 +1220,11 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(TurquoiseSword(), 0.3f, 1..1),
+                                    PossibleItem(TurquoiseSword(), 0.4f, 1..1),
+                                    PossibleItem(WoodenSword(), 0.2f, 1..1),
                                     PossibleItem(Shuriken(), 1f, 0..6),
-                                    PossibleItem(APPotionBig(), 0.3f, 1..2),
+                                    PossibleItem(Explosive(), 0.4f, 0..3),
+                                    PossibleItem(APPotionBig(), 0.4f, 1..2),
                                     PossibleItem(APPotionBig(), 0.7f, 1..4)
                                          )
                                  )
@@ -1241,15 +1246,18 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(WoodenSword(), 0.3f, 1..1),
-                                    PossibleItem(SmallAxe(), 0.3f, 1..1),
+                                    PossibleItem(WoodenSword(), 0.6f, 1..1),
+                                    PossibleItem(SmallAxe(), 0.6f, 1..1),
                                     PossibleItem(Shuriken(), 1f, 2..6),
+                                    PossibleItem(Explosive(), 0.4f, 0..3),
                                     PossibleItem(APPotionSmall(), 0.3f, 1..3),
                                     PossibleItem(HPPotionSmall(), 0.3f, 1..3)
                                          )
                                  )
                              )
             addEntityAt(chest, 5, 3)
+            // entities
+            addEntityAt(Npc().apply { modifier = Modifier.AddRandomSkill }, 5, 2)
         }
         // add room to level
         addRoom(l3r4)
@@ -1263,8 +1271,9 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(AmberSword(), 0.3f, 1..1),
-                                    PossibleItem(SmallAxe(), 0.7f, 1..1),
+                                    PossibleItem(AmberSword(), 0.4f, 1..1),
+                                    PossibleItem(SmallAxe(), 0.8f, 1..1),
+                                    PossibleItem(Bow(), 0.5f, 1..1),
                                     PossibleItem(Shuriken(), 1f, 2..6),
                                     PossibleItem(APPotionSmall(), 0.3f, 1..3)
                                          )
@@ -1287,9 +1296,9 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(SmallAxe(), 0.6f, 1..1),
-                                    PossibleItem(Staff(), 0.2f, 1..1),
-                                    PossibleItem(Shuriken(), 0.5f, 0..6),
+                                    PossibleItem(SmallAxe(), 0.7f, 1..1),
+                                    PossibleItem(Staff(), 0.3f, 1..1),
+                                    PossibleItem(Shuriken(), 0.7f, 0..6),
                                     PossibleItem(APPotionBig(), 0.2f, 0..2),
                                     PossibleItem(APPotionSmall(), 0.5f, 1..4)
                                          )
@@ -1313,10 +1322,10 @@ fun World.createWorldPrototypeThree()
             val chest = Chest(
                     PossibleItems(
                             mutableListOf(
-                                    PossibleItem(Sledgehammer(), 0.3f, 1..1),
-                                    PossibleItem(Staff(), 0.2f, 1..1),
-                                    PossibleItem(IronSword(), 0.7f, 1..1),
-                                    PossibleItem(Explosive(), 0.3f, 0..3),
+                                    PossibleItem(Sledgehammer(), 0.5f, 1..1),
+                                    PossibleItem(Staff(), 0.3f, 1..1),
+                                    PossibleItem(IronSword(), 0.9f, 1..1),
+                                    PossibleItem(Explosive(), 0.4f, 0..3),
                                     PossibleItem(APPotionBig(), 0.2f, 0..2),
                                     PossibleItem(Bomb(), 0.3f, 1..3)
                                          )
@@ -1448,8 +1457,16 @@ fun pom()
     val l1r1 =
             "7 7\n" + "x x x x x x x\n" + "x 22 13 23 26 13 15\n" + "x 15 23 25 15 23 14\n" + "x 14 16 17 13 15 23\n" + "x 13 17 18 27 14 25\n" + "x 14 24 27 15 23 13\n" + "x 22 14 13 25 26 24"
     Gdx.files.local("l1r1.txt").writeString(l1r1, false)
-    val l1r2 =
-            "11 11\n" + "x x x x x x x x x x x\n" + "x 12 10 12 12 11 11 12 10 10 11\n" + "x 10 11 10 12 11 12 10 10 12 11\n" + "x 12 11 10 12 12 10 12 11 10 10\n" + "x 12 12 12 10 11 12 10 12 11 12\n" + "x 10 11 10 11 12 12 10 12 12 10\n" + "x 12 10 11 11 10 12 11 10 11 11\n" + "x 11 10 11 11 10 12 12 11 12 10\n" + "x 12 10 10 10 11 11 12 10 11 12\n" + "x 11 11 12 12 10 11 10 12 10 11\n" + "x 10 11 10 12 11 12 12 10 12 12"
+    val l1r2 = """9 9
+x x x x x x x x x
+x 12 10 12 12 11 11 12 10
+x 10 11 10 12 11 12 10 10
+x 12 11 10 12 12 10 12 11
+x 12 12 12 10 11 12 10 12
+x 12 10 11 11 10 12 11 10
+x 11 10 11 11 10 12 12 11
+x 12 10 10 10 11 11 12 10
+x 11 11 12 12 10 11 10 12"""
     Gdx.files.local("l1r2.txt").writeString(l1r2, false)
     val l1r3 =
             "7 6\n" + "x x x x x x\n" + "x 20 20 20 21 20\n" + "x 20 19 20 20 21\n" + "x 19 21 20 19 19\n" + "x 20 20 20 21 20\n" + "x 21 20 19 20 21\n" + "x 19 20 21 20 19"

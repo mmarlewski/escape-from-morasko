@@ -92,6 +92,11 @@ object Tiles
     val stoneExitLevelDown = load("stoneExitLevelDown.png")
     val stoneExitLevelLeft = load("stoneExitLevelLeft.png")
     
+    val stoneExitBossUp = load("stoneExitBossUp.png")
+    val stoneExitBossRight = load("stoneExitBossRight.png")
+    val stoneExitBossDown = load("stoneExitBossDown.png")
+    val stoneExitBossLeft = load("stoneExitBossLeft.png")
+    
     val stoneExitUpClosed = load("stoneExitUpClosed.png")
     val stoneExitRightClosed = load("stoneExitRightClosed.png")
     val stoneExitDownClosed = load("stoneExitDownClosed.png")
@@ -101,6 +106,11 @@ object Tiles
     val stoneExitLevelRightClosed = load("stoneExitLevelRightClosed.png")
     val stoneExitLevelDownClosed = load("stoneExitLevelDownClosed.png")
     val stoneExitLevelLeftClosed = load("stoneExitLevelLeftClosed.png")
+    
+    val stoneExitBossUpClosed = load("stoneExitBossUpClosed.png")
+    val stoneExitBossRightClosed = load("stoneExitBossRightClosed.png")
+    val stoneExitBossDownClosed = load("stoneExitBossDownClosed.png")
+    val stoneExitBossLeftClosed = load("stoneExitBossLeftClosed.png")
     
     // metalWall
     
