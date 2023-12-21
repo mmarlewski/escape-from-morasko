@@ -18,27 +18,15 @@ class `level`
         assertTrue(level.rooms.isNotEmpty())
     }
     
-    @Test fun `changeStartingRoom test`()
-    {
-        val level = Level("level")
-        val room1 = Room("room1", 2, 2)
-        val room2 = Room("room2", 2, 2)
-        
-        level.changeStartingRoom(room1)
-        assertTrue(level.getStartingRoom() === room1)
-        level.changeStartingRoom(room2)
-        assertTrue(level.getStartingRoom() === room2)
-    }
-    
     @Test fun `changeStartingPosition test`()
     {
         val level = Level("level")
         val position1 = RoomPosition(1, 1)
         val position2 = RoomPosition(2, 2)
         
-        level.changeStartingPosition(position1)
-        assertTrue(level.getStartingPosition() == position1)
-        level.changeStartingPosition(position2)
-        assertTrue(level.getStartingPosition() == position2)
+        level.startingPosition.set(position1)
+        assertTrue(level.startingPosition == position1)
+        level.startingPosition.set(position2)
+        assertTrue(level.startingPosition == position2)
     }
 }

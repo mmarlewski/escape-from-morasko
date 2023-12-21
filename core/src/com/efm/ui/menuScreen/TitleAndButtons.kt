@@ -16,7 +16,6 @@ object TitleAndButtons
     lateinit var playButton : TextButton
     lateinit var startAgainButton : TextButton
     lateinit var creditsButton : TextButton
-    lateinit var exitButton : ImageButton
     lateinit var infoButton : ImageButton
     lateinit var settingsButton : ImageButton
     
@@ -143,24 +142,6 @@ object TitleAndButtons
         return creditsTextButton
     }
     
-    fun exitButton() : ImageButton
-    {
-        val exitButton = imageButtonOf(
-                Textures.exit,
-                Textures.upNinePatch,
-                Textures.downNinePatch,
-                Textures.overNinePatch,
-                Textures.disabledNinePatch,
-                Textures.focusedNinePatch
-                                      )
-        {
-            Sounds.ui_1.playOnce()
-            exitGame()
-        }
-        
-        return exitButton
-    }
-    
     fun settingsButton() : ImageButton
     {
         val settingsButton = imageButtonOf(
@@ -205,7 +186,6 @@ object TitleAndButtons
         creditsButton = creditsButton()
         infoButton = infoButton()
         settingsButton = settingsButton()
-        exitButton = exitButton()
         
     }
     
@@ -217,7 +197,6 @@ object TitleAndButtons
         creditsButton.isVisible = visibility
         infoButton.isVisible = visibility
         settingsButton.isVisible = visibility
-        exitButton.isVisible = visibility
     }
     
     fun display()
@@ -239,8 +218,7 @@ object TitleAndButtons
                 
                 rowOf(
                         columnOf(settingsButton),
-                        columnOf(infoButton).padLeft(20f).padRight(20f),
-                        columnOf(exitButton)
+                        columnOf(infoButton).padLeft(24f)
                      )
                              )
         column.setFillParent(true)

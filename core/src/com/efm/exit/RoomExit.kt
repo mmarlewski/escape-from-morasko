@@ -9,7 +9,6 @@ import com.efm.assets.Tiles
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
-import com.efm.screens.GameScreen
 import com.efm.state.State
 import com.efm.state.getState
 
@@ -24,33 +23,9 @@ open class RoomExit(
         override var active : Boolean = true
                    ) : Exit
 {
-    override fun getOutlineTealTile() : TiledMapTile?
-    {
-        return if (!activeWhenNoEnemiesAreInRoom)
-        {
-            when (direction)
-            {
-                Direction4.up    -> Tiles.ExitUpOutlineTeal
-                Direction4.right -> Tiles.ExitRightOutlineTeal
-                Direction4.down  -> Tiles.ExitDownOutlineTeal
-                Direction4.left  -> Tiles.ExitLeftOutlineTeal
-            }
-        }
-        else
-        {
-            when (direction)
-            {
-                Direction4.up    -> Tiles.ExitUpOutlineRed
-                Direction4.right -> Tiles.ExitRightOutlineRed
-                Direction4.down  -> Tiles.ExitDownOutlineRed
-                Direction4.left  -> Tiles.ExitLeftOutlineRed
-            }
-        }
-    }
-    
     override fun getTile() : TiledMapTile?
     {
-        return if (!activeWhenNoEnemiesAreInRoom)
+        return if (isOpen())
         {
             when (direction)
             {
@@ -72,22 +47,65 @@ open class RoomExit(
         }
     }
     
+    override fun getOutlineTealTile() : TiledMapTile?
+    {
+        return if (isOpen())
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitUpOutlineTeal
+                Direction4.right -> Tiles.ExitRightOutlineTeal
+                Direction4.down  -> Tiles.ExitDownOutlineTeal
+                Direction4.left  -> Tiles.ExitLeftOutlineTeal
+            }
+        }
+        else
+        {
+            when (direction)
+            {
+                Direction4.up    -> Tiles.ExitUpOutlineRed
+                Direction4.right -> Tiles.ExitRightOutlineRed
+                Direction4.down  -> Tiles.ExitDownOutlineRed
+                Direction4.left  -> Tiles.ExitLeftOutlineRed
+            }
+        }
+    }
+    
+    /** do not allow travel that would change state combat to state free **/
+    private fun travelWouldChangeStateCombatToStateFree(targetRoom : Room) : Boolean
+    {
+        val stateIsStateCombat = getState() is State.combat
+        val targetRoomIsEmpty = !targetRoom.areEnemiesInRoom()
+        return stateIsStateCombat && targetRoomIsEmpty
+    }
+    
+    override fun isOpen() : Boolean
+    {
+        val worldCurrentLevel = World.currentLevel
+        val worldCurrentRoom = World.currentRoom
+        
+        val isOpen = if (worldCurrentLevel != null && worldCurrentRoom != null)
+        {
+            val targetRoom = worldCurrentLevel.rooms.find { it.name == endRoomName }
+            if (targetRoom != null)
+            {
+                super.isOpen() && !travelWouldChangeStateCombatToStateFree(targetRoom)
+            }
+            else false
+        }
+        else false
+        
+        return isOpen
+    }
+    
     override fun interact()
     {
-        val worldCurrentLevel = World.currentLevel ?: return
-        val worldCurrentRoom = World.currentRoom ?: return
-        
-        if (!activeWhenNoEnemiesAreInRoom || !worldCurrentRoom.areEnemiesInRoom())
+        if (isOpen())
         {
-            val targetRoom : Room? = worldCurrentLevel.rooms.find { it.name == endRoomName }
-            // do not allow travel that would change state combat to state free
-            if (!(getState() is State.combat && targetRoom?.areEnemiesInRoom() == false))
-            {
-                travelBetweenRooms()
-                Gdx.app.log("Exit", "adjusting camera")
-                adjustCameraAfterMoving()
-                adjustMapLayersAfterMoving()
-            }
+            travelBetweenRooms()
+            Gdx.app.log("Exit", "adjusting camera")
+            adjustCameraAfterMoving()
+            adjustMapLayersAfterMoving()
         }
     }
     

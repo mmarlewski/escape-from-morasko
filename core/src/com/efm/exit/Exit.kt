@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import com.efm.Direction4
 import com.efm.entity.Interactive
+import com.efm.level.World
 import com.efm.room.RoomPosition
 
 /**
@@ -19,6 +20,12 @@ interface Exit : Interactive
     var active : Boolean
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile? = null
+    
+    fun isOpen() : Boolean
+    {
+        val worldCurrentRoom = World.currentRoom
+        return !activeWhenNoEnemiesAreInRoom || worldCurrentRoom?.areEnemiesInRoom() != true
+    }
     
     // for serializing
     
