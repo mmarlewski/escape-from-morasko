@@ -8,6 +8,7 @@ import com.efm.Map
 import com.efm.assets.*
 import com.efm.item.*
 import com.efm.level.World
+import com.efm.multiUseMapItems.Fist
 import com.efm.screens.GameScreen
 import com.efm.skill.ActiveSkill
 import com.efm.state.*
@@ -193,7 +194,7 @@ object ItemsStructure
     fun attack(item : Item)
     {
         val currState = getState()
-    
+        
         // tutorial popups
         if (currState.tutorialFlags.tutorialActive && currState.tutorialFlags.equipmentPopupShown)
             currState.tutorialFlags.playerSelectedSomethingFromEquipment = true
@@ -208,7 +209,7 @@ object ItemsStructure
             currState.tutorialFlags.healthAndAbilityPopupShown = true
             currState.tutorialFlags.turnsPopupShown = true
         }
-    
+        
         val canBeUsed = when (currState)
         {
             is State.free                              -> true
@@ -216,7 +217,7 @@ object ItemsStructure
             {
                 World.hero.abilityPoints >= item.baseAPUseCost
             }
-        
+            
             else                                       -> false
         }
         
@@ -409,6 +410,10 @@ object ItemsStructure
         stackableSelfItemRow.clear()
         skillRow.clear()
         
+        multiUseMapItemRow.addActor(
+                createItemWithHealthbar(Fist.durability, Fist.maxDurability, Fist.getTexture()) { attack(Fist) }
+                                   )
+        
         for (item in World.hero.inventory.items)
         {
             when (item)
@@ -444,11 +449,13 @@ object ItemsStructure
                 {
                 
                 }
+                
                 is ActiveSkill ->
                 {
                     // if turn ends refresh drawing
                     skillRow.addActor(createActiveSkill(skill.currCoolDown, skill.texture) { attack(skill) })
                 }
+                
                 else           ->
                 {
                     skillRow.addActor(createPassiveSkill(skill.texture))
