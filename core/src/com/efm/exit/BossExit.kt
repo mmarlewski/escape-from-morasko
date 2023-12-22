@@ -4,7 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.Direction4
 import com.efm.room.RoomPosition
 import com.efm.state.getState
-import com.efm.ui.gameScreen.TutorialPopups
+import com.efm.ui.gameScreen.*
 
 open class BossExit(
         position : RoomPosition,
@@ -50,11 +50,17 @@ open class BossExit(
         {
             TutorialPopups.addPopupToDisplay(TutorialPopups.bossWarningPopup)
             TutorialPopups.bossWarningPopup.isVisible = true
+            PopUps.setBackgroundVisibility(false)
+            LeftStructure.menuButton.isVisible = false
             getState().tutorialFlags.bossWarningPopupShown = true
             getState().tutorialFlags.tutorialActive = false
         }
-        
-        if (getState().tutorialFlags.tutorialActive && getState().tutorialFlags.closedExitPopupShown && !getState().tutorialFlags.bossWarningPopupShown)
+    
+        if (getState().tutorialFlags.tutorialActive && !isOpen() && getState().tutorialFlags.closedExitPopupShown && !getState().tutorialFlags.bossWarningPopupShown)
+        {
+            giveBossWarning()
+        }
+        else if (getState().tutorialFlags.tutorialActive && isOpen() && !getState().tutorialFlags.bossWarningPopupShown)
         {
             giveBossWarning()
         }

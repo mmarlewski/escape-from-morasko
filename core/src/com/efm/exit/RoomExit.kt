@@ -11,7 +11,7 @@ import com.efm.room.Room
 import com.efm.room.RoomPosition
 import com.efm.state.State
 import com.efm.state.getState
-import com.efm.ui.gameScreen.TutorialPopups
+import com.efm.ui.gameScreen.*
 
 open class RoomExit(
         override val position : RoomPosition,
@@ -112,6 +112,8 @@ open class RoomExit(
         {
             TutorialPopups.addPopupToDisplay(TutorialPopups.closedExitPopup)
             TutorialPopups.closedExitPopup.isVisible = true
+            PopUps.setBackgroundVisibility(false)
+            LeftStructure.menuButton.isVisible = false
             getState().tutorialFlags.closedExitPopupShown = true
         }
     }

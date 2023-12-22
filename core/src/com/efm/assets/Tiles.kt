@@ -184,6 +184,11 @@ object Tiles
     val rockExitLevelDown = load("rockExitLevelDown.png")
     val rockExitLevelLeft = load("rockExitLevelLeft.png")
     
+    val rockExitBossUp = load("rockExitBossUp.png")
+    val rockExitBossRight = load("rockExitBossRight.png")
+    val rockExitBossDown = load("rockExitBossDown.png")
+    val rockExitBossLeft = load("rockExitBossLeft.png")
+    
     val rockExitUpClosed = load("rockExitUpClosed.png")
     val rockExitRightClosed = load("rockExitRightClosed.png")
     val rockExitDownClosed = load("rockExitDownClosed.png")
@@ -193,6 +198,11 @@ object Tiles
     val rockExitLevelRightClosed = load("rockExitLevelRightClosed.png")
     val rockExitLevelDownClosed = load("rockExitLevelDownClosed.png")
     val rockExitLevelLeftClosed = load("rockExitLevelLeftClosed.png")
+    
+    val rockExitBossUpClosed = load("rockExitBossUpClosed.png")
+    val rockExitBossRightClosed = load("rockExitBossRightClosed.png")
+    val rockExitBossDownClosed = load("rockExitBossDownClosed.png")
+    val rockExitBossLeftClosed = load("rockExitBossLeftClosed.png")
     
     // hero
     

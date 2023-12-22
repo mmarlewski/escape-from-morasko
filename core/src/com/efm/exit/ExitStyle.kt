@@ -82,10 +82,10 @@ enum class ExitStyle(internal val tiles : ExitTiles)
                     Tiles.rockExitLevelDown,
                     Tiles.rockExitLevelLeft,
         
-                    null,
-                    null,
-                    null,
-                    null,
+                    Tiles.rockExitBossUp,
+                    Tiles.rockExitBossRight,
+                    Tiles.rockExitBossDown,
+                    Tiles.rockExitBossLeft,
         
                     Tiles.rockExitUpClosed,
                     Tiles.rockExitRightClosed,
@@ -97,10 +97,10 @@ enum class ExitStyle(internal val tiles : ExitTiles)
                     Tiles.rockExitLevelDownClosed,
                     Tiles.rockExitLevelLeftClosed,
         
-                    null,
-                    null,
-                    null,
-                    null
+                    Tiles.rockExitBossUpClosed,
+                    Tiles.rockExitBossRightClosed,
+                    Tiles.rockExitBossDownClosed,
+                    Tiles.rockExitBossLeftClosed
                      )
         );
     

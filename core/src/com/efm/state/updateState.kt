@@ -3,6 +3,7 @@ package com.efm.state
 import com.efm.*
 import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.inventoryTabSlot.InventoryTabStackableSelfItemSlot
+import com.efm.screens.GameScreen
 
 fun updateState()
 {
@@ -178,14 +179,17 @@ fun updateState()
             is State.combat.enemies.enemySelected   -> updateCombatEnemiesEnemySelected(currState)
             is State.combat.enemies.enemyAction     -> updateCombatEnemiesEnemyAction(currState)
         }
-        
+    
         else                    -> currState
     }
     
     setState(newState)
     
-    if ((currState is State.combat.enemies && newState !is State.combat.enemies)
-            || (newState != currState && newState in listOf(
+    // zmiana stanu mogaca zmienic wyglad exitow
+    if (!(currState is State.free && newState is State.free) && !(currState is State.constrained && newState is State.constrained) && !(currState is State.combat && newState is State.combat)) GameScreen.updateMapEntityLayer()
+    
+    
+    if ((currState is State.combat.enemies && newState !is State.combat.enemies) || (newState != currState && newState in listOf(
                     
                     State.free.moveSelectedTwice,
                     State.free.multiUseMapItemTargetSelectedTwice,

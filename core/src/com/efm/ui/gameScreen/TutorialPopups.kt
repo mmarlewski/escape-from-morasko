@@ -152,8 +152,6 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             combatPopup.isVisible = false
-            interfaceVisibilityWithTutorial()
-            LeftStructure.menuButton.isVisible = true
             lastPopup.isVisible = true
         }
         combatPopup.isVisible = false
@@ -170,6 +168,8 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             lastPopup.isVisible = false
+            interfaceVisibilityWithTutorial()
+            LeftStructure.menuButton.isVisible = true
         }
         lastPopup.isVisible = false
         
@@ -202,6 +202,7 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             interfaceVisibilityWithTutorial()
+            LeftStructure.menuButton.isVisible = true
             bossWarningPopup.isVisible = false
             
         }
@@ -219,6 +220,7 @@ object TutorialPopups
         {
             Sounds.ui_2.playOnce()
             interfaceVisibilityWithTutorial()
+            LeftStructure.menuButton.isVisible = true
             closedExitPopup.isVisible = false
             
         }
