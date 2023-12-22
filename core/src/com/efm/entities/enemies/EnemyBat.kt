@@ -14,12 +14,12 @@ import com.efm.room.RoomPosition
 class EnemyBat : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 5
-    override var healthPoints = 5
+    override var maxHealthPoints = 6
+    override var healthPoints = 6
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 1
-    override var attackDamage = 2
+    override var attackDamage = 12
     override val stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

@@ -16,13 +16,16 @@ object TutorialPopups
     var healthAndAbilityPopup : Window
     var turnsPopup : Window
     var combatPopup : Window
+    var lastPopup : Window
     var cantLeavePopup : Window
+    var bossWarningPopup : Window
+    var closedExitPopup : Window
     
     fun welcomePopup() : Window
     {
         val welcomePopup = tutorialPopup(
                 "Welcome to Escape From Morasko",
-                "In this tutorial you will learn the basics of the game - movement and looting",
+                "In this tutorial you will learn the basics of the game - movement and looting.",
                                         )
         {
             Sounds.ui_2.playOnce()
@@ -38,8 +41,8 @@ object TutorialPopups
     {
         val cameraPopup = tutorialPopup(
                 "Camera",
-                "Explore the game environment by dragging to move the camera. Additionally, " +
-                        "use a pinching motion to zoom in and out for a closer or wider view."
+                "Explore the game environment by dragging to move the camera. " +
+                        "Pinch to zoom in and out."
                                        )
         {
             Sounds.ui_2.playOnce()
@@ -54,7 +57,7 @@ object TutorialPopups
     {
         val movementPopup = tutorialPopup(
                 "Movement",
-                "Navigate through the room by tapping the movement button located in the bottom right, " +
+                "To move, tap the button in the bottom right, " +
                         "and then select a tile to move to."
                                          )
         {
@@ -71,8 +74,8 @@ object TutorialPopups
     {
         val lootingPopup = tutorialPopup(
                 "Looting",
-                "To loot, click the chest or enemy corpse nearby. " +
-                        "Select items and transfer them to your equipment by clicking the arrow."
+                "To loot, click the chest nearby. " +
+                        "Select items and transfer them to your inventory by clicking the arrow."
                                         )
         {
             Sounds.ui_2.playOnce()
@@ -87,13 +90,15 @@ object TutorialPopups
     fun equipmentPopup() : Window
     {
         val equipmentPopup = tutorialPopup(
-                "Equipment",
-                "Check your current equipment is visible in pause menu and at the bottom left with tabs for " +
-                        "map-usables, skills, self-usables, and weapons."
+                "Inventory",
+                "Your inventory is divided into four tabs - " +
+                        "map-usables, skills, self-usables, and weapons.\n" +
+                        "Pick something from your inventory!"
                                           )
         {
             Sounds.ui_2.playOnce()
             interfaceVisibilityWithTutorial()
+            ItemsStructure.setWeaponDisplay()
             equipmentPopup.isVisible = false
         }
         equipmentPopup.isVisible = false
@@ -106,7 +111,8 @@ object TutorialPopups
     {
         val healthAndAbilityPopup = tutorialPopup(
                 "Health and Action Points",
-                "Every action consumes action points. Enemy attacks reduce your health, but specific items can restore it."
+                "Using items and moving consumes AP. Your HP and AP are displayed at the top of the screen. " +
+                        "Right now you have 0 Action Points!"
                                                  )
         {
             Sounds.ui_2.playOnce()
@@ -124,7 +130,8 @@ object TutorialPopups
     {
         val turnsPopup = tutorialPopup(
                 "Turns",
-                "In the top right, find the 'End Turn' button. Decide when to end your turn, even with remaining action points."
+                "In the top right, find the 'End Turn' button.\n" +
+                        "End your turn to regain AP!"
                                       )
         {
             Sounds.ui_2.playOnce()
@@ -140,18 +147,33 @@ object TutorialPopups
     {
         val combatPopup = tutorialPopup(
                 "Combat",
-                "Check an enemy's range by clicking on them. Once detected, expect attacks. " +
-                        "Counter with a selected weapon by choosing the enemy or tile."
+                "Click the enemy to check if they can spot you. If they do, expect attacks!"
                                        )
         {
             Sounds.ui_2.playOnce()
             combatPopup.isVisible = false
+            lastPopup.isVisible = true
+        }
+        combatPopup.isVisible = false
+    
+        return combatPopup
+    }
+    
+    fun lastPopup() : Window
+    {
+        val lastPopup = tutorialPopup(
+                "Good Luck!",
+                "Defeat enemies and loot chests in any order you want. When you are ready, take on the boss to move to the next level!"
+                                     )
+        {
+            Sounds.ui_2.playOnce()
+            lastPopup.isVisible = false
             interfaceVisibilityWithTutorial()
             LeftStructure.menuButton.isVisible = true
         }
-        combatPopup.isVisible = false
+        lastPopup.isVisible = false
         
-        return combatPopup
+        return lastPopup
     }
     
     fun cantLeavePopup() : Window
@@ -164,11 +186,47 @@ object TutorialPopups
             Sounds.ui_2.playOnce()
             interfaceVisibilityWithTutorial()
             cantLeavePopup.isVisible = false
-            
+    
         }
         cantLeavePopup.isVisible = false
-        
+    
         return cantLeavePopup
+    }
+    
+    fun bossWarningPopup() : Window
+    {
+        val bossWarningPopup = tutorialPopup(
+                "Boss Ahead!",
+                "These doors lead to a very powerful enemy. Once you go through, you will not be able to go back until you defeat them!",
+                                            )
+        {
+            Sounds.ui_2.playOnce()
+            interfaceVisibilityWithTutorial()
+            LeftStructure.menuButton.isVisible = true
+            bossWarningPopup.isVisible = false
+            
+        }
+        bossWarningPopup.isVisible = false
+        
+        return bossWarningPopup
+    }
+    
+    fun closedExitPopup() : Window
+    {
+        val closedExitPopup = tutorialPopup(
+                "Locked Doors",
+                "The enemies in this room closed the door! Defeat them to open it!",
+                                           )
+        {
+            Sounds.ui_2.playOnce()
+            interfaceVisibilityWithTutorial()
+            LeftStructure.menuButton.isVisible = true
+            closedExitPopup.isVisible = false
+            
+        }
+        closedExitPopup.isVisible = false
+        
+        return closedExitPopup
     }
     
     init
@@ -181,7 +239,10 @@ object TutorialPopups
         healthAndAbilityPopup = healthAndAbilityPopup()
         turnsPopup = turnsPopup()
         combatPopup = combatPopup()
+        lastPopup = lastPopup()
         cantLeavePopup = cantLeavePopup()
+        bossWarningPopup = bossWarningPopup()
+        closedExitPopup = closedExitPopup()
     }
     
     fun addPopupToDisplay(popup : Window)
@@ -201,7 +262,10 @@ object TutorialPopups
         addPopupToDisplay(healthAndAbilityPopup)
         addPopupToDisplay(turnsPopup)
         addPopupToDisplay(combatPopup)
+        addPopupToDisplay(lastPopup)
         addPopupToDisplay(cantLeavePopup)
+        addPopupToDisplay(bossWarningPopup)
+        addPopupToDisplay(closedExitPopup)
     }
     
 }

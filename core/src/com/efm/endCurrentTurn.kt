@@ -59,7 +59,6 @@ fun endCurrentTurn()
                 PopUps.setBackgroundVisibility(false)
                 LeftStructure.menuButton.isVisible = false
                 newState.tutorialFlags.combatPopupShown = true
-                newState.tutorialFlags.tutorialActive = false
             }
         }
         

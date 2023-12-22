@@ -14,12 +14,12 @@ import com.efm.room.RoomPosition
 class BossOctopusTentacle : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 5
-    override var healthPoints = 5
+    override var maxHealthPoints = 25
+    override var healthPoints = 25
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 2
-    override var attackDamage = 2
+    override var attackDamage = 20
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

@@ -14,12 +14,12 @@ import com.efm.room.RoomPosition
 class EnemyMimic : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 7
-    override var healthPoints = 7
+    override var maxHealthPoints = 20
+    override var healthPoints = 20
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
-    override var attackDamage = 2
+    override var attackDamage = 20
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

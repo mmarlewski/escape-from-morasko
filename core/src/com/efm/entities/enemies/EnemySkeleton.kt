@@ -14,12 +14,12 @@ import com.efm.room.RoomPosition
 class EnemySkeleton : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 10
-    override var healthPoints = 10
+    override var maxHealthPoints = 8
+    override var healthPoints = 8
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 3
-    override var attackDamage = 2
+    override var attackDamage = 10
     override val stepsInOneTurn = 1
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

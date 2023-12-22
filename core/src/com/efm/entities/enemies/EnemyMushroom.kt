@@ -11,15 +11,15 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class EnemyMushroom : Entity, Enemy
+open class EnemyMushroom : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 10
-    override var healthPoints = 10
+    override var maxHealthPoints = 8
+    override var healthPoints = 8
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
-    override var attackDamage = 5
+    override var attackDamage = 8
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

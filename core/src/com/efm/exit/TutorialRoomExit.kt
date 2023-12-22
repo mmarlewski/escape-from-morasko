@@ -4,7 +4,7 @@ import com.efm.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
-import com.efm.state.getState
+import com.efm.state.*
 import com.efm.ui.gameScreen.*
 
 class TutorialRoomExit(
@@ -53,6 +53,21 @@ class TutorialRoomExit(
                     getState().tutorialFlags.equipmentPopupShown = true
                     // hero has no AP
                     World.hero.spendAP(World.hero.abilityPoints)
+                    // set state nothing selected to easier click Enemies
+                    val currState = getState()
+                    if (currState is State.constrained.heroSelected)
+                    {
+                        com.efm.Map.clearLayer(MapLayer.select)
+                        com.efm.Map.clearLayer(MapLayer.outline)
+        
+                        setState(State.constrained.nothingSelected.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.isHeroDetected = currState.isHeroDetected
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        })
+                    }
+    
                 }
                 Animating.executeAnimations(animations)
             }

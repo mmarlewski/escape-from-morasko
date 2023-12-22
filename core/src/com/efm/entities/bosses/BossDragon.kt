@@ -14,9 +14,6 @@ import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
-import com.efm.skill.Skill
-import com.efm.skills.*
-import com.efm.ui.gameScreen.PopUps
 
 class BossDragon : Entity, Enemy
 {
@@ -26,7 +23,7 @@ class BossDragon : Entity, Enemy
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 3
-    override var attackDamage = 5
+    override var attackDamage = 20
     override val stepsInOneTurn = 10
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

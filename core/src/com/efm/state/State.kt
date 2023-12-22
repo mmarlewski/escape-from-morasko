@@ -40,7 +40,7 @@ sealed class State
     
     object TutorialFlags : Json.Serializable
     {
-        var tutorialActive = !SettingsScreen.skipTutorialCheckbox.isChecked
+        var tutorialActive = false//!SettingsScreen.skipTutorialCheckbox.isChecked
         var welcomePopupShown = false
         var cameraPopupShown = false
         //var playerMovedCamera = false
@@ -54,6 +54,8 @@ sealed class State
         var turnsPopupShown = false
         var playerEndedTurn = false
         var combatPopupShown = false
+        var bossWarningPopupShown = false
+        var closedExitPopupShown = false
     
         fun setDefault()
         {
@@ -71,6 +73,8 @@ sealed class State
             turnsPopupShown = false
             playerEndedTurn = false
             combatPopupShown = false
+            bossWarningPopupShown = false
+            closedExitPopupShown = false
         }
     
         fun print()
@@ -89,6 +93,8 @@ sealed class State
             println(turnsPopupShown)
             println(playerEndedTurn)
             println(combatPopupShown)
+            println(bossWarningPopupShown)
+            println(closedExitPopupShown)
         }
     
         // for serializing
@@ -111,6 +117,8 @@ sealed class State
                 json.writeValue("turnsPopupShown", this.turnsPopupShown)
                 json.writeValue("playerEndedTurn", this.playerEndedTurn)
                 json.writeValue("combatPopupShown", this.combatPopupShown)
+                json.writeValue("bossWarningPopupShown", this.bossWarningPopupShown)
+                json.writeValue("closedExitPopupShown", this.closedExitPopupShown)
             }
         }
         
@@ -149,6 +157,10 @@ sealed class State
                 if (jsonPlayerEndedTurn != null) this.playerEndedTurn = jsonPlayerEndedTurn
                 val jsonCombatPopupShown = json.readValue("combatPopupShown", Boolean::class.java, jsonData)
                 if (jsonCombatPopupShown != null) this.combatPopupShown = jsonCombatPopupShown
+                val jsonBossWarningPopupShown = json.readValue("bossWarningPopupShown", Boolean::class.java, jsonData)
+                if (jsonBossWarningPopupShown != null) this.bossWarningPopupShown = jsonBossWarningPopupShown
+                val jsonClosedExitPopupShown = json.readValue("closedExitPopupShown", Boolean::class.java, jsonData)
+                if (jsonClosedExitPopupShown != null) this.closedExitPopupShown = jsonClosedExitPopupShown
             }
         }
     }

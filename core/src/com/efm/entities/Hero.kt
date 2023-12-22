@@ -13,6 +13,9 @@ import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 import com.efm.skill.*
 import com.efm.skills.Pockets
+import com.efm.stackableMapItems.TestingBomb
+import com.efm.stackableSelfItems.Apple
+import com.efm.stackableSelfItems.Fish
 import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
 
@@ -49,7 +52,7 @@ class Hero(
     
     var weaponDamageMultiplier = 1
     
-    override fun getTile() : TiledMapTile?
+    override fun getTile() : TiledMapTile
     {
         return when
         {
@@ -68,7 +71,7 @@ class Hero(
         }
     }
     
-    fun getIdleTile() : TiledMapTile?
+    fun getIdleTile() : TiledMapTile
     {
         return when
         {
@@ -87,7 +90,7 @@ class Hero(
         }
     }
     
-    fun getMoveTile(n : Int) : TiledMapTile?
+    fun getMoveTile(n : Int) : TiledMapTile
     {
         if (isVisible && !isInvincible)
         {
@@ -209,7 +212,7 @@ class Hero(
     
     fun updateActiveSkillCoolDown()
     {
-        for ((bodyPart, skill) in bodyPartMap.entries)
+        for ((_, skill) in bodyPartMap.entries)
         {
             if (skill is ActiveSkill && skill.isInCoolDown)
             {
@@ -221,7 +224,7 @@ class Hero(
     
     fun removeCoolDownFromAllActiveSkills()
     {
-        for ((bodyPart, skill) in bodyPartMap.entries)
+        for ((_, skill) in bodyPartMap.entries)
         {
             if (skill is ActiveSkill)
             {
@@ -271,7 +274,7 @@ class Hero(
     
     fun hasSkill(skill : Skill) : Boolean
     {
-        for ((bp, s) in bodyPartMap.iterator())
+        for ((_, s) in bodyPartMap.iterator())
         {
             if (s == skill) return true
         }
@@ -281,11 +284,6 @@ class Hero(
     fun incrementTurnsElapsed()
     {
         turnsElapsed += 1
-    }
-    
-    fun getAmountOfTurnsElapsed() : Int
-    {
-        return turnsElapsed
     }
     
     // for serializing
@@ -345,6 +343,39 @@ class Hero(
             val jsonWeaponDamageMultiplier = json.readValue("weaponDamageMultiplier", Int::class.java, jsonData)
             if (jsonWeaponDamageMultiplier != null) this.weaponDamageMultiplier = jsonWeaponDamageMultiplier
         }
+    }
+    
+    fun setStartingInventory()
+    {
+        this.inventory.items.clear()
+        this.inventory.addItem(Apple(2))
+        this.inventory.addItem(Fish(1))
+    }
+    
+    fun godMode()
+    {
+        this.inventory.addItem(TestingBomb())
+        this.maxAbilityPoints = Int.MAX_VALUE / 4
+        this.abilityPoints = this.maxAbilityPoints
+        this.maxHealthPoints = Int.MAX_VALUE / 4
+        this.healthPoints = this.maxHealthPoints
+    }
+    
+    fun reset()
+    {
+        this.alive = true
+        this.healthPoints = defaultHeroMaxHp
+        this.maxHealthPoints = defaultHeroMaxHp
+        this.healCharacter(0)
+        this.abilityPoints = defaultHeroMaxAp
+        this.maxAbilityPoints = defaultHeroMaxAp
+        this.gainAP(0)
+        this.apDrainInNextTurn = 0
+        this.canMoveNextTurn = true
+        this.isVisible = true
+        this.turnsElapsed = 0
+        this.weaponDamageMultiplier = 1
+        BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
     }
 }
 
