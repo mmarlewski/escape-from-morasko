@@ -4,12 +4,20 @@ import com.efm.*
 import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.inventoryTabSlot.InventoryTabStackableSelfItemSlot
 import com.efm.screens.GameScreen
+import com.efm.level.World
+import com.efm.screens.GameOverScreen
 
 fun updateState()
 {
     val currState = getState()
     
-    val newState = when (currState)
+    // handle Hero death on every State except State.combat.enemies
+    val newState = if (currState !is State.combat.enemies && !World.hero.alive)
+    {
+        changeScreen(GameOverScreen)
+        State.over
+    }
+    else when (currState)
     {
         is State.free           -> when (currState)
         {

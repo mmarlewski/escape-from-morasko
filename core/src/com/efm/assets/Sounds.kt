@@ -17,6 +17,7 @@ object Sounds
     
     // multi use map items
     
+    val punch = load("punch.mp3")
     val woodenSword = load("woodenSword.mp3")
     val metalSword = load("metalSword.mp3")
     val beam = load("beam.mp3")

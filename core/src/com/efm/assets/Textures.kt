@@ -126,6 +126,7 @@ object Textures
     val creditsTitle = load("images/credits.png")
     
     // multiUseMapItems
+    val fist = load("items/fist.png")
     val woodenSword = load("items/sword1.png")
     val ironSword = load("items/sword2.png")
     val turquoiseSword = load("items/swordSmallHandle2.png")

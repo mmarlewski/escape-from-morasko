@@ -1240,3 +1240,22 @@ fun yesNoPopup(
     
     return window
 }
+
+fun patchNotesLabel(
+        title : String,
+        body : String,
+        width : Float
+                   ) : Table
+{
+    val titleLabel = labelOf(title, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    val bodyLabel = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    
+    titleLabel.setFontScale(1.25f)
+    bodyLabel.setWrap(true)
+    
+    val table = Table()
+    table.add(titleLabel).row()
+    table.add(bodyLabel).width(width).row()
+    
+    return table
+}

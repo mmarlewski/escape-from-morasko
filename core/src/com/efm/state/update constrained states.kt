@@ -18,13 +18,6 @@ import com.efm.ui.gameScreen.*
 
 fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -148,13 +141,6 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
 
 fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -247,13 +233,6 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
 
 fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -368,13 +347,6 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
 
 fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -475,13 +447,6 @@ fun updateConstrainedEnemySelected(currState : State.constrained.enemySelected) 
 
 fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -625,13 +590,6 @@ fun updateConstrainedHeroSelected(currState : State.constrained.heroSelected) : 
 
 fun updateConstrainedMoveSelectedOnce(currState : State.constrained.moveSelectedOnce) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false

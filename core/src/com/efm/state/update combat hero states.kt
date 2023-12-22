@@ -16,13 +16,6 @@ import com.efm.ui.gameScreen.*
 
 fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -136,13 +129,6 @@ fun updateCombatHeroNoSelection(currState : State.combat.hero.noSelection) : Sta
 
 fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -226,13 +212,6 @@ fun updateCombatHeroNothingSelected(currState : State.combat.hero.nothingSelecte
 
 fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -336,13 +315,6 @@ fun updateCombatHeroEntitySelected(currState : State.combat.hero.entitySelected)
 
 fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -434,13 +406,6 @@ fun updateCombatHeroEnemySelected(currState : State.combat.hero.enemySelected) :
 
 fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
@@ -557,13 +522,6 @@ fun updateCombatHeroHeroSelected(currState : State.combat.hero.heroSelected) : S
 
 fun updateCombatHeroMoveSelectedOnce(currState : State.combat.hero.moveSelectedOnce) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (!currState.areEnemiesInRoom)
     {
         ProgressBars.abilityBar.isVisible = false
