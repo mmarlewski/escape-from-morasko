@@ -28,13 +28,6 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
         TutorialPopups.welcomePopup.isVisible = true
     }
     
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (currState.areEnemiesInRoom)
     {
         World.hero.regainAllAP()
@@ -108,13 +101,6 @@ fun updateFreeNoSelection(currState : State.free.noSelection) : State
 
 fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (currState.areEnemiesInRoom)
     {
         World.hero.regainAllAP()
@@ -195,13 +181,6 @@ fun updateFreeNothingSelected(currState : State.free.nothingSelected) : State
 
 fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (currState.areEnemiesInRoom)
     {
         World.hero.regainAllAP()
@@ -285,13 +264,6 @@ fun updateFreeEntitySelected(currState : State.free.entitySelected) : State
 
 fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (currState.areEnemiesInRoom)
     {
         World.hero.regainAllAP()
@@ -376,13 +348,6 @@ fun updateFreeHeroSelected(currState : State.free.heroSelected) : State
 
 fun updateFreeMoveSelectedOnce(currState : State.free.moveSelectedOnce) : State
 {
-    if (!World.hero.alive)
-    {
-        changeScreen(GameOverScreen)
-        
-        return State.over
-    }
-    
     if (currState.areEnemiesInRoom)
     {
         World.hero.regainAllAP()
