@@ -11,7 +11,7 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class EnemyMushroom : Entity, Enemy
+open class EnemyMushroom : Entity, Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 8

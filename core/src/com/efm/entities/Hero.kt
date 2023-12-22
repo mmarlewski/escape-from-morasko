@@ -286,11 +286,6 @@ class Hero(
         turnsElapsed += 1
     }
     
-    fun getAmountOfTurnsElapsed() : Int
-    {
-        return turnsElapsed
-    }
-    
     // for serializing
     
     override fun write(json : Json?)
@@ -364,6 +359,23 @@ class Hero(
         this.abilityPoints = this.maxAbilityPoints
         this.maxHealthPoints = Int.MAX_VALUE / 4
         this.healthPoints = this.maxHealthPoints
+    }
+    
+    fun reset()
+    {
+        this.alive = true
+        this.healthPoints = defaultHeroMaxHp
+        this.maxHealthPoints = defaultHeroMaxHp
+        this.healCharacter(0)
+        this.abilityPoints = defaultHeroMaxAp
+        this.maxAbilityPoints = defaultHeroMaxAp
+        this.gainAP(0)
+        this.apDrainInNextTurn = 0
+        this.canMoveNextTurn = true
+        this.isVisible = true
+        this.turnsElapsed = 0
+        this.weaponDamageMultiplier = 1
+        BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
     }
 }
 

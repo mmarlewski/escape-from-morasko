@@ -6,7 +6,6 @@ import com.efm.Map
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
-import com.efm.skill.BodyPart
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
@@ -68,19 +67,7 @@ object PopUpsMenu
         // add Hero to currentRoom
         World.currentRoom?.addEntityAt(World.hero, startingLevel.startingPosition)
         // reset Hero
-        World.hero.alive = true
-        World.hero.healthPoints = defaultHeroMaxHp
-        World.hero.maxHealthPoints = defaultHeroMaxHp
-        World.hero.healCharacter(0)
-        World.hero.abilityPoints = defaultHeroMaxAp
-        World.hero.maxAbilityPoints = defaultHeroMaxAp
-        World.hero.gainAP(0)
-        World.hero.apDrainInNextTurn = 0
-        World.hero.canMoveNextTurn = true
-        World.hero.isVisible = true
-        World.hero.turnsElapsed = 0
-        World.hero.weaponDamageMultiplier = 1
-        BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
+        World.hero.reset()
         // add Items to Hero
         World.hero.setStartingInventory()
         // set godmode

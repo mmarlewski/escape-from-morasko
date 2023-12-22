@@ -16,7 +16,6 @@ import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
-import kotlin.math.round
 
 /**
  * Enemy has its own turn and can attack the Hero.
@@ -292,10 +291,10 @@ interface Enemy : Character
     //scaling
     fun scaleOwnStats()
     {
-        val turnsElapsed = World.hero.getAmountOfTurnsElapsed()
+        val turnsElapsed = World.hero.turnsElapsed
         maxHealthPoints += turnsElapsed
         healthPoints += turnsElapsed
-        attackDamage += round((turnsElapsed/3).toDouble()).toInt()
+        attackDamage += turnsElapsed / 3
         Gdx.app.log("Scaling", "Turns elapsed : $turnsElapsed")
         createOwnHealthBar()
     }

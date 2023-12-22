@@ -40,7 +40,7 @@ sealed class State
     
     object TutorialFlags : Json.Serializable
     {
-        var tutorialActive = !SettingsScreen.skipTutorialCheckbox.isChecked
+        var tutorialActive = false//!SettingsScreen.skipTutorialCheckbox.isChecked
         var welcomePopupShown = false
         var cameraPopupShown = false
         //var playerMovedCamera = false
