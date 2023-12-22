@@ -84,7 +84,7 @@ object PopUpsMenu
         // add Items to Hero
         World.hero.setStartingInventory()
         // set godmode
-        // World.hero.godMode()
+        World.hero.godMode()
         // add Skills to Hero
 //                    World.hero.addSkill(LavaWalking)
 //                    World.hero.addSkill(Push)

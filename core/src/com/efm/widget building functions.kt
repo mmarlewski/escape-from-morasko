@@ -810,7 +810,7 @@ fun skillAssignDisplay(skill : Skill, onClicked : (Skill) -> Unit) : Table
     skillDescription.setFontScale(0.6f)
     skillName.setFontScale(0.8f)
     
-    skillDescription.setWrap(true)
+    skillDescription.wrap = true
     skillDescription.setAlignment(Align.center)
     
     val table = Table()
@@ -848,7 +848,7 @@ fun skillReassignDisplay(skill : Skill, onClicked : (Skill) -> Unit) : Table
     skillName.setFontScale(0.8f)
     
     
-    skillDescription.setWrap(true)
+    skillDescription.wrap = true
     skillDescription.setAlignment(Align.center)
     
     val table = Table()
@@ -935,7 +935,7 @@ fun tutorialPopup(
     delimiter.setFontScale(0.1f)
     
     val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
-    description.setWrap(true)
+    description.wrap = true
     description.setAlignment(Align.center)
     
     val okButton = textButtonOf(
@@ -964,7 +964,7 @@ fun tutorialPopup(
 
 fun interfaceVisibilityWithTutorial()
 {
-    if (!State.TutorialFlags.tutorialActive)
+    if (!State.TutorialFlags.tutorialActive || State.TutorialFlags.combatPopupShown)
     {
         ItemsStructure.display()
         LeftStructure.display()
@@ -1029,7 +1029,7 @@ fun interfaceVisibilityWithTutorial()
 
 fun interfaceDrawingWithTutorial()
 {
-    if (!State.TutorialFlags.tutorialActive)
+    if (!State.TutorialFlags.tutorialActive || State.TutorialFlags.combatPopupShown)
     {
         ItemsStructure.display()
         LeftStructure.display()
@@ -1127,7 +1127,7 @@ fun specialEventPopup(
     subtitle.setFontScale(1.25f)
     
     val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
-    description.setWrap(true)
+    description.wrap = true
     description.setAlignment(Align.center)
     
     val yesButton = imageButtonOf(
@@ -1196,7 +1196,7 @@ fun yesNoPopup(
     delimiter.setFontScale(0.1f)
     
     val description = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
-    description.setWrap(true)
+    description.wrap = true
     description.setAlignment(Align.center)
     
     val yesButton = imageButtonOf(

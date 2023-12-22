@@ -845,8 +845,8 @@ fun World.createWorldPrototypeThree()
                 RoomPosition(l1r3.widthInSpaces - 1, 3),
                 ExitStyle.stone
                       )
-        // one end of this one should be locked
-        addRoomPassage(
+        // boss
+        addBossRoomPassage(
                 this,
                 l1r4.name,
                 RoomPosition(l1r4.widthInSpaces - 1, 7),
@@ -854,8 +854,7 @@ fun World.createWorldPrototypeThree()
                 l1r5.name,
                 RoomPosition(0, 7),
                 ExitStyle.stone
-                      )
-        (l1r5.getSpace(0, 7)?.getEntity() as Exit).activeWhenNoEnemiesAreInRoom = true
+                          )
         // starting position
         //
         startingRoom = l1r1
@@ -1774,6 +1773,29 @@ fun addRoomPassage(
     level.rooms.find { it.name == roomAName }?.replaceEntityAt(exitA, positionA)
     
     val exitB = RoomExit(positionB, directionB, roomAName, positionA, exitStyle)
+    if (exitBBase != null) level.rooms.find { it.name == roomBName }?.changeBaseAt(exitBBase, positionB)
+    level.rooms.find { it.name == roomBName }?.replaceEntityAt(exitB, positionB)
+}
+
+fun addBossRoomPassage(
+        level : Level,
+        roomAName : String,
+        positionA : RoomPosition,
+        directionA : Direction4,
+        roomBName : String,
+        positionB : RoomPosition,
+        exitStyle : ExitStyle = ExitStyle.stone,
+        exitABase : Base? = null,
+        exitBBase : Base? = null
+                      )
+{
+    val directionB = directionA.opposite()
+    
+    val exitA = BossExit(positionA, directionA, roomBName, positionB, exitStyle)
+    if (exitABase != null) level.rooms.find { it.name == roomAName }?.changeBaseAt(exitABase, positionA)
+    level.rooms.find { it.name == roomAName }?.replaceEntityAt(exitA, positionA)
+    
+    val exitB = BossExit(positionB, directionB, roomAName, positionA, exitStyle)
     if (exitBBase != null) level.rooms.find { it.name == roomBName }?.changeBaseAt(exitBBase, positionB)
     level.rooms.find { it.name == roomBName }?.replaceEntityAt(exitB, positionB)
 }

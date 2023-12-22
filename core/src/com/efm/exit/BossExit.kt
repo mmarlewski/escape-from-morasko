@@ -3,6 +3,8 @@ package com.efm.exit
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.Direction4
 import com.efm.room.RoomPosition
+import com.efm.state.getState
+import com.efm.ui.gameScreen.TutorialPopups
 
 open class BossExit(
         position : RoomPosition,
@@ -39,6 +41,26 @@ open class BossExit(
                 Direction4.down  -> style.tiles.exitBossDownClosed
                 Direction4.left  -> style.tiles.exitBossLeftClosed
             }
+        }
+    }
+    
+    override fun interact()
+    {
+        fun giveBossWarning()
+        {
+            TutorialPopups.addPopupToDisplay(TutorialPopups.bossWarningPopup)
+            TutorialPopups.bossWarningPopup.isVisible = true
+            getState().tutorialFlags.bossWarningPopupShown = true
+            getState().tutorialFlags.tutorialActive = false
+        }
+        
+        if (getState().tutorialFlags.tutorialActive && getState().tutorialFlags.closedExitPopupShown && !getState().tutorialFlags.bossWarningPopupShown)
+        {
+            giveBossWarning()
+        }
+        else
+        {
+            super.interact()
         }
     }
     

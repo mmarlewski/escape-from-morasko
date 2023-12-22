@@ -11,6 +11,7 @@ import com.efm.room.Room
 import com.efm.room.RoomPosition
 import com.efm.state.State
 import com.efm.state.getState
+import com.efm.ui.gameScreen.TutorialPopups
 
 open class RoomExit(
         override val position : RoomPosition,
@@ -106,6 +107,12 @@ open class RoomExit(
             Gdx.app.log("Exit", "adjusting camera")
             adjustCameraAfterMoving()
             adjustMapLayersAfterMoving()
+        }
+        else if (getState().tutorialFlags.tutorialActive && !getState().tutorialFlags.closedExitPopupShown)
+        {
+            TutorialPopups.addPopupToDisplay(TutorialPopups.closedExitPopup)
+            TutorialPopups.closedExitPopup.isVisible = true
+            getState().tutorialFlags.closedExitPopupShown = true
         }
     }
     

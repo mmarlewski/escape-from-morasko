@@ -18,6 +18,8 @@ object TutorialPopups
     var combatPopup : Window
     var lastPopup : Window
     var cantLeavePopup : Window
+    var bossWarningPopup : Window
+    var closedExitPopup : Window
     
     fun welcomePopup() : Window
     {
@@ -162,7 +164,7 @@ object TutorialPopups
     fun lastPopup() : Window
     {
         val lastPopup = tutorialPopup(
-                "Good luck!",
+                "Good Luck!",
                 "Defeat enemies and loot chests in any order you want. When you are ready, take on the boss to move to the next level!"
                                      )
         {
@@ -184,11 +186,45 @@ object TutorialPopups
             Sounds.ui_2.playOnce()
             interfaceVisibilityWithTutorial()
             cantLeavePopup.isVisible = false
-            
+    
         }
         cantLeavePopup.isVisible = false
-        
+    
         return cantLeavePopup
+    }
+    
+    fun bossWarningPopup() : Window
+    {
+        val bossWarningPopup = tutorialPopup(
+                "Boss Ahead!",
+                "These doors lead to a very powerful enemy. Once you go through, you will not be able to go back until you defeat them!",
+                                            )
+        {
+            Sounds.ui_2.playOnce()
+            interfaceVisibilityWithTutorial()
+            bossWarningPopup.isVisible = false
+            
+        }
+        bossWarningPopup.isVisible = false
+        
+        return bossWarningPopup
+    }
+    
+    fun closedExitPopup() : Window
+    {
+        val closedExitPopup = tutorialPopup(
+                "Locked Doors",
+                "The enemies in this room closed the door! Defeat them to open it!",
+                                           )
+        {
+            Sounds.ui_2.playOnce()
+            interfaceVisibilityWithTutorial()
+            closedExitPopup.isVisible = false
+            
+        }
+        closedExitPopup.isVisible = false
+        
+        return closedExitPopup
     }
     
     init
@@ -203,6 +239,8 @@ object TutorialPopups
         combatPopup = combatPopup()
         lastPopup = lastPopup()
         cantLeavePopup = cantLeavePopup()
+        bossWarningPopup = bossWarningPopup()
+        closedExitPopup = closedExitPopup()
     }
     
     fun addPopupToDisplay(popup : Window)
@@ -224,6 +262,8 @@ object TutorialPopups
         addPopupToDisplay(combatPopup)
         addPopupToDisplay(lastPopup)
         addPopupToDisplay(cantLeavePopup)
+        addPopupToDisplay(bossWarningPopup)
+        addPopupToDisplay(closedExitPopup)
     }
     
 }
