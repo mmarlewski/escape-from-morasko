@@ -29,7 +29,7 @@ object AppInfoScreen : BaseScreen()
                                   )
         
         val versionLabel =
-                labelOf("current version: 1.0.1", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+                labelOf("current version: 0.1.1", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         
         val whatsNewLabel = patchNotesLabel(
                 "What's new?",
@@ -37,7 +37,10 @@ object AppInfoScreen : BaseScreen()
                         "- passages between rooms change visually to show if it is possible to use them\n" +
                         "- added an option to exit movement mode by pressing movement button or player’s character.\n" +
                         "- removed “quit game” button \n" +
-                        "- barrel skill added",
+                        "- added barrel throwing skill \n" +
+                        "- expanded the tutorial \n" +
+                        "- added an option to attack enemies with fists \n",
+                
                 appInfoTitle.width
                                            )
         
@@ -46,7 +49,7 @@ object AppInfoScreen : BaseScreen()
                 "- fixed a movement bug that caused players to lose action points, despite not changing player’s position\n" +
                         "- UI is no longer visible when special event pop-ups are shown\n" +
                         "- missing elements of UI are now drawn after closing the game and pressing continue\n" +
-                        "- expanded the tutorial",
+                        "- the game now ends immediately after the player's death",
                 appInfoTitle.width
                                            )
         
