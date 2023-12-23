@@ -6,7 +6,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(HeadlessTestRunner::class) class chest
+@RunWith(HeadlessTestRunner::class)
+class chest
 {
     val hero = World.hero
     val chest = Chest()

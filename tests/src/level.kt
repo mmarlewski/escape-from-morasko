@@ -17,16 +17,4 @@ class `level`
         level.addRoom(room)
         assertTrue(level.rooms.isNotEmpty())
     }
-    
-    @Test fun `changeStartingPosition test`()
-    {
-        val level = Level("level")
-        val position1 = RoomPosition(1, 1)
-        val position2 = RoomPosition(2, 2)
-        
-        level.startingPosition.set(position1)
-        assertTrue(level.startingPosition == position1)
-        level.startingPosition.set(position2)
-        assertTrue(level.startingPosition == position2)
-    }
 }

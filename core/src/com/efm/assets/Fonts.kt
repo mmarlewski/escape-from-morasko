@@ -20,7 +20,7 @@ object Fonts
     
     val freezing32 = load("freezing/32.fnt")
     
-    private fun load(name : String) : BitmapFont
+    fun load(name : String) : BitmapFont
     {
         val filePath = "fonts/$name"
         assetManager.load(filePath, BitmapFont::class.java)

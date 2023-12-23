@@ -19,7 +19,7 @@ object Musics
     val combat_2 = load("combat_2.ogg")
     val combat_3 = load("combat_3.ogg")
     
-    private fun load(name : String) : Music
+    fun load(name : String) : Music
     {
         val filePath = "music/$name"
         assetManager.load(filePath, Music::class.java)

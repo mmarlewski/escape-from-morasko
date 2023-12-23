@@ -122,14 +122,14 @@ enum class Direction8
         }
     }
     
-    fun toDirection8() : Direction4?
+    fun toDirection4() : Direction4?
     {
         return when (this)
         {
-            up    -> Direction4.down
-            right -> Direction4.left
-            down  -> Direction4.up
-            left  -> Direction4.right
+            up    -> Direction4.up
+            right -> Direction4.right
+            down  -> Direction4.down
+            left  -> Direction4.left
             else  -> null
         }
     }

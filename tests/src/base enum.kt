@@ -4,7 +4,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(HeadlessTestRunner::class) class `base enum`
+@RunWith(HeadlessTestRunner::class)
+class `base enum`
 {
     @Before fun `set up`()
     {

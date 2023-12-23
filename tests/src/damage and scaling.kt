@@ -14,7 +14,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(HeadlessTestRunner::class) class `damage and scaling`
+@RunWith(HeadlessTestRunner::class)
+class `damage and scaling`
 {
     private val hero = World.hero
     private val level1 = Level()

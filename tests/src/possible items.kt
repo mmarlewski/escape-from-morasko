@@ -8,7 +8,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(HeadlessTestRunner::class) class `possible items`
+@RunWith(HeadlessTestRunner::class)
+class `possible items`
 {
     private val possibleItems = examplePossibleItems()
     

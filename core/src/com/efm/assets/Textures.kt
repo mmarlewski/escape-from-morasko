@@ -177,7 +177,7 @@ object Textures
     val skillLegRight = load("icons/skill_right_leg.png")
     val skillTorso = load("icons/skill_torso.png")
     
-    private fun load(name : String) : Texture
+    fun load(name : String) : Texture
     {
         val filePath = "textures/$name"
         assetManager.load(filePath, Texture::class.java)

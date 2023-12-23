@@ -88,7 +88,7 @@ object Sounds
     val slimeMove = load("slimeMove.mp3")
     val slimeAttack = load("slimeAttack.mp3")
     
-    private fun load(name : String) : Sound
+    fun load(name : String) : Sound
     {
         val filePath = "sounds/$name"
         assetManager.load(filePath, Sound::class.java)

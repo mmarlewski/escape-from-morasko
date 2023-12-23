@@ -1,11 +1,13 @@
 import com.efm.entities.StoneColumn
+import com.efm.entities.enemies.*
 import com.efm.room.Base
 import com.efm.room.Space
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(HeadlessTestRunner::class) class `space`
+@RunWith(HeadlessTestRunner::class)
+class `space`
 {
     @Test fun `setEntity test`()
     {
@@ -37,5 +39,33 @@ import org.junit.runner.RunWith
         assertNull(space.getBase())
         space.changeBase(base)
         assertTrue(space.getBase() == base)
+    }
+    
+    @Test fun `isTraversableFor test`()
+    {
+        val space = Space()
+        space.changeBase(Base.lava)
+        
+        assertFalse(space.isTraversableFor(EnemyMushroom()))
+        assertTrue(space.isTraversableFor(EnemyBat()))
+        
+        space.setEntity(EnemySkeleton())
+        
+        assertFalse(space.isTraversableFor(EnemyMushroom()))
+        assertFalse(space.isTraversableFor(EnemyBat()))
+    }
+    
+    @Test fun `isTreadableFor test`()
+    {
+        val space = Space()
+        space.changeBase(Base.lava)
+        
+        assertFalse(space.isTreadableFor(EnemyMushroom()))
+        assertTrue(space.isTreadableFor(EnemyBat()))
+        
+        space.setEntity(EnemySkeleton())
+        
+        assertFalse(space.isTreadableFor(EnemyMushroom()))
+        assertTrue(space.isTreadableFor(EnemyBat()))
     }
 }
