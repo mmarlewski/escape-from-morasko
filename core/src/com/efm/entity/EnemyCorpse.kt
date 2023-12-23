@@ -6,9 +6,10 @@ import com.efm.item.*
 import com.efm.room.RoomPosition
 import com.efm.ui.gameScreen.EquipmentStructure
 
-abstract class EnemyCorpse(
-        override val position : RoomPosition
-                          ) : Interactive, Container, Character
+/**
+ * EnemyCorpse is a Container generated after Enemy death
+ */
+abstract class EnemyCorpse(override val position : RoomPosition) : Interactive, Container, Character
 {
     /** can be empty PossibleItems() **/
     var loot : PossibleItems? = null

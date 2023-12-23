@@ -9,11 +9,6 @@ import com.efm.itemButtonWithLabel
 import com.efm.playSoundOnce
 import com.efm.state.updateState
 
-/** ItemSlot in an InventoryTab for StackableSelfItem. Consists of an Item and a button.
- * @property item Item in the ItemSlot.
- * @property selected Is the Item selected for use (itemButton clicked once).
- * @property itemButton Button in an InventoryTab with the Item's icon.
- */
 class InventoryTabStackableSelfItemSlot(
         override var item : StackableSelfItem,
         image : Texture,

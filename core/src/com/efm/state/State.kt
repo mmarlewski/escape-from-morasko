@@ -31,6 +31,9 @@ fun setState(newState : State)
     
 }
 
+/**
+ * State as in "state machine"
+ */
 sealed class State
 {
     var isHeroAlive = true

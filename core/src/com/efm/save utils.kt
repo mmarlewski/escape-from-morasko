@@ -13,6 +13,9 @@ import com.efm.state.*
 
 val json = Json()
 
+/**
+ * serialises game data into json file
+ */
 fun saveGame()
 {
     println("saving game...")
@@ -34,6 +37,9 @@ fun saveGame()
     println("saved game")
 }
 
+/**
+ * loads and overwrites game data from json file
+ */
 fun loadGame()
 {
     println("loading game...")
@@ -58,30 +64,30 @@ fun loadGame()
         
         val newState = when (saveState)
         {
-        
+            
             is State.free        -> State.free.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
             }
-        
+            
             is State.constrained -> State.constrained.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
                 this.isHeroDetected = saveState.isHeroDetected
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
             }
-        
+            
             is State.combat.hero -> State.combat.hero.noSelection.apply {
                 this.areEnemiesInRoom = saveState.areEnemiesInRoom
                 this.isHeroAlive = saveState.isHeroAlive
                 this.areAnyActionPointsLeft = saveState.areAnyActionPointsLeft
             }
-        
+            
             else                 -> State.over
         }
         newState.tutorialFlags = saveTutorialFlags
         setState(newState)
-    
+        
         World.hero.alive = saveHero.alive
         World.hero.position.set(saveHero.position)
         World.hero.healthPoints = saveHero.healthPoints
@@ -125,6 +131,9 @@ fun loadGame()
     }
 }
 
+/**
+ * check if save file exists
+ */
 fun saveExists() : Boolean
 {
     val file = Gdx.files.local("save.txt")
@@ -132,6 +141,9 @@ fun saveExists() : Boolean
     return file.exists()
 }
 
+/**
+ * deletes save file
+ */
 fun deleteSave()
 {
     println("deleting game...")

@@ -8,6 +8,9 @@ import com.efm.entity.Entity
 import com.efm.skills.LavaWalking
 import com.efm.skills.WaterWalking
 
+/**
+ * Base is a part of Space on witch Entities walk
+ */
 enum class Base(val tile : TiledMapTile, val isTreadableFor : (Entity) -> Boolean = { true })
 {
     stone(Tiles.stoneFloor, { true }),

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.JsonValue
 import com.efm.entity.Entity
 
 /**
- * Fragment of a Room's area, corresponds to Map's tile
+ * Space is a part of a Room, corresponds to one tile on game map
  */
 class Space(x : Int, y : Int, private var base : Base? = null) : Json.Serializable
 {
@@ -37,11 +37,17 @@ class Space(x : Int, y : Int, private var base : Base? = null) : Json.Serializab
         base = newBase
     }
     
+    /**
+     * can Entity go through and occupy
+     */
     fun isTraversableFor(e : Entity) : Boolean
     {
         return base?.isTreadableFor?.invoke(e) == true && entity == null
     }
     
+    /**
+     * can Entity go through
+     */
     fun isTreadableFor(e : Entity) : Boolean
     {
         return base?.isTreadableFor?.invoke(e) == true

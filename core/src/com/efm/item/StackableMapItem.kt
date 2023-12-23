@@ -4,7 +4,7 @@ import com.efm.room.Room
 import com.efm.room.RoomPosition
 
 /**
- * Bombs etc
+ * Items held in stacks, used on game map
  */
 interface StackableMapItem : StackableItem
 {

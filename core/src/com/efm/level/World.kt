@@ -8,6 +8,10 @@ import com.efm.room.Room
 import com.efm.state.State
 import com.efm.state.setState
 
+/**
+ * Holds information about the game world.
+ * Contains all Levels, currentLevel, currentRoom and Hero
+ */
 object World
 {
     val levels = mutableListOf<Level>()

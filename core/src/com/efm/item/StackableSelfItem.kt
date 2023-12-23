@@ -1,5 +1,8 @@
 package com.efm.item
 
+/**
+ * Item held in stacks, used on Hero
+ */
 interface StackableSelfItem : StackableItem
 {
     val hpBoost : Int?

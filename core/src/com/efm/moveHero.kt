@@ -1,6 +1,5 @@
 package com.efm
 
-import com.efm.assets.Textures
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.level.World
@@ -8,6 +7,9 @@ import com.efm.room.*
 import com.efm.screens.GameScreen
 import com.efm.skills.GrassHealing
 
+/**
+ * prepares Hero move and its Animations
+ */
 fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : List<Space>)
 {
     val worldCurrentRoom = World.currentRoom ?: return

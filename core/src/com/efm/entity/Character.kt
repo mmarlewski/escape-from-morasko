@@ -4,9 +4,7 @@ import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 
 /**
- * Character has its own turn. // old idea
- * Now only Enemy has turns.
- * Character has health and can be killed.
+ * Character has health points and can be killed
  */
 interface Character : Entity
 {
@@ -32,6 +30,9 @@ interface Character : Entity
         }
     }
     
+    /**
+     * what happens when Character's death is registered
+     */
     fun onDeath()
     {
     }

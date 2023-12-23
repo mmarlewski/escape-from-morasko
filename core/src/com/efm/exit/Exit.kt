@@ -9,7 +9,7 @@ import com.efm.level.World
 import com.efm.room.RoomPosition
 
 /**
- * Interactive object found in a Room used to leave it. Created based on a Passage.
+ * Exit is an Interactive Entity used to exit Rooms
  */
 interface Exit : Interactive
 {
@@ -48,8 +48,10 @@ interface Exit : Interactive
         
         if (json != null)
         {
-            val jsonActiveWhenNoEnemiesAreInRoom = json.readValue("activeWhenNoEnemiesAreInRoom", Boolean::class.java, jsonData)
-            if (jsonActiveWhenNoEnemiesAreInRoom != null) this.activeWhenNoEnemiesAreInRoom = jsonActiveWhenNoEnemiesAreInRoom
+            val jsonActiveWhenNoEnemiesAreInRoom =
+                    json.readValue("activeWhenNoEnemiesAreInRoom", Boolean::class.java, jsonData)
+            if (jsonActiveWhenNoEnemiesAreInRoom != null) this.activeWhenNoEnemiesAreInRoom =
+                    jsonActiveWhenNoEnemiesAreInRoom
             val jsonPosition = json.readValue("position", RoomPosition::class.java, jsonData)
             if (jsonPosition != null) this.position.set(jsonPosition)
             val jsonDirection = json.readValue("direction", Direction4::class.java, jsonData)

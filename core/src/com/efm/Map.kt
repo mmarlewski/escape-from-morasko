@@ -9,6 +9,10 @@ enum class MapLayer
     base, select, entity, outline
 }
 
+/**
+ * Game map that holds sprites of Bases, Entities and Animations.
+ * It consists of layers and tiles
+ */
 object Map
 {
     val mapWidthInTiles = 25

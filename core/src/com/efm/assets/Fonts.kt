@@ -3,6 +3,9 @@ package com.efm.assets
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 
+/**
+ * Contains all Font assets
+ */
 object Fonts
 {
     val assetManager = AssetManager()

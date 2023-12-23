@@ -1,7 +1,8 @@
 package com.efm
 
-import com.badlogic.gdx.Gdx
-
+/**
+ * Handles execution of Animations on game map
+ */
 object Animating
 {
     private var deltaTime = 0f
@@ -25,6 +26,9 @@ object Animating
         return (currAnimation !is Animation.none)
     }
     
+    /**
+     * starts execution of Animations on game map
+     */
     fun executeAnimations(animationList : MutableList<Animation>)
     {
         animations = animationList
@@ -32,6 +36,9 @@ object Animating
         nextAnimation = if (animationsIterator.hasNext()) animationsIterator.next() else null
     }
     
+    /**
+     * updates Animations according to delta time
+     */
     fun update(dt : Float)
     {
         deltaTime += dt

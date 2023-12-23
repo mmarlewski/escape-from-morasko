@@ -1,5 +1,8 @@
 package com.efm.item
 
+/**
+ * Item held in stacks
+ */
 interface StackableItem : Item
 {
     val maxAmount : Int

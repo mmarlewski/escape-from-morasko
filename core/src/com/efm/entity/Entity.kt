@@ -7,7 +7,7 @@ import com.efm.IdleAnimation
 import com.efm.room.RoomPosition
 
 /**
- * Entity inhabits a Room, things happen to Entities and Entities make things happen
+ * Entity has position and occupies Space
  */
 interface Entity : Json.Serializable
 {

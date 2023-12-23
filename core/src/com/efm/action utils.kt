@@ -2,6 +2,9 @@ package com.efm
 
 import com.efm.room.RoomPosition
 
+/**
+ * returns positions corresponding to straight line on square grid
+ */
 fun getLineFromPositionInDirectionPositions(from : RoomPosition, direction : Direction8, length : Int) : List<RoomPosition>
 {
     val positions = mutableListOf<RoomPosition>()
@@ -18,6 +21,9 @@ fun getLineFromPositionInDirectionPositions(from : RoomPosition, direction : Dir
     return positions
 }
 
+/**
+ * returns positions corresponding to square perimeter on square grid
+ */
 fun getSquarePerimeterPositions(center : RoomPosition, radius : Int) : List<RoomPosition>
 {
     if (radius < 0)
@@ -51,6 +57,9 @@ fun getSquarePerimeterPositions(center : RoomPosition, radius : Int) : List<Room
     return positions.toList()
 }
 
+/**
+ * returns positions corresponding to square on square grid including perimeter
+ */
 fun getSquareAreaPositions(center : RoomPosition, radius : Int) : List<RoomPosition>
 {
     if (radius < 0)

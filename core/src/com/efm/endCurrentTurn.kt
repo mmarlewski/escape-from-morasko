@@ -7,6 +7,9 @@ import com.efm.screens.GameScreen
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
 
+/**
+ * ends Hero turn and then acts accordingly to game and world state
+ */
 fun endCurrentTurn()
 {
     saveGame()
@@ -26,7 +29,7 @@ fun endCurrentTurn()
             World.hero.updateActiveSkillCoolDown()
             World.hero.incrementTurnsElapsed()
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-    
+            
             if (!isHeroVisible)
             {
                 newState = State.free.heroSelected.apply {

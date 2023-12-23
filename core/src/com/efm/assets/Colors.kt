@@ -2,6 +2,9 @@ package com.efm.assets
 
 import com.badlogic.gdx.graphics.Color
 
+/**
+ * Contains all Color assets
+ */
 object Colors
 {
     val clear = Color.CLEAR

@@ -6,6 +6,9 @@ import com.efm.room.RoomPosition
 import com.efm.room.Space
 import com.efm.screens.GameScreen
 
+/**
+ * prepares Enemy move and its Animations
+ */
 fun moveEnemy(
         startPosition : RoomPosition,
         endPosition : RoomPosition,

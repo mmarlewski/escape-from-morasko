@@ -10,10 +10,8 @@ import com.efm.entities.bosses.slime.BossSlimeQuarter
 import com.efm.entity.*
 
 /**
- * Part of a level. Only one is displayed on screen at any given time.
- * @property spaceArray Array of Spaces present at any given position within the Room. Used to check if a fragment of the Room at a given position is accessible and to get its texture.
- * @property spaceList List of all Spaces in the spacesArray.
- * @property characters List of Characters (Entities with a turn) inside the Room.
+ * Room is a part of a Level. It is Displayed in full on game map.
+ * Contains Spaces, Entities, Characters and Enemies that occupy Room
  */
 class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int) : Json.Serializable
 {
@@ -74,6 +72,9 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         }
     }
     
+    /**
+     * re-creates Space list from Space array
+     */
     fun updateSpaceList()
     {
         spaceList.clear()
@@ -90,6 +91,9 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         }
     }
     
+    /**
+     * assigns every Entity to corresponding Space according to Entity position
+     */
     fun updateSpacesEntities()
     {
         for (space in spaceList)
@@ -104,7 +108,9 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         }
     }
     
-    /** remove killed characters or replace them with corpses **/
+    /**
+     * remove killed characters or replace them with corpses *
+     */
     fun removeKilledCharacters()
     {
         val killedCharacters = mutableListOf<Character>()
@@ -174,13 +180,17 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         return enemiesThatAreSlimeQuarter
     }
     
-    /** adding entities to room can mess things up, so it happens in its own time **/
+    /**
+     * adding entities to room can mess things up, so it happens in its own time
+     */
     fun addEntityToBeAddedEntities(entity : Entity)
     {
         entitiesToBeAdded.add(entity)
     }
     
-    /** adding entities to room can mess things up, so it happens in its own time **/
+    /**
+     * adding entities to room can mess things up, so it happens in its own time *
+     */
     fun addToBeAddedEntitiesToRoom()
     {
         for (entityToBeAdded in entitiesToBeAdded)

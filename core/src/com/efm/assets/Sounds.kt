@@ -3,6 +3,9 @@ package com.efm.assets
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
 
+/**
+ * Contains all the Sound assets
+ */
 object Sounds
 {
     val assetManager = AssetManager()
@@ -48,7 +51,7 @@ object Sounds
     
     val wizardMove = load("wizardMove.mp3")
     val wizardAttack = load("wizardAttack.mp3")
-    
+
 //    val plantAttack = load("plantAttack.mp3")
     
     val ghostAppear = load("ghostAppear.mp3")
@@ -56,7 +59,7 @@ object Sounds
     val ghostTimer = load("ghostTimer.mp3")
     val ghostDie = load("ghostDie.mp3")
     
-    val turretAttack= load("turretAttack.mp3")
+    val turretAttack = load("turretAttack.mp3")
     
     val golemMove = load("golemMove.mp3")
     val golemAttack = load("golemAttack.mp3")
@@ -84,7 +87,6 @@ object Sounds
     
     val slimeMove = load("slimeMove.mp3")
     val slimeAttack = load("slimeAttack.mp3")
-    
     
     private fun load(name : String) : Sound
     {

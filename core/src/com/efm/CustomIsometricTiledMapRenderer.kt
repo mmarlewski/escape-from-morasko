@@ -10,6 +10,9 @@ import com.badlogic.gdx.math.*
 import kotlin.math.PI
 import kotlin.math.sin
 
+/**
+ * Custom implementation of an isometric map that handles multiple layers and animations
+ */
 class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
 {
     private var isoTransform : Matrix4? = null
@@ -284,7 +287,7 @@ class CustomIsometricTiledMapRenderer : BatchTiledMapRenderer
                 }
             }
             
-            is Animation.moveTileSmoothly         ->
+            is Animation.moveTileSmoothly ->
             {
                 val animationPosition = Vector2()
                 animationPosition.x = animation.moveTilePosition.x

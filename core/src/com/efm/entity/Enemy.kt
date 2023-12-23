@@ -18,7 +18,7 @@ import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.ProgressBars
 
 /**
- * Enemy has its own turn and can attack the Hero.
+ * Enemy can move and attack in Enemies turn
  */
 interface Enemy : Character
 {
@@ -59,6 +59,9 @@ interface Enemy : Character
     
     fun getMoveSound() : Sound?
     
+    /**
+     * what Enemy does on its turn
+     */
     fun performTurn()
     {
         val worldCurrentRoom = World.currentRoom ?: return

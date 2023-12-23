@@ -12,6 +12,9 @@ import com.efm.stackableSelfItems.*
 import com.efm.state.State
 import com.efm.state.setState
 
+/**
+ * The game class
+ */
 object EscapeFromMorasko : Game()
 {
     lateinit var spriteBatch : SpriteBatch

@@ -3,12 +3,14 @@ package com.efm.assets
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Music
 
+/**
+ * Contains all Music assets
+ */
 object Musics
 {
     val assetManager = AssetManager()
     
     val ambient_1 = load("ambient_1.mp3")
-//    val ambient_2 = load("ambient_2.flac")
     val ambient_3 = load("ambient_3.ogg")
     val ambient_4 = load("ambient_4.ogg")
     val ambient_5 = load("ambient_5.mp3")

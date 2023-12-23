@@ -20,7 +20,7 @@ import com.efm.state.getState
 import com.efm.ui.gameScreen.ProgressBars
 
 /**
- * Hero has its own turn and is controlled by the player.
+ * Hero is the Entity controlled by the player, it has its own turn, inventory, Skills, action points
  */
 class Hero(
         override var maxHealthPoints : Int = defaultHeroMaxHp,

@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx
 import kotlin.math.min
 
 /**
- * Holds items.
- * Sorting items is done automatically after adding or removing item from items
+ * Container Entity holds Items
  */
 interface Container
 {

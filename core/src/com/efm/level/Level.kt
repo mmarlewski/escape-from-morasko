@@ -6,10 +6,7 @@ import com.efm.room.Room
 import com.efm.room.RoomPosition
 
 /**
- * Consists of Rooms connected with Passages. Part of a world.
- * @property rooms List of Rooms in the Level.
- * @property startingRoom Room in which the Hero is at the beginning of the Level.
- * @property startingPosition Position in startingRoom where the Hero is at the beginning of the Level.
+ * Level is a set of connected Rooms
  */
 class Level(var name : String) : Json.Serializable
 {

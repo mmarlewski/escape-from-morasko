@@ -4,7 +4,7 @@ import com.efm.room.Room
 import com.efm.room.RoomPosition
 
 /**
- * Swords, bows, other weapons
+ * Item held in single unit, with durability, used on game map
  */
 interface MultiUseMapItem : Item
 {

@@ -7,9 +7,7 @@ import com.efm.Direction4
 import com.efm.Direction8
 
 /**
- * Position within a Room starting at top left corner.
- * @param x horizontal
- * @param y vertical
+ * Position within a Room starting at top left corner
  */
 data class RoomPosition(var x : Int = 0, var y : Int = 0) : Json.Serializable
 {

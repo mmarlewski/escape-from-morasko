@@ -5,11 +5,17 @@ import com.efm.room.Room
 import com.efm.room.RoomPosition
 import com.efm.skills.*
 
+/**
+ * One BodyPart can hold one Skill corresponding to that BodyPart
+ */
 enum class BodyPart
 {
     head, torso, leftHand, rightHand, leftLeg, rightLeg
 }
 
+/**
+ * Skill can be used by Hero in combat or exploration, occupies one BodyPart
+ */
 abstract class Skill(
         open val bodyPart : BodyPart,
         open val apCost : Int,
@@ -23,6 +29,9 @@ abstract class Skill(
     var currCoolDown = 0
 }
 
+/**
+ * Needs to be actively used by player in combat at the cost of action points
+ */
 abstract class ActiveSkill(
         override val bodyPart : BodyPart,
         override val apCost : Int,

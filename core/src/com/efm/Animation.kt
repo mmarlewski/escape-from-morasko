@@ -10,6 +10,9 @@ import com.efm.room.toVector2
 import com.efm.screens.GameScreen
 import kotlin.math.abs
 
+/**
+ * Animation is a dynamic effect on game map happening across a time span
+ */
 sealed class Animation
 {
     var startDeltaTime = 0f
@@ -493,11 +496,11 @@ sealed class Animation
                                ) : moveTile(tile, from, to, seconds)
     {
         var movePercent = 0.0f
-    
+        
         override fun update()
         {
             super.update()
-        
+            
             movePercent = deltaTimeDifference() / seconds
         }
     }

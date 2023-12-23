@@ -9,6 +9,9 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile
 import com.efm.Direction4
 import com.efm.Direction8
 
+/**
+ * Contains all StaticTiledMapTile assets
+ */
 object Tiles
 {
     val assetManager = AssetManager()

@@ -3,12 +3,14 @@ package com.efm.entity
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 
 /**
- * Entity that the Hero can interact with.
- * Interactive Entity can perform an action after being clicked or after an item is used on it.
+ * Interactive Entity can perform an action after being clicked on
  */
 interface Interactive : Entity
 {
     fun getOutlineTealTile() : TiledMapTile?
     
+    /**
+     * what happens after Hero moves next to and uses Interactive Entity
+     */
     fun interact()
 }

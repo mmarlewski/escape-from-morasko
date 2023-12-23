@@ -1,5 +1,8 @@
 package com.efm
 
+/**
+ * Handles Entity idle animations
+ */
 object IdleAnimation
 {
     const val numberOfIdleAnimations = 4
@@ -10,6 +13,9 @@ object IdleAnimation
     var idleAnimationTime = 0.0f
     var idleAnimationChange = false
     
+    /**
+     * updates idle animations according to delta time
+     */
     fun update(dt : Float)
     {
         idleAnimationChange = false

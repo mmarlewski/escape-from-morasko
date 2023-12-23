@@ -2,16 +2,25 @@ package com.efm
 
 import com.efm.room.RoomPosition
 
+/**
+ * Direction in X axis
+ */
 enum class DirectionX
 {
     right, left
 }
 
+/**
+ * Direction in Y axis
+ */
 enum class DirectionY
 {
     up, down
 }
 
+/**
+ * Direction in X and Y axis
+ */
 enum class Direction4
 {
     up, right, down, left;
@@ -27,7 +36,7 @@ enum class Direction4
         }
     }
     
-    fun nextInClockwise():Direction4
+    fun nextInClockwise() : Direction4
     {
         return when (this)
         {
@@ -38,7 +47,7 @@ enum class Direction4
         }
     }
     
-    fun nextInCounterclockwise():Direction4
+    fun nextInCounterclockwise() : Direction4
     {
         return when (this)
         {
@@ -61,6 +70,9 @@ enum class Direction4
     }
 }
 
+/**
+ * Direction in X axis, Y axis and diagonals
+ */
 enum class Direction8
 {
     up, upRight, right, downRight, down, downLeft, left, upLeft;
@@ -129,7 +141,7 @@ fun getDirectionX(from : RoomPosition, to : RoomPosition) : DirectionX?
     {
         (from.x < to.x) -> DirectionX.right
         (from.x > to.x) -> DirectionX.left
-        else                              -> null
+        else            -> null
     }
 }
 
@@ -139,7 +151,7 @@ fun getDirectionY(from : RoomPosition, to : RoomPosition) : DirectionY?
     {
         (from.y < to.y) -> DirectionY.down
         (from.y > to.y) -> DirectionY.up
-        else                              -> null
+        else            -> null
     }
 }
 
@@ -169,10 +181,10 @@ fun getDirection4(from : RoomPosition, to : RoomPosition) : Direction4?
     
     return when
     {
-        directionY == DirectionY.up && directionX == null               -> Direction4.up
-        directionY == null && directionX == DirectionX.right            -> Direction4.right
-        directionY == DirectionY.down && directionX == null             -> Direction4.down
-        directionY == null && directionX == DirectionX.left             -> Direction4.left
-        else                                                            -> null
+        directionY == DirectionY.up && directionX == null    -> Direction4.up
+        directionY == null && directionX == DirectionX.right -> Direction4.right
+        directionY == DirectionY.down && directionX == null  -> Direction4.down
+        directionY == null && directionX == DirectionX.left  -> Direction4.left
+        else                                                 -> null
     }
 }

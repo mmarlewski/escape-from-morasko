@@ -7,6 +7,9 @@ import com.efm.screens.GameScreen
 import com.efm.level.World
 import com.efm.screens.GameOverScreen
 
+/**
+ * updates current State and sets it to new one if necessary
+ */
 fun updateState()
 {
     val currState = getState()

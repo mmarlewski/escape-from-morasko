@@ -4,6 +4,9 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.NinePatch
 
+/**
+ * Contains all Texture assets
+ */
 object Textures
 {
     val assetManager = AssetManager()
