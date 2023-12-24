@@ -11,6 +11,10 @@ class WoodenSword : Sword()
     override var maxDurability : Int = 25
     override val durabilityUseCost : Int = 1
     override val damage : Int = 2
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost + "\n" +
+                "Uses left: " + durability
     
     override fun getTexture() : Texture
     {

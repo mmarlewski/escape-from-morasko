@@ -8,9 +8,11 @@ import com.efm.room.RoomPosition
  */
 interface MultiUseMapItem : Item
 {
+    override val name : String
     var durability : Int
     var maxDurability : Int
     val durabilityUseCost : Int
+    val statsDescription : String
     
     fun lowerDurability()
     {

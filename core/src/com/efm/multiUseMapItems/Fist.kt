@@ -18,6 +18,10 @@ object Fist : MultiUseMapItem
     override var maxDurability : Int = Int.MAX_VALUE
     override val durabilityUseCost : Int = 1
     val damage : Int = 1
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost + "\n" +
+                "Uses left: Infinite"
     
     override fun getTexture() : Texture
     {

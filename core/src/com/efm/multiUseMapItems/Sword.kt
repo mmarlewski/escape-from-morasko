@@ -11,11 +11,16 @@ import com.efm.room.RoomPosition
 
 abstract class Sword : MultiUseMapItem
 {
+    override val name : String = "Standard Sword"
     override var baseAPUseCost : Int = 1
     override var durability : Int = 20
     override var maxDurability : Int = 20
     override val durabilityUseCost : Int = 1
     open val damage : Int = 2
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost + "\n" +
+                "Uses left: " + durability
     
     override fun getTexture() : Texture
     {
