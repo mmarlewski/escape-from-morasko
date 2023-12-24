@@ -255,7 +255,7 @@ object EquipmentStructure
                 is MultiUseMapItem   ->
                 {
                     val button =
-                            ItemsStructure.createItemWithHealthbar(item.durability, item.maxDurability, item.getTexture()) {}
+                            ItemsStructure.createItemWithHealthbar(item.durability, item.maxDurability, item.getTexture(), item.name, item.statsDescription) {}
                     button.addListener(object : ClickListener()
                                        {
                                            override fun clicked(event : InputEvent?, x : Float, y : Float)

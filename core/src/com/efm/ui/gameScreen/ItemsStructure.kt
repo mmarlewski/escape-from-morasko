@@ -97,6 +97,8 @@ object ItemsStructure
             currentHealth : Int,
             maxHealth : Int,
             texture : Texture?,
+            itemName : String,
+            itemStats : String,
             action : () -> Unit
                                ) : ImageButton
     {
@@ -109,6 +111,7 @@ object ItemsStructure
                 Textures.focusedNinePatch
                                             ) {
             playSoundOnce(Sounds.ui_4)
+            RightStructure.displayWeaponStats(itemName, itemStats)
             action()
         }
         
@@ -411,7 +414,7 @@ object ItemsStructure
         skillRow.clear()
         
         multiUseMapItemRow.addActor(
-                createItemWithHealthbar(Fist.durability, Fist.maxDurability, Fist.getTexture()) { attack(Fist) }
+                createItemWithHealthbar(Fist.durability, Fist.maxDurability, Fist.getTexture(), Fist.name, Fist.statsDescription)  { attack(Fist) }
                                    )
         
         for (item in World.hero.inventory.items)
@@ -421,7 +424,7 @@ object ItemsStructure
                 is MultiUseMapItem   ->
                 {
                     multiUseMapItemRow.addActor(
-                            createItemWithHealthbar(item.durability, item.maxDurability, item.getTexture()) { attack(item) }
+                            createItemWithHealthbar(item.durability, item.maxDurability, item.getTexture(), item.name, item.statsDescription) { attack(item) }
                                                )
                 }
                 

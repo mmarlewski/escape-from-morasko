@@ -11,6 +11,10 @@ class IronSword : Sword()
     override var maxDurability : Int = 20
     override val durabilityUseCost : Int = 1
     override val damage : Int = 4
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost + "\n" +
+                "Uses left: " + durability
     
     override fun getTexture() : Texture
     {
@@ -26,6 +30,10 @@ class TurquoiseSword : Sword()
     override var maxDurability : Int = 10
     override val durabilityUseCost : Int = 1
     override val damage : Int = 8
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost + "\n" +
+                "Uses left: " + durability
     
     override fun getTexture() : Texture
     {
@@ -41,6 +49,10 @@ class AmberSword : Sword()
     override var maxDurability : Int = 15
     override val durabilityUseCost : Int = 1
     override val damage : Int = 6
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost + "\n" +
+                "Uses left: " + durability
     
     override fun getTexture() : Texture
     {

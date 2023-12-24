@@ -1259,3 +1259,41 @@ fun patchNotesLabel(
     
     return table
 }
+
+fun statisticsPopup(weaponName : String,
+                    weaponStats : String) : Window
+{
+    val windowStyle = Window.WindowStyle()
+    windowStyle.titleFont = Fonts.pixeloid20
+    windowStyle.titleFontColor = Colors.white
+    windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
+    
+    val window = Window(weaponName, windowStyle)
+    val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
+    titleLabel.setAlignment(Align.center)
+    window.titleTable.getCell(titleLabel).padTop(48f)
+   
+    
+    val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
+    delimiter.setFontScale(0.1f)
+    
+    val description = labelOf(weaponStats, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    
+    var widthOfDelimiter : Float
+    if (description.width > window.titleLabel.width)
+    {
+        widthOfDelimiter = description.width
+    }
+    else
+    {
+        widthOfDelimiter = window.titleLabel.width
+    }
+    
+    val table = Table()
+    table.add(delimiter).fillX().height(1f).padTop(40f).width(widthOfDelimiter).row()
+    table.add(description).padTop(8f).align(Align.left).row()
+    
+    window.add(columnOf(table))
+    
+    return window
+}

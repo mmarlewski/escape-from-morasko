@@ -18,6 +18,10 @@ class Sledgehammer : MultiUseMapItem
     override var maxDurability : Int = 20
     override val durabilityUseCost : Int = 1
     val damage : Int = 2
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost + "\n" +
+                "Uses left: " + durability
     
     override fun getTexture() : Texture
     {
