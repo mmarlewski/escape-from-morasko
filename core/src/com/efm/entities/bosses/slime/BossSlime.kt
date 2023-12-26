@@ -169,8 +169,5 @@ open class BossSlime : Entity, Enemy
         addBossToDefeatedBossesList(Boss.Slime)
     }
     
-    override fun getCorpse() : EnemyCorpse?
-    {
-        return null
-    }
+    override fun getCorpse() : EnemyCorpse? = null
 }

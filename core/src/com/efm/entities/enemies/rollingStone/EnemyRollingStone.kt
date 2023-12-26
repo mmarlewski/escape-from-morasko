@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.enemies.rollingStone
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -153,7 +153,7 @@ class EnemyRollingStone : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemyRollingStoneCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemyRollingStoneCorpse(this.position, defaultLoot)
     
     override fun performTurn()
     {

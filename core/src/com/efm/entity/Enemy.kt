@@ -201,10 +201,7 @@ interface Enemy : Character
         healthStack.isVisible = false
     }
     
-    fun getCorpse() : EnemyCorpse?
-    {
-        return null
-    }
+    fun getCorpse() : EnemyCorpse? = null
     
     fun setIsFrozen(value : Boolean)
     {

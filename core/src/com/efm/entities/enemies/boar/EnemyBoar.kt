@@ -67,7 +67,7 @@ class EnemyBoar(
     
     private fun getAttackSound() : Sound = Sounds.boarAttack
     
-    override fun getCorpse() : EnemyCorpse = EnemyBoarCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemyBoarCorpse(this.position, defaultLoot)
     
     override fun performTurn()
     {

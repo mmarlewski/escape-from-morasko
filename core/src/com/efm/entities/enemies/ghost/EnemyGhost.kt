@@ -128,7 +128,7 @@ class EnemyGhost(
     
     private fun getAttackSound() : Sound = Sounds.ghostAppear
     
-    override fun getCorpse() : EnemyCorpse = EnemyGhostCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemyGhostCorpse(this.position, defaultLoot)
     
     override fun performTurn()
     {

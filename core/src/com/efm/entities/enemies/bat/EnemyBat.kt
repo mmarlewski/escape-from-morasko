@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.enemies.bat
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -11,68 +11,51 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class EnemyMimic : Entity, Enemy
+class EnemyBat : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 20
-    override var healthPoints = 20
+    override var maxHealthPoints = 6
+    override var healthPoints = 6
     override var alive = true
-    override val detectionRange = 1
+    override val detectionRange = 3
     override val attackRange = 1
-    override var attackDamage = 20
-    override val stepsInOneTurn = 2
+    override var attackDamage = 12
+    override val stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.mimicIdle1
-    }
-    
-    fun getOutlineYellowTileAfterDetection(n : Int) : TiledMapTile
-    {
-        return when (n)
-        {
-            1    -> Tiles.mimicIdle1OutlineYellow
-            2    -> Tiles.mimicIdle2OutlineYellow
-            3    -> Tiles.mimicIdle1OutlineYellow
-            4    -> Tiles.mimicIdle2OutlineYellow
-            else -> Tiles.mimicIdle1OutlineYellow
-        }
+        return Tiles.batIdle1
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
-            1    -> Tiles.chestOutlineYellow
-            2    -> Tiles.chestOutlineYellow
-            3    -> Tiles.chestOutlineYellow
-            4    -> Tiles.chestOutlineYellow
-            else -> Tiles.chestOutlineYellow
+            1    -> Tiles.batIdle1OutlineYellow
+            2    -> Tiles.batIdle2OutlineYellow
+            3    -> Tiles.batIdle3OutlineYellow
+            4    -> Tiles.batIdle2OutlineYellow
+            else -> Tiles.batIdle1OutlineYellow
         }
     }
     
     override fun getOutlineRedTile() : TiledMapTile
     {
-        return Tiles.mimicIdle1OutlineRed
+        return Tiles.batIdle1OutlineRed
     }
     
     override fun getIdleTile(n : Int) : TiledMapTile?
     {
-        return Tiles.chest
-    }
-    
-    fun getIdleTileAfterDetection(n : Int) : TiledMapTile?
-    {
         return when (n)
         {
-            1    -> Tiles.mimicIdle1
-            2    -> Tiles.mimicIdle2
-            3    -> Tiles.mimicIdle1
-            4    -> Tiles.mimicIdle2
-            else -> Tiles.mimicIdle1
+            1    -> Tiles.batIdle1
+            2    -> Tiles.batIdle2
+            3    -> Tiles.batIdle3
+            4    -> Tiles.batIdle2
+            else -> Tiles.batIdle1
         }
     }
     
@@ -80,41 +63,41 @@ class EnemyMimic : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.mimicMove1
-            2    -> Tiles.mimicMove2
-            3    -> Tiles.mimicMove1
-            4    -> Tiles.mimicMove2
-            else -> Tiles.mimicMove1
+            1    -> Tiles.batMove1
+            2    -> Tiles.batMove2
+            3    -> Tiles.batMove3
+            4    -> Tiles.batMove2
+            else -> Tiles.batMove1
         }
     }
     
     override fun getAttackTile() : TiledMapTile?
     {
-        return Tiles.mimicAttack
+        return Tiles.batAttack
     }
     
     override fun getMoveSound() : Sound?
     {
-        return Sounds.mimicMove
+        return Sounds.batMove
     }
     
     override fun enemyAttack()
     {
         val heroPosition = World.hero.position.copy()
         val heroDirection = getDirection8(this.position, heroPosition)
-        val swordTile = if (heroDirection == null) null else Tiles.getSwordTile(heroDirection)
-    
+        val impactTile = if (heroDirection == null) null else Tiles.getImpactTile(heroDirection)
+        
         val animations = mutableListOf<Animation>()
-    
-        animations += Animation.descendTile(swordTile, heroPosition.copy(), 0.2f, 0.25f)
-        animations += Animation.action { playSoundOnce(Sounds.mimicAttack) }
+        
         animations += Animation.simultaneous(
                 listOf(
-                        Animation.showTile(Tiles.impact, heroPosition.copy(), 0.2f), Animation.cameraShake(1, 0.5f)
+                        Animation.cameraShake(1, 0.5f),
+                        Animation.action { playSoundOnce(Sounds.batAttack) },
+                        Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
                       )
                                             )
         animations += Animation.action {
-        
+            
             val attackedPosition = World.hero.position
             val attackedSpace = World.currentRoom?.getSpace(attackedPosition)
             val attackedEntity = attackedSpace?.getEntity()
@@ -126,9 +109,8 @@ class EnemyMimic : Entity, Enemy
                 }
             }
         }
-    
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemyMimicCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemyBatCorpse(this.position, defaultLoot)
 }

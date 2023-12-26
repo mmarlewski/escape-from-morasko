@@ -10,27 +10,27 @@ import com.efm.room.RoomPosition
 import com.efm.stackableMapItems.Bomb
 import com.efm.stackableMapItems.Explosive
 import com.efm.stackableSelfItems.*
+import kotlin.random.Random
 
-class EnemyGhostCorpse(position : RoomPosition, loot : PossibleItems = defaultLoot) : EnemyCorpse(position, loot)
+class EnemyGhostCorpse(position : RoomPosition = RoomPosition(),
+                       loot : PossibleItems? = null,
+                       seed : Int = Random.nextInt()) : EnemyCorpse(position, loot, seed)
 {
     override fun getTile() : TiledMapTile = Tiles.ghostCorpse
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.ghostCorpseOutlineYellow
     override fun getOutlineTealTile() : TiledMapTile? = null
-    
-    companion object
-    {
-        val defaultLoot = PossibleItems(
-                mutableListOf(
-                        PossibleItem(APPotionSmall(), 0.33f, IntRange(0, 4)),
-                        PossibleItem(APPotionBig(), 0.67f, IntRange(0, 2)),
-                        PossibleItem(HPPotionSmall(), 0.33f, IntRange(0, 4)),
-                        PossibleItem(HPPotionBig(), 0.67f, IntRange(0, 2)),
-                        PossibleItem(Staff(), 0.2f, 1..1),
-                        PossibleItem(TurquoiseSword(), 0.2f, 1..1),
-                        PossibleItem(AmberSword(), 0.2f, 1..1),
-                        PossibleItem(Bomb(), 0.5f, IntRange(0, 2)),
-                        PossibleItem(Explosive(), 0.1f, IntRange(1, 1))
-                             )
-                                       )
-    }
 }
+
+val defaultLoot = PossibleItems(
+        mutableListOf(
+                PossibleItem(APPotionSmall(), 0.33f, IntRange(0, 4)),
+                PossibleItem(APPotionBig(), 0.67f, IntRange(0, 2)),
+                PossibleItem(HPPotionSmall(), 0.33f, IntRange(0, 4)),
+                PossibleItem(HPPotionBig(), 0.67f, IntRange(0, 2)),
+                PossibleItem(Staff(), 0.2f, 1..1),
+                PossibleItem(TurquoiseSword(), 0.2f, 1..1),
+                PossibleItem(AmberSword(), 0.2f, 1..1),
+                PossibleItem(Bomb(), 0.5f, IntRange(0, 2)),
+                PossibleItem(Explosive(), 0.1f, IntRange(1, 1))
+                     )
+                               )

@@ -165,9 +165,6 @@ open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Ene
         }
     }
     
-    override fun getCorpse() : EnemyCorpse?
-    {
-        return null
-    }
+    override fun getCorpse() : EnemyCorpse? = null
     
 }

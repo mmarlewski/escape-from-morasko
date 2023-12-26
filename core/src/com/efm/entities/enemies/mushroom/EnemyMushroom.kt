@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.enemies.mushroom
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -11,51 +11,51 @@ import com.efm.entity.*
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-class EnemyBat : Entity, Enemy
+open class EnemyMushroom : Entity, Enemy
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 6
-    override var healthPoints = 6
+    override var maxHealthPoints = 8
+    override var healthPoints = 8
     override var alive = true
-    override val detectionRange = 3
+    override val detectionRange = 1
     override val attackRange = 1
-    override var attackDamage = 12
-    override val stepsInOneTurn = 3
+    override var attackDamage = 8
+    override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.batIdle1
+        return Tiles.mushroomIdle1
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
-            1    -> Tiles.batIdle1OutlineYellow
-            2    -> Tiles.batIdle2OutlineYellow
-            3    -> Tiles.batIdle3OutlineYellow
-            4    -> Tiles.batIdle2OutlineYellow
-            else -> Tiles.batIdle1OutlineYellow
+            1    -> Tiles.mushroomIdle1OutlineYellow
+            2    -> Tiles.mushroomIdle2OutlineYellow
+            3    -> Tiles.mushroomIdle1OutlineYellow
+            4    -> Tiles.mushroomIdle2OutlineYellow
+            else -> Tiles.mushroomIdle1OutlineYellow
         }
     }
     
     override fun getOutlineRedTile() : TiledMapTile
     {
-        return Tiles.batIdle1OutlineRed
+        return Tiles.mushroomIdle1OutlineRed
     }
     
     override fun getIdleTile(n : Int) : TiledMapTile?
     {
         return when (n)
         {
-            1    -> Tiles.batIdle1
-            2    -> Tiles.batIdle2
-            3    -> Tiles.batIdle3
-            4    -> Tiles.batIdle2
-            else -> Tiles.batIdle1
+            1    -> Tiles.mushroomIdle1
+            2    -> Tiles.mushroomIdle2
+            3    -> Tiles.mushroomIdle1
+            4    -> Tiles.mushroomIdle2
+            else -> Tiles.mushroomIdle1
         }
     }
     
@@ -63,22 +63,22 @@ class EnemyBat : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.batMove1
-            2    -> Tiles.batMove2
-            3    -> Tiles.batMove3
-            4    -> Tiles.batMove2
-            else -> Tiles.batMove1
+            1    -> Tiles.mushroomMove1
+            2    -> Tiles.mushroomMove2
+            3    -> Tiles.mushroomMove1
+            4    -> Tiles.mushroomMove2
+            else -> Tiles.mushroomMove1
         }
     }
     
     override fun getAttackTile() : TiledMapTile?
     {
-        return Tiles.batAttack
+        return Tiles.mushroomAttack
     }
     
     override fun getMoveSound() : Sound?
     {
-        return Sounds.batMove
+        return Sounds.mushroomMove
     }
     
     override fun enemyAttack()
@@ -91,11 +91,11 @@ class EnemyBat : Entity, Enemy
         
         animations += Animation.simultaneous(
                 listOf(
-                        Animation.cameraShake(1, 0.5f),
-                        Animation.action { playSoundOnce(Sounds.batAttack) },
-                        Animation.showTile(impactTile, heroPosition.copy(), 0.5f)
+                        Animation.cameraShake(3, 1.0f),
+                        Animation.action { playSoundOnce(Sounds.mushroomAttack) },
+                        Animation.showTile(impactTile, heroPosition.copy(), 1.0f)
                       )
-                                            )
+                                             )
         animations += Animation.action {
             
             val attackedPosition = World.hero.position
@@ -109,8 +109,9 @@ class EnemyBat : Entity, Enemy
                 }
             }
         }
+    
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemyBatCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemyMushroomCorpse(this.position, defaultLoot)
 }
