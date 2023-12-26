@@ -2,6 +2,7 @@ import com.efm.*
 import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
 import com.efm.exit.ExitStyle
+import com.efm.exit.LevelExit
 import com.efm.level.Level
 import com.efm.level.World
 import com.efm.room.*
@@ -163,14 +164,7 @@ fun World.createProcGenWorld() {
         val y2 = getRoomY2(i, roomData)
         val height = x2 - x1
         val width = y2 - y1
-        val room = if (i == 1)
-        {
-            Room("starting_room", height, width)
-        }
-        else
-        {
-            Room(i.toString(), height, width)
-        }
+        val room = Room(i.toString(), height, width)
         val roomBasesArray = getMatrixBasedOnCoordinates(roomData, x1, x2, y1, y2, i)
         for (y in roomBasesArray.indices)
         {
@@ -204,22 +198,46 @@ fun World.createProcGenWorld() {
     var bossRoom = Room("boss_room", 20, 20)
     for (patch in patchCenters)
     {
-        val possibleFurthestRoom = findRoomByName(findFurthestPatchThatIsNotInConnections(patchCenters, patch).toString(), rooms)
+        val possibleFurthestRoom = findRoomByName(findFurthestPatch(patchCenters, patch)?.value.toString(), rooms)
         if (possibleFurthestRoom != null)
         {
-            createBossRoom(possibleFurthestRoom)
+            createBossRoom(possibleFurthestRoom, level, bossRoom)
             break
         }
     }
     level.addRoom(bossRoom)
-    level.startingRoom = rooms[0]
+    rooms.add(bossRoom)
+    level.startingRoom = rooms.last()
     level.startingPosition.set(RoomPosition(2, 2))
     addLevel(level)
 }
 
-fun createBossRoom(furthestRoom : Room)
+fun createBossRoom(furthestRoom : Room, level : Level, bossRoom : Room)
 {
-
+    for (width in 0 until  bossRoom.widthInSpaces)
+    {
+        for (height in 0 until bossRoom.heightInSpaces)
+        {
+            bossRoom.changeBaseAt(Base.grassStoneDrained1, height, width)
+        }
+    }
+    bossRoom.addWalls(WallStyle.brickRedDark)
+    val positionToPlaceLevelExit = findSpaceInBottomLeftCorner(bossRoom, "horizontal")
+    val levelExit = LevelExit(
+            positionToPlaceLevelExit,
+            Direction4.right,
+            "2",
+            ExitStyle.stone,
+            activeWhenNoEnemiesAreInRoom = true
+                             )
+    bossRoom.addEntityAt(levelExit, positionToPlaceLevelExit)
+    addBossRoomPassage(
+            level,
+            furthestRoom.name,
+            findSpaceInBottomRightCorner(furthestRoom, "vertical"),
+            Direction4.up, "boss_room",
+            findSpaceInTopLeftCorner(bossRoom, "vertical"),
+                      )
 }
 
 fun getPossibleRoomValues(roomData : Array<IntArray>) : List<Int>
@@ -745,7 +763,7 @@ fun findClosestPatchThatIsNotInConnections(connections : MutableList<Int>, patch
     
 }
 
-fun findFurthestPatchThatIsNotInConnections(patchCenters : List<PatchCenter>, i : PatchCenter) : PatchCenter?
+fun findFurthestPatch(patchCenters : List<PatchCenter>, i : PatchCenter) : PatchCenter?
 {
     var furthestPatchDist = 0.0
     var furthestPatch : PatchCenter? = null
