@@ -1,4 +1,4 @@
-package com.efm.entities.enemies.boar
+package com.efm.entities.enemies.dzik
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles

@@ -56,9 +56,7 @@ object PopUpsMenu
         }
         // create World
         World.levels.clear()
-        //World.createWorldPrototypeTwo()
-        //World.createWorldBoarTest()
-        World.createWorldPrototypeThree()
+        World.createWorldPrototype()
         // set currentLevel and currentRoom
         val startingLevel = World.levels.first()
         val startingRoom = startingLevel.startingRoom

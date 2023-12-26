@@ -1,4 +1,5 @@
 import com.efm.entities.*
+import com.efm.entity.Chest
 import com.efm.item.StackableItem
 import com.efm.item.examplePossibleItems
 import com.efm.multiUseMapItems.Bow
@@ -12,8 +13,6 @@ import org.junit.runner.RunWith
 class `possible items`
 {
     private val possibleItems = examplePossibleItems()
-    
-    private val a = com.efm.entities.enemies.EnemyMimicCorpse.defaultLoot
     
     private fun printChestItems(chest : Chest, name : String = "Chest")
     {

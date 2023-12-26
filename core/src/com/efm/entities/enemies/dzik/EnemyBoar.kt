@@ -1,4 +1,4 @@
-package com.efm.entities.enemies.boar
+package com.efm.entities.enemies.dzik
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
