@@ -5,7 +5,7 @@ import com.efm.assets.Tiles
 import com.efm.entity.EnemyCorpse
 import com.efm.room.RoomPosition
 
-class DroppedPockets(position : RoomPosition = RoomPosition(0, 0)) : EnemyCorpse(position)
+class DroppedPockets(position : RoomPosition = RoomPosition()) : EnemyCorpse(position)
 {
     override fun getTile() : TiledMapTile = Tiles.droppedPockets
     

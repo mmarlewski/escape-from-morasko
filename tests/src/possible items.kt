@@ -13,6 +13,8 @@ class `possible items`
 {
     private val possibleItems = examplePossibleItems()
     
+    private val a = com.efm.entities.enemies.EnemyMimicCorpse.defaultLoot
+    
     private fun printChestItems(chest : Chest, name : String = "Chest")
     {
         println("$name items:")

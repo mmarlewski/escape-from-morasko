@@ -9,13 +9,15 @@ import com.efm.ui.gameScreen.EquipmentStructure
 /**
  * EnemyCorpse is a Container generated after Enemy death
  */
-abstract class EnemyCorpse(override val position : RoomPosition) : Interactive, Container, Character
+abstract class EnemyCorpse(
+        override val position : RoomPosition = RoomPosition(),
+        /** can be empty PossibleItems() **/
+        val loot : PossibleItems = PossibleItems()
+                          ) : Interactive, Container, Character
 {
-    /** can be empty PossibleItems() **/
-    var loot : PossibleItems? = null
     /** items = loot.drawItems() **/
     override val items = mutableListOf<Item>()
-    override var maxItems : Int = 1
+    override var maxItems : Int = loot.items.size + 2
     
     override var maxHealthPoints : Int = 1
     override var healthPoints : Int = 1
@@ -61,6 +63,28 @@ abstract class EnemyCorpse(override val position : RoomPosition) : Interactive, 
             }
             val jsonMaxItems = json.readValue("maxItems", Int::class.java, jsonData)
             if (jsonMaxItems != null) this.maxItems = jsonMaxItems
+        }
+    }
+    
+    // fixes issue with using addItem() in init
+    final override fun addItem(item : Item)
+    {
+        super.addItem(item)
+    }
+    
+    init
+    {
+        val drawnItems = loot.drawItems()
+        for (item in drawnItems)
+        {
+            try
+            {
+                addItem(item)
+            } catch (e : ContainerFullException)
+            {
+                // filled container
+                break
+            }
         }
     }
 }

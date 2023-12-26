@@ -8,8 +8,8 @@ import com.efm.entities.*
 import com.efm.entities.bosses.*
 import com.efm.entities.bosses.slime.*
 import com.efm.entities.enemies.*
-import com.efm.entities.enemies.Boar.EnemyBoar
-import com.efm.entities.enemies.Boar.EnemyGhost
+import com.efm.entities.enemies.boar.EnemyBoar
+import com.efm.entities.enemies.ghost.EnemyGhost
 import com.efm.entities.walls.*
 import com.efm.exit.*
 import com.efm.item.PossibleItem
@@ -726,6 +726,14 @@ fun World.createWorldPrototypeThree()
             chest.addItem(WoodenSword())
             chest.addItem(Fish(2))
             addEntityAt(chest, 4, 3)
+    
+            val ch = Chest(PossibleItems(mutableListOf(PossibleItem(Fish(), 1f, 0..0), PossibleItem(Apple(), 0.5f, 1..1))))
+            val crp = EnemyMimicCorpse(
+                    RoomPosition(),
+                    PossibleItems(mutableListOf(PossibleItem(Fish(), 1f, 0..0), PossibleItem(Apple(), 0.5f, 1..1)))
+                                      )
+            addEntityAt(ch, 4, 4)
+            addEntityAt(crp, 4, 5)
         }
         // add room to level
         addRoom(l1r1)
