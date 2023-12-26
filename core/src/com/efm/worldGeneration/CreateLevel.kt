@@ -1,5 +1,7 @@
-import com.efm.addWalls
+import com.efm.*
+import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
+import com.efm.exit.ExitStyle
 import com.efm.level.Level
 import com.efm.level.World
 import com.efm.room.*
@@ -122,6 +124,7 @@ fun World.createProcGenWorld() {
     val minRoomSize = 8
     val bufferSize = 1
     
+    
     val roomNumber = 1
     val scale = 2
     val seed = Random.nextInt(0, 100)
@@ -149,11 +152,9 @@ fun World.createProcGenWorld() {
     println("Patch Centers:")
     patchCenters.forEach { println("Patch ${it.x}, ${it.y}") }
     
-    val min_room_val = getMinValInMatrix(roomData)
-    val max_room_val = getMaxValInMatrix(roomData)
-    var possibleRoomsValues = getPossibleRoomValues(roomData, min_room_val, max_room_val)
+    val possibleRoomsValues = getPossibleRoomValues(roomData)
     val level = Level("1")
-    var rooms = mutableListOf<Room>()
+    val rooms = mutableListOf<Room>()
     for (i in possibleRoomsValues)
     {
         val x1 = getRoomX1(i, roomData)
@@ -162,7 +163,14 @@ fun World.createProcGenWorld() {
         val y2 = getRoomY2(i, roomData)
         val height = x2 - x1
         val width = y2 - y1
-        val room = Room(i.toString(), height, width)
+        val room = if (i == 1)
+        {
+            Room("starting_room", height, width)
+        }
+        else
+        {
+            Room(i.toString(), height, width)
+        }
         val roomBasesArray = getMatrixBasedOnCoordinates(roomData, x1, x2, y1, y2, i)
         for (y in roomBasesArray.indices)
         {
@@ -171,8 +179,8 @@ fun World.createProcGenWorld() {
                 val baseNumber = roomBasesArray[y][x]
                 if (baseNumber != 0)
                 {
-                    val base = Base.getBase(baseNumber)
-                    room.changeBaseAt(base, x, y)
+                    //val base = Base.getBase(baseNumber)
+                    room.changeBaseAt(Base.grassStoneDrained1, x, y)
                 }
                 else
                 {
@@ -185,22 +193,38 @@ fun World.createProcGenWorld() {
     
     
         room.addWalls(WallStyle.brickRedDark)
+        room.updateSpacesEntities()
         
         
         level.addRoom(room)
         rooms.add(room)
     }
     //add Passages
-    createPassages(rooms, patchCenters, possibleRoomsValues)
-    
+    createPassages(rooms, patchCenters, possibleRoomsValues, level)
+    var bossRoom = Room("boss_room", 20, 20)
+    for (patch in patchCenters)
+    {
+        val possibleFurthestRoom = findRoomByName(findFurthestPatchThatIsNotInConnections(patchCenters, patch).toString(), rooms)
+        if (possibleFurthestRoom != null)
+        {
+            createBossRoom(possibleFurthestRoom)
+            break
+        }
+    }
+    level.addRoom(bossRoom)
     level.startingRoom = rooms[0]
     level.startingPosition.set(RoomPosition(2, 2))
     addLevel(level)
 }
 
-fun getPossibleRoomValues(roomData : Array<IntArray>, minRoomVal : Int, maxRoomVal : Int) : List<Int>
+fun createBossRoom(furthestRoom : Room)
 {
-    var possibleRoomValues = mutableListOf<Int>()
+
+}
+
+fun getPossibleRoomValues(roomData : Array<IntArray>) : List<Int>
+{
+    val possibleRoomValues = mutableListOf<Int>()
     for (i in roomData)
     {
         for (j in i)
@@ -214,35 +238,102 @@ fun getPossibleRoomValues(roomData : Array<IntArray>, minRoomVal : Int, maxRoomV
     return possibleRoomValues
 }
 
-fun createPassages(rooms : MutableList<Room>, patchCenters : List<PatchCenter>, possibleRoomsValues : List<Int>)
+fun createPassages(
+        rooms : MutableList<Room>,
+        patchCenters : List<PatchCenter>,
+        possibleRoomsValues : List<Int>,
+        level : Level
+                  )
 {
-    var connections = mutableListOf<Int>()
+    val connections = mutableListOf<Int>()
+    var i = patchCenters[0]
     while (!areAllRoomsConnected(connections, possibleRoomsValues))
     {
-        for (i in patchCenters)
+        val currentRoom = findRoomByName(i.value.toString(), rooms)
+        val closestPatch = findClosestPatchThatIsNotInConnections(connections, patchCenters, i)
+        if (closestPatch != null && currentRoom != null)
         {
-            val currentRoom = findRoomByName(i.value.toString(), rooms)
-            val closestPatch = findClosestPatchThatIsNotInConnections(connections, patchCenters, i)
             val closestPatchValue = closestPatch.value
             val closestRoomName = closestPatchValue.toString()
             val closestRoom = findRoomByName(closestRoomName, rooms)
-            createPassagesBasedOnRelativePosition(i, closestPatch)
+            if (closestRoom != null)
+            {
+                createPassagesBasedOnRelativePosition(i, closestPatch, currentRoom, closestRoom, level)
+                addValuesToConnectionsIfNotPresent(connections, i.value, closestPatchValue)
+            }
+            i = closestPatch
+        }
+        else
+        {
+            continue
         }
     }
     
 }
 
-fun createPassagesBasedOnRelativePosition(currentRoomVal : PatchCenter, closestRoomVal : PatchCenter)
+fun addValuesToConnectionsIfNotPresent(connections : MutableList<Int>, i : Int, closestPatchValue : Int)
+{
+    if (i !in connections)
+    {
+        connections.add(i)
+    }
+    if (closestPatchValue !in connections)
+    {
+        connections.add(closestPatchValue)
+    }
+    
+}
+
+fun createPassagesBasedOnRelativePosition(
+        currentRoomVal : PatchCenter,
+        closestRoomVal : PatchCenter,
+        currentRoom : Room,
+        closestRoom : Room,
+        level : Level
+                                         )
 {
     if (currentRoomVal.x > closestRoomVal.x)
     {
         if (currentRoomVal.y > closestRoomVal.y)
         {
             //top-left for curr room, bott-right for closest
+            val trueFalse = intArrayOf(0, 1)
+            if (trueFalse.random() == 1)
+            {
+                //horizontal
+                val currRoomPassageSpace = findSpaceInTopLeftCorner(currentRoom, "horizontal")
+                val closestRoomPassageSpace = findSpaceInBottomRightCorner(closestRoom, "horizontal")
+                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.right, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                
+            }
+            else
+            {
+                //vertical
+                val currRoomPassageSpace = findSpaceInTopLeftCorner(currentRoom, "vertical")
+                val closestRoomPassageSpace = findSpaceInBottomRightCorner(closestRoom, "vertical")
+                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.down, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+            }
+            print("Passage between rooms : $currentRoomVal (top-left)  and $closestRoomVal (bott-right)\n")
         }
         else
         {
             //top-right curr, bott-left closest
+            val trueFalse = intArrayOf(0, 1)
+            if (trueFalse.random() == 1)
+            {
+                //horizontal
+                val currRoomPassageSpace = findSpaceInTopRightCorner(currentRoom, "horizontal")
+                val closestRoomPassageSpace = findSpaceInBottomLeftCorner(closestRoom, "horizontal")
+                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.left, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+            }
+            else
+            {
+                //vertical
+                val currRoomPassageSpace = findSpaceInTopRightCorner(currentRoom, "vertical")
+                val closestRoomPassageSpace = findSpaceInBottomLeftCorner(closestRoom, "vertical")
+                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.down, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+            }
+            print("Passage between rooms : $currentRoomVal (top-right)  and $closestRoomVal (bott-left)\n")
         }
     }
     else
@@ -250,19 +341,383 @@ fun createPassagesBasedOnRelativePosition(currentRoomVal : PatchCenter, closestR
         if (currentRoomVal.y > closestRoomVal.y)
         {
             //bott-left curr, top-right closest
+            val trueFalse = intArrayOf(0, 1)
+            if (trueFalse.random() == 1)
+            {
+                //horizontal
+                val currRoomPassageSpace = findSpaceInBottomLeftCorner(currentRoom, "horizontal")
+                val closestRoomPassageSpace = findSpaceInTopRightCorner(closestRoom, "horizontal")
+                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.right, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+            }
+            else
+            {
+                //vertical
+                val currRoomPassageSpace = findSpaceInBottomLeftCorner(currentRoom, "vertical")
+                val closestRoomPassageSpace = findSpaceInTopRightCorner(closestRoom, "vertical")
+                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.up, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+            }
+            print("Passage between rooms : $currentRoomVal (bott-left)  and $closestRoomVal (top-right)\n")
         }
         else
         {
             //bott-right curr, top-left closest
+            val trueFalse = intArrayOf(0, 1)
+            if (trueFalse.random() == 1)
+            {
+                //horizontal
+                val currRoomPassageSpace = findSpaceInBottomRightCorner(currentRoom, "horizontal")
+                val closestRoomPassageSpace = findSpaceInTopLeftCorner(closestRoom, "horizontal")
+                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.left, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+            }
+            else
+            {
+                //vertical
+                val currRoomPassageSpace = findSpaceInBottomRightCorner(currentRoom, "vertical")
+                val closestRoomPassageSpace = findSpaceInTopLeftCorner(closestRoom, "vertical")
+                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.up, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+            }
+            print("Passage between rooms : $currentRoomVal (bott-right)  and $closestRoomVal (top-left)\n")
         }
     }
 }
 
-fun findRoomByName(closestRoomName : String, rooms : MutableList<Room>) : Room?
+fun findSpaceInBottomRightCorner(room : Room, s : String) : RoomPosition
+{
+    val upEdge = 0
+    val downEdge = room.heightInSpaces
+    val leftEdge = 0
+    val rightEdge = room.widthInSpaces
+    val rightSideWallPositions = mutableListOf<RoomPosition>()
+    val bottomSideWallPositions = mutableListOf<RoomPosition>()
+    // find wall positions
+    if (s == "horizontal")
+    {
+        for (y in upEdge until downEdge)
+        {
+            for (x in rightEdge downTo  leftEdge)
+            {
+                if (y != 0)
+                {
+                    val space = room.getSpace(x, y)
+                    if (space != null)
+                    {
+                        if (space.getBase() != null)
+                        {
+                            rightSideWallPositions.add(RoomPosition(x, y))
+                            break
+                        }
+                        else
+                        {
+                            if (space.getEntity() != null)
+                            {
+                                if (space.getEntity() is Wall)
+                                {
+                                    rightSideWallPositions.add(RoomPosition(x, y))
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        for (x in leftEdge until rightEdge)
+        {
+            for (y in downEdge downTo  upEdge)
+            {
+                if (x !=0)
+                {
+                    val space = room.getSpace(x, y)
+                    if (space != null)
+                    {
+                        if (space.getBase() != null)
+                        {
+                            bottomSideWallPositions.add(RoomPosition(x, y))
+                            break
+                        }
+                        else
+                        {
+                            if (space.getEntity() != null)
+                            {
+                                if (space.getEntity() is Wall)
+                                {
+                                    bottomSideWallPositions.add(RoomPosition(x, y))
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return if (s == "horizontal" && rightSideWallPositions.isNotEmpty())
+    {
+        rightSideWallPositions.random()
+    }
+    else
+    {
+        bottomSideWallPositions.random()
+    }
+}
+
+fun findSpaceInTopLeftCorner(room : Room, s : String) : RoomPosition
+{
+    val upEdge = 0
+    val downEdge = room.heightInSpaces
+    val leftEdge = 0
+    val rightEdge = room.widthInSpaces
+    val leftSideWallPositions = mutableListOf<RoomPosition>()
+    val topSideWallPositions = mutableListOf<RoomPosition>()
+    // find wall positions
+    if (s == "horizontal")
+    {
+        for (y in upEdge until downEdge)
+        {
+            for (x in leftEdge until rightEdge)
+            {
+                if (y != 0)
+                {
+                    val space = room.getSpace(x, y)
+                    if (space != null)
+                    {
+                        if (space.getBase() != null)
+                        {
+                            leftSideWallPositions.add(RoomPosition(x, y))
+                            break
+                        }
+                        else
+                        {
+                            if (space.getEntity() != null)
+                            {
+                                if (space.getEntity() is Wall)
+                                {
+                                    leftSideWallPositions.add(RoomPosition(x, y))
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        for (x in leftEdge until rightEdge)
+        {
+            for (y in upEdge until downEdge)
+            {
+                if (x !=0)
+                {
+                    val space = room.getSpace(x, y)
+                    if (space != null)
+                    {
+                        if (space.getBase() != null)
+                        {
+                            topSideWallPositions.add(RoomPosition(x, y))
+                            break
+                        }
+                        else
+                        {
+                            if (space.getEntity() != null)
+                            {
+                                if (space.getEntity() is Wall)
+                                {
+                                    topSideWallPositions.add(RoomPosition(x, y))
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return if (s == "horizontal" && leftSideWallPositions.isNotEmpty())
+    {
+        leftSideWallPositions.random()
+    }
+    else
+    {
+        topSideWallPositions.random()
+    }
+}
+
+fun findSpaceInTopRightCorner(room : Room, s : String) : RoomPosition
+{
+    val upEdge = 0
+    val downEdge = room.heightInSpaces
+    val leftEdge = 0
+    val rightEdge = room.widthInSpaces
+    val rightSideWallPositions = mutableListOf<RoomPosition>()
+    val topSideWallPositions = mutableListOf<RoomPosition>()
+    // find wall positions
+    if (s == "horizontal")
+    {
+        for (y in upEdge until downEdge)
+        {
+            for (x in rightEdge downTo  leftEdge)
+            {
+                if (y != 0)
+                {
+                    val space = room.getSpace(x, y)
+                    if (space != null)
+                    {
+                        if (space.getBase() != null)
+                        {
+                            rightSideWallPositions.add(RoomPosition(x, y))
+                            break
+                        }
+                        else
+                        {
+                            if (space.getEntity() != null)
+                            {
+                                if (space.getEntity() is Wall)
+                                {
+                                    rightSideWallPositions.add(RoomPosition(x, y))
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        for (x in leftEdge until rightEdge)
+        {
+            for (y in upEdge until downEdge)
+            {
+                if (x !=0)
+                {
+                    val space = room.getSpace(x, y)
+                    if (space != null)
+                    {
+                        if (space.getBase() != null)
+                        {
+                            topSideWallPositions.add(RoomPosition(x, y))
+                            break
+                        }
+                        else
+                        {
+                            if (space.getEntity() != null)
+                            {
+                                if (space.getEntity() is Wall)
+                                {
+                                    topSideWallPositions.add(RoomPosition(x, y))
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return if (s == "horizontal" && rightSideWallPositions.isNotEmpty())
+    {
+        rightSideWallPositions.random()
+    }
+    else
+    {
+        topSideWallPositions.random()
+    }
+}
+
+fun findSpaceInBottomLeftCorner(room : Room, s : String) : RoomPosition
+{
+    val upEdge = 0
+    val downEdge = room.heightInSpaces
+    val leftEdge = 0
+    val rightEdge = room.widthInSpaces
+    val leftSideWallPositions = mutableListOf<RoomPosition>()
+    val bottomSideWallPositions = mutableListOf<RoomPosition>()
+    // find wall positions
+    if (s == "horizontal")
+    {
+        for (y in upEdge until downEdge)
+        {
+            for (x in leftEdge until rightEdge)
+            {
+                if (y != 0)
+                {
+                    val space = room.getSpace(x, y)
+                    if (space != null)
+                    {
+                        if (space.getBase() != null)
+                        {
+                            leftSideWallPositions.add(RoomPosition(x, y))
+                            break
+                        }
+                        else
+                        {
+                            if (space.getEntity() != null)
+                            {
+                                if (space.getEntity() is Wall)
+                                {
+                                    leftSideWallPositions.add(RoomPosition(x, y))
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        for (x in leftEdge until rightEdge)
+        {
+            for (y in downEdge downTo  upEdge)
+            {
+                if (x != 0)
+                {
+                    val space = room.getSpace(x, y)
+                    if (space != null)
+                    {
+                        if (space.getBase() != null)
+                        {
+                            bottomSideWallPositions.add(RoomPosition(x, y))
+                            break
+                        }
+                        else
+                        {
+                            if (space.getEntity() != null)
+                            {
+                                if (space.getEntity() is Wall)
+                                {
+                                    bottomSideWallPositions.add(RoomPosition(x, y))
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return if (s == "horizontal" && leftSideWallPositions.isNotEmpty())
+    {
+        leftSideWallPositions.random()
+    }
+    else
+    {
+        bottomSideWallPositions.random()
+    }
+}
+
+fun findRoomByName(roomName : String, rooms : MutableList<Room>) : Room?
 {
     for (i in rooms)
     {
-        if (i.name == closestRoomName)
+        if (i.name == roomName)
         {
             return i
         }
@@ -270,10 +725,10 @@ fun findRoomByName(closestRoomName : String, rooms : MutableList<Room>) : Room?
     return null
 }
 
-fun findClosestPatchThatIsNotInConnections(connections : MutableList<Int>, patchCenters : List<PatchCenter>, i : PatchCenter) : PatchCenter
+fun findClosestPatchThatIsNotInConnections(connections : MutableList<Int>, patchCenters : List<PatchCenter>, i : PatchCenter) : PatchCenter?
 {
     var closestPatchDist = 1000.0
-    lateinit var closestPatch : PatchCenter
+    var closestPatch : PatchCenter? = null
     for (patch in patchCenters)
     {
         if (patch.value != i.value && patch.value !in connections)
@@ -287,7 +742,29 @@ fun findClosestPatchThatIsNotInConnections(connections : MutableList<Int>, patch
         }
     }
     return closestPatch
+    
 }
+
+fun findFurthestPatchThatIsNotInConnections(patchCenters : List<PatchCenter>, i : PatchCenter) : PatchCenter?
+{
+    var furthestPatchDist = 0.0
+    var furthestPatch : PatchCenter? = null
+    for (patch in patchCenters)
+    {
+        if (patch.value != i.value)
+        {
+            val currentDistBetweenPatches = findDistanceBetweenPatches(i, patch)
+            if (currentDistBetweenPatches > furthestPatchDist)
+            {
+                furthestPatchDist = currentDistBetweenPatches
+                furthestPatch = patch
+            }
+        }
+    }
+    return furthestPatch
+    
+}
+
 
 fun findDistanceBetweenPatches(i : PatchCenter, patch : PatchCenter) : Double
 {
@@ -308,7 +785,7 @@ fun areAllRoomsConnected(connections : MutableList<Int>, possibleRoomsValues : L
 
 fun getMatrixBasedOnCoordinates(roomData : Array<IntArray>, x1 : Int, x2 : Int, y1 : Int, y2 : Int, i : Int) : Array<IntArray>
 {
-    var result = Array(x2 - x1 + 1) { IntArray(y2 - y1 + 1) { 0 } }
+    val result = Array(x2 - x1 + 1) { IntArray(y2 - y1 + 1) { 0 } }
     for (x in x1 until  x2)
     {
         for (y in y1 until  y2)
@@ -327,11 +804,11 @@ fun getRoomY2(i : Int, roomData : Array<IntArray>) : Int
     var highestY = 0
     for (x in roomData.indices)
     {
-        for (y in 0 until  roomData[0].size)
+        for (y in 0 until roomData[0].size)
         {
-            if (roomData[x][y] == i && x > highestY)
+            if (roomData[x][y] == i && y > highestY)
             {
-                highestY = x
+                highestY = y
             }
         }
     }
@@ -341,13 +818,13 @@ fun getRoomY2(i : Int, roomData : Array<IntArray>) : Int
 fun getRoomX2(i : Int, roomData : Array<IntArray>) : Int
 {
     var highestX = 0
-    for (element in roomData)
+    for (x in roomData.indices)
     {
-        for (y in 0 until  roomData[0].size)
+        for (y in 0 until roomData[0].size)
         {
-            if (element[y] == i && y > highestX)
+            if (roomData[x][y] == i && x > highestX)
             {
-                highestX = y
+                highestX = x
             }
         }
     }
@@ -361,9 +838,9 @@ fun getRoomY1(i : Int, roomData : Array<IntArray>) : Int
     {
         for (y in 0 until roomData[0].size)
         {
-            if (roomData[x][y] == i && x < lowestY)
+            if (roomData[x][y] == i && y < lowestY)
             {
-                lowestY = x
+                lowestY = y
             }
         }
     }
@@ -373,52 +850,17 @@ fun getRoomY1(i : Int, roomData : Array<IntArray>) : Int
 fun getRoomX1(i : Int, roomData : Array<IntArray>) : Int
 {
     var lowestX = 1000
-    for (element in roomData)
+    for (x in roomData.indices)
     {
-        for (y in 0 until  roomData[0].size)
+        for (y in 0 until roomData[0].size)
         {
-            if (element[y] == i && y < lowestX)
+            if (roomData[x][y] == i && x < lowestX)
             {
-                lowestX = y
+                lowestX = x
             }
         }
     }
     return lowestX
-}
-
-fun getMaxValInMatrix(roomData : Array<IntArray>) : Int
-{
-    var max_found = 1
-    for (i in roomData)
-    {
-        for (j in i)
-        {
-            if (j > max_found)
-            {
-                max_found = j
-            }
-        }
-    }
-    return max_found
-}
-
-fun getMinValInMatrix(roomData : Array<IntArray>) : Int
-{
-    var min_found = 100
-    for (i in roomData)
-    {
-        for (j in i)
-        {
-            if (j > 0)
-            {
-                if (j < min_found)
-                {
-                    min_found = j
-                }
-            }
-        }
-    }
-    return min_found
 }
 
 fun generatePerlinNoiseMap(width: Int, height: Int, scale: Int, seed: Int): Array<DoubleArray> {
@@ -493,8 +935,8 @@ fun perlinNoise(x: Double, y: Double, permutationTable: IntArray): Double {
     val X = (x.toInt() and 255).toByte().toInt()
     val Y = (y.toInt() and 255).toByte().toInt()
     
-    var u = fade(x)
-    var v = fade(y)
+    val u = fade(x)
+    val v = fade(y)
     
     val a = permutationTable[X] + Y
     val aa = permutationTable[a]
