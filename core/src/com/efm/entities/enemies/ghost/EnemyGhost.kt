@@ -9,10 +9,16 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItem
+import com.efm.item.PossibleItems
 import com.efm.level.World
+import com.efm.multiUseMapItems.*
 import com.efm.room.Room
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
+import com.efm.stackableMapItems.Bomb
+import com.efm.stackableMapItems.Explosive
+import com.efm.stackableSelfItems.*
 import com.efm.state.State
 import com.efm.state.getState
 import kotlin.math.roundToInt
@@ -35,6 +41,19 @@ class EnemyGhost(
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems(
+            mutableListOf(
+                    PossibleItem(APPotionSmall(), 0.33f, IntRange(0, 4)),
+                    PossibleItem(APPotionBig(), 0.67f, IntRange(0, 2)),
+                    PossibleItem(HPPotionSmall(), 0.33f, IntRange(0, 4)),
+                    PossibleItem(HPPotionBig(), 0.67f, IntRange(0, 2)),
+                    PossibleItem(Staff(), 0.2f, 1..1),
+                    PossibleItem(TurquoiseSword(), 0.2f, 1..1),
+                    PossibleItem(AmberSword(), 0.2f, 1..1),
+                    PossibleItem(Bomb(), 0.5f, IntRange(0, 2)),
+                    PossibleItem(Explosive(), 0.1f, IntRange(1, 1))
+                         )
+                                                     )
     
     private val maxTurnsUntilTryToDisappear : Int = 4
     private var turnsUntilTryToDisappear : Int = maxTurnsUntilTryToDisappear
@@ -128,7 +147,7 @@ class EnemyGhost(
     
     private fun getAttackSound() : Sound = Sounds.ghostAppear
     
-    override fun getCorpse() : EnemyCorpse = EnemyGhostCorpse(this.position, defaultLoot)
+    override fun getCorpse() : EnemyCorpse = EnemyGhostCorpse(this.position, loot)
     
     override fun performTurn()
     {

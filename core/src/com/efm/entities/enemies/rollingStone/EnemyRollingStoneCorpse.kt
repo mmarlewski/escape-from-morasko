@@ -15,5 +15,3 @@ class EnemyRollingStoneCorpse(position : RoomPosition = RoomPosition(),
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.rockCorpseOutlineYellow
     override fun getOutlineTealTile() : TiledMapTile? = null
 }
-
-val defaultLoot = PossibleItems()

@@ -15,5 +15,3 @@ class EnemyPlantCorpse(position : RoomPosition = RoomPosition(),
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.plantCorpseOutlineYellow
     override fun getOutlineTealTile() : TiledMapTile? = null
 }
-
-val defaultLoot = PossibleItems()

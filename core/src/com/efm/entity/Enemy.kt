@@ -11,6 +11,7 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Textures
 import com.efm.assets.Tiles
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -30,6 +31,7 @@ interface Enemy : Character
     var healthBar : ProgressBar
     var healthStack : Stack
     var isFrozen : Boolean
+    var loot : PossibleItems
     
     fun getOutlineRedTile() : TiledMapTile?
     

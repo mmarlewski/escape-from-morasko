@@ -8,8 +8,12 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItem
+import com.efm.item.PossibleItems
 import com.efm.level.World
+import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.RoomPosition
+import com.efm.stackableSelfItems.Mushroom
 
 open class EnemyMushroom : Entity, Enemy
 {
@@ -24,6 +28,12 @@ open class EnemyMushroom : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems(
+            mutableListOf(
+                    PossibleItem(Mushroom(), 0.8f, IntRange(0, 4)),
+                    PossibleItem(WoodenSword(), 0.1f, 1..1)
+                         )
+                                                     )
     
     override fun getTile() : TiledMapTile
     {
@@ -113,5 +123,5 @@ open class EnemyMushroom : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemyMushroomCorpse(this.position, defaultLoot)
+    override fun getCorpse() : EnemyCorpse = EnemyMushroomCorpse(this.position, loot)
 }

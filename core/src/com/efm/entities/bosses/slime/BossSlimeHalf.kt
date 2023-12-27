@@ -8,6 +8,7 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
@@ -24,6 +25,7 @@ open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Ene
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems()
     
     override fun getTile() : TiledMapTile
     {

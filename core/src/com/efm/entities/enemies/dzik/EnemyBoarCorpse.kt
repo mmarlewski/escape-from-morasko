@@ -15,5 +15,3 @@ class EnemyBoarCorpse(position : RoomPosition = RoomPosition(),
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.boarCorpseOutlineYellow
     override fun getOutlineTealTile() : TiledMapTile? = null
 }
-
-val defaultLoot = PossibleItems()

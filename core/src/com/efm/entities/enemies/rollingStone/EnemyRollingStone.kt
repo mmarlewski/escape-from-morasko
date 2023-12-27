@@ -8,6 +8,7 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -26,12 +27,14 @@ class EnemyRollingStone : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
-    override fun getTile() : TiledMapTile?
+    override var loot : PossibleItems = PossibleItems()
+    
+    override fun getTile() : TiledMapTile
     {
         return Tiles.rockIdle1
     }
     
-    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -41,12 +44,12 @@ class EnemyRollingStone : Entity, Enemy
         }
     }
     
-    override fun getOutlineRedTile() : TiledMapTile?
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.rockIdle1OutlineRed
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -56,7 +59,7 @@ class EnemyRollingStone : Entity, Enemy
         }
     }
     
-    override fun getMoveTile(n : Int) : TiledMapTile?
+    override fun getMoveTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -66,12 +69,12 @@ class EnemyRollingStone : Entity, Enemy
         }
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.rockMove1
     }
     
-    override fun getMoveSound() : Sound?
+    override fun getMoveSound() : Sound
     {
         return Sounds.rockMove
     }
@@ -100,7 +103,7 @@ class EnemyRollingStone : Entity, Enemy
                 stepsSpaces.size - 1
             }
             else stepsSpaces.size
-            getMoveSound()?.let { playSoundOnce(it) }
+            getMoveSound().let { playSoundOnce(it) }
             val startPosition = initialPosition
             val endPosition = pathSpaces[stepsIndex].position
             val path = stepsSpaces
@@ -153,7 +156,7 @@ class EnemyRollingStone : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemyRollingStoneCorpse(this.position, defaultLoot)
+    override fun getCorpse() : EnemyCorpse = EnemyRollingStoneCorpse(this.position, loot)
     
     override fun performTurn()
     {

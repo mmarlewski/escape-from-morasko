@@ -9,6 +9,7 @@ import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
@@ -25,14 +26,16 @@ class EnemyWizard : Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems()
+    
     val apDrain = 5
     
-    override fun getTile() : TiledMapTile?
+    override fun getTile() : TiledMapTile
     {
         return Tiles.wizardIdle1
     }
     
-    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -44,12 +47,12 @@ class EnemyWizard : Enemy
         }
     }
     
-    override fun getOutlineRedTile() : TiledMapTile?
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.wizardIdle1OutlineRed
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -61,7 +64,7 @@ class EnemyWizard : Enemy
         }
     }
     
-    override fun getMoveTile(n : Int) : TiledMapTile?
+    override fun getMoveTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -73,12 +76,12 @@ class EnemyWizard : Enemy
         }
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.wizardAttack
     }
     
-    override fun getMoveSound() : Sound?
+    override fun getMoveSound() : Sound
     {
         return Sounds.wizardMove
     }

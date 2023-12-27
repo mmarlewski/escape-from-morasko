@@ -8,6 +8,7 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -20,12 +21,14 @@ class Queen: Entity, Enemy
     override var healthPoints = 35
     override var alive = true
     override var isFrozen = false
-    override fun getTile() : TiledMapTile?
+    override var loot : PossibleItems = PossibleItems()
+    
+    override fun getTile() : TiledMapTile
     {
         return Tiles.chessQueenWhite
     }
     
-    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return Tiles.chessQueenOutlineYellow
     }
@@ -37,27 +40,27 @@ class Queen: Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     lateinit var direction : Direction4
-    override fun getOutlineRedTile() : TiledMapTile?
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.chessQueenOutlineRed
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         return Tiles.chessQueenWhite
     }
     
-    override fun getMoveTile(n : Int) : TiledMapTile?
+    override fun getMoveTile(n : Int) : TiledMapTile
     {
         return Tiles.chessQueenWhite
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.chessQueenWhite
     }
     
-    override fun getMoveSound() : Sound?
+    override fun getMoveSound() : Sound
     {
         return Sounds.chessMove
     }
@@ -85,7 +88,7 @@ class Queen: Entity, Enemy
                 {
                     if (worldCurrentRoom.isPositionWithinBounds(pos.x, pos.y))
                     {
-                        var space = worldCurrentRoom.getSpace(pos)
+                        val space = worldCurrentRoom.getSpace(pos)
                         if (space != null)
                         {
                             if (space.getEntity() == null && space.isTraversableFor(this))
@@ -228,7 +231,7 @@ class Queen: Entity, Enemy
         }
         for (posX in position.x - 1 downTo 1)
         {
-            var space = worldCurrentRoom.getSpace(RoomPosition(posX, position.y))
+            val space = worldCurrentRoom.getSpace(RoomPosition(posX, position.y))
             if (space != null)
             {
                 if (space.getEntity() == null && space.isTraversableFor(this))
@@ -242,7 +245,7 @@ class Queen: Entity, Enemy
         }
         for (posX in position.x + 1 until  worldCurrentRoom.widthInSpaces)
         {
-            var space = worldCurrentRoom.getSpace(RoomPosition(posX, position.y))
+            val space = worldCurrentRoom.getSpace(RoomPosition(posX, position.y))
             if (space != null)
             {
                 if (space.getEntity() == null && space.isTraversableFor(this))
@@ -256,7 +259,7 @@ class Queen: Entity, Enemy
         }
         for (posY in position.y - 1 downTo 1)
         {
-            var space = worldCurrentRoom.getSpace(RoomPosition(position.x, posY))
+            val space = worldCurrentRoom.getSpace(RoomPosition(position.x, posY))
             if (space != null)
             {
                 if (space.getEntity() == null && space.isTraversableFor(this))
@@ -270,7 +273,7 @@ class Queen: Entity, Enemy
         }
         for (posY in position.y + 1 until worldCurrentRoom.heightInSpaces)
         {
-            var space = worldCurrentRoom.getSpace(RoomPosition(position.x, posY))
+            val space = worldCurrentRoom.getSpace(RoomPosition(position.x, posY))
             if (space != null)
             {
                 if (space.getEntity() == null && space.isTraversableFor(this))
