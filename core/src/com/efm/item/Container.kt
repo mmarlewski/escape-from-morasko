@@ -14,6 +14,9 @@ interface Container : Json.Serializable
     val items : MutableList<Item>
     var maxItems : Int
     
+    /**
+     * Returns all elements in the item list that contain items of the same type as the given item.
+     */
     fun findAllStacks(item : Item) : List<Item>
     {
         return items.filter { it::class == item::class }

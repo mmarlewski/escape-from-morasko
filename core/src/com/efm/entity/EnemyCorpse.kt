@@ -2,12 +2,15 @@ package com.efm.entity
 
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
-import com.efm.item.*
+import com.efm.item.Item
+import com.efm.item.PossibleItems
 import com.efm.room.RoomPosition
 import kotlin.random.Random
 
 /**
- * EnemyCorpse is a Container generated after Enemy death
+ * EnemyCorpse is a Container generated after Enemy death.
+ * It contains random items drawn from loot.
+ * @param loot PossibleItems from which items are drawn
  */
 abstract class EnemyCorpse(
         final override val position : RoomPosition = RoomPosition(),
@@ -20,9 +23,12 @@ abstract class EnemyCorpse(
     override var alive : Boolean = true
     
     final override val items : MutableList<Item> = mutableListOf()
+    /** Number of drawn items plus 2. */
     final override var maxItems : Int = 0
     
-    /**When opened for the first time, draw random items from possibleItems. Size is the number of drawn items plus 2.**/
+    /** When opened for the first time, draw random items from possibleItems.
+     * Set maxItems to the number of drawn items plus 2.
+     */
     init
     {
         if (possibleItems != null)

@@ -1,5 +1,8 @@
 import com.efm.entities.StoneColumn
 import com.efm.entities.enemies.*
+import com.efm.entities.enemies.bat.EnemyBat
+import com.efm.entities.enemies.mushroom.EnemyMushroom
+import com.efm.entities.enemies.skeleton.EnemySkeleton
 import com.efm.room.Base
 import com.efm.room.Space
 import org.junit.Assert.*

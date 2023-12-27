@@ -45,14 +45,6 @@ fun World.createWorldPrototype()
             chest.addItem(WoodenSword())
             chest.addItem(Fish(2))
             addEntityAt(chest, 4, 3)
-            /*//test
-            val ch = Chest(PossibleItems(mutableListOf(PossibleItem(Fish(), 1f, 1..2), PossibleItem(Apple(), 1f, 1..2))))
-            val crp = EnemyMimicCorpse(
-                    RoomPosition(),
-                    PossibleItems(mutableListOf(PossibleItem(Fish(), 1f, 1..2), PossibleItem(Apple(), 1f, 1..2)))
-                                      )
-            addEntityAt(ch, 4, 4)
-            addEntityAt(crp, 4, 5)*/
         }
         // add room to level
         addRoom(l1r1)

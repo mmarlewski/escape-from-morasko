@@ -12,6 +12,10 @@ class PossibleItem(
         val amountRange : IntRange
                   )
 
+/**
+ * Structure from which Items can be drawn.
+ * @param maxItemsPossibleToDraw maximum number of drawn items
+ */
 class PossibleItems(
         val items : MutableList<PossibleItem> = mutableListOf(), private val maxItemsPossibleToDraw : Int = items.size
                    )
@@ -48,16 +52,16 @@ class PossibleItems(
         val amount = possibleItem.amountRange.random(generator)
         if (drawnItem is StackableItem)
         {
-            drawStackableItem(possibleItem, drawnItem, amount, drawnItems)
+            drawStackableItem(drawnItem, amount, drawnItems)
         }
         else if (drawnItem is MultiUseMapItem)
         {
-            drawMultiUseMapItem(possibleItem, drawnItem, amount, drawnItems)
+            drawMultiUseMapItem(drawnItem, amount, drawnItems)
         }
     }
     
     private fun drawStackableItem(
-            possibleItem : PossibleItem, drawnItem : StackableItem, amount : Int, drawnItems : MutableList<Item>
+            drawnItem : StackableItem, amount : Int, drawnItems : MutableList<Item>
                                  )
     {
         drawnItem.amount = amount
@@ -65,7 +69,7 @@ class PossibleItems(
     }
     
     private fun drawMultiUseMapItem(
-            possibleItem : PossibleItem, drawnItem : MultiUseMapItem, amount : Int, drawnItems : MutableList<Item>
+            drawnItem : MultiUseMapItem, amount : Int, drawnItems : MutableList<Item>
                                    )
     {
         for (y in 0 until amount)
