@@ -146,7 +146,7 @@ fun createLevel(levelNumber : Int) : Level{
     
     val roomNumber = 1
     val scale = 2
-    val seed = Random.nextInt(0, 100)
+    val seed = nextInt(0, 100)
     
     val root = Node(0, 0, mapWidth - 1, mapHeight - 1, roomNumber)
     
@@ -206,6 +206,8 @@ fun createLevel(levelNumber : Int) : Level{
                 }
             }
         }
+        
+        randomizeBasesForARoom(room, allowedBases, roomBasesArray)
     
     
         room.addWalls(WallStyle.brickRedDark)
@@ -232,6 +234,64 @@ fun createLevel(levelNumber : Int) : Level{
     level.startingRoom = rooms.first()
     level.startingPosition.set(RoomPosition(2, 2))
     return level
+}
+
+fun randomizeBasesForARoom(room : Room, allowedBases : List<Int>, roomBasesArray : Array<IntArray>)
+{
+    for (i in 1..5)
+    {
+        var randomY = roomBasesArray.indices.random()
+        var randomX = roomBasesArray[randomY].indices.random()
+        var pickedPoint = roomBasesArray[randomY][randomX]
+        while (pickedPoint == 0)
+        {
+            randomY = roomBasesArray.indices.random()
+            randomX = roomBasesArray[randomY].indices.random()
+            pickedPoint = roomBasesArray[randomY][randomX]
+        }
+        var randomBase = allowedBases.random()
+        val randomSpace = room.getSpace(RoomPosition(randomX, randomY))
+        if (randomSpace != null)
+        {
+            if (Base.woodTiles.contains(randomSpace.getBase()))
+            {
+                randomBase = Base.woodTiles.random().ordinal
+            }
+            if (Base.tiledTiles.contains(randomSpace.getBase()))
+            {
+                randomBase = Base.tiledTilesWithBlood.random().ordinal
+            }
+        }
+        recursivelySpreadBaseFromPoint(room, randomBase, randomX, randomY)
+    }
+}
+
+fun recursivelySpreadBaseFromPoint(room : Room, base : Int, x : Int, y : Int)
+{
+    if (room.getSpace(RoomPosition(x, y)) != null)
+    {
+        room.changeBaseAt(Base.getBase(base), x, y)
+    }
+    var shouldGoToNeighbourTile : Boolean = nextInt(0, 10) > 8
+    if (shouldGoToNeighbourTile)
+    {
+        recursivelySpreadBaseFromPoint(room, base, x+1, y)
+    }
+    shouldGoToNeighbourTile = nextInt(0, 10) > 8
+    if (shouldGoToNeighbourTile)
+    {
+        recursivelySpreadBaseFromPoint(room, base, x-1, y)
+    }
+    shouldGoToNeighbourTile = nextInt(0, 10) > 8
+    if (shouldGoToNeighbourTile)
+    {
+        recursivelySpreadBaseFromPoint(room, base, x, y+1)
+    }
+    shouldGoToNeighbourTile = nextInt(0, 10) > 8
+    if (shouldGoToNeighbourTile)
+    {
+        recursivelySpreadBaseFromPoint(room, base, x, y-1)
+    }
 }
 
 fun getAllowedBases(levelTheme : Int) : List<Int>
