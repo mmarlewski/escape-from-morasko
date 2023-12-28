@@ -2,65 +2,54 @@ package com.efm.entity
 
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
-import com.efm.item.*
+import com.efm.item.Item
+import com.efm.item.PossibleItems
 import com.efm.room.RoomPosition
-import com.efm.ui.gameScreen.EquipmentStructure
+import kotlin.random.Random
 
 /**
- * EnemyCorpse is a Container generated after Enemy death
+ * EnemyCorpse is a Container generated after Enemy death.
+ * It contains random items drawn from loot.
+ * @param loot PossibleItems from which items are drawn
  */
-abstract class EnemyCorpse(override val position : RoomPosition) : Interactive, Container, Character
+abstract class EnemyCorpse(
+        final override val position : RoomPosition = RoomPosition(),
+        loot : PossibleItems? = null,
+        seed : Int = Random.nextInt()
+                          ) : InteractiveContainerWithPossibleItems(loot, seed), Character
 {
-    /** can be empty PossibleItems() **/
-    var loot : PossibleItems? = null
-    /** items = loot.drawItems() **/
-    override val items = mutableListOf<Item>()
-    override var maxItems : Int = 1
-    
     override var maxHealthPoints : Int = 1
     override var healthPoints : Int = 1
     override var alive : Boolean = true
     
-    override fun interact()
+    final override val items : MutableList<Item> = mutableListOf()
+    /** Number of drawn items plus 2. */
+    final override var maxItems : Int = 0
+    
+    /** When opened for the first time, draw random items from possibleItems.
+     * Set maxItems to the number of drawn items plus 2.
+     */
+    init
     {
-        EquipmentStructure.showHeroAndContainerEquipments(this)
+        if (possibleItems != null)
+        {
+            maxItems = possibleItems.items.size + 2
+            drawItems()
+            maxItems = items.size + 2
+        }
     }
     
     // for serializing
     
     override fun write(json : Json?)
     {
-        super<Interactive>.write(json)
+        super<InteractiveContainerWithPossibleItems>.write(json)
         super<Character>.write(json)
-        
-        if (json != null)
-        {
-            json.writeValue("items", this.items)
-            json.writeValue("maxItems", this.maxItems)
-        }
     }
     
     override fun read(json : Json?, jsonData : JsonValue?)
     {
-        super<Interactive>.read(json, jsonData)
+        super<InteractiveContainerWithPossibleItems>.read(json, jsonData)
         super<Character>.read(json, jsonData)
-        
-        if (json != null)
-        {
-            val jsonItems = json.readValue("items", List::class.java, jsonData)
-            
-            if (jsonItems != null)
-            {
-                for (jsonItem in jsonItems)
-                {
-                    if (jsonItem is Item)
-                    {
-                        this.items.add(jsonItem)
-                    }
-                }
-            }
-            val jsonMaxItems = json.readValue("maxItems", Int::class.java, jsonData)
-            if (jsonMaxItems != null) this.maxItems = jsonMaxItems
-        }
     }
 }

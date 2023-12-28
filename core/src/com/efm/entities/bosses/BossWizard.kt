@@ -7,8 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entities.enemies.EnemyBat
+import com.efm.entities.enemies.bat.EnemyBat
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.state.State
@@ -27,6 +28,7 @@ class BossWizard : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems()
     
     override fun getTile() : TiledMapTile
     {
@@ -65,12 +67,12 @@ class BossWizard : Entity, Enemy
         }
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.skeletonAttack
     }
     
-    override fun getMoveSound() : Sound?
+    override fun getMoveSound() : Sound
     {
         return Sounds.wizardMove
     }

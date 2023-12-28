@@ -1,7 +1,7 @@
 import com.badlogic.gdx.Gdx
 import com.efm.*
-import com.efm.entities.enemies.EnemyBat
-import com.efm.entities.enemies.EnemyMushroom
+import com.efm.entities.enemies.bat.EnemyBat
+import com.efm.entities.enemies.mushroom.EnemyMushroom
 import com.efm.entity.Enemy
 import com.efm.level.Level
 import com.efm.level.World

@@ -1,6 +1,4 @@
 import com.efm.*
-import com.efm.entities.StoneColumn
-import com.efm.entities.enemies.EnemySkeleton
 import com.efm.room.*
 import org.junit.Assert.*
 import org.junit.Test

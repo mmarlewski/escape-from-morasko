@@ -1,8 +1,9 @@
 import com.efm.entities.*
-import com.efm.item.StackableItem
-import com.efm.item.examplePossibleItems
-import com.efm.multiUseMapItems.Bow
-import com.efm.stackableSelfItems.Mushroom
+import com.efm.entity.Chest
+import com.efm.item.*
+import com.efm.multiUseMapItems.WoodenSword
+import com.efm.stackableMapItems.Bomb
+import com.efm.stackableSelfItems.Apple
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -12,6 +13,13 @@ import org.junit.runner.RunWith
 class `possible items`
 {
     private val possibleItems = examplePossibleItems()
+    val possibleItemsWithAmountZero = PossibleItems(
+            mutableListOf(
+                    PossibleItem(Apple(), 1f, 0..0),
+                    PossibleItem(Bomb(), 1f, 0..0),
+                    PossibleItem(WoodenSword(), 1f, 0..0)
+                         )
+                                                   )
     
     private fun printChestItems(chest : Chest, name : String = "Chest")
     {
@@ -29,6 +37,12 @@ class `possible items`
     
     }
     
+    @Test fun `drawItems can draw items with amount zero`()
+    {
+        val drawnItems = possibleItemsWithAmountZero.drawItems()
+        assertNotNull(drawnItems.find { it is StackableItem && it.amount == 0 })
+    }
+    
     @Test fun `making Chest without PossibleItems makes empty Chest`()
     {
         val chest = Chest()
@@ -38,7 +52,7 @@ class `possible items`
     @Test fun `making Chest with PossibleItems makes Chest with random Items from PossibleItems`()
     {
         val chest = Chest(possibleItems)
-        // printChestItems(chest)
+        printChestItems(chest)
     }
     
     @Test fun `making Chests with same seeds makes Chests with same Items from PossibleItems`()
@@ -56,35 +70,5 @@ class `possible items`
                 assertTrue((chest1.items[i] as StackableItem).amount == (chest1.items[i] as StackableItem).amount)
             }
         }
-    }
-    
-    @Test fun `cannot add same item more times than initial timesLeftPossibleToAdd`()
-    {
-        // Bow has initial timesLeftPossibleToAdd=1 and will not be added the second time
-        val seed = 43
-        val chest1 = Chest(possibleItems, seed)
-        // printChestItems(chest1,"Chest1")
-        val chest2 = Chest(possibleItems, seed)
-        // printChestItems(chest2,"Chest2")
-        assertTrue(chest1.findAllStacks(Bow()).isNotEmpty())
-        assertTrue(chest2.findAllStacks(Bow()).isEmpty())
-    }
-    
-    @Test fun `cannot add more of an item than initial amountLeftPossibleToAdd`()
-    {
-        // Mushroom has initial amountLeftPossibleToAdd=10
-        // first added 6
-        // second added 10-6=3
-        // third added 0
-        val seed = 5
-        val chest1 = Chest(possibleItems, seed)
-        // printChestItems(chest1, "Chest1")
-        val chest2 = Chest(possibleItems, seed)
-        // printChestItems(chest2,"Chest2")
-        val chest3 = Chest(possibleItems, seed)
-        // printChestItems(chest3, "Chest3")
-        assertTrue(chest1.findAllStacks(Mushroom()).isNotEmpty())
-        assertTrue(chest2.findAllStacks(Mushroom()).isNotEmpty())
-        assertTrue(chest3.findAllStacks(Mushroom()).isEmpty())
     }
 }

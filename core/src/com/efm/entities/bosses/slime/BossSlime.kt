@@ -10,6 +10,7 @@ import com.efm.assets.Tiles
 import com.efm.entities.bosses.Boss
 import com.efm.entities.bosses.addBossToDefeatedBossesList
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
@@ -26,6 +27,7 @@ open class BossSlime : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems()
     
     override fun getTile() : TiledMapTile
     {
@@ -169,8 +171,5 @@ open class BossSlime : Entity, Enemy
         addBossToDefeatedBossesList(Boss.Slime)
     }
     
-    override fun getCorpse() : EnemyCorpse?
-    {
-        return null
-    }
+    override fun getCorpse() : EnemyCorpse? = null
 }

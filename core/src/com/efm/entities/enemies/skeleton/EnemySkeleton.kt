@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.enemies.skeleton
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -8,8 +8,13 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItem
+import com.efm.item.PossibleItems
 import com.efm.level.World
+import com.efm.multiUseMapItems.Bow
 import com.efm.room.RoomPosition
+import com.efm.stackableSelfItems.APPotionSmall
+import com.efm.stackableSelfItems.HPPotionSmall
 
 class EnemySkeleton : Entity, Enemy
 {
@@ -24,6 +29,13 @@ class EnemySkeleton : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems(
+            mutableListOf(
+                    PossibleItem(Bow(), 0.5f, IntRange(1, 1)),
+                    PossibleItem(APPotionSmall(), 0.8f, IntRange(0, 1)),
+                    PossibleItem(HPPotionSmall(), 0.8f, IntRange(0, 3))
+                         )
+                                                     )
     
     override fun getTile() : TiledMapTile
     {
@@ -42,12 +54,12 @@ class EnemySkeleton : Entity, Enemy
         }
     }
     
-    override fun getOutlineRedTile() : TiledMapTile?
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.skeletonIdle1OutlineRed
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -59,7 +71,7 @@ class EnemySkeleton : Entity, Enemy
         }
     }
     
-    override fun getMoveTile(n : Int) : TiledMapTile?
+    override fun getMoveTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -71,15 +83,12 @@ class EnemySkeleton : Entity, Enemy
         }
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.skeletonAttack
     }
     
-    override fun getMoveSound() : Sound?
-    {
-        return Sounds.skeletonMove
-    }
+    override fun getMoveSound() : Sound = Sounds.skeletonMove
     
     override fun enemyAttack()
     {
@@ -115,5 +124,5 @@ class EnemySkeleton : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemySkeletonCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemySkeletonCorpse(this.position, loot)
 }

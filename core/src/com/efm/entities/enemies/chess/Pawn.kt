@@ -8,6 +8,7 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -19,12 +20,14 @@ class Pawn: Entity, Enemy
     override var healthPoints = 5
     override var alive = true
     override var isFrozen = false
-    override fun getTile() : TiledMapTile?
+    override var loot : PossibleItems = PossibleItems()
+    
+    override fun getTile() : TiledMapTile
     {
         return Tiles.chessPawnWhite
     }
     
-    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return Tiles.chessPawnOutlineYellow
     }
@@ -36,27 +39,27 @@ class Pawn: Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     lateinit var direction : Direction4
-    override fun getOutlineRedTile() : TiledMapTile?
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.chessPawnOutlineRed
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         return Tiles.chessPawnWhite
     }
     
-    override fun getMoveTile(n : Int) : TiledMapTile?
+    override fun getMoveTile(n : Int) : TiledMapTile
     {
         return Tiles.chessPawnWhite
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.chessPawnWhite
     }
     
-    override fun getMoveSound() : Sound?
+    override fun getMoveSound() : Sound
     {
         return Sounds.chessMove
     }
@@ -83,10 +86,10 @@ class Pawn: Entity, Enemy
                 {
                     if (worldCurrentRoom.isPositionWithinBounds(pos.x, pos.y))
                     {
-                        var space = worldCurrentRoom.getSpace(pos)
+                        val space = worldCurrentRoom.getSpace(pos)
                         if (space != null)
                         {
-                            var entity = space.getEntity()
+                            val entity = space.getEntity()
                             if (!space.isTreadableFor(this))
                             {
                                 val queen = Queen()
@@ -176,7 +179,7 @@ class Pawn: Entity, Enemy
     
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
-        var result = mutableListOf(position.positionOffsetBy(1, direction))
+        val result = mutableListOf(position.positionOffsetBy(1, direction))
         result.add(position)
         return result
     }
