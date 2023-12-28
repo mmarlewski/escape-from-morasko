@@ -1,10 +1,8 @@
 import com.efm.*
-import com.efm.entities.Chest
 import com.efm.entities.enemies.Enemies
-import com.efm.entities.enemies.*
 import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
-import com.efm.entity.*
+import com.efm.entity.Chest
 import com.efm.exit.*
 import com.efm.level.Level
 import com.efm.level.World
