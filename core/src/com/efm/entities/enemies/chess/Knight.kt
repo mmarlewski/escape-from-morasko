@@ -8,6 +8,7 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
@@ -20,12 +21,14 @@ class Knight: Entity, Enemy
     override var healthPoints = 15
     override var alive = true
     override var isFrozen = false
-    override fun getTile() : TiledMapTile?
+    override var loot : PossibleItems = PossibleItems()
+    
+    override fun getTile() : TiledMapTile
     {
         return Tiles.chessKnightWhite
     }
     
-    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return Tiles.chessKnightOutlineYellow
     }
@@ -37,27 +40,27 @@ class Knight: Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     lateinit var direction : Direction4
-    override fun getOutlineRedTile() : TiledMapTile?
+    override fun getOutlineRedTile() : TiledMapTile
     {
         return Tiles.chessKnightOutlineRed
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         return Tiles.chessKnightWhite
     }
     
-    override fun getMoveTile(n : Int) : TiledMapTile?
+    override fun getMoveTile(n : Int) : TiledMapTile
     {
         return Tiles.chessKnightWhite
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.chessKnightWhite
     }
     
-    override fun getMoveSound() : Sound?
+    override fun getMoveSound() : Sound
     {
         return Sounds.chessMove
     }
@@ -85,7 +88,7 @@ class Knight: Entity, Enemy
                 {
                     if (worldCurrentRoom.isPositionWithinBounds(pos.x, pos.y))
                     {
-                        var space = worldCurrentRoom.getSpace(pos)
+                        val space = worldCurrentRoom.getSpace(pos)
                         if (space != null)
                         {
                             if (space.getEntity() == null && space.isTraversableFor(this))
@@ -140,7 +143,7 @@ class Knight: Entity, Enemy
     
     fun getPossibleMovePositions() : MutableList<RoomPosition>
     {
-        var possibleMovePositions = mutableListOf<RoomPosition>()
+        val possibleMovePositions = mutableListOf<RoomPosition>()
         possibleMovePositions.add(position)
         //add -2x positions
         possibleMovePositions.add(RoomPosition(position.x - 2, position.y + 1))

@@ -5,6 +5,10 @@ import com.efm.assets.Tiles
 import com.efm.entity.Interactive
 import com.efm.room.RoomPosition
 
+/**
+ * Interactive Entity made for testing, that performs supplied action.
+ * @param action code run on interaction
+ */
 class CommandBlock(
         val action : () -> Unit = { }
                   ) : Interactive

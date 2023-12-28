@@ -1,4 +1,4 @@
-import com.efm.entities.Chest
+import com.efm.entity.Chest
 import com.efm.level.World
 import com.efm.stackableMapItems.Bomb
 import org.junit.Assert.*

@@ -11,6 +11,7 @@ import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.Enemy
 import com.efm.entity.Entity
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
@@ -34,6 +35,7 @@ class BossOctopusHead : Entity, Enemy
     var currTentacleNum = 0
     val tentacles = mutableListOf<BossOctopusTentacle>()
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems()
     
     fun addTentacle(newTentacle : BossOctopusTentacle)
     {

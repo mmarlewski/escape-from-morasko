@@ -10,6 +10,7 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
@@ -30,6 +31,7 @@ class BossDragon : Entity, Enemy
     var isSitting = true
     var count = 0
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems()
     
     override fun getTile() : TiledMapTile
     {
@@ -82,7 +84,7 @@ class BossDragon : Entity, Enemy
         }
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         if (isSitting)
         {
@@ -127,7 +129,7 @@ class BossDragon : Entity, Enemy
         }
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         if (isSitting)
         {
