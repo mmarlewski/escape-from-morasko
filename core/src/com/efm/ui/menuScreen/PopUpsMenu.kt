@@ -9,6 +9,7 @@ import com.efm.screens.MenuScreen
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
+import createProcGenWorld
 
 object PopUpsMenu
 {
@@ -56,7 +57,8 @@ object PopUpsMenu
         }
         // create World
         World.levels.clear()
-        World.createWorldPrototype()
+        //World.createWorldPrototype()
+        World.createProcGenWorld()
         // set currentLevel and currentRoom
         val startingLevel = World.levels.first()
         val startingRoom = startingLevel.startingRoom
@@ -69,7 +71,7 @@ object PopUpsMenu
         // add Items to Hero
         World.hero.setStartingInventory()
         // set godmode
-        // World.hero.godMode()
+         World.hero.godMode()
         // add Skills to Hero
 //                    World.hero.addSkill(LavaWalking)
 //                    World.hero.addSkill(Push)
