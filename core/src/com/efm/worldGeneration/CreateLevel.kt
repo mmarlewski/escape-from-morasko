@@ -190,7 +190,7 @@ fun createLevel(levelNumber : Int) : Level{
         val basesForThisRoom = getRandomBasesThatFitTogether(allowedBases)
         for (y in roomBasesArray.indices)
         {
-            for (x in roomBasesArray[y].indices)
+            for (x in 0 until roomBasesArray[0].size)
             {
                 val baseNumber = roomBasesArray[y][x]
                 if (baseNumber != 0)
@@ -205,7 +205,8 @@ fun createLevel(levelNumber : Int) : Level{
                 }
             }
         }
-    
+        room.updateSpaceList()
+        room.updateSpacesEntities()
         randomizeBasesForARoom(room, allowedBases, roomBasesArray, 4)
         room.addWalls(allowedWalls.random())
         room.updateSpacesEntities()
@@ -280,7 +281,11 @@ fun addChestToStartingRoom(first : Room)
 {
     val chest = Chest()
     chest.addItem(Apple())
-    first.addEntityAt(chest, findRandomFreePositionInRoom(first))
+    val position = findRandomFreePositionInRoom(first)
+    if (position != null)
+    {
+        first.addEntityAt(chest, position)
+    }
 }
 
 fun spawnEnemiesInTheRoom(room : Room, allowedEnemies : List<Enemies>, levelNumber : Int)
@@ -292,19 +297,33 @@ fun spawnEnemiesInTheRoom(room : Room, allowedEnemies : List<Enemies>, levelNumb
         for (i in 0..amountOfEnemies)
         {
             val positionToSpawnAt = findRandomFreePositionInRoom(room)
-            room.addEntityAt(allowedEnemies.random().new(), positionToSpawnAt)
+            if (positionToSpawnAt != null && room.getSpace(positionToSpawnAt)?.let { checkIfNoOtherPassagesNearby(room, it) } == true)
+            {
+                room.addEntityAt(allowedEnemies.random().new(), positionToSpawnAt)
+            }
+            
         }
     }
 }
 
 
 
-fun findRandomFreePositionInRoom(room : Room) : RoomPosition
+fun findRandomFreePositionInRoom(room : Room) : RoomPosition?
 {
     var space = room.getSpaces().random()
+    var breakCounter = 0
     while (space.getEntity() != null || space.getBase() == null || listOf(Base.lava, Base.water).contains(space.getBase()))
     {
         space = room.getSpaces().random()
+        if (breakCounter == 20)
+        {
+            break
+        }
+        breakCounter += 1
+    }
+    if (breakCounter == 20)
+    {
+        return null
     }
     return space.position
 }
@@ -395,7 +414,14 @@ fun recursivelySpreadBaseFromPoint(
         ) room.changeBaseAt(bases.random(), x, y)
         return
     }
-    
+    val space = room.getSpace(x, y)
+    if (space != null)
+    {
+        if (checkIfNoOtherPassagesNearby(room, space))
+        {
+            return
+        }
+    }
     val directions = listOf(Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1), Pair(1, 1), Pair(-1, 1), Pair(1, -1), Pair(-1, -1))
     
     for ((dx, dy) in directions) {
@@ -676,16 +702,7 @@ fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Bool
             }
         }
     }
-    if (rightSideWallPositions.size > 2)
-    {
-        rightSideWallPositions.removeAt(0)
-        rightSideWallPositions.removeAt(rightSideWallPositions.lastIndex)
-    }
-    if (bottomSideWallPositions.size > 2)
-    {
-        bottomSideWallPositions.removeAt(0)
-        bottomSideWallPositions.removeAt(bottomSideWallPositions.lastIndex)
-    }
+
     if (s == "horizontal")
     {
         return if (rightSideWallPositions.isNotEmpty())
@@ -790,16 +807,7 @@ fun findSpaceInTopLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean)
             }
         }
     }
-    if (leftSideWallPositions.size > 2)
-    {
-        leftSideWallPositions.removeAt(0)
-        leftSideWallPositions.removeAt(leftSideWallPositions.lastIndex)
-    }
-    if (topSideWallPositions.size > 2)
-    {
-        topSideWallPositions.removeAt(0)
-        topSideWallPositions.removeAt(topSideWallPositions.lastIndex)
-    }
+  
     if (s == "horizontal")
     {
         return if (leftSideWallPositions.isNotEmpty())
@@ -904,16 +912,7 @@ fun findSpaceInTopRightCorner(room : Room, s : String, allowMoreSpaces : Boolean
             }
         }
     }
-    if (rightSideWallPositions.size > 2)
-    {
-        rightSideWallPositions.removeAt(0)
-        rightSideWallPositions.removeAt(rightSideWallPositions.lastIndex)
-    }
-    if (topSideWallPositions.size > 2)
-    {
-        topSideWallPositions.removeAt(0)
-        topSideWallPositions.removeAt(topSideWallPositions.lastIndex)
-    }
+   
     if (s == "horizontal")
     {
         return if (rightSideWallPositions.isNotEmpty())
@@ -1019,16 +1018,7 @@ fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boole
             }
         }
     }
-    if (leftSideWallPositions.size > 2)
-    {
-        leftSideWallPositions.removeAt(0)
-        leftSideWallPositions.removeAt(leftSideWallPositions.lastIndex)
-    }
-    if (bottomSideWallPositions.size > 2)
-    {
-        bottomSideWallPositions.removeAt(0)
-        bottomSideWallPositions.removeAt(bottomSideWallPositions.lastIndex)
-    }
+    
     if (s == "horizontal")
     {
         return if (leftSideWallPositions.isNotEmpty())
