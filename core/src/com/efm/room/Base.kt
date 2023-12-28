@@ -72,12 +72,12 @@ enum class Base(val tile : TiledMapTile, val isTreadableFor : (Entity) -> Boolea
                 tiled1,
                 tiled2,
                 tiled3,
-                tiled2x,
-                tiled2y,
-                tiled2xy,
-                tiled3x,
-                tiled3y,
-                tiled3xy
+                //tiled2x,
+                //tiled2y,
+                //tiled2xy,
+                //tiled3x,
+                //tiled3y,
+                //tiled3xy
                                )
         val tiledTilesWithBlood = listOf(
                 tiled1,

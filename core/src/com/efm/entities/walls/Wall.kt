@@ -154,7 +154,7 @@ enum class WallStyle(internal val tiles : WallTiles)
     companion object
     {
         val stoneWalls = listOf(
-                stone,
+                rock,
                 cobblestoneLightTall,
                 cobblestoneLight,
                 cobblestoneDarkTall,

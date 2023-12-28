@@ -9,18 +9,33 @@ import com.efm.entities.enemies.plant.EnemyPlant
 import com.efm.entities.enemies.rollingStone.EnemyRollingStone
 import com.efm.entities.enemies.skeleton.EnemySkeleton
 import com.efm.entity.Enemy
+import kotlin.reflect.KClass
 
-enum class Enemies(val enemy : Enemy)
+/**
+ * Types of Enemies found in Rooms.
+ */
+enum class Enemies(private val kClass : KClass<out Enemy>)
 {
-    BAT(EnemyBat()),
-    BOAR(EnemyBoar()),
-    GHOST(EnemyGhost()),
-    MIMIC(EnemyMimic()),
-    MUSHROOM(EnemyMushroom()),
-    PLANT(EnemyPlant()),
-    ROLLING_STONE(EnemyRollingStone()),
-    SKELETON(EnemySkeleton()),
-    SLIME_QUARTER(EnemySlimeQuarter()),
-    TURRET(EnemyTurret()),
-    WIZARD(EnemyWizard())
+    BAT(EnemyBat::class),
+    BOAR(EnemyBoar::class),
+    GHOST(EnemyGhost::class),
+    MIMIC(EnemyMimic::class),
+    MUSHROOM(EnemyMushroom::class),
+    PLANT(EnemyPlant::class),
+    ROLLING_STONE(EnemyRollingStone::class),
+    SKELETON(EnemySkeleton::class),
+    SLIME_QUARTER(EnemySlimeQuarter::class),
+    TURRET(EnemyTurret::class),
+    WIZARD(EnemyWizard::class);
+    
+    /** Returns new instance of the Enemy with default values. */
+    fun new() = EnemyFactory.default(this.kClass)
+}
+
+private object EnemyFactory
+{
+    fun default(enemyClass : KClass<out Enemy>) =
+            Class.forName(enemyClass.qualifiedName).getConstructor().newInstance() as Enemy
+    
+    fun default(enemy : Enemy) = Class.forName(enemy::class.qualifiedName).getConstructor().newInstance() as Enemy
 }

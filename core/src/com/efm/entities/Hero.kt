@@ -12,7 +12,7 @@ import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 import com.efm.skill.*
-import com.efm.skills.Pockets
+import com.efm.skills.*
 import com.efm.stackableMapItems.TestingBomb
 import com.efm.stackableSelfItems.Apple
 import com.efm.stackableSelfItems.Fish
@@ -359,6 +359,8 @@ class Hero(
         this.abilityPoints = this.maxAbilityPoints
         this.maxHealthPoints = Int.MAX_VALUE / 4
         this.healthPoints = this.maxHealthPoints
+        this.addSkill(LavaWalking)
+        this.addSkill(WaterWalking)
     }
     
     fun reset()

@@ -210,7 +210,6 @@ fun createLevel(levelNumber : Int) : Level{
         room.addWalls(allowedWalls.random())
         room.updateSpacesEntities()
         
-        
         level.addRoom(room)
         rooms.add(room)
     }
@@ -223,9 +222,9 @@ fun createLevel(levelNumber : Int) : Level{
         val y1 = getRoomY1(room.name.toInt(), roomData)
         val y2 = getRoomY2(room.name.toInt(), roomData)
         val roomBasesArray = getMatrixBasedOnCoordinates(roomData, x1, x2, y1, y2, room.name.toInt())
-        spawnEnemiesInTheRoom(room, allowedEnemies, levelNumber)
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.water), roomBasesArray, 3)
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.lava), roomBasesArray, 1)
+        spawnEnemiesInTheRoom(room, allowedEnemies, levelNumber)
     }
     val bossRoom = Room("boss_room", 20, 20)
     for (patch in patchCenters)
@@ -293,7 +292,7 @@ fun spawnEnemiesInTheRoom(room : Room, allowedEnemies : List<Enemies>, levelNumb
         for (i in 0..amountOfEnemies)
         {
             val positionToSpawnAt = findRandomFreePositionInRoom(room)
-            room.addEntityAt(allowedEnemies.random().enemy, positionToSpawnAt)
+            room.addEntityAt(allowedEnemies.random().new(), positionToSpawnAt)
         }
     }
 }
@@ -303,7 +302,7 @@ fun spawnEnemiesInTheRoom(room : Room, allowedEnemies : List<Enemies>, levelNumb
 fun findRandomFreePositionInRoom(room : Room) : RoomPosition
 {
     var space = room.getSpaces().random()
-    while (space.getEntity() != null || space.getBase() == null)
+    while (space.getEntity() != null || space.getBase() == null || listOf(Base.lava, Base.water).contains(space.getBase()))
     {
         space = room.getSpaces().random()
     }
@@ -389,9 +388,11 @@ fun recursivelySpreadBaseFromPoint(
         depth : Int
                                   )
 {
-    if (depth <= 0 || room.getSpace(RoomPosition(x, y)) == null)
+    if (depth <= 0)
     {
-        room.changeBaseAt(bases.random(), x, y)
+        if (room.getSpace(x, y) != null && room.getSpace(x, y)?.getEntity() !is Wall && room.getSpace(x, y)
+                        ?.getEntity() !is Exit
+        ) room.changeBaseAt(bases.random(), x, y)
         return
     }
     
