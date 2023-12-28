@@ -1,13 +1,17 @@
 import com.efm.*
-import com.efm.entities.enemies.EnemyMushroom
-import com.efm.entities.enemies.EnemyPlant
+import com.efm.entities.Chest
+import com.efm.entities.enemies.*
+import com.efm.entities.enemies.Boar.EnemyBoar
 import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
 import com.efm.entity.Enemy
+import com.efm.entity.Entity
 import com.efm.exit.*
 import com.efm.level.Level
 import com.efm.level.World
 import com.efm.room.*
+import com.efm.stackableSelfItems.Apple
+import com.efm.stackableSelfItems.Mushroom
 import com.efm.state.State
 import kotlin.math.*
 import kotlin.random.Random
@@ -210,7 +214,8 @@ fun createLevel(levelNumber : Int) : Level{
         randomizeBasesForARoom(room, allowedBases, roomBasesArray)
     
     
-        room.addWalls(WallStyle.brickRedDark)
+        room.addWalls(allowedWalls)
+        spawnEnemiesInTheRoom(room, allowedEnemies, levelNumber)
         room.updateSpacesEntities()
         
         
@@ -232,13 +237,65 @@ fun createLevel(levelNumber : Int) : Level{
     level.addRoom(bossRoom)
     rooms.add(bossRoom)
     level.startingRoom = rooms.first()
+    addChestToStartingRoom(rooms.first())
     level.startingPosition.set(RoomPosition(2, 2))
     return level
 }
 
+fun addChestToStartingRoom(first : Room)
+{
+    val chest = Chest()
+    chest.addItem(Apple())
+    first.addEntityAt(chest, findRandomFreePositionInRoom(first))
+}
+
+fun spawnEnemiesInTheRoom(room : Room, allowedEnemies : List<String>, levelNumber : Int)
+{
+    if (room.name != "1")
+    {
+        val roomSize = getRoomSize(room)
+        val amountOfEnemies = nextInt((roomSize/80), (roomSize/40)+1)
+        for (i in 0..amountOfEnemies)
+        {
+            val positionToSpawnAt = findRandomFreePositionInRoom(room)
+            room.addEntityAt(getRandomEnemyFromAllowedEnemies(allowedEnemies), positionToSpawnAt)
+        }
+    }
+}
+
+fun getRandomEnemyFromAllowedEnemies(allowedEnemies : List<String>) : Entity
+{
+    return when (allowedEnemies.random())
+    {
+        "mushroom" -> EnemyMushroom()
+        "skeleton" -> EnemySkeleton()
+        "bat" -> EnemyBat()
+        "rock" -> EnemyRollingStone()
+        "plant" -> EnemyPlant()
+        "boar" -> EnemyBoar()
+        "turret" -> EnemyTurret()
+        else -> EnemyMushroom()
+    }
+}
+
+fun findRandomFreePositionInRoom(room : Room) : RoomPosition
+{
+    var space = room.getSpaces().random()
+    while (space.getEntity() != null || space.getBase() == null)
+    {
+        space = room.getSpaces().random()
+    }
+    return space.position
+}
+
+fun getRoomSize(room : Room) : Int
+{
+    return room.getSpaces().size
+}
+
 fun randomizeBasesForARoom(room : Room, allowedBases : List<Int>, roomBasesArray : Array<IntArray>)
 {
-    for (i in 1..5)
+    for (i in 1..7)
     {
         var randomY = roomBasesArray.indices.random()
         var randomX = roomBasesArray[randomY].indices.random()
@@ -262,35 +319,22 @@ fun randomizeBasesForARoom(room : Room, allowedBases : List<Int>, roomBasesArray
                 randomBase = Base.tiledTilesWithBlood.random().ordinal
             }
         }
-        recursivelySpreadBaseFromPoint(room, randomBase, randomX, randomY)
+        recursivelySpreadBaseFromPoint(room, randomBase, randomX, randomY, 4, 8)
     }
 }
 
-fun recursivelySpreadBaseFromPoint(room : Room, base : Int, x : Int, y : Int)
-{
-    if (room.getSpace(RoomPosition(x, y)) != null)
-    {
+fun recursivelySpreadBaseFromPoint(room: Room, base: Int, x: Int, y: Int, probabilityThreshold: Int, depth: Int) {
+    if (depth <= 0 || room.getSpace(RoomPosition(x, y)) != null) {
         room.changeBaseAt(Base.getBase(base), x, y)
+        return
     }
-    var shouldGoToNeighbourTile : Boolean = nextInt(0, 10) > 8
-    if (shouldGoToNeighbourTile)
-    {
-        recursivelySpreadBaseFromPoint(room, base, x+1, y)
-    }
-    shouldGoToNeighbourTile = nextInt(0, 10) > 8
-    if (shouldGoToNeighbourTile)
-    {
-        recursivelySpreadBaseFromPoint(room, base, x-1, y)
-    }
-    shouldGoToNeighbourTile = nextInt(0, 10) > 8
-    if (shouldGoToNeighbourTile)
-    {
-        recursivelySpreadBaseFromPoint(room, base, x, y+1)
-    }
-    shouldGoToNeighbourTile = nextInt(0, 10) > 8
-    if (shouldGoToNeighbourTile)
-    {
-        recursivelySpreadBaseFromPoint(room, base, x, y-1)
+    
+    val directions = listOf(Pair(1, 0), Pair(-1, 0), Pair(0, 1), Pair(0, -1), Pair(1, 1), Pair(-1, 1), Pair(1, -1), Pair(-1, -1))
+    
+    for ((dx, dy) in directions) {
+        if (nextInt(0, 10) > probabilityThreshold) {
+            recursivelySpreadBaseFromPoint(room, base, x + dx, y + dy, probabilityThreshold, depth - 1)
+        }
     }
 }
 
@@ -339,7 +383,6 @@ fun getAllowedEnemies(levelTheme : Int) : List<String>
         enemies.add("mushroom")
         enemies.add("skeleton")
         enemies.add("bat")
-        enemies.add("slime")
         enemies.add("rock")
         enemies.add("plant")
         enemies.add("boar")
@@ -349,7 +392,6 @@ fun getAllowedEnemies(levelTheme : Int) : List<String>
         enemies.add("mushroom")
         enemies.add("skeleton")
         enemies.add("bat")
-        enemies.add("slime")
         enemies.add("turret")
     }
     return enemies
