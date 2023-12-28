@@ -153,7 +153,23 @@ enum class WallStyle(internal val tiles : WallTiles)
     
     companion object
     {
-        fun getOrdinal(wallStyle : WallStyle) : Int = wallStyle.ordinal
-        fun getWallStyle(wallStyleNumber : Int) = values()[wallStyleNumber]
+        val stoneWalls = listOf(
+                stone,
+                cobblestoneLightTall,
+                cobblestoneLight,
+                cobblestoneDarkTall,
+                cobblestoneDark
+                               )
+    
+        val brickWalls = listOf(
+                brickOrangeDark,
+                brickOrangeLight,
+                brickOrangeDarkTall,
+                brickOrangeLightTall,
+                brickRedDark,
+                brickRedLight,
+                brickRedDarkTall,
+                brickRedLightTall
+                               )
     }
 }
