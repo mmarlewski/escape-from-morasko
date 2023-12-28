@@ -1,5 +1,4 @@
 import com.efm.*
-import com.efm.entities.enemies.Enemies
 import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
 import com.efm.entity.Chest
@@ -8,9 +7,11 @@ import com.efm.level.Level
 import com.efm.level.World
 import com.efm.room.*
 import com.efm.stackableSelfItems.Apple
+import com.efm.worldGeneration.LevelTheme
 import com.efm.worldGeneration.LevelThemes
 import kotlin.math.*
 import kotlin.random.Random
+import kotlin.random.Random.Default.nextFloat
 import kotlin.random.Random.Default.nextInt
 
 class Node(
@@ -173,7 +174,6 @@ fun createLevel(levelNumber : Int) : Level{
     val possibleRoomsValues = getPossibleRoomValues(roomData)
     val level = Level(levelNumber.toString())
     val levelTheme = LevelThemes.values().random().theme
-    val allowedEnemies = levelTheme.enemies
     val allowedBases = levelTheme.bases
     val allowedWalls = levelTheme.walls
     val rooms = mutableListOf<Room>()
@@ -225,7 +225,7 @@ fun createLevel(levelNumber : Int) : Level{
         val roomBasesArray = getMatrixBasedOnCoordinates(roomData, x1, x2, y1, y2, room.name.toInt())
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.water), roomBasesArray, 3)
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.lava), roomBasesArray, 1)
-        spawnEnemiesInTheRoom(room, allowedEnemies, levelNumber)
+        spawnEnemiesInTheRoom(room, levelTheme, levelNumber)
     }
     val bossRoom = Room("boss_room", 20, 20)
     for (patch in patchCenters)
@@ -288,7 +288,7 @@ fun addChestToStartingRoom(first : Room)
     }
 }
 
-fun spawnEnemiesInTheRoom(room : Room, allowedEnemies : List<Enemies>, levelNumber : Int)
+fun spawnEnemiesInTheRoom(room : Room, theme : LevelTheme, levelNumber : Int)
 {
     if (room.name != "1")
     {
@@ -297,9 +297,16 @@ fun spawnEnemiesInTheRoom(room : Room, allowedEnemies : List<Enemies>, levelNumb
         for (i in 0..amountOfEnemies)
         {
             val positionToSpawnAt = findRandomFreePositionInRoom(room)
-            if (positionToSpawnAt != null && room.getSpace(positionToSpawnAt)?.let { checkIfNoOtherPassagesNearby(room, it) } == true)
+            if (positionToSpawnAt != null && room.getSpace(positionToSpawnAt)
+                            ?.let { checkIfNoOtherPassagesNearby(room, it) } == true
+            )
             {
-                room.addEntityAt(allowedEnemies.random().new(), positionToSpawnAt)
+                val enemy =
+                        if (nextFloat() < 0.8)
+                            theme.commonEnemies.random().new()
+                        else
+                            theme.rareEnemies.random().new()
+                room.addEntityAt(enemy, positionToSpawnAt)
             }
             
         }

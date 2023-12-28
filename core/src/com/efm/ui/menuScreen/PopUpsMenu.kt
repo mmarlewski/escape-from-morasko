@@ -3,6 +3,7 @@ package com.efm.ui.menuScreen
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
+import com.efm.entities.enemies.mimic.EnemyMimic
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
@@ -105,7 +106,7 @@ object PopUpsMenu
         // display new enemy health stacks
         for (enemy in World.currentRoom?.getEnemies() ?: listOf())
         {
-            enemy.displayOwnHealthBar()
+            if (enemy !is EnemyMimic || enemy.detected()) enemy.displayOwnHealthBar()
         }
         // update Room, Map, UI
         World.currentRoom?.updateSpacesEntities()

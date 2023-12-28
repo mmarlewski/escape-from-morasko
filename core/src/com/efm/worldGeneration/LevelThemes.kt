@@ -15,6 +15,8 @@ interface LevelTheme
     val bases : List<Base>
     val walls : List<WallStyle>
     val enemies : List<Enemies>
+    val commonEnemies : List<Enemies>
+    val rareEnemies : List<Enemies>
 }
 
 object GrassyTheme : LevelTheme
@@ -25,17 +27,29 @@ object GrassyTheme : LevelTheme
     override val enemies : List<Enemies> = listOf(
             // common everywhere
             Enemies.MUSHROOM, Enemies.SKELETON, Enemies.BAT, Enemies.SLIME_QUARTER,
-            // rare everywhere  // should be
+            // rare everywhere
             Enemies.MIMIC, Enemies.GHOST,
             // theme specific
             Enemies.ROLLING_STONE, Enemies.PLANT, Enemies.BOAR
                                                  )
+    
+    override val commonEnemies : List<Enemies> = listOf(
+            // common everywhere
+            Enemies.MUSHROOM, Enemies.SKELETON, Enemies.BAT, Enemies.SLIME_QUARTER,
+            // theme specific
+            Enemies.ROLLING_STONE, Enemies.PLANT, Enemies.BOAR
+                                                       )
+    
+    override val rareEnemies : List<Enemies> = listOf(
+            // rare everywhere
+            Enemies.MIMIC, Enemies.GHOST,
+                                                     )
 }
 
 object BrickyTileyTheme : LevelTheme
 {
     // Base.lava should also appear
-    override val bases : List<Base> = listOf(Base.metal) + Base.tiledTiles + Base.woodTiles
+    override val bases : List<Base> = listOf(Base.metal) + Base.tiledTiles + Base.woodTiles + Base.tiledTilesWithBlood
     override val walls : List<WallStyle> = WallStyle.brickWalls + listOf(WallStyle.metal)
     override val enemies : List<Enemies> = listOf(
             // common everywhere
@@ -45,4 +59,16 @@ object BrickyTileyTheme : LevelTheme
             // theme specific
             Enemies.TURRET, Enemies.WIZARD
                                                  )
+    
+    override val commonEnemies : List<Enemies> = listOf(
+            // common everywhere
+            Enemies.MUSHROOM, Enemies.SKELETON, Enemies.BAT, Enemies.SLIME_QUARTER,
+            // theme specific
+            Enemies.TURRET, Enemies.WIZARD
+                                                       )
+    
+    override val rareEnemies : List<Enemies> = listOf(
+            // rare everywhere
+            Enemies.MIMIC, Enemies.GHOST,
+                                                     )
 }

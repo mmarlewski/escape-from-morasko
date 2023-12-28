@@ -4,6 +4,7 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
+import com.efm.entities.enemies.mimic.EnemyMimic
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.exit.Exit
@@ -54,7 +55,7 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
                 }
             }
             
-            is Hero  ->
+            is Hero       ->
             {
                 RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
@@ -82,7 +83,7 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
 //                {
 //                    Map.changeTile(MapLayer.select, position, Tiles.selectTeal)
 //                }
-                
+    
                 return State.constrained.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -90,13 +91,32 @@ fun updateConstrainedNoSelection(currState : State.constrained.noSelection) : St
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
-            
-            is Enemy ->
+    
+            is EnemyMimic ->
+            {
+                Map.clearLayer(MapLayer.select)
+                Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+                Map.changeTile(
+                        MapLayer.outline,
+                        selectedPosition,
+                        selectedEntity.getOutlineTealTile()
+                              )
+        
+                return State.constrained.entitySelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.selectedEntity = selectedEntity
+                }
+            }
+    
+            is Enemy      ->
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
-                
+        
                 val detectionPositions = selectedEntity.getDetectionPositions()
                 for (position in detectionPositions)
                 {
@@ -163,19 +183,19 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
         
         when (selectedEntity)
         {
-            null     ->
+            null          ->
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
             }
             
-            is Hero  ->
+            is Hero       ->
             {
                 RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
-                
+    
                 return State.constrained.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -183,13 +203,32 @@ fun updateConstrainedNothingSelected(currState : State.constrained.nothingSelect
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
-            
-            is Enemy ->
+    
+            is EnemyMimic ->
+            {
+                Map.clearLayer(MapLayer.select)
+                Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+                Map.changeTile(
+                        MapLayer.outline,
+                        selectedPosition,
+                        selectedEntity.getOutlineTealTile()
+                              )
+        
+                return State.constrained.entitySelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                    this.selectedEntity = selectedEntity
+                }
+            }
+    
+            is Enemy      ->
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectRed)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
-                
+        
                 val detectionPositions = selectedEntity.getDetectionPositions()
                 for (position in detectionPositions)
                 {
@@ -256,7 +295,7 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
         
         when (selectedEntity)
         {
-            null     ->
+            null          ->
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
@@ -269,13 +308,13 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
                 }
             }
             
-            is Hero  ->
+            is Hero       ->
             {
                 RightStructure.moveButtonVisibility(true)
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectGreen)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineGreenTile())
-                
+    
                 return State.constrained.heroSelected.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -283,13 +322,40 @@ fun updateConstrainedEntitySelected(currState : State.constrained.entitySelected
                     this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
                 }
             }
-            
-            is Enemy ->
+    
+            is EnemyMimic ->
+            {
+                Map.clearLayer(MapLayer.select)
+                Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectYellow)
+                Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineTealTile())
+        
+                if (selectedEntity == currState.selectedEntity && World.hero.position.isAdjacentTo(selectedEntity.position))
+                {
+                    selectedEntity.interact()
+                    Map.clearLayer(MapLayer.select)
+                    Map.clearLayer(MapLayer.outline)
+                    return State.combat.hero.heroSelected.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = true
+                        this.areAnyActionPointsLeft = true
+                    }
+                }
+                Map.clearLayer(MapLayer.select)
+                Map.clearLayer(MapLayer.outline)
+                return State.constrained.nothingSelected.apply {
+                    this.isHeroAlive = currState.isHeroAlive
+                    this.areEnemiesInRoom = currState.areEnemiesInRoom
+                    this.isHeroDetected = currState.isHeroDetected
+                    this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                }
+            }
+    
+            is Enemy      ->
             {
                 Map.clearLayer(MapLayer.select)
                 Map.changeTile(MapLayer.select, selectedPosition, Tiles.selectRed)
                 Map.changeTile(MapLayer.outline, selectedPosition, selectedEntity.getOutlineYellowTile())
-                
+        
                 val detectionPositions = selectedEntity.getDetectionPositions()
                 for (position in detectionPositions)
                 {
@@ -775,6 +841,14 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
             if (entityOnPositionHeroWalkedTowards is Interactive)
             {
                 entityOnPositionHeroWalkedTowards.interact()
+                if (entityOnPositionHeroWalkedTowards is EnemyMimic)
+                {
+                    return State.combat.hero.heroSelected.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = true
+                        this.areAnyActionPointsLeft = true
+                    }
+                }
             }
         }
     
@@ -790,7 +864,7 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
         }
         for (enemy in World.currentRoom?.getEnemies() ?: listOf())
         {
-            enemy.displayOwnHealthBar()
+            if (enemy !is EnemyMimic || enemy.detected()) enemy.displayOwnHealthBar()
         }
         
         val isMoveToAnotherRoom = currState.isMoveToAnotherRoom

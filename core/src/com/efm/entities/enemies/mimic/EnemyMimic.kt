@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
+import com.efm.Map
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
@@ -13,9 +14,21 @@ import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.RoomPosition
+import com.efm.state.State
+import com.efm.state.getState
 
-class EnemyMimic : Entity, Enemy
+class EnemyMimic : Enemy, Interactive
 {
+    override fun getOutlineTealTile() = Tiles.chestOutlineTeal
+    
+    override fun interact()
+    {
+        Map.clearLayer(MapLayer.select)
+        Map.clearLayer(MapLayer.outline)
+        this.displayOwnHealthBar()
+        playSoundOnce(getMoveSound())
+    }
+    
     override val position = RoomPosition()
     override var maxHealthPoints = 20
     override var healthPoints = 20
@@ -33,12 +46,21 @@ class EnemyMimic : Entity, Enemy
                          )
                                                      )
     
-    override fun getTile() : TiledMapTile
+    fun detected() = when (val currState = getState())
     {
-        return Tiles.mimicIdle1
+        is State.free        -> false
+        is State.constrained -> currState.isHeroDetected
+        is State.combat      -> true
+        else                 -> false
     }
     
-    fun getOutlineYellowTileAfterDetection(n : Int) : TiledMapTile
+    override fun getTile() : TiledMapTile
+    {
+        return if (detected()) Tiles.mimicIdle1
+        else Tiles.chest
+    }
+    
+    private fun getOutlineYellowTileAfterDetection(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -52,14 +74,8 @@ class EnemyMimic : Entity, Enemy
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
-        return when (n)
-        {
-            1    -> Tiles.chestOutlineYellow
-            2    -> Tiles.chestOutlineYellow
-            3    -> Tiles.chestOutlineYellow
-            4    -> Tiles.chestOutlineYellow
-            else -> Tiles.chestOutlineYellow
-        }
+        return if (detected()) getOutlineYellowTileAfterDetection(n)
+        else Tiles.chestOutlineYellow
     }
     
     override fun getOutlineRedTile() : TiledMapTile
@@ -69,10 +85,11 @@ class EnemyMimic : Entity, Enemy
     
     override fun getIdleTile(n : Int) : TiledMapTile
     {
-        return Tiles.chest
+        return if (detected()) getIdleTileAfterDetection(n)
+        else Tiles.chest
     }
     
-    fun getIdleTileAfterDetection(n : Int) : TiledMapTile
+    private fun getIdleTileAfterDetection(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -136,6 +153,11 @@ class EnemyMimic : Entity, Enemy
         }
     
         Animating.executeAnimations(animations)
+    }
+    
+    override fun getDetectionPositions() : MutableList<RoomPosition>
+    {
+        return mutableListOf()
     }
     
     override fun getCorpse() : EnemyCorpse = EnemyMimicCorpse(this.position, loot)

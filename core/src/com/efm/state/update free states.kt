@@ -4,6 +4,7 @@ import com.efm.*
 import com.efm.Map
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
+import com.efm.entities.enemies.mimic.EnemyMimic
 import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.exit.Exit
@@ -455,7 +456,7 @@ fun updateFreeMoveSelectedTwice(currState : State.free.moveSelectedTwice) : Stat
         }
         for (enemy in World.currentRoom?.getEnemies() ?: listOf())
         {
-            enemy.displayOwnHealthBar()
+            if (enemy !is EnemyMimic || enemy.detected()) enemy.displayOwnHealthBar()
         }
         val isMoveToAnotherRoom = currState.isMoveToAnotherRoom
         val isMoveToAnotherLevel = currState.isMoveToAnotherLevel

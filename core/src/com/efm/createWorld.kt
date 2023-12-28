@@ -11,6 +11,7 @@ import com.efm.entities.enemies.*
 import com.efm.entities.enemies.bat.EnemyBat
 import com.efm.entities.enemies.dzik.EnemyBoar
 import com.efm.entities.enemies.ghost.EnemyGhost
+import com.efm.entities.enemies.mimic.EnemyMimic
 import com.efm.entities.enemies.mushroom.EnemyMushroom
 import com.efm.entities.enemies.plant.EnemyPlant
 import com.efm.entities.enemies.rollingStone.EnemyRollingStone
@@ -55,7 +56,8 @@ fun World.createWorldPrototype()
             // walls
             addWalls(WallStyle.cobblestoneDarkTall)
             // entities
-            addEntityAt(EnemyMushroom(), 5, 4)
+            addEntityAt(EnemyMushroom(), 6, 4)
+            addEntityAt(EnemyMimic(), 5, 4)
             val chest = Chest()
             chest.addItem(IronSword())
             chest.addItem(HPPotionSmall(2))
@@ -1018,7 +1020,7 @@ private fun createRoomFromFile(name : String, fileHandle : FileHandle) : Room
     return room
 }
 
-public fun Room.addWalls(wallStyle : WallStyle = WallStyle.stone)
+fun Room.addWalls(wallStyle : WallStyle = WallStyle.stone)
 {
     // edges
     val upEdge = 0
