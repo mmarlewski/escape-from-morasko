@@ -1,23 +1,16 @@
-package com.efm.entities.enemies.Boar
+package com.efm.entities.enemies.dzik
 
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.EnemyCorpse
-import com.efm.item.Item
 import com.efm.item.PossibleItems
 import com.efm.room.RoomPosition
+import kotlin.random.Random
 
-class EnemyBoarCorpse(position : RoomPosition) : EnemyCorpse(position)
+class EnemyBoarCorpse(position : RoomPosition = RoomPosition(),
+                      loot : PossibleItems? = null,
+                      seed : Int = Random.nextInt()) : EnemyCorpse(position, loot, seed)
 {
-    override var maxItems : Int = 2
-    
-    init
-    {
-        loot = PossibleItems()
-    }
-    
-    override val items : MutableList<Item> = loot?.drawItems() ?: mutableListOf()
-    
     override fun getTile() : TiledMapTile = Tiles.boarCorpse
     override fun getOutlineYellowTile(n : Int) : TiledMapTile = Tiles.boarCorpseOutlineYellow
     override fun getOutlineTealTile() : TiledMapTile? = null

@@ -8,6 +8,7 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
@@ -26,6 +27,7 @@ class BossNatureGolem : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems()
     
     override fun getTile() : TiledMapTile
     {
@@ -49,7 +51,7 @@ class BossNatureGolem : Entity, Enemy
         return Tiles.golemIdle1OutlineRed
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -61,7 +63,7 @@ class BossNatureGolem : Entity, Enemy
         }
     }
     
-    override fun getMoveTile(n : Int) : TiledMapTile?
+    override fun getMoveTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -73,12 +75,12 @@ class BossNatureGolem : Entity, Enemy
         }
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.golemAttack
     }
     
-    override fun getMoveSound() : Sound?
+    override fun getMoveSound() : Sound
     {
         return Sounds.golemMove
     }

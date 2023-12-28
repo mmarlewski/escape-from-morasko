@@ -6,14 +6,9 @@ import com.efm.Map
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
-import com.efm.skill.BodyPart
-import com.efm.skills.BarrelThrowing
-import com.efm.stackableSelfItems.Apple
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
-import com.efm.ui.gameScreen.ProgressBars
-import createProcGenWorld
 
 object PopUpsMenu
 {
@@ -22,7 +17,7 @@ object PopUpsMenu
     {
         val overwriteSavePopup = yesNoPopup(
                 "Overwrite save?",
-                "You're about to overwrite your existing save. Your progress will be lost. Do you want to continue?",
+                "Your progress will be lost! Do you want to continue?",
                 {
                     startNewGame()
                 },
@@ -61,10 +56,7 @@ object PopUpsMenu
         }
         // create World
         World.levels.clear()
-        //World.createWorldPrototypeTwo()
-        //World.createWorldBoarTest()
-        //World.createWorldPrototypeThree()
-        World.createProcGenWorld()
+        World.createWorldPrototype()
         // set currentLevel and currentRoom
         val startingLevel = World.levels.first()
         val startingRoom = startingLevel.startingRoom
@@ -73,22 +65,11 @@ object PopUpsMenu
         // add Hero to currentRoom
         World.currentRoom?.addEntityAt(World.hero, startingLevel.startingPosition)
         // reset Hero
-        World.hero.alive = true
-        World.hero.healthPoints = defaultHeroMaxHp
-        World.hero.maxHealthPoints = defaultHeroMaxHp
-        World.hero.healCharacter(0)
-        World.hero.abilityPoints = defaultHeroMaxAp
-        World.hero.maxAbilityPoints = defaultHeroMaxAp
-        World.hero.gainAP(0)
-        World.hero.apDrainInNextTurn = 0
-        World.hero.canMoveNextTurn = true
-        World.hero.isVisible = true
-        World.hero.turnsElapsed = 0
-        World.hero.weaponDamageMultiplier = 1
-        World.hero.inventory.items.clear()
-        BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
+        World.hero.reset()
         // add Items to Hero
-        World.hero.inventory.addItem(Apple(2))
+        World.hero.setStartingInventory()
+        // set godmode
+        // World.hero.godMode()
         // add Skills to Hero
 //                    World.hero.addSkill(LavaWalking)
 //                    World.hero.addSkill(Push)

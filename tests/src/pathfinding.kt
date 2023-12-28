@@ -1,6 +1,6 @@
 import com.efm.PathFinding
 import com.efm.entities.StoneColumn
-import com.efm.entities.enemies.EnemySkeleton
+import com.efm.entities.enemies.skeleton.EnemySkeleton
 import com.efm.room.*
 import org.junit.Assert.*
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.enemies.mimic
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -8,7 +8,10 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItem
+import com.efm.item.PossibleItems
 import com.efm.level.World
+import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.RoomPosition
 
 class EnemyMimic : Entity, Enemy
@@ -24,6 +27,11 @@ class EnemyMimic : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var loot : PossibleItems = PossibleItems(
+            mutableListOf(
+                    PossibleItem(WoodenSword(), 0.8f, IntRange(1, 1))
+                         )
+                                                     )
     
     override fun getTile() : TiledMapTile
     {
@@ -59,12 +67,12 @@ class EnemyMimic : Entity, Enemy
         return Tiles.mimicIdle1OutlineRed
     }
     
-    override fun getIdleTile(n : Int) : TiledMapTile?
+    override fun getIdleTile(n : Int) : TiledMapTile
     {
         return Tiles.chest
     }
     
-    fun getIdleTileAfterDetection(n : Int) : TiledMapTile?
+    fun getIdleTileAfterDetection(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -76,7 +84,7 @@ class EnemyMimic : Entity, Enemy
         }
     }
     
-    override fun getMoveTile(n : Int) : TiledMapTile?
+    override fun getMoveTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
@@ -88,12 +96,12 @@ class EnemyMimic : Entity, Enemy
         }
     }
     
-    override fun getAttackTile() : TiledMapTile?
+    override fun getAttackTile() : TiledMapTile
     {
         return Tiles.mimicAttack
     }
     
-    override fun getMoveSound() : Sound?
+    override fun getMoveSound() : Sound
     {
         return Sounds.mimicMove
     }
@@ -130,5 +138,5 @@ class EnemyMimic : Entity, Enemy
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemyMimicCorpse(this.position)
+    override fun getCorpse() : EnemyCorpse = EnemyMimicCorpse(this.position, loot)
 }

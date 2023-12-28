@@ -8,11 +8,9 @@ import com.efm.entity.Enemy
 import com.efm.entity.Interactive
 import com.efm.exit.Exit
 import com.efm.exit.LevelExit
-import com.efm.item.Container
 import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.room.Space
-import com.efm.screens.GameOverScreen
 import com.efm.screens.GameScreen
 import com.efm.ui.gameScreen.*
 
@@ -777,9 +775,6 @@ fun updateConstrainedMoveSelectedTwice(currState : State.constrained.moveSelecte
             if (entityOnPositionHeroWalkedTowards is Interactive)
             {
                 entityOnPositionHeroWalkedTowards.interact()
-                // tutorial flags
-                if (entityOnPositionHeroWalkedTowards is Container)
-                    currState.tutorialFlags.playerLooted = true
             }
         }
     

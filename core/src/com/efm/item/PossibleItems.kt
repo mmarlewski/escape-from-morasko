@@ -9,11 +9,13 @@ import kotlin.random.Random
 class PossibleItem(
         val item : Item,
         val chance : Float,
-        val amountRange : IntRange,
-        var timesLeftPossibleToAdd : Int = Int.MAX_VALUE,
-        var amountLeftPossibleToAdd : Int = Int.MAX_VALUE
+        val amountRange : IntRange
                   )
 
+/**
+ * Structure from which Items can be drawn.
+ * @param maxItemsPossibleToDraw maximum number of drawn items
+ */
 class PossibleItems(
         val items : MutableList<PossibleItem> = mutableListOf(), private val maxItemsPossibleToDraw : Int = items.size
                    )
@@ -24,7 +26,7 @@ class PossibleItems(
         val generator = Random(seed)
         for (possibleItem in items)
         {
-            if (possibleItem.timesLeftPossibleToAdd > 0 && drawnItems.size < maxItemsPossibleToDraw)
+            if (drawnItems.size < maxItemsPossibleToDraw)
             {
                 tryToDrawItem(possibleItem, drawnItems, generator)
             }
@@ -50,49 +52,35 @@ class PossibleItems(
         val amount = possibleItem.amountRange.random(generator)
         if (drawnItem is StackableItem)
         {
-            drawStackableItem(possibleItem, drawnItem, amount, drawnItems)
+            drawStackableItem(drawnItem, amount, drawnItems)
         }
         else if (drawnItem is MultiUseMapItem)
         {
-            drawMultiUseMapItem(possibleItem, drawnItem, amount, drawnItems)
+            drawMultiUseMapItem(drawnItem, amount, drawnItems)
         }
     }
     
     private fun drawStackableItem(
-            possibleItem : PossibleItem, drawnItem : StackableItem, amount : Int, drawnItems : MutableList<Item>
+            drawnItem : StackableItem, amount : Int, drawnItems : MutableList<Item>
                                  )
     {
-        val amountToAdd = minOf(amount, possibleItem.amountLeftPossibleToAdd)
-        drawnItem.amount = amountToAdd
-        possibleItem.amountLeftPossibleToAdd -= amountToAdd
+        drawnItem.amount = amount
         drawnItems.add(drawnItem)
-        possibleItem.timesLeftPossibleToAdd--
     }
     
     private fun drawMultiUseMapItem(
-            possibleItem : PossibleItem, drawnItem : MultiUseMapItem, amount : Int, drawnItems : MutableList<Item>
+            drawnItem : MultiUseMapItem, amount : Int, drawnItems : MutableList<Item>
                                    )
     {
-        val amountToAdd = minOf(amount, possibleItem.amountLeftPossibleToAdd)
-        possibleItem.amountLeftPossibleToAdd -= amountToAdd
-        for (y in 0 until amountToAdd)
+        for (y in 0 until amount)
         {
-            if (possibleItem.timesLeftPossibleToAdd > 0 && drawnItems.size < maxItemsPossibleToDraw)
+            if (drawnItems.size < maxItemsPossibleToDraw)
             {
                 // important to copy and not use drawnItem more than once
                 drawnItems.add(drawnItem.clone())
-                possibleItem.timesLeftPossibleToAdd--
             }
         }
     }
-    
-    /*
-        val json = Json()
-        System.out.println(json.prettyPrint(x))
-        
-        val file = Gdx.files.local("myfile.txt")
-        file.writeString(json.prettyPrint(x), false)
-    */
 }
 
 fun examplePossibleItems() : PossibleItems
@@ -101,8 +89,8 @@ fun examplePossibleItems() : PossibleItems
             mutableListOf(
                     PossibleItem(Bomb(), 0.5f, IntRange(1, 2)),
                     PossibleItem(Apple(), 0.8f, IntRange(2, 4)),
-                    PossibleItem(Mushroom(), 0.75f, IntRange(2, 6), amountLeftPossibleToAdd = 10),
-                    PossibleItem(Bow(), 0.33f, IntRange(1, 1), timesLeftPossibleToAdd = 1)
+                    PossibleItem(Mushroom(), 0.75f, IntRange(2, 6)),
+                    PossibleItem(Bow(), 0.33f, IntRange(1, 1))
                          )
                         )
 }

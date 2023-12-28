@@ -3,7 +3,7 @@ package com.efm.room
 import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
-import com.efm.entities.enemies.EnemyBat
+import com.efm.entities.enemies.bat.EnemyBat
 import com.efm.entity.Entity
 import com.efm.skills.LavaWalking
 import com.efm.skills.WaterWalking

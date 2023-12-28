@@ -1,16 +1,22 @@
 package com.efm.item
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonValue
 import kotlin.math.min
 
 /**
- * Container Entity holds Items
+ * Holds items.
+ * Sorting items is done automatically after adding or removing item from items
  */
-interface Container
+interface Container : Json.Serializable
 {
     val items : MutableList<Item>
     var maxItems : Int
     
+    /**
+     * Returns all elements in the item list that contain items of the same type as the given item.
+     */
     fun findAllStacks(item : Item) : List<Item>
     {
         return items.filter { it::class == item::class }
@@ -71,6 +77,38 @@ interface Container
         if (item.amount > 0)
         {
             addItemToNewSlot(item)
+        }
+    }
+    
+    // for serializing
+    
+    override fun write(json : Json?)
+    {
+        if (json != null)
+        {
+            json.writeValue("items", this.items)
+            json.writeValue("maxItems", this.maxItems)
+        }
+    }
+    
+    override fun read(json : Json?, jsonData : JsonValue?)
+    {
+        if (json != null)
+        {
+            val jsonItems = json.readValue("items", List::class.java, jsonData)
+            
+            if (jsonItems != null)
+            {
+                for (jsonItem in jsonItems)
+                {
+                    if (jsonItem is Item)
+                    {
+                        this.items.add(jsonItem)
+                    }
+                }
+            }
+            val jsonMaxItems = json.readValue("maxItems", Int::class.java, jsonData)
+            if (jsonMaxItems != null) this.maxItems = jsonMaxItems
         }
     }
 }
