@@ -60,6 +60,7 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
     {
         if (isPositionWithinBounds(x, y))
         {
+            spaceList.remove(spaceArray[y][x])
             spaceArray[y][x] = null
         }
     }
@@ -69,6 +70,7 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         if (isPositionWithinBounds(x, y))
         {
             spaceArray[y][x] = space
+            spaceList.add(space)
         }
     }
     

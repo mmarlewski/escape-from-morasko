@@ -145,7 +145,7 @@ fun createLevel(levelNumber : Int) : Level{
     
     
     val roomNumber = 1
-    val scale = 2
+    val scale = 1.7
     val seed = nextInt(0, 100)
     
     val root = Node(0, 0, mapWidth - 1, mapHeight - 1, roomNumber)
@@ -168,8 +168,6 @@ fun createLevel(levelNumber : Int) : Level{
     
     roomData = labelRooms(roomData)
     val patchCenters = findPatchCenters(roomData)
-    println("Patch Centers:")
-    patchCenters.forEach { println("Patch ${it.x}, ${it.y}") }
     
     val possibleRoomsValues = getPossibleRoomValues(roomData)
     val level = Level(levelNumber.toString())
@@ -190,25 +188,40 @@ fun createLevel(levelNumber : Int) : Level{
         val basesForThisRoom = getRandomBasesThatFitTogether(allowedBases)
         for (y in roomBasesArray.indices)
         {
-            for (x in 0 until roomBasesArray[0].size)
+            for (x in roomBasesArray[y].indices)
             {
                 val baseNumber = roomBasesArray[y][x]
                 if (baseNumber != 0)
                 {
-                    room.changeBaseAt(basesForThisRoom.random(), x, y)
+                    room.changeBaseAt(basesForThisRoom.random(), y, x)
                 }
                 else
                 {
                     // delete base and space
-                    room.changeBaseAt(null, x, y)
-                    room.deleteSpaceAt(x, y)
+                    room.changeBaseAt(null, y, x)
+                    room.deleteSpaceAt(y, x)
                 }
             }
         }
         room.updateSpaceList()
         room.updateSpacesEntities()
+        var spacesWithoutBase = mutableListOf<Space>()
+        for (space in room.getSpaces())
+        {
+            if (space.getBase() == null)
+            {
+                spacesWithoutBase.add(space)
+            }
+        }
+        for (space in spacesWithoutBase)
+        {
+            room.deleteSpaceAt(space.position.x, space.position.y)
+        }
+        room.updateSpaceList()
+        room.updateSpacesEntities()
         randomizeBasesForARoom(room, allowedBases, roomBasesArray, 4)
         room.addWalls(allowedWalls.random())
+        room.updateSpaceList()
         room.updateSpacesEntities()
         
         level.addRoom(room)
@@ -1144,7 +1157,7 @@ fun areAllRoomsConnected(connections : MutableList<Int>, possibleRoomsValues : L
 fun getMatrixBasedOnCoordinates(roomData : Array<IntArray>, x1 : Int, x2 : Int, y1 : Int, y2 : Int, i : Int) : Array<IntArray>
 {
     val result = Array(x2 - x1 + 1) { IntArray(y2 - y1 + 1) { 0 } }
-    for (x in x1 until  x2)
+    for (x in x1 until x2)
     {
         for (y in y1 until  y2)
         {
@@ -1162,7 +1175,7 @@ fun getRoomY2(i : Int, roomData : Array<IntArray>) : Int
     var highestY = 0
     for (x in roomData.indices)
     {
-        for (y in 0 until roomData[0].size)
+        for (y in roomData[0].indices)
         {
             if (roomData[x][y] == i && y > highestY)
             {
@@ -1178,7 +1191,7 @@ fun getRoomX2(i : Int, roomData : Array<IntArray>) : Int
     var highestX = 0
     for (x in roomData.indices)
     {
-        for (y in 0 until roomData[0].size)
+        for (y in roomData[0].indices)
         {
             if (roomData[x][y] == i && x > highestX)
             {
@@ -1194,7 +1207,7 @@ fun getRoomY1(i : Int, roomData : Array<IntArray>) : Int
     var lowestY = 1000
     for (x in roomData.indices)
     {
-        for (y in 0 until roomData[0].size)
+        for (y in roomData[0].indices)
         {
             if (roomData[x][y] == i && y < lowestY)
             {
@@ -1210,7 +1223,7 @@ fun getRoomX1(i : Int, roomData : Array<IntArray>) : Int
     var lowestX = 1000
     for (x in roomData.indices)
     {
-        for (y in 0 until roomData[0].size)
+        for (y in roomData[0].indices)
         {
             if (roomData[x][y] == i && x < lowestX)
             {
@@ -1221,7 +1234,7 @@ fun getRoomX1(i : Int, roomData : Array<IntArray>) : Int
     return lowestX
 }
 
-fun generatePerlinNoiseMap(width: Int, height: Int, scale: Int, seed: Int): Array<DoubleArray> {
+fun generatePerlinNoiseMap(width: Int, height: Int, scale: Double, seed: Int): Array<DoubleArray> {
     val random = Random(seed)
     var permutationTable = (0 until 256).shuffled(random).toIntArray()
     permutationTable += permutationTable
@@ -1320,33 +1333,18 @@ fun grad(hashValue: Int, x: Double): Double {
 }
 
 fun mergeRooms(roomData: Array<IntArray>) {
-    val filterSize = 3
+    val filterSize = 5
     for (i in 0 until roomData.size - filterSize) {
         for (j in 0 until roomData[0].size - filterSize) {
             val horizontal = roomData[i].slice(j until j + filterSize)
             val vertical = roomData.slice(i until i + filterSize).map { it[j] }
-            if (horizontal[0] != 0 && horizontal.last() != 0 && !horizontal.subList(1, filterSize).all { it != 0 }) {
+            if (horizontal[0] != 0 && horizontal.last() != 0 && !horizontal.subList(1, filterSize).any { it != 0 }) {
                 roomData[i].copyInto(roomData[i], j, 0, filterSize)
             }
-            if (vertical[0] != 0 && vertical.last() != 0 && !vertical.subList(1, filterSize - 1).all { it != 0 }) {
+            if (vertical[0] != 0 && vertical.last() != 0 && !vertical.subList(1, filterSize - 1).any { it != 0 }) {
                 for (k in i until i + filterSize) {
                     roomData[k][j] = vertical[0]
                 }
-            }
-        }
-    }
-    
-    for (i in roomData.size - filterSize until roomData.size) {
-        for (j in roomData[0].size - filterSize until roomData[0].size) {
-            val horizontal = roomData.map { it[j] }.slice(i - filterSize until i)
-            val vertical = roomData[i - filterSize].slice(j until j + filterSize - filterSize + 1)
-            if (horizontal[0] != 0 && horizontal.last() != 0 && !horizontal.subList(1, filterSize).all { it != 0 }) {
-                for (k in i until i + filterSize) {
-                    roomData[k][j] = horizontal[0]
-                }
-            }
-            if (vertical[0] != 0 && vertical.last() != 0 && !vertical.subList(1, filterSize - filterSize + 1).all { it != 0 }) {
-                roomData[i].copyInto(roomData[i], j, 0, filterSize)
             }
         }
     }
