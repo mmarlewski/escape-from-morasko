@@ -1,7 +1,7 @@
 import com.efm.*
 import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
-import com.efm.entity.Chest
+import com.efm.entity.*
 import com.efm.exit.*
 import com.efm.level.Level
 import com.efm.level.World
@@ -137,12 +137,12 @@ fun World.createProcGenWorld()
     }
 }
 
-fun createLevel(levelNumber : Int) : Level{
+fun createLevel(levelNumber : Int) : Level
+{
     val mapWidth = 60
     val mapHeight = 60
     val minRoomSize = 8
     val bufferSize = 1
-    
     
     val roomNumber = 1
     val scale = 1.7
@@ -205,7 +205,7 @@ fun createLevel(levelNumber : Int) : Level{
         }
         room.updateSpaceList()
         room.updateSpacesEntities()
-        var spacesWithoutBase = mutableListOf<Space>()
+        val spacesWithoutBase = mutableListOf<Space>()
         for (space in room.getSpaces())
         {
             if (space.getBase() == null)
@@ -239,6 +239,7 @@ fun createLevel(levelNumber : Int) : Level{
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.water), roomBasesArray, 3)
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.lava), roomBasesArray, 1)
         spawnEnemiesInTheRoom(room, levelTheme, levelNumber)
+        spawnPropsInTheRoom(room)
     }
     val bossRoom = Room("boss_room", 20, 20)
     for (patch in patchCenters)
@@ -326,7 +327,22 @@ fun spawnEnemiesInTheRoom(room : Room, theme : LevelTheme, levelNumber : Int)
     }
 }
 
-
+fun spawnPropsInTheRoom(room : Room)
+{
+    val roomSize = getRoomSize(room)
+    val amountOfProps = nextInt((roomSize / 60), (roomSize / 30) + 1)
+    for (i in 0..amountOfProps)
+    {
+        val positionToSpawnAt = findRandomFreePositionInRoomPreferablyNearWallsAndOnEdge(room)
+        if (positionToSpawnAt != null && room.getSpace(positionToSpawnAt)
+                        ?.let { checkIfNoOtherPassagesNearby(room, it) } == true
+        )
+        {
+            val prop = Prop(PropStyle.values().random())
+            room.addEntityAt(prop, positionToSpawnAt)
+        }
+    }
+}
 
 fun findRandomFreePositionInRoom(room : Room) : RoomPosition?
 {
@@ -346,6 +362,32 @@ fun findRandomFreePositionInRoom(room : Room) : RoomPosition?
         return null
     }
     return space.position
+}
+
+fun findRandomFreePositionInRoomPreferablyNearWallsAndOnEdge(room : Room) : RoomPosition?
+{
+    val spacesNearWalls = room.getSpaces().filter { it.getEntity() !is Wall && room.spaceIsAdjacentToWall(it) }
+    val spacesOnEdge = room.edgeSpaces()
+    
+    fun chooseSpace() : Space
+    {
+        val chance = nextFloat()
+        return if (chance < 0.15) spacesNearWalls.random()
+        else if (chance < 0.5) spacesOnEdge.random()
+        else room.getSpaces().random()
+    }
+    
+    var space = chooseSpace()
+    var breakCounter = 0
+    while (space.getEntity() != null || space.getBase() == null || listOf(Base.lava, Base.water).contains(space.getBase()))
+    {
+        space = chooseSpace()
+        if (breakCounter == 20) break
+        breakCounter += 1
+    }
+    
+    return if (breakCounter == 20) null
+    else space.position
 }
 
 fun getRoomSize(room : Room) : Int
@@ -1135,7 +1177,6 @@ fun findFurthestPatch(patchCenters : List<PatchCenter>, i : PatchCenter) : Patch
     return furthestPatch
     
 }
-
 
 fun findDistanceBetweenPatches(i : PatchCenter, patch : PatchCenter) : Double
 {

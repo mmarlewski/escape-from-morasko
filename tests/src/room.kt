@@ -19,15 +19,15 @@ class `room`
     
     @Test fun `isPositionWithinBounds test within bounds`()
     {
-        assertTrue(room.isPositionWithinBounds(height - 1, width - 1))
+        assertTrue(room.isPositionWithinBounds(width - 1, height - 1))
     }
     
     @Test fun `isPositionWithinBounds test outside bounds`()
     {
-        assertFalse(room.isPositionWithinBounds(height, width))
+        assertFalse(room.isPositionWithinBounds(width, height))
     }
     
-    @Test fun `deleteSpaceAt test`()
+    @Test fun `deleteSpaceAt deletes space within bounds`()
     {
         val x = 2
         val y = 2
@@ -37,7 +37,16 @@ class `room`
         assertNull(room.getSpace(x, y))
     }
     
-    @Test fun `addSpaceAt test`()
+    @Test fun `addSpaceAt does not add Space out of bounds`()
+    {
+        val x = width
+        val y = height
+        assertNull(room.getSpace(x, y))
+        room.addSpaceAt(x, y)
+        assertNull(room.getSpace(x, y))
+    }
+    
+    @Test fun `addSpaceAt adds Space within bounds`()
     {
         val x = 2
         val y = 2
