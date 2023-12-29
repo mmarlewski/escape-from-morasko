@@ -774,8 +774,14 @@ fun World.createWorldPrototype()
 fun pom()
 {
     // l1
-    val l1r1 =
-            "7 7\n" + "x x x x x x x\n" + "x 22 13 23 26 13 15\n" + "x 15 23 25 15 23 14\n" + "x 14 16 17 13 15 23\n" + "x 13 17 18 27 14 25\n" + "x 14 24 27 15 23 13\n" + "x 22 14 13 25 26 24"
+    val l1r1 = """7 7
+x x x x x x x
+x 22 13 23 26 13 15
+x 15 23 25 15 23 14
+x 14 16 17 13 15 23
+x 13 17 18 27 14 25
+x 14 24 27 15 23 13
+x 22 14 13 25 26 24"""
     Gdx.files.local("l1r1.txt").writeString(l1r1, false)
     val l1r2 = """9 9
 x x x x x x x x x
