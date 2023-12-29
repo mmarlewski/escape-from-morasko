@@ -667,23 +667,30 @@ fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Bool
                 if (y != 0)
                 {
                     val space = room.getSpace(x, y)
-                    if (space != null && checkIfNoOtherPassagesNearby(room, space))
+                    if (space != null)
                     {
-                        if (space.getBase() != null)
+                        if (checkIfNoOtherPassagesNearby(room, space))
                         {
-                            rightSideWallPositions.add(RoomPosition(x, y))
-                            break
+                            if (space.getBase() != null)
+                            {
+                                rightSideWallPositions.add(RoomPosition(x, y))
+                                break
+                            }
+                            else
+                            {
+                                if (space.getEntity() != null)
+                                {
+                                    if (space.getEntity() is Wall)
+                                    {
+                                        rightSideWallPositions.add(RoomPosition(x, y))
+                                        break
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            if (space.getEntity() != null)
-                            {
-                                if (space.getEntity() is Wall)
-                                {
-                                    rightSideWallPositions.add(RoomPosition(x, y))
-                                    break
-                                }
-                            }
+                            break
                         }
                     }
                 }
@@ -699,23 +706,30 @@ fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Bool
                 if (x !=0)
                 {
                     val space = room.getSpace(x, y)
-                    if (space != null && checkIfNoOtherPassagesNearby(room, space))
+                    if (space != null)
                     {
-                        if (space.getBase() != null)
+                        if (checkIfNoOtherPassagesNearby(room, space))
                         {
-                            bottomSideWallPositions.add(RoomPosition(x, y))
-                            break
+                            if (space.getBase() != null)
+                            {
+                                bottomSideWallPositions.add(RoomPosition(x, y))
+                                break
+                            }
+                            else
+                            {
+                                if (space.getEntity() != null)
+                                {
+                                    if (space.getEntity() is Wall)
+                                    {
+                                        bottomSideWallPositions.add(RoomPosition(x, y))
+                                        break
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            if (space.getEntity() != null)
-                            {
-                                if (space.getEntity() is Wall)
-                                {
-                                    bottomSideWallPositions.add(RoomPosition(x, y))
-                                    break
-                                }
-                            }
+                            break
                         }
                     }
                 }
@@ -723,6 +737,16 @@ fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Bool
         }
     }
 
+    if (rightSideWallPositions.size > 2)
+    {
+        rightSideWallPositions.removeAt(0)
+        rightSideWallPositions.removeAt(rightSideWallPositions.size-1)
+    }
+    if (bottomSideWallPositions.size > 2)
+    {
+        bottomSideWallPositions.removeAt(0)
+        bottomSideWallPositions.removeAt(bottomSideWallPositions.size-1)
+    }
     if (s == "horizontal")
     {
         return if (rightSideWallPositions.isNotEmpty())
@@ -772,23 +796,30 @@ fun findSpaceInTopLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean)
                 if (y != 0)
                 {
                     val space = room.getSpace(x, y)
-                    if (space != null && checkIfNoOtherPassagesNearby(room, space))
+                    if (space != null)
                     {
-                        if (space.getBase() != null)
+                        if (checkIfNoOtherPassagesNearby(room, space))
                         {
-                            leftSideWallPositions.add(RoomPosition(x, y))
-                            break
+                            if (space.getBase() != null)
+                            {
+                                leftSideWallPositions.add(RoomPosition(x, y))
+                                break
+                            }
+                            else
+                            {
+                                if (space.getEntity() != null)
+                                {
+                                    if (space.getEntity() is Wall)
+                                    {
+                                        leftSideWallPositions.add(RoomPosition(x, y))
+                                        break
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            if (space.getEntity() != null)
-                            {
-                                if (space.getEntity() is Wall)
-                                {
-                                    leftSideWallPositions.add(RoomPosition(x, y))
-                                    break
-                                }
-                            }
+                            break
                         }
                     }
                 }
@@ -804,30 +835,46 @@ fun findSpaceInTopLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean)
                 if (x !=0)
                 {
                     val space = room.getSpace(x, y)
-                    if (space != null && checkIfNoOtherPassagesNearby(room, space))
+                    if (space != null)
                     {
-                        if (space.getBase() != null)
+                        if (checkIfNoOtherPassagesNearby(room, space))
                         {
-                            topSideWallPositions.add(RoomPosition(x, y))
-                            break
+                            if (space.getBase() != null)
+                            {
+                                topSideWallPositions.add(RoomPosition(x, y))
+                                break
+                            }
+                            else
+                            {
+                                if (space.getEntity() != null)
+                                {
+                                    if (space.getEntity() is Wall)
+                                    {
+                                        topSideWallPositions.add(RoomPosition(x, y))
+                                        break
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            if (space.getEntity() != null)
-                            {
-                                if (space.getEntity() is Wall)
-                                {
-                                    topSideWallPositions.add(RoomPosition(x, y))
-                                    break
-                                }
-                            }
+                            break
                         }
                     }
                 }
             }
         }
     }
-  
+    if (leftSideWallPositions.size > 2)
+    {
+        leftSideWallPositions.removeAt(0)
+        leftSideWallPositions.removeAt(leftSideWallPositions.size-1)
+    }
+    if (topSideWallPositions.size > 2)
+    {
+        topSideWallPositions.removeAt(0)
+        topSideWallPositions.removeAt(topSideWallPositions.size - 1)
+    }
     if (s == "horizontal")
     {
         return if (leftSideWallPositions.isNotEmpty())
@@ -877,23 +924,30 @@ fun findSpaceInTopRightCorner(room : Room, s : String, allowMoreSpaces : Boolean
                 if (y != 0)
                 {
                     val space = room.getSpace(x, y)
-                    if (space != null && checkIfNoOtherPassagesNearby(room, space))
+                    if (space != null)
                     {
-                        if (space.getBase() != null)
+                        if (checkIfNoOtherPassagesNearby(room, space))
                         {
-                            rightSideWallPositions.add(RoomPosition(x, y))
-                            break
+                            if (space.getBase() != null)
+                            {
+                                rightSideWallPositions.add(RoomPosition(x, y))
+                                break
+                            }
+                            else
+                            {
+                                if (space.getEntity() != null)
+                                {
+                                    if (space.getEntity() is Wall)
+                                    {
+                                        rightSideWallPositions.add(RoomPosition(x, y))
+                                        break
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            if (space.getEntity() != null)
-                            {
-                                if (space.getEntity() is Wall)
-                                {
-                                    rightSideWallPositions.add(RoomPosition(x, y))
-                                    break
-                                }
-                            }
+                            break
                         }
                     }
                 }
@@ -909,30 +963,46 @@ fun findSpaceInTopRightCorner(room : Room, s : String, allowMoreSpaces : Boolean
                 if (x !=0)
                 {
                     val space = room.getSpace(x, y)
-                    if (space != null && checkIfNoOtherPassagesNearby(room, space))
+                    if (space != null)
                     {
-                        if (space.getBase() != null)
+                        if (checkIfNoOtherPassagesNearby(room, space))
                         {
-                            topSideWallPositions.add(RoomPosition(x, y))
-                            break
+                            if (space.getBase() != null)
+                            {
+                                topSideWallPositions.add(RoomPosition(x, y))
+                                break
+                            }
+                            else
+                            {
+                                if (space.getEntity() != null)
+                                {
+                                    if (space.getEntity() is Wall)
+                                    {
+                                        topSideWallPositions.add(RoomPosition(x, y))
+                                        break
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            if (space.getEntity() != null)
-                            {
-                                if (space.getEntity() is Wall)
-                                {
-                                    topSideWallPositions.add(RoomPosition(x, y))
-                                    break
-                                }
-                            }
+                            break
                         }
                     }
                 }
             }
         }
     }
-   
+    if (rightSideWallPositions.size > 2)
+    {
+        rightSideWallPositions.removeAt(0)
+        rightSideWallPositions.removeAt(rightSideWallPositions.size-1)
+    }
+    if (topSideWallPositions.size > 2)
+    {
+        topSideWallPositions.removeAt(0)
+        topSideWallPositions.removeAt(topSideWallPositions.size - 1)
+    }
     if (s == "horizontal")
     {
         return if (rightSideWallPositions.isNotEmpty())
@@ -983,23 +1053,30 @@ fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boole
                 if (y != 0)
                 {
                     val space = room.getSpace(x, y)
-                    if (space != null && checkIfNoOtherPassagesNearby(room, space))
+                    if (space != null)
                     {
-                        if (space.getBase() != null)
+                        if (checkIfNoOtherPassagesNearby(room, space))
                         {
-                            leftSideWallPositions.add(RoomPosition(x, y))
-                            break
+                            if (space.getBase() != null)
+                            {
+                                leftSideWallPositions.add(RoomPosition(x, y))
+                                break
+                            }
+                            else
+                            {
+                                if (space.getEntity() != null)
+                                {
+                                    if (space.getEntity() is Wall)
+                                    {
+                                        leftSideWallPositions.add(RoomPosition(x, y))
+                                        break
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            if (space.getEntity() != null)
-                            {
-                                if (space.getEntity() is Wall)
-                                {
-                                    leftSideWallPositions.add(RoomPosition(x, y))
-                                    break
-                                }
-                            }
+                            break
                         }
                     }
                 }
@@ -1015,30 +1092,46 @@ fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boole
                 if (x != 0)
                 {
                     val space = room.getSpace(x, y)
-                    if (space != null && checkIfNoOtherPassagesNearby(room, space))
+                    if (space != null)
                     {
-                        if (space.getBase() != null)
+                        if (checkIfNoOtherPassagesNearby(room, space))
                         {
-                            bottomSideWallPositions.add(RoomPosition(x, y))
-                            break
+                            if (space.getBase() != null)
+                            {
+                                bottomSideWallPositions.add(RoomPosition(x, y))
+                                break
+                            }
+                            else
+                            {
+                                if (space.getEntity() != null)
+                                {
+                                    if (space.getEntity() is Wall)
+                                    {
+                                        bottomSideWallPositions.add(RoomPosition(x, y))
+                                        break
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            if (space.getEntity() != null)
-                            {
-                                if (space.getEntity() is Wall)
-                                {
-                                    bottomSideWallPositions.add(RoomPosition(x, y))
-                                    break
-                                }
-                            }
+                            break
                         }
                     }
                 }
             }
         }
     }
-    
+    if (leftSideWallPositions.size > 2)
+    {
+        leftSideWallPositions.removeAt(0)
+        leftSideWallPositions.removeAt(leftSideWallPositions.size-1)
+    }
+    if (bottomSideWallPositions.size > 2)
+    {
+        bottomSideWallPositions.removeAt(0)
+        bottomSideWallPositions.removeAt(bottomSideWallPositions.size - 1)
+    }
     if (s == "horizontal")
     {
         return if (leftSideWallPositions.isNotEmpty())
@@ -1333,7 +1426,7 @@ fun grad(hashValue: Int, x: Double): Double {
 }
 
 fun mergeRooms(roomData: Array<IntArray>) {
-    val filterSize = 5
+    val filterSize = 3
     for (i in 0 until roomData.size - filterSize) {
         for (j in 0 until roomData[0].size - filterSize) {
             val horizontal = roomData[i].slice(j until j + filterSize)
