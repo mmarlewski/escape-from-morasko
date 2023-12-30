@@ -1,6 +1,7 @@
 import com.efm.*
 import com.efm.entities.Modifier
 import com.efm.entities.Npc
+import com.efm.entities.bosses.*
 import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
 import com.efm.entity.*
@@ -138,6 +139,7 @@ fun World.createProcGenWorld()
     {
         addLevel(level)
     }
+    defeatedBosses.clear()
 }
 
 fun createLevel(levelNumber : Int) : Level
@@ -244,7 +246,7 @@ fun createLevel(levelNumber : Int) : Level
         spawnEnemiesInTheRoom(room, levelTheme, levelNumber)
         spawnPropsInTheRoom(room)
     }
-    val bossRoom = Room("boss_room", 20, 20)
+    val bossRoom = createChessBossRoom()
     for (patch in patchCenters)
     {
         val possibleFurthestRoom = findRoomByName(findFurthestPatch(patchCenters, patch)?.value.toString(), rooms)
@@ -254,14 +256,38 @@ fun createLevel(levelNumber : Int) : Level
             break
         }
     }
+    val bossRoomEntranceDirection = getBossRoomEntranceDirection(bossRoom)
+    val chessKingPos : RoomPosition
+    if (bossRoomEntranceDirection == Direction4.down)
+    {
+        chessKingPos = RoomPosition(6, 11)
+    }
+    else
+    {
+        chessKingPos = RoomPosition(1, 5)
+    }
+    val boss = spawnRandomUndefeatedBoss(bossRoom, chessKingPos, bossRoomEntranceDirection.opposite())
+    defeatedBosses.add(boss)
     level.addRoom(bossRoom)
     rooms.add(bossRoom)
-    level.startingRoom = rooms.first()
+    level.startingRoom = rooms.last()
     addChestToStartingRoom(rooms.first())
     addChestsToOtherRooms(rooms, levelNumber, levelTheme)
     addNpcToRooms(rooms, levelTheme)
     level.startingPosition.set(findPositionToSpawnHero(rooms.first()))
     return level
+}
+
+fun getBossRoomEntranceDirection(bossRoom : Room) : Direction4
+{
+    for (entity in bossRoom.getEntities())
+    {
+        if (entity is RoomExit)
+        {
+            return entity.direction
+        }
+    }
+    return Direction4.down
 }
 
 fun addNpcToRooms(rooms : MutableList<Room>, levelTheme : LevelTheme)
@@ -587,14 +613,6 @@ fun recursivelySpreadBaseFromPoint(
 
 fun createBossRoom(furthestRoom : Room, level : Level, bossRoom : Room, levelNumber : Int)
 {
-    for (width in 0 until  bossRoom.widthInSpaces)
-    {
-        for (height in 0 until bossRoom.heightInSpaces)
-        {
-            bossRoom.changeBaseAt(Base.grassStoneDrained1, height, width)
-        }
-    }
-    bossRoom.addWalls(WallStyle.brickRedDark)
     val positionToPlaceLevelExit = findSpaceInBottomLeftCorner(bossRoom, "horizontal", false)
     val positionA = findSpaceInBottomRightCorner(furthestRoom, "vertical", false)
     val positionB = findSpaceInTopLeftCorner(bossRoom, "vertical", false)
@@ -1742,18 +1760,52 @@ fun labelRooms(roomData: Array<IntArray>): Array<IntArray> {
     return labeledData
 }
 
-fun dfs(x: Int, y: Int, roomData: Array<IntArray>, labeledData: Array<IntArray>, label: Int) {
+fun dfs(x: Int, y: Int, roomData: Array<IntArray>, labeledData: Array<IntArray>, label: Int)
+{
     if (x in roomData.indices &&
             y in 0 until roomData[0].size &&
             roomData[x][y] == 1 &&
             labeledData[x][y] == 0
-    ) {
+    )
+    {
         labeledData[x][y] = label
         dfs(x + 1, y, roomData, labeledData, label)
         dfs(x - 1, y, roomData, labeledData, label)
         dfs(x, y + 1, roomData, labeledData, label)
         dfs(x, y - 1, roomData, labeledData, label)
     }
+}
+fun createChessBossRoom() : Room
+{
+    val room = Room("boss_room", 12, 12)
+    room.updateSpaceList()
+
+    for (x in 0..room.widthInSpaces)
+    {
+        room.deleteSpaceAt(x, 0)
+    }
+
+    for (x in 0..room.heightInSpaces)
+    {
+        room.deleteSpaceAt(0, x)
+    }
+
+    for (y in 1 until room.heightInSpaces)
+    {
+        for (x in 1 until room.widthInSpaces)
+        {
+            if ((x + y%2) % 2 == 1)
+            {
+                room.changeBaseAt(Base.grassDark1, x, y)
+            }
+            else
+            {
+                room.changeBaseAt(Base.rock, x, y)
+            }
+        }
+    }
+    room.addWalls(WallStyle.rock)
+    return room
 }
 
 
