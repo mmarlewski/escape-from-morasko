@@ -4,12 +4,16 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile
 import com.efm.assets.Tiles
 import com.efm.entity.Entity
 import com.efm.entity.Interactive
+import com.efm.item.MultiUseMapItem
 import com.efm.level.World
+import com.efm.multiUseMapItems.Fist
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
-import com.efm.skill.*
+import com.efm.skill.Skill
+import com.efm.skill.allSkills
 import com.efm.ui.gameScreen.*
+import kotlin.math.max
 
 enum class Modifier(val function : () -> Unit, val popupSubtitle : String, val popupDescription : String)
 {
@@ -89,8 +93,8 @@ enum class Modifier(val function : () -> Unit, val popupSubtitle : String, val p
     
     StrongerWeaponsLoseHp(
             {
-                World.hero.weaponDamageMultiplier += 1
-                
+                World.hero.weaponDamageMultiplier += 0.5
+            
                 World.hero.maxHealthPoints -= 20
                 if (World.hero.healthPoints > World.hero.maxHealthPoints)
                 {
@@ -98,25 +102,40 @@ enum class Modifier(val function : () -> Unit, val popupSubtitle : String, val p
                 }
                 ProgressBars.updateHeroApHpBars()
             },
-            "Bargain of Blades",
-            "Fancy a more powerful weapon? Embrace it, but be prepared to lose " +
-                    "a chunk of your Max Health in exchange for the destructive might. " +
-                    "Do you accept this offer?"
-                         )
+            "Magic Strength Training",
+            "I know a secret way to achieve superhuman strength, but it comes with a cost... " +
+                    "A chunk of your Max Health in exchange for the destructive might! " +
+                    "Will you take this offer?"
+                         ),
+    
+    StrongerWeaponsLoseDurability(
+            {
+                World.hero.weaponDamageMultiplier += 0.5
+                for (w in World.hero.inventory.items.filter { it is MultiUseMapItem && it !is Fist })
+                {
+                    val weapon = w as MultiUseMapItem
+                    val durabilityDrain = IntRange(0, weapon.durability).random()
+                    weapon.durability = max(1, weapon.durability - durabilityDrain)
+                }
+            },
+            "Weapon Training",
+            "I can show you how to fight like a real warrior! " +
+                    "Some of your stuff can break, mind you - this training is no joke. " +
+                    "Are you ready?"
+                                 )
 }
 
-class Npc : Entity, Interactive
+class Npc(var modifier : Modifier = Modifier.StrongerWeaponsLoseHp) : Entity, Interactive
 {
     override val position = RoomPosition()
-    var modifier = Modifier.StrongerWeaponsLoseHp
     var wasUsed = false
     
-    override fun getTile() : TiledMapTile?
+    override fun getTile() : TiledMapTile
     {
         return Tiles.npc
     }
     
-    override fun getOutlineYellowTile(n : Int) : TiledMapTile?
+    override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return Tiles.npcOutlineYellow
     }

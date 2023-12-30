@@ -50,7 +50,7 @@ class Hero(
             GameScreen.updateMapEntityLayer()
         }
     
-    var weaponDamageMultiplier = 1
+    var weaponDamageMultiplier = 1.0
     
     override fun getTile() : TiledMapTile
     {
@@ -340,7 +340,7 @@ class Hero(
                     }
                 }
             }
-            val jsonWeaponDamageMultiplier = json.readValue("weaponDamageMultiplier", Int::class.java, jsonData)
+            val jsonWeaponDamageMultiplier = json.readValue("weaponDamageMultiplier", Double::class.java, jsonData)
             if (jsonWeaponDamageMultiplier != null) this.weaponDamageMultiplier = jsonWeaponDamageMultiplier
         }
     }
@@ -376,7 +376,7 @@ class Hero(
         this.canMoveNextTurn = true
         this.isVisible = true
         this.turnsElapsed = 0
-        this.weaponDamageMultiplier = 1
+        this.weaponDamageMultiplier = 1.0
         BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
     }
 }

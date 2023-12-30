@@ -10,6 +10,8 @@ enum class Items(private val kClass : KClass<out Item>)
     BOW(Bow::class),
     SLEDGEHAMMER(Sledgehammer::class),
     SMALL_AXE(SmallAxe::class),
+    HATCHET(Hatchet::class),
+    DOUBLE_BIT_AXE(DoubleBitAxe::class),
     STAFF(Staff::class),
     IRON_SWORD(IronSword::class),
     AMBER_SWORD(AmberSword::class),

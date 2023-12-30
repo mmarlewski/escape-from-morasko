@@ -8,6 +8,7 @@ import com.efm.item.MultiUseMapItem
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import kotlin.math.roundToInt
 
 class Bow : MultiUseMapItem
 {
@@ -120,7 +121,7 @@ class Bow : MultiUseMapItem
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(this.damage * World.hero.weaponDamageMultiplier)
+                        attackedEntity.damageCharacter((this.damage * World.hero.weaponDamageMultiplier).roundToInt())
                     }
                 }
             })

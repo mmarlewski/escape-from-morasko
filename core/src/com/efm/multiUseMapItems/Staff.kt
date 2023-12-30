@@ -8,6 +8,7 @@ import com.efm.item.MultiUseMapItem
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import kotlin.math.roundToInt
 
 class Staff : MultiUseMapItem
 {
@@ -131,7 +132,7 @@ class Staff : MultiUseMapItem
                         val lineEntity = lineSpace.getEntity()
                         if (lineEntity is Character)
                         {
-                            lineEntity.damageCharacter(damage * World.hero.weaponDamageMultiplier)
+                            lineEntity.damageCharacter((this.damage * World.hero.weaponDamageMultiplier).roundToInt())
                         }
                     }
                 }

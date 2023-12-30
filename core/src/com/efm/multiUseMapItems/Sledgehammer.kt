@@ -1,14 +1,14 @@
 package com.efm.multiUseMapItems
 
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.math.Vector2
 import com.efm.*
 import com.efm.assets.*
 import com.efm.entity.Character
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
-import com.efm.room.*
-import kotlin.math.sqrt
+import com.efm.room.Room
+import com.efm.room.RoomPosition
+import kotlin.math.roundToInt
 
 class Sledgehammer : MultiUseMapItem
 {
@@ -89,7 +89,7 @@ class Sledgehammer : MultiUseMapItem
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(this.damage * World.hero.weaponDamageMultiplier)
+                        attackedEntity.damageCharacter((this.damage * World.hero.weaponDamageMultiplier).roundToInt())
                     }
                 }
             }
