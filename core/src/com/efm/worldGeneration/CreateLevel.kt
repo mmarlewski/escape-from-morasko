@@ -1,4 +1,6 @@
 import com.efm.*
+import com.efm.entities.Modifier
+import com.efm.entities.Npc
 import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
 import com.efm.entity.*
@@ -257,8 +259,25 @@ fun createLevel(levelNumber : Int) : Level
     level.startingRoom = rooms.first()
     addChestToStartingRoom(rooms.first())
     addChestsToOtherRooms(rooms, levelNumber, levelTheme)
+    addNpcToRooms(rooms, levelTheme)
     level.startingPosition.set(findPositionToSpawnHero(rooms.first()))
     return level
+}
+
+fun addNpcToRooms(rooms : MutableList<Room>, levelTheme : LevelTheme)
+{
+    var room = rooms.random()
+    while (room.name == "1" || room.name == "boss_room")
+    {
+        room = rooms.random()
+    }
+    val randomModifier = getRandomModifier(levelTheme)
+    room.addEntityAt(Npc().apply { modifier = randomModifier }, getPositionForChest(room))
+}
+
+fun getRandomModifier(levelTheme : LevelTheme) : Modifier
+{
+    return levelTheme.modifiers.random()
 }
 
 fun addChestsToOtherRooms(rooms : MutableList<Room>, levelNumber : Int, levelTheme : LevelTheme)
@@ -280,7 +299,7 @@ fun addChestsToOtherRooms(rooms : MutableList<Room>, levelNumber : Int, levelThe
 fun getPositionForChest(room : Room) : RoomPosition
 {
     var space = room.getSpaces().random()
-    while (space.getBase() == null || space.getBase() == Base.water || space.getBase() == Base.lava || space.getEntity() != null)
+    while (space.getBase() == null || space.getBase() == Base.water || space.getBase() == Base.lava || space.getEntity() != null || !checkIfNoOtherPassagesNearby(room, space, 2.0))
     {
         space = room.getSpaces().random()
     }

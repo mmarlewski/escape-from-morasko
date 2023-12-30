@@ -1,5 +1,6 @@
 package com.efm.worldGeneration
 
+import com.efm.entities.Modifier
 import com.efm.entities.enemies.Enemies
 import com.efm.entities.walls.WallStyle
 import com.efm.item.Item
@@ -20,6 +21,7 @@ interface LevelTheme
     val commonEnemies : List<Enemies>
     val rareEnemies : List<Enemies>
     val items : List<Items>
+    val modifiers : List<Modifier>
 }
 
 object GrassyTheme : LevelTheme
@@ -48,6 +50,7 @@ object GrassyTheme : LevelTheme
             Enemies.MIMIC, Enemies.GHOST,
                                                      )
     override val items : List<Items> = getAllItems()
+    override val modifiers : List<Modifier> = getAllModifiers()
 }
 
 object BrickyTileyTheme : LevelTheme
@@ -76,6 +79,7 @@ object BrickyTileyTheme : LevelTheme
             Enemies.MIMIC, Enemies.GHOST,
                                                      )
     override val items : List<Items> = getAllItems()
+    override val modifiers : List<Modifier> = getAllModifiers()
 }
 
 fun getAllItems() : List<Items>
@@ -99,5 +103,15 @@ fun getAllItems() : List<Items>
             Items.HP_POTION_BIG,
             Items.HP_POTION_SMALL,
             Items.MUSHROOM
+                 )
+}
+fun getAllModifiers() : List<Modifier>
+{
+    return listOf(
+            Modifier.GainHpLoseAp,
+            Modifier.GainApLoseHp,
+            Modifier.SwapWaterAndLava,
+            Modifier.AddRandomSkill,
+            Modifier.StrongerWeaponsLoseHp
                  )
 }
