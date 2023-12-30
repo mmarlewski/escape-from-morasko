@@ -18,6 +18,10 @@ class Shuriken(
     override val baseAPUseCost : Int = 1
     val damage = 2
     
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost
+    
     override fun getTexture() : Texture
     {
         return Textures.shuriken

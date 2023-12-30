@@ -17,6 +17,9 @@ open class Bomb(
     override val maxAmount : Int = 4
     override val baseAPUseCost : Int = 1
     open val damage : Int = 11
+    override val statsDescription : String
+        get() = "Damage: " + damage + "\n" +
+                "AP cost: " + baseAPUseCost
     
     override fun getTexture() : Texture
     {

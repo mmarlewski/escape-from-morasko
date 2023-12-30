@@ -20,8 +20,9 @@ object Fist : MultiUseMapItem
     val damage : Int = 1
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
-                "AP cost: " + baseAPUseCost + "\n" +
-                "Uses left: Infinite"
+                "Uses left: Infinite" + "\n" +
+                "AP cost: " + baseAPUseCost
+                
     
     override fun getTexture() : Texture
     {

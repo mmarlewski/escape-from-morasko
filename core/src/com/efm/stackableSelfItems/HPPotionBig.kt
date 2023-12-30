@@ -17,6 +17,10 @@ class HPPotionBig(
     override val baseAPUseCost : Int = 1
     override val hpBoost : Int = 30
     override val apBoost : Int = 0
+    override val statsDescription : String
+        get() = "HP gain: " + hpBoost + "\n" +
+                "AP gain: " + apBoost + "\n" +
+                "AP cost: " + baseAPUseCost
     
     override fun getTexture() : Texture
     {

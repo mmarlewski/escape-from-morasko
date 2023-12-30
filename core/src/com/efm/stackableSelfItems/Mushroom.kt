@@ -17,6 +17,10 @@ class Mushroom(
     override val baseAPUseCost : Int = 0
     override val hpBoost : Int = 5
     override val apBoost : Int = 5
+    override val statsDescription : String
+        get() = "HP gain: " + hpBoost + "\n" +
+                "AP gain: " + apBoost + "\n" +
+                "AP cost: " + baseAPUseCost
     
     override fun getTexture() : Texture
     {

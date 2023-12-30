@@ -19,8 +19,9 @@ class Bow : MultiUseMapItem
     val damage : Int = 2
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
-                "AP cost: " + baseAPUseCost + "\n" +
-                "Uses left: " + durability
+                "Uses left: " + durability + "\n" +
+                "AP cost: " + baseAPUseCost
+                
     
     override fun getTexture() : Texture
     {

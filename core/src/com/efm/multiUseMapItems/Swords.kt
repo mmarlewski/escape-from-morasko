@@ -13,8 +13,8 @@ class IronSword : Sword()
     override val damage : Int = 4
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
-                "AP cost: " + baseAPUseCost + "\n" +
-                "Uses left: " + durability
+                "Uses left: " + durability + "\n" +
+                "AP cost: " + baseAPUseCost
     
     override fun getTexture() : Texture
     {
@@ -32,8 +32,8 @@ class TurquoiseSword : Sword()
     override val damage : Int = 8
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
-                "AP cost: " + baseAPUseCost + "\n" +
-                "Uses left: " + durability
+                "Uses left: " + durability + "\n" +
+                "AP cost: " + baseAPUseCost
     
     override fun getTexture() : Texture
     {
@@ -51,8 +51,8 @@ class AmberSword : Sword()
     override val damage : Int = 6
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
-                "AP cost: " + baseAPUseCost + "\n" +
-                "Uses left: " + durability
+                "Uses left: " + durability + "\n" +
+                "AP cost: " + baseAPUseCost
     
     override fun getTexture() : Texture
     {

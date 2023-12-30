@@ -268,7 +268,7 @@ object EquipmentStructure
                 
                 is StackableMapItem  ->
                 {
-                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
+                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture(), item.name, item.statsDescription) {}
                     button.addListener(object : ClickListener()
                                        {
                                            override fun clicked(event : InputEvent?, x : Float, y : Float)
@@ -281,7 +281,7 @@ object EquipmentStructure
                 
                 is StackableSelfItem ->
                 {
-                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
+                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture(), item.name, item.statsDescription) {}
                     button.addListener(object : ClickListener()
                                        {
                                            override fun clicked(event : InputEvent?, x : Float, y : Float)
