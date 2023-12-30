@@ -2,6 +2,8 @@ package com.efm.worldGeneration
 
 import com.efm.entities.enemies.Enemies
 import com.efm.entities.walls.WallStyle
+import com.efm.item.Item
+import com.efm.item.Items
 import com.efm.room.Base
 
 enum class LevelThemes(val theme : LevelTheme)
@@ -17,6 +19,7 @@ interface LevelTheme
     val enemies : List<Enemies>
     val commonEnemies : List<Enemies>
     val rareEnemies : List<Enemies>
+    val items : List<Items>
 }
 
 object GrassyTheme : LevelTheme
@@ -44,6 +47,7 @@ object GrassyTheme : LevelTheme
             // rare everywhere
             Enemies.MIMIC, Enemies.GHOST,
                                                      )
+    override val items : List<Items> = getAllItems()
 }
 
 object BrickyTileyTheme : LevelTheme
@@ -71,4 +75,29 @@ object BrickyTileyTheme : LevelTheme
             // rare everywhere
             Enemies.MIMIC, Enemies.GHOST,
                                                      )
+    override val items : List<Items> = getAllItems()
+}
+
+fun getAllItems() : List<Items>
+{
+    return listOf(
+            Items.BOW,
+            Items.SLEDGEHAMMER,
+            Items.SMALL_AXE,
+            Items.STAFF,
+            Items.IRON_SWORD,
+            Items.AMBER_SWORD,
+            Items.TURQUOISE_SWORD,
+            Items.WOODEN_SWORD,
+            Items.BOMB,
+            Items.EXPLOSIVE,
+            Items.SHURIKEN,
+            Items.APPLE,
+            Items.AP_POTION_BIG,
+            Items.AP_POTION_SMALL,
+            Items.FISH,
+            Items.HP_POTION_BIG,
+            Items.HP_POTION_SMALL,
+            Items.MUSHROOM
+                 )
 }

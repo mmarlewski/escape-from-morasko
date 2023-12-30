@@ -3,6 +3,7 @@ import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
 import com.efm.entity.*
 import com.efm.exit.*
+import com.efm.item.*
 import com.efm.level.Level
 import com.efm.level.World
 import com.efm.room.*
@@ -255,8 +256,81 @@ fun createLevel(levelNumber : Int) : Level
     rooms.add(bossRoom)
     level.startingRoom = rooms.first()
     addChestToStartingRoom(rooms.first())
-    level.startingPosition.set(RoomPosition(2, 2))
+    addChestsToOtherRooms(rooms, levelNumber, levelTheme)
+    level.startingPosition.set(findPositionToSpawnHero(rooms.first()))
     return level
+}
+
+fun addChestsToOtherRooms(rooms : MutableList<Room>, levelNumber : Int, levelTheme : LevelTheme)
+{
+    for (room in rooms)
+    {
+        val amountOfChests = nextInt(getRoomSize(room)/80, (getRoomSize(room)/60)+1)
+        if (room.name != "1" && room.name != "boss_room")
+        {
+            for (i in 0 until amountOfChests)
+            {
+                val chest = Chest(getPossibleItemsBasedOnLevelNumber(levelNumber, levelTheme))
+                room.addEntityAt(chest, getPositionForChest(room))
+            }
+        }
+    }
+}
+
+fun getPositionForChest(room : Room) : RoomPosition
+{
+    var space = room.getSpaces().random()
+    while (space.getBase() == null || space.getBase() == Base.water || space.getBase() == Base.lava || space.getEntity() != null)
+    {
+        space = room.getSpaces().random()
+    }
+    return RoomPosition(space.position.x, space.position.y)
+}
+
+fun getPossibleItemsBasedOnLevelNumber(levelNumber : Int, levelTheme : LevelTheme) : PossibleItems
+{
+    val possibleItems = mutableListOf<PossibleItem>()
+    for (item in levelTheme.items)
+    {
+        possibleItems.add(getPossibleItem(item, levelNumber))
+    }
+    possibleItems.shuffle()
+    return PossibleItems(possibleItems, nextInt(levelNumber+1, levelNumber + 3))
+}
+
+fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem
+{
+    when (item)
+    {
+        Items.BOW -> return PossibleItem(item.new(), 0.06f * levelNumber, IntRange(1, 1))
+        Items.SLEDGEHAMMER -> return PossibleItem(item.new(), 0.05f * levelNumber, IntRange(1, 1))
+        Items.SMALL_AXE -> return PossibleItem(item.new(), 0.08f * levelNumber, IntRange(1, 1))
+        Items.STAFF -> return PossibleItem(item.new(), 0.04f * levelNumber, IntRange(1, 1))
+        Items.IRON_SWORD -> return PossibleItem(item.new(), 0.11f - (0.02f * levelNumber), IntRange(1, 1))
+        Items.AMBER_SWORD -> return PossibleItem(item.new(), 0.05f + (0.04f * levelNumber), IntRange(1, 1))
+        Items.TURQUOISE_SWORD -> return PossibleItem(item.new(), 0.03f + (0.05f * levelNumber), IntRange(1, 1))
+        Items.WOODEN_SWORD -> return PossibleItem(item.new(), 0.15f - (0.03f * levelNumber), IntRange(1, 1))
+        Items.BOMB -> return PossibleItem(item.new(), 0.04f, IntRange(1, 3))
+        Items.EXPLOSIVE -> return PossibleItem(item.new(), 0.02f + (0.04f * levelNumber), IntRange(2, 4))
+        Items.SHURIKEN -> return PossibleItem(item.new(), 0.08f, IntRange(3, 6))
+        Items.APPLE -> return PossibleItem(item.new(), 0.09f, IntRange(3, 5))
+        Items.AP_POTION_BIG -> return PossibleItem(item.new(), 0.07f, IntRange(1, 3))
+        Items.AP_POTION_SMALL -> return PossibleItem(item.new(), 0.12f, IntRange(2, 6))
+        Items.FISH -> return PossibleItem(item.new(), 0.1f, IntRange(4, 6))
+        Items.HP_POTION_BIG -> return PossibleItem(item.new(), 0.06f, IntRange(1, 3))
+        Items.HP_POTION_SMALL -> return PossibleItem(item.new(), 0.11f, IntRange(2, 6))
+        Items.MUSHROOM -> return PossibleItem(item.new(), 0.08f, IntRange(3, 5))
+    }
+}
+
+fun findPositionToSpawnHero(first : Room) : RoomPosition
+{
+    var space = first.getSpaces().random()
+    while (!space.isTreadableFor(World.hero) || !space.isTraversableFor(World.hero) || !first.isPositionWithinBounds(space.position.x, space.position.y))
+    {
+        space = first.getSpaces().random()
+    }
+    return RoomPosition(space.position.x, space.position.y)
 }
 
 fun randomizeBasesForARoomAndAwayFromDoors(room : Room, allowedBases : List<Base>, roomBasesArray : Array<IntArray>, repetitions : Int)

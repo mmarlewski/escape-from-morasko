@@ -4,6 +4,7 @@ import com.efm.multiUseMapItems.Bow
 import com.efm.stackableMapItems.Bomb
 import com.efm.stackableSelfItems.Apple
 import com.efm.stackableSelfItems.Mushroom
+import kotlin.math.max
 import kotlin.random.Random
 
 class PossibleItem(
