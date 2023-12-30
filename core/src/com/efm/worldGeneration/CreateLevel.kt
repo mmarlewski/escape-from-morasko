@@ -236,7 +236,7 @@ fun createLevel(levelNumber : Int) : Level
         val y1 = getRoomY1(room.name.toInt(), roomData)
         val y2 = getRoomY2(room.name.toInt(), roomData)
         val roomBasesArray = getMatrixBasedOnCoordinates(roomData, x1, x2, y1, y2, room.name.toInt())
-        randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.water), roomBasesArray, 3)
+        randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.water), roomBasesArray, 2)
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.lava), roomBasesArray, 1)
         spawnEnemiesInTheRoom(room, levelTheme, levelNumber)
         spawnPropsInTheRoom(room)
@@ -274,13 +274,13 @@ fun randomizeBasesForARoomAndAwayFromDoors(room : Room, allowedBases : List<Base
         }
         val randomBase = allowedBases.random()
         val randomSpace = room.getSpace(RoomPosition(randomX, randomY))
-        if (randomSpace != null && checkIfNoOtherPassagesNearby(room, randomSpace))
+        if (randomSpace != null && checkIfNoOtherPassagesNearby(room, randomSpace, 2.5))
         {
             if (randomSpace.getEntity() == null)
             {
                 if (randomBase == Base.water)
                 {
-                    recursivelySpreadBaseFromPoint(room, listOf(randomBase), randomX, randomY, 14, 3)
+                    recursivelySpreadBaseFromPoint(room, listOf(randomBase), randomX, randomY, 14, 2)
                 }
                 else
                 {
@@ -312,7 +312,7 @@ fun spawnEnemiesInTheRoom(room : Room, theme : LevelTheme, levelNumber : Int)
         {
             val positionToSpawnAt = findRandomFreePositionInRoom(room)
             if (positionToSpawnAt != null && room.getSpace(positionToSpawnAt)
-                            ?.let { checkIfNoOtherPassagesNearby(room, it) } == true
+                            ?.let { checkIfNoOtherPassagesNearby(room, it, 2.0) } == true
             )
             {
                 val enemy =
@@ -335,7 +335,7 @@ fun spawnPropsInTheRoom(room : Room)
     {
         val positionToSpawnAt = findRandomFreePositionInRoomPreferablyNearWallsAndOnEdge(room)
         if (positionToSpawnAt != null && room.getSpace(positionToSpawnAt)
-                        ?.let { checkIfNoOtherPassagesNearby(room, it) } == true
+                        ?.let { checkIfNoOtherPassagesNearby(room, it, 2.0) } == true
         )
         {
             val prop = Prop(PropStyle.values().random())
@@ -456,7 +456,6 @@ fun randomizeBasesForARoom(room : Room, allowedBases : List<Base>, roomBasesArra
             }
             recursivelySpreadBaseFromPoint(room, randomBases, randomX, randomY, 13, 4)
         }
-        // recursivelySpreadBaseFromPoint(room, randomBases, randomX, randomY, 4, 8)
     }
 }
 
@@ -479,7 +478,7 @@ fun recursivelySpreadBaseFromPoint(
     val space = room.getSpace(x, y)
     if (space != null)
     {
-        if (checkIfNoOtherPassagesNearby(room, space))
+        if (!checkIfNoOtherPassagesNearby(room, space, 3.0))
         {
             return
         }
@@ -852,7 +851,7 @@ fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Bool
                     val space = room.getSpace(x, y)
                     if (space != null)
                     {
-                        if (checkIfNoOtherPassagesNearby(room, space))
+                        if (checkIfNoOtherPassagesNearby(room, space, 1.5))
                         {
                             if (space.getBase() != null)
                             {
@@ -891,7 +890,7 @@ fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Bool
                     val space = room.getSpace(x, y)
                     if (space != null)
                     {
-                        if (checkIfNoOtherPassagesNearby(room, space))
+                        if (checkIfNoOtherPassagesNearby(room, space, 1.5))
                         {
                             if (space.getBase() != null)
                             {
@@ -983,7 +982,7 @@ fun findSpaceInTopLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean)
                     val space = room.getSpace(x, y)
                     if (space != null)
                     {
-                        if (checkIfNoOtherPassagesNearby(room, space))
+                        if (checkIfNoOtherPassagesNearby(room, space, 1.5))
                         {
                             if (space.getBase() != null)
                             {
@@ -1022,7 +1021,7 @@ fun findSpaceInTopLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean)
                     val space = room.getSpace(x, y)
                     if (space != null)
                     {
-                        if (checkIfNoOtherPassagesNearby(room, space))
+                        if (checkIfNoOtherPassagesNearby(room, space, 1.5))
                         {
                             if (space.getBase() != null)
                             {
@@ -1113,7 +1112,7 @@ fun findSpaceInTopRightCorner(room : Room, s : String, allowMoreSpaces : Boolean
                     val space = room.getSpace(x, y)
                     if (space != null)
                     {
-                        if (checkIfNoOtherPassagesNearby(room, space))
+                        if (checkIfNoOtherPassagesNearby(room, space, 1.5))
                         {
                             if (space.getBase() != null)
                             {
@@ -1152,7 +1151,7 @@ fun findSpaceInTopRightCorner(room : Room, s : String, allowMoreSpaces : Boolean
                     val space = room.getSpace(x, y)
                     if (space != null)
                     {
-                        if (checkIfNoOtherPassagesNearby(room, space))
+                        if (checkIfNoOtherPassagesNearby(room, space, 1.5))
                         {
                             if (space.getBase() != null)
                             {
@@ -1244,7 +1243,7 @@ fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boole
                     val space = room.getSpace(x, y)
                     if (space != null)
                     {
-                        if (checkIfNoOtherPassagesNearby(room, space))
+                        if (checkIfNoOtherPassagesNearby(room, space, 1.5))
                         {
                             if (space.getBase() != null)
                             {
@@ -1283,7 +1282,7 @@ fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boole
                     val space = room.getSpace(x, y)
                     if (space != null)
                     {
-                        if (checkIfNoOtherPassagesNearby(room, space))
+                        if (checkIfNoOtherPassagesNearby(room, space, 1.5))
                         {
                             if (space.getBase() != null)
                             {
@@ -1347,7 +1346,7 @@ fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boole
     }
 }
 
-fun checkIfNoOtherPassagesNearby(room : Room, space : Space) : Boolean
+fun checkIfNoOtherPassagesNearby(room : Room, space : Space, maxDist : Double) : Boolean
 {
     val entitiesInTheRoom = room.getEntities()
     if (entitiesInTheRoom.isNotEmpty())
@@ -1358,7 +1357,7 @@ fun checkIfNoOtherPassagesNearby(room : Room, space : Space) : Boolean
             {
                 val posX = entity.position.x
                 val posY = entity.position.y
-                if (sqrt((abs(space.position.x - posX) * abs(space.position.x - posX) + abs(space.position.y - posY) * abs(space.position.y - posY)).toDouble()) < 2)
+                if (sqrt((abs(space.position.x - posX) * abs(space.position.x - posX) + abs(space.position.y - posY) * abs(space.position.y - posY)).toDouble()) < maxDist)
                 {
                     return false
                 }
