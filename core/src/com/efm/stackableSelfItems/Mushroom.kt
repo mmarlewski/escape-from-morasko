@@ -15,8 +15,8 @@ class Mushroom(
     override val name : String = "Mushroom"
     override val maxAmount : Int = 16
     override val baseAPUseCost : Int = 0
-    override val hpBoost : Int = 5
-    override val apBoost : Int = 5
+    override val hpBoost : Int = 4
+    override val apBoost : Int = 1
     
     override fun getTexture() : Texture
     {

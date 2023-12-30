@@ -104,7 +104,7 @@ class EnemyWizard : Enemy
             {
                 is Hero ->
                 {
-                    attackedEntity.apDrainInNextTurn = 5
+                    attackedEntity.apDrainInNextTurn = apDrain
                 }
             }
         }

@@ -1,7 +1,9 @@
 import com.efm.*
 import com.efm.entities.Modifier
 import com.efm.entities.Npc
-import com.efm.entities.bosses.*
+import com.efm.entities.bosses.defeatedBosses
+import com.efm.entities.bosses.spawnRandomUndefeatedBoss
+import com.efm.entities.enemies.mushroom.EnemyMushroom
 import com.efm.entities.walls.Wall
 import com.efm.entities.walls.WallStyle
 import com.efm.entity.*
@@ -9,6 +11,7 @@ import com.efm.exit.*
 import com.efm.item.*
 import com.efm.level.Level
 import com.efm.level.World
+import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.*
 import com.efm.stackableSelfItems.Apple
 import com.efm.worldGeneration.LevelTheme
@@ -270,11 +273,35 @@ fun createLevel(levelNumber : Int) : Level
     defeatedBosses.add(boss)
     level.addRoom(bossRoom)
     rooms.add(bossRoom)
-    level.startingRoom = rooms.last()
-    addChestToStartingRoom(rooms.first())
+    val startingRoom = rooms.first()
+    // tutorial
+    if (levelNumber == 1)
+    {
+        val firstExit = startingRoom.getEntities().first { it is RoomExit } as RoomExit
+        val tutorialRoomExit = TutorialRoomExit(
+                firstExit.position,
+                firstExit.direction,
+                firstExit.endRoomName,
+                firstExit.endPosition,
+                firstExit.style,
+                firstExit.endDirection
+                                               )
+        startingRoom.replaceEntityAt(tutorialRoomExit, firstExit.position)
+        val secondRoom = level.rooms.find { it.name == tutorialRoomExit.endRoomName }
+        if (secondRoom != null)
+        {
+            for (enemy in secondRoom.getEnemies())
+            {
+                secondRoom.removeEntity(enemy)
+            }
+            secondRoom.addEntityAt(EnemyMushroom(), findPositionToSpawnHero(secondRoom))
+        }
+    }
+    level.startingRoom = startingRoom
+    addChestToStartingRoom(startingRoom)
     addChestsToOtherRooms(rooms, levelNumber, levelTheme)
     addNpcToRooms(rooms, levelTheme)
-    level.startingPosition.set(findPositionToSpawnHero(rooms.first()))
+    level.startingPosition.set(findPositionToSpawnHero(startingRoom))
     return level
 }
 
@@ -322,10 +349,22 @@ fun addChestsToOtherRooms(rooms : MutableList<Room>, levelNumber : Int, levelThe
     }
 }
 
+/** Returns the smallest multiple of x that is larger than this value.*/
+fun Int.largerMultipleOfX(x : Int) : Int
+{
+    val xAbs = abs(x)
+    return if (xAbs == 0) 0
+    else if (this >= 0) this + (xAbs - this % xAbs)
+    else this + xAbs - (xAbs + this % xAbs) % xAbs
+}
+
 fun getPositionForChest(room : Room) : RoomPosition
 {
     var space = room.getSpaces().random()
-    while (space.getBase() == null || space.getBase() == Base.water || space.getBase() == Base.lava || space.getEntity() != null || !checkIfNoOtherPassagesNearby(room, space, 2.0))
+    while (space.getBase() == null || space.getBase() == Base.water || space.getBase() == Base.lava || space.getEntity() != null || !checkIfNoOtherPassagesNearby(
+                    room, space, 2.0
+                                                                                                                                                                 )
+    )
     {
         space = room.getSpaces().random()
     }
@@ -339,33 +378,75 @@ fun getPossibleItemsBasedOnLevelNumber(levelNumber : Int, levelTheme : LevelThem
     {
         possibleItems.add(getPossibleItem(item, levelNumber))
     }
-    possibleItems.shuffle()
-    return PossibleItems(possibleItems, nextInt(levelNumber+1, levelNumber + 3))
+    // max Chest capacity 25 = 24 items + 1 slot for swapping items
+    val maxItemsPossibleToDraw = min(nextInt(levelNumber + 1, levelNumber + 3), 24)
+    return PossibleItems(possibleItems, maxItemsPossibleToDraw)
 }
 
-fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem
+fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem = when (item)
 {
-    when (item)
-    {
-        Items.BOW -> return PossibleItem(item.new(), 0.06f * levelNumber, IntRange(1, 1))
-        Items.SLEDGEHAMMER -> return PossibleItem(item.new(), 0.05f * levelNumber, IntRange(1, 1))
-        Items.SMALL_AXE -> return PossibleItem(item.new(), 0.08f * levelNumber, IntRange(1, 1))
-        Items.STAFF -> return PossibleItem(item.new(), 0.04f * levelNumber, IntRange(1, 1))
-        Items.IRON_SWORD -> return PossibleItem(item.new(), 0.11f - (0.02f * levelNumber), IntRange(1, 1))
-        Items.AMBER_SWORD -> return PossibleItem(item.new(), 0.05f + (0.04f * levelNumber), IntRange(1, 1))
-        Items.TURQUOISE_SWORD -> return PossibleItem(item.new(), 0.03f + (0.05f * levelNumber), IntRange(1, 1))
-        Items.WOODEN_SWORD -> return PossibleItem(item.new(), 0.15f - (0.03f * levelNumber), IntRange(1, 1))
-        Items.BOMB -> return PossibleItem(item.new(), 0.04f, IntRange(1, 3))
-        Items.EXPLOSIVE -> return PossibleItem(item.new(), 0.02f + (0.04f * levelNumber), IntRange(2, 4))
-        Items.SHURIKEN -> return PossibleItem(item.new(), 0.08f, IntRange(3, 6))
-        Items.APPLE -> return PossibleItem(item.new(), 0.09f, IntRange(3, 5))
-        Items.AP_POTION_BIG -> return PossibleItem(item.new(), 0.07f, IntRange(1, 3))
-        Items.AP_POTION_SMALL -> return PossibleItem(item.new(), 0.12f, IntRange(2, 6))
-        Items.FISH -> return PossibleItem(item.new(), 0.1f, IntRange(4, 6))
-        Items.HP_POTION_BIG -> return PossibleItem(item.new(), 0.06f, IntRange(1, 3))
-        Items.HP_POTION_SMALL -> return PossibleItem(item.new(), 0.11f, IntRange(2, 6))
-        Items.MUSHROOM -> return PossibleItem(item.new(), 0.08f, IntRange(3, 5))
-    }
+    Items.BOW             -> PossibleItem(
+            item.new(), 0.10f + (0.05f * levelNumber), IntRange(1, 2)
+                                         )
+    Items.SLEDGEHAMMER    -> PossibleItem(
+            item.new(), 0.05f * levelNumber, IntRange(1, 1)
+                                         )
+    Items.SMALL_AXE       -> PossibleItem(
+            item.new(), 0.10f - (0.06f * levelNumber), IntRange(1, 2)
+                                         )
+    Items.HATCHET         -> PossibleItem(
+            item.new(), 0.08f + (0.03f * levelNumber), IntRange(1, 2)
+                                         )
+    Items.DOUBLE_BIT_AXE  -> PossibleItem(
+            item.new(), 0.06f + (0.03f * levelNumber), IntRange(1, 1)
+                                         )
+    Items.STAFF           -> PossibleItem(
+            item.new(), 0.04f * levelNumber, IntRange(1, 1)
+                                         )
+    Items.WOODEN_SWORD    -> PossibleItem(
+            item.new(), 0.25f - (0.03f * levelNumber), IntRange(1, 2)
+                                         )
+    Items.IRON_SWORD      -> PossibleItem(
+            item.new(), 0.20f - (0.01f * levelNumber), IntRange(1, 1)
+                                         )
+    Items.AMBER_SWORD     -> PossibleItem(
+            item.new(), 0.10f + (0.03f * levelNumber), IntRange(1, 1)
+                                         )
+    Items.TURQUOISE_SWORD -> PossibleItem(
+            item.new(), 0.05f + (0.04f * levelNumber), IntRange(1, 1)
+                                         )
+    Items.BOMB            -> PossibleItem(
+            item.new(), 0.05f, IntRange(1, 3 + levelNumber)
+                                         )
+    Items.EXPLOSIVE       -> PossibleItem(
+            item.new(), 0.10f, IntRange(
+            2, 3 + levelNumber
+                                       )
+                                         )
+    Items.SHURIKEN        -> PossibleItem(
+            item.new(), 0.10f, IntRange(
+            3, 3 + levelNumber * 2
+                                       )
+                                         )
+    Items.APPLE           -> PossibleItem(
+            item.new(), 0.10f, IntRange(
+            3, 3 + levelNumber * 2
+                                       )
+                                         )
+    Items.AP_POTION_BIG   -> PossibleItem(
+            item.new(), 0.06f + (0.01f * levelNumber), IntRange(1, 2 + levelNumber)
+                                         )
+    Items.AP_POTION_SMALL -> PossibleItem(
+            item.new(), 0.14f + (0.01f * levelNumber), IntRange(1, 3 + levelNumber)
+                                         )
+    Items.FISH            -> PossibleItem(
+            item.new(), 0.10f, IntRange(
+            4, 4 + levelNumber * 2
+                                       )
+                                         )
+    Items.HP_POTION_BIG   -> PossibleItem(item.new(), 0.08f + (0.01f * levelNumber), IntRange(1, 3 + levelNumber))
+    Items.HP_POTION_SMALL -> PossibleItem(item.new(), 0.16f + (0.01f * levelNumber), IntRange(1, 5 + levelNumber))
+    Items.MUSHROOM        -> PossibleItem(item.new(), 0.08f, IntRange(1, 5 + levelNumber))
 }
 
 fun findPositionToSpawnHero(first : Room) : RoomPosition
@@ -413,7 +494,8 @@ fun randomizeBasesForARoomAndAwayFromDoors(room : Room, allowedBases : List<Base
 fun addChestToStartingRoom(first : Room)
 {
     val chest = Chest()
-    chest.addItem(Apple())
+    chest.addItem(WoodenSword())
+    chest.addItem(Apple(2))
     val position = findRandomFreePositionInRoom(first)
     if (position != null)
     {
