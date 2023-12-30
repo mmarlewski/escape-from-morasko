@@ -141,7 +141,7 @@ fun createLevel(levelNumber : Int) : Level
 {
     val mapWidth = 60
     val mapHeight = 60
-    val minRoomSize = 8
+    val minRoomSize = 10
     val bufferSize = 1
     
     val roomNumber = 1
@@ -504,24 +504,29 @@ fun createBossRoom(furthestRoom : Room, level : Level, bossRoom : Room, levelNum
     }
     bossRoom.addWalls(WallStyle.brickRedDark)
     val positionToPlaceLevelExit = findSpaceInBottomLeftCorner(bossRoom, "horizontal", false)
-    if (levelNumber < 4)
+    val positionA = findSpaceInBottomRightCorner(furthestRoom, "vertical", false)
+    val positionB = findSpaceInTopLeftCorner(bossRoom, "vertical", false)
+    if (positionToPlaceLevelExit != null && positionA != null && positionB != null)
     {
-        val levelExit = LevelExit(
-                positionToPlaceLevelExit,
-                Direction4.right,
-                (levelNumber + 1).toString(),
-                ExitStyle.stone,
-                activeWhenNoEnemiesAreInRoom = true
-                                 )
-        bossRoom.addEntityAt(levelExit, positionToPlaceLevelExit)
+        if (levelNumber < 4)
+        {
+            val levelExit = LevelExit(
+                    positionToPlaceLevelExit,
+                    Direction4.right,
+                    (levelNumber + 1).toString(),
+                    ExitStyle.stone,
+                    activeWhenNoEnemiesAreInRoom = true
+                                     )
+            bossRoom.addEntityAt(levelExit, positionToPlaceLevelExit)
+        }
+        addBossRoomPassage(
+                level,
+                furthestRoom.name,
+                positionA,
+                Direction4.up, "boss_room",
+                positionB,
+                          )
     }
-    addBossRoomPassage(
-            level,
-            furthestRoom.name,
-            findSpaceInBottomRightCorner(furthestRoom, "vertical", false),
-            Direction4.up, "boss_room",
-            findSpaceInTopLeftCorner(bossRoom, "vertical", false),
-                      )
 }
 
 fun getPossibleRoomValues(roomData : Array<IntArray>) : List<Int>
@@ -600,20 +605,54 @@ fun createPassagesBasedOnRelativePosition(
         {
             //top-left for curr room, bott-right for closest
             val trueFalse = intArrayOf(0, 1)
-            if (trueFalse.random() == 1)
+            var direction : String = if (trueFalse.random() == 1)
+            {
+                "horizontal"
+            }
+            else
+            {
+                "vertical"
+            }
+            if (direction == "horizontal")
             {
                 //horizontal
-                val currRoomPassageSpace = findSpaceInTopLeftCorner(currentRoom, "horizontal", false)
-                val closestRoomPassageSpace = findSpaceInBottomRightCorner(closestRoom, "horizontal", false)
-                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.right, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                var currRoomPassageSpace = findSpaceInTopLeftCorner(currentRoom, direction, false)
+                var closestRoomPassageSpace = findSpaceInBottomRightCorner(closestRoom, direction, false)
+                if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                {
+                    addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.right, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                }
+                else
+                {
+                    direction = "vertical"
+                    currRoomPassageSpace = findSpaceInTopLeftCorner(currentRoom, direction, false)
+                    closestRoomPassageSpace = findSpaceInBottomRightCorner(closestRoom, direction, false)
+                    if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                    {
+                        addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.down, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                    }
+                }
                 
             }
             else
             {
                 //vertical
-                val currRoomPassageSpace = findSpaceInTopLeftCorner(currentRoom, "vertical", false)
-                val closestRoomPassageSpace = findSpaceInBottomRightCorner(closestRoom, "vertical", false)
-                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.down, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                var currRoomPassageSpace = findSpaceInTopLeftCorner(currentRoom, direction, false)
+                var closestRoomPassageSpace = findSpaceInBottomRightCorner(closestRoom, direction, false)
+                if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                {
+                    addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.down, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                }
+                else
+                {
+                    direction = "horizontal"
+                    currRoomPassageSpace = findSpaceInTopLeftCorner(currentRoom, direction, false)
+                    closestRoomPassageSpace = findSpaceInBottomRightCorner(closestRoom, direction, false)
+                    if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                    {
+                        addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.right, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                    }
+                }
             }
             print("Passage between rooms : $currentRoomVal (top-left)  and $closestRoomVal (bott-right)\n")
         }
@@ -621,19 +660,53 @@ fun createPassagesBasedOnRelativePosition(
         {
             //top-right curr, bott-left closest
             val trueFalse = intArrayOf(0, 1)
-            if (trueFalse.random() == 1)
+            var direction : String = if (trueFalse.random() == 1)
+            {
+                "horizontal"
+            }
+            else
+            {
+                "vertical"
+            }
+            if (direction == "horizontal")
             {
                 //horizontal
-                val currRoomPassageSpace = findSpaceInTopRightCorner(currentRoom, "horizontal", false)
-                val closestRoomPassageSpace = findSpaceInBottomLeftCorner(closestRoom, "horizontal", false)
-                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.left, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                var currRoomPassageSpace = findSpaceInTopRightCorner(currentRoom, direction, false)
+                var closestRoomPassageSpace = findSpaceInBottomLeftCorner(closestRoom, direction, false)
+                if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                {
+                    addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.left, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                }
+                else
+                {
+                    direction = "vertical"
+                    currRoomPassageSpace = findSpaceInTopRightCorner(currentRoom, direction, false)
+                    closestRoomPassageSpace = findSpaceInBottomLeftCorner(closestRoom, direction, false)
+                    if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                    {
+                        addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.down, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                    }
+                }
             }
             else
             {
                 //vertical
-                val currRoomPassageSpace = findSpaceInTopRightCorner(currentRoom, "vertical", false)
-                val closestRoomPassageSpace = findSpaceInBottomLeftCorner(closestRoom, "vertical", false)
-                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.down, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                var currRoomPassageSpace = findSpaceInTopRightCorner(currentRoom, direction, false)
+                var closestRoomPassageSpace = findSpaceInBottomLeftCorner(closestRoom, direction, false)
+                if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                {
+                    addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.down, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                }
+                else
+                {
+                    direction = "horizontal"
+                    currRoomPassageSpace = findSpaceInTopRightCorner(currentRoom, direction, false)
+                    closestRoomPassageSpace = findSpaceInBottomLeftCorner(closestRoom, direction, false)
+                    if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                    {
+                        addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.left, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                    }
+                }
             }
             print("Passage between rooms : $currentRoomVal (top-right)  and $closestRoomVal (bott-left)\n")
         }
@@ -644,19 +717,53 @@ fun createPassagesBasedOnRelativePosition(
         {
             //bott-left curr, top-right closest
             val trueFalse = intArrayOf(0, 1)
-            if (trueFalse.random() == 1)
+            var direction : String = if (trueFalse.random() == 1)
+            {
+                "horizontal"
+            }
+            else
+            {
+                "vertical"
+            }
+            if (direction == "horizontal")
             {
                 //horizontal
-                val currRoomPassageSpace = findSpaceInBottomLeftCorner(currentRoom, "horizontal", false)
-                val closestRoomPassageSpace = findSpaceInTopRightCorner(closestRoom, "horizontal", false)
-                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.right, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                var currRoomPassageSpace = findSpaceInBottomLeftCorner(currentRoom, direction, false)
+                var closestRoomPassageSpace = findSpaceInTopRightCorner(closestRoom, direction, false)
+                if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                {
+                    addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.right, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                }
+                else
+                {
+                    direction = "vertical"
+                    currRoomPassageSpace = findSpaceInBottomLeftCorner(currentRoom, direction, false)
+                    closestRoomPassageSpace = findSpaceInTopRightCorner(closestRoom, direction, false)
+                    if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                    {
+                        addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.up, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                    }
+                }
             }
             else
             {
                 //vertical
-                val currRoomPassageSpace = findSpaceInBottomLeftCorner(currentRoom, "vertical", false)
-                val closestRoomPassageSpace = findSpaceInTopRightCorner(closestRoom, "vertical", false)
-                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.up, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                var currRoomPassageSpace = findSpaceInBottomLeftCorner(currentRoom, direction, false)
+                var closestRoomPassageSpace = findSpaceInTopRightCorner(closestRoom, direction, false)
+                if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                {
+                    addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.up, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                }
+                else
+                {
+                    direction = "horizontal"
+                    currRoomPassageSpace = findSpaceInBottomLeftCorner(currentRoom, direction, false)
+                    closestRoomPassageSpace = findSpaceInTopRightCorner(closestRoom, direction, false)
+                    if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                    {
+                        addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.right, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                    }
+                }
             }
             print("Passage between rooms : $currentRoomVal (bott-left)  and $closestRoomVal (top-right)\n")
         }
@@ -664,26 +771,60 @@ fun createPassagesBasedOnRelativePosition(
         {
             //bott-right curr, top-left closest
             val trueFalse = intArrayOf(0, 1)
-            if (trueFalse.random() == 1)
+            var direction : String = if (trueFalse.random() == 1)
+            {
+                "horizontal"
+            }
+            else
+            {
+                "vertical"
+            }
+            if (direction == "horizontal")
             {
                 //horizontal
-                val currRoomPassageSpace = findSpaceInBottomRightCorner(currentRoom, "horizontal", false)
-                val closestRoomPassageSpace = findSpaceInTopLeftCorner(closestRoom, "horizontal", false)
-                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.left, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                var currRoomPassageSpace = findSpaceInBottomRightCorner(currentRoom, direction, false)
+                var closestRoomPassageSpace = findSpaceInTopLeftCorner(closestRoom, direction, false)
+                if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                {
+                    addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.left, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                }
+                else
+                {
+                    direction = "vertical"
+                    currRoomPassageSpace = findSpaceInBottomRightCorner(currentRoom, direction, false)
+                    closestRoomPassageSpace = findSpaceInTopLeftCorner(closestRoom, direction, false)
+                    if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                    {
+                        addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.up, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                    }
+                }
             }
             else
             {
                 //vertical
-                val currRoomPassageSpace = findSpaceInBottomRightCorner(currentRoom, "vertical", false)
-                val closestRoomPassageSpace = findSpaceInTopLeftCorner(closestRoom, "vertical", false)
-                addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.up, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                var currRoomPassageSpace = findSpaceInBottomRightCorner(currentRoom, direction, false)
+                var closestRoomPassageSpace = findSpaceInTopLeftCorner(closestRoom, direction, false)
+                if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                {
+                    addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.up, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                }
+                else
+                {
+                    direction = "horizontal"
+                    currRoomPassageSpace = findSpaceInBottomRightCorner(currentRoom, direction, false)
+                    closestRoomPassageSpace = findSpaceInTopLeftCorner(closestRoom, direction, false)
+                    if (currRoomPassageSpace != null && closestRoomPassageSpace != null)
+                    {
+                        addRoomPassage(level, currentRoom.name, currRoomPassageSpace, Direction4.left, closestRoom.name, closestRoomPassageSpace, ExitStyle.metal)
+                    }
+                }
             }
             print("Passage between rooms : $currentRoomVal (bott-right)  and $closestRoomVal (top-left)\n")
         }
     }
 }
 
-fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Boolean) : RoomPosition
+fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Boolean) : RoomPosition?
 {
     var downEdge = room.heightInSpaces
     var upEdge = 0
@@ -791,29 +932,31 @@ fun findSpaceInBottomRightCorner(room : Room, s : String, allowMoreSpaces : Bool
     }
     if (s == "horizontal")
     {
-        return if (rightSideWallPositions.isNotEmpty())
+        if (allowMoreSpaces && rightSideWallPositions.isEmpty())
         {
-            rightSideWallPositions.random()
+            return null
         }
-        else
+        if (!allowMoreSpaces && rightSideWallPositions.isEmpty())
         {
-            findSpaceInBottomRightCorner(room, "horizontal", true)
+            return findSpaceInBottomRightCorner(room, "horizontal", true)
         }
+        return rightSideWallPositions.random()
     }
     else
     {
-        return if (bottomSideWallPositions.isNotEmpty())
+        if (allowMoreSpaces && bottomSideWallPositions.isEmpty())
         {
-            bottomSideWallPositions.random()
+            return null
         }
-        else
+        if (!allowMoreSpaces && bottomSideWallPositions.isEmpty())
         {
-            findSpaceInBottomRightCorner(room, "vertical", true)
+            return findSpaceInBottomRightCorner(room, "vertical", true)
         }
+        return bottomSideWallPositions.random()
     }
 }
 
-fun findSpaceInTopLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean) : RoomPosition
+fun findSpaceInTopLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean) : RoomPosition?
 {
     var upEdge = 0
     var downEdge = room.heightInSpaces
@@ -919,29 +1062,31 @@ fun findSpaceInTopLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean)
     }
     if (s == "horizontal")
     {
-        return if (leftSideWallPositions.isNotEmpty())
+        if (allowMoreSpaces && leftSideWallPositions.isEmpty())
         {
-            leftSideWallPositions.random()
+            return null
         }
-        else
+        if (!allowMoreSpaces && leftSideWallPositions.isEmpty())
         {
-            findSpaceInTopLeftCorner(room, "horizontal", true)
+            return findSpaceInTopLeftCorner(room, "horizontal", true)
         }
+        return leftSideWallPositions.random()
     }
     else
     {
-        return if (topSideWallPositions.isNotEmpty())
+        if (allowMoreSpaces && topSideWallPositions.isEmpty())
         {
-            topSideWallPositions.random()
+            return null
         }
-        else
+        if (!allowMoreSpaces && topSideWallPositions.isEmpty())
         {
-            findSpaceInTopLeftCorner(room, "vertical", true)
+            return findSpaceInTopLeftCorner(room, "vertical", true)
         }
+        return topSideWallPositions.random()
     }
 }
 
-fun findSpaceInTopRightCorner(room : Room, s : String, allowMoreSpaces : Boolean) : RoomPosition
+fun findSpaceInTopRightCorner(room : Room, s : String, allowMoreSpaces : Boolean) : RoomPosition?
 {
     var upEdge = 0
     var downEdge = room.heightInSpaces
@@ -1047,30 +1192,32 @@ fun findSpaceInTopRightCorner(room : Room, s : String, allowMoreSpaces : Boolean
     }
     if (s == "horizontal")
     {
-        return if (rightSideWallPositions.isNotEmpty())
+        if (allowMoreSpaces && rightSideWallPositions.isEmpty())
         {
-            rightSideWallPositions.random()
+            return null
         }
-        else
+        if (!allowMoreSpaces && rightSideWallPositions.isEmpty())
         {
-            findSpaceInTopRightCorner(room, "horizontal", true)
+            return findSpaceInTopRightCorner(room, "horizontal", true)
         }
+        return rightSideWallPositions.random()
     }
     else
     {
-        return if (topSideWallPositions.isNotEmpty())
+        if (allowMoreSpaces && topSideWallPositions.isEmpty())
         {
-            topSideWallPositions.random()
+            return null
         }
-        else
+        if (!allowMoreSpaces && topSideWallPositions.isEmpty())
         {
-            findSpaceInTopRightCorner(room, "vertical", true)
+            return findSpaceInTopRightCorner(room, "vertical", true)
         }
+        return topSideWallPositions.random()
     }
     
 }
 
-fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean) : RoomPosition
+fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boolean) : RoomPosition?
 {
     var downEdge = room.heightInSpaces
     var upEdge = 0
@@ -1176,25 +1323,27 @@ fun findSpaceInBottomLeftCorner(room : Room, s : String, allowMoreSpaces : Boole
     }
     if (s == "horizontal")
     {
-        return if (leftSideWallPositions.isNotEmpty())
+        if (allowMoreSpaces && leftSideWallPositions.isEmpty())
         {
-            leftSideWallPositions.random()
+            return null
         }
-        else
+        if (!allowMoreSpaces && leftSideWallPositions.isEmpty())
         {
-            findSpaceInBottomLeftCorner(room, "horizontal", true)
+            return findSpaceInBottomLeftCorner(room, "horizontal", true)
         }
+        return leftSideWallPositions.random()
     }
     else
     {
-        return if (bottomSideWallPositions.isNotEmpty())
+        if (allowMoreSpaces && bottomSideWallPositions.isEmpty())
         {
-            bottomSideWallPositions.random()
+            return null
         }
-        else
+        if (!allowMoreSpaces && bottomSideWallPositions.isEmpty())
         {
-            findSpaceInBottomLeftCorner(room, "vertical", true)
+            return findSpaceInBottomLeftCorner(room, "vertical", true)
         }
+        return bottomSideWallPositions.random()
     }
 }
 
