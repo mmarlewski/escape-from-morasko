@@ -8,9 +8,7 @@ import com.badlogic.gdx.utils.Timer
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
-import com.efm.item.MultiUseMapItem
 import com.efm.level.World
-import com.efm.multiUseMapItems.*
 import com.efm.screens.GameScreen
 import com.efm.state.*
 
@@ -164,36 +162,38 @@ object RightStructure
     var displayedStats: Actor? = null
     
     fun displayWeaponStats(itemName: String, itemStats: String) {
-        // Check if stats are already displayed
         if (displayedStats != null) {
-            // Remove the existing stats
             displayedStats?.remove()
             displayedStats = null
         }
-        
-        // Display the new stats
+    
         val statsPlace = columnOf(statsPopup(itemName, itemStats)).align(Align.bottomRight)
         statsPlace.padBottom(128f).padRight(16f)
         statsPlace.setFillParent(true)
         GameScreen.stage.addActor(statsPlace)
-        
-        // Set the reference to the displayed stats actor
+    
         displayedStats = statsPlace
-        
-        // Schedule a task to remove the actor after 2 seconds
-        Timer.schedule(object : Timer.Task() {
-            override fun run() {
-                // Check if the stats are still the same as when the timer was scheduled
-                if (displayedStats == statsPlace) {
-                    // Remove the actor from the stage
-                    statsPlace.remove()
-                    // Reset the reference after removal
-                    displayedStats = null
-                }
-            }
-        }, 2f)  // 2f represents the delay in seconds
+    
+        Timer.schedule(object : Timer.Task()
+                       {
+                           override fun run()
+                           {
+                               if (displayedStats == statsPlace)
+                               {
+                                   statsPlace.remove()
+                                   displayedStats = null
+                               }
+                           }
+                       }, 2f)
     }
-
+    
+    fun displayStatsOnlyInEquipment(itemName : String, itemStats : String)
+    {
+        if (EquipmentStructure.heroOverlay.isVisible)
+        {
+            displayWeaponStats(itemName, itemStats)
+        }
+    }
     
     fun display()
     {

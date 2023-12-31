@@ -1251,7 +1251,7 @@ fun patchNotesLabel(
     val bodyLabel = labelOf(body, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
     
     titleLabel.setFontScale(1.25f)
-    bodyLabel.setWrap(true)
+    bodyLabel.wrap = true
     
     val table = Table()
     table.add(titleLabel).row()
@@ -1260,15 +1260,17 @@ fun patchNotesLabel(
     return table
 }
 
-fun statisticsPopup(weaponName : String,
-                    weaponStats : String) : Window
+fun statisticsPopup(
+        itemName : String,
+        itemStats : String
+                   ) : Window
 {
     val windowStyle = Window.WindowStyle()
     windowStyle.titleFont = Fonts.pixeloid20
     windowStyle.titleFontColor = Colors.white
     windowStyle.background = NinePatchDrawable(Textures.pauseBackgroundDarkGreyNinePatch)
     
-    val window = Window(weaponName, windowStyle)
+    val window = Window(itemName, windowStyle)
     val titleLabel = window.titleTable.getCell(window.titleLabel).actor as Label
     titleLabel.setAlignment(Align.center)
     window.titleTable.getCell(titleLabel).padTop(48f)
@@ -1277,16 +1279,15 @@ fun statisticsPopup(weaponName : String,
     val delimiter = labelOf("", Fonts.pixeloid10, Colors.white, Textures.pauseBackgroundWhiteNinePatch)
     delimiter.setFontScale(0.1f)
     
-    val description = labelOf(weaponStats, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
+    val description = labelOf(itemStats, Fonts.pixeloid20, Colors.white, Textures.translucentNinePatch)
     
-    var widthOfDelimiter : Float
-    if (description.width > window.titleLabel.width)
+    val widthOfDelimiter : Float = if (description.width > window.titleLabel.width)
     {
-        widthOfDelimiter = description.width
+        description.width
     }
     else
     {
-        widthOfDelimiter = window.titleLabel.width
+        window.titleLabel.width
     }
     
     val table = Table()

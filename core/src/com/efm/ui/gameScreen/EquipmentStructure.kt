@@ -11,7 +11,6 @@ import com.efm.item.*
 import com.efm.item.Container
 import com.efm.level.World
 import com.efm.screens.GameScreen
-import com.efm.skills.Jump
 
 object EquipmentStructure
 {
@@ -268,7 +267,12 @@ object EquipmentStructure
                 
                 is StackableMapItem  ->
                 {
-                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
+                    val button = ItemsStructure.createItemWithLabel(
+                            item.amount,
+                            item.getTexture(),
+                            item.name,
+                            item.statsDescription
+                                                                   ) {}
                     button.addListener(object : ClickListener()
                                        {
                                            override fun clicked(event : InputEvent?, x : Float, y : Float)
@@ -281,7 +285,12 @@ object EquipmentStructure
                 
                 is StackableSelfItem ->
                 {
-                    val button = ItemsStructure.createItemWithLabel(item.amount, item.getTexture()) {}
+                    val button = ItemsStructure.createItemWithLabel(
+                            item.amount,
+                            item.getTexture(),
+                            item.name,
+                            item.statsDescription
+                                                                   ) {}
                     button.addListener(object : ClickListener()
                                        {
                                            override fun clicked(event : InputEvent?, x : Float, y : Float)

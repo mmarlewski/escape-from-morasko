@@ -121,6 +121,8 @@ object ItemsStructure
     fun createItemWithLabel(
             amountOfUses : Int,
             texture : Texture?,
+            itemName : String,
+            itemStats : String,
             action : () -> Unit
                            ) : ImageButton
     {
@@ -133,6 +135,7 @@ object ItemsStructure
                 Textures.focusedNinePatch
                                         ) {
             playSoundOnce(Sounds.ui_4)
+            RightStructure.displayStatsOnlyInEquipment(itemName, itemStats)
             action()
         }
         
@@ -431,14 +434,22 @@ object ItemsStructure
                 is StackableMapItem  ->
                 {
                     stackableMapItemRow.addActor(
-                            createItemWithLabel(item.amount, item.getTexture()) { attack(item) }
+                            createItemWithLabel(item.amount, item.getTexture(), item.name, item.statsDescription) {
+                                attack(
+                                        item
+                                      )
+                            }
                                                 )
                 }
                 
                 is StackableSelfItem ->
                 {
                     stackableSelfItemRow.addActor(
-                            createItemWithLabel(item.amount, item.getTexture()) { attack(item) }
+                            createItemWithLabel(item.amount, item.getTexture(), item.name, item.statsDescription) {
+                                attack(
+                                        item
+                                      )
+                            }
                                                  )
                 }
             }

@@ -16,7 +16,11 @@ class Apple(
     override val maxAmount : Int = 16
     override val baseAPUseCost : Int = 0
     override val hpBoost : Int = 5
-    override val apBoost : Int? = null
+    override val apBoost : Int = 0
+    override val statsDescription : String
+        get() = "HP gain: " + hpBoost + "\n" +
+                "AP gain: " + apBoost + "\n" +
+                "AP cost: " + baseAPUseCost
     
     override fun getTexture() : Texture
     {
