@@ -12,8 +12,11 @@ import com.efm.entity.*
 import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
 import com.efm.level.World
-import com.efm.multiUseMapItems.WoodenSword
+import com.efm.multiUseMapItems.*
 import com.efm.room.RoomPosition
+import com.efm.stackableMapItems.Bomb
+import com.efm.stackableMapItems.Explosive
+import com.efm.stackableSelfItems.*
 import com.efm.state.State
 import com.efm.state.getState
 
@@ -42,8 +45,19 @@ class EnemyMimic : Enemy, Interactive
     override var isFrozen = false
     override var loot : PossibleItems = PossibleItems(
             mutableListOf(
-                    PossibleItem(WoodenSword(), 0.8f, IntRange(1, 1))
-                         )
+                    PossibleItem(APPotionSmall(), 0.33f, IntRange(0, 4)),
+                    PossibleItem(APPotionBig(), 0.67f, IntRange(0, 2)),
+                    PossibleItem(HPPotionSmall(), 0.33f, IntRange(0, 4)),
+                    PossibleItem(HPPotionBig(), 0.67f, IntRange(0, 2)),
+                    PossibleItem(Sledgehammer(), 0.2f, 1..1),
+                    PossibleItem(Hatchet(), 0.5f, 1..1),
+                    PossibleItem(IronSword(), 0.7f, 1..1),
+                    PossibleItem(Bomb(), 0.5f, IntRange(1, 3)),
+                    PossibleItem(Explosive(), 0.7f, IntRange(1, 5)),
+                    PossibleItem(DoubleBitAxe(), 0.4f, IntRange(1, 1)),
+                    PossibleItem(SunBow(), 0.3f, IntRange(1, 1))
+                         ),
+            7
                                                      )
     
     fun detected() = when (val currState = getState())

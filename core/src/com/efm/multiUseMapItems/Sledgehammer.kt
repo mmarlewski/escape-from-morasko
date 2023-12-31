@@ -14,10 +14,10 @@ class Sledgehammer : MultiUseMapItem
 {
     override val name : String = "Sledgehammer"
     override var baseAPUseCost : Int = 1
-    override var durability : Int = 20
-    override var maxDurability : Int = 20
+    override var durability : Int = 14
+    override var maxDurability : Int = 14
     override val durabilityUseCost : Int = 1
-    val damage : Int = 2
+    val damage : Int = 5
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
                 "AP cost: " + baseAPUseCost + "\n" +

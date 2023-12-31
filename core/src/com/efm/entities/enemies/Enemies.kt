@@ -8,6 +8,8 @@ import com.efm.entities.enemies.mushroom.EnemyMushroom
 import com.efm.entities.enemies.plant.EnemyPlant
 import com.efm.entities.enemies.rollingStone.EnemyRollingStone
 import com.efm.entities.enemies.skeleton.EnemySkeleton
+import com.efm.entities.enemies.turret.EnemyTurret
+import com.efm.entities.enemies.wizard.EnemyWizard
 import com.efm.entity.Enemy
 import kotlin.reflect.KClass
 

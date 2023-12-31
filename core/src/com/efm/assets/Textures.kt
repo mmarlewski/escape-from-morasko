@@ -140,6 +140,7 @@ object Textures
     val smallAxe = load("items/axeSmall2.png")
     val staff = load("items/staff1.png")
     val bow = load("items/bow1.png")
+    val sunBow = load("items/bow3.png")
     
     // stackableMapItems
     val bomb = load("items/bomb2.png")

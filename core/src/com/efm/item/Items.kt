@@ -8,6 +8,7 @@ import kotlin.reflect.KClass
 enum class Items(private val kClass : KClass<out Item>)
 {
     BOW(Bow::class),
+    SUN_BOW(SunBow::class),
     SLEDGEHAMMER(Sledgehammer::class),
     SMALL_AXE(SmallAxe::class),
     HATCHET(Hatchet::class),

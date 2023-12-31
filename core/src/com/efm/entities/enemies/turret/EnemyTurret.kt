@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.enemies.turret
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -8,9 +8,12 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
+import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.stackableMapItems.Bomb
+import com.efm.stackableMapItems.Explosive
 
 class EnemyTurret : Entity, Enemy
 {
@@ -25,7 +28,14 @@ class EnemyTurret : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
-    override var loot : PossibleItems = PossibleItems()
+    override var loot : PossibleItems = PossibleItems(
+            mutableListOf(
+                    PossibleItem(Bomb(), 0.5f, IntRange(1, 5)),
+                    PossibleItem(Explosive(), 0.7f, IntRange(1, 7)),
+                         )
+                                                     )
+    
+    override fun getCorpse() : EnemyCorpse = EnemyTurretCorpse(this.position, loot)
     
     override fun getTile() : TiledMapTile
     {

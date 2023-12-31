@@ -11,7 +11,6 @@ import kotlin.random.Random
  * InteractiveContainer found in rooms.
  * When created, if supplied with PossibleItems, random items are drawn.
  * During loading, Chest is created using default constructor, possibleItems is null, so no items are drawn.
- * @param possibleItems PossibleItems from which items are drawn
  */
 open class Chest(
         possibleItems : PossibleItems? = null, seed : Int = Random.nextInt(), override var maxItems : Int = 5

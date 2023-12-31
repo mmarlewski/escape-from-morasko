@@ -50,9 +50,10 @@ class EnemyGhost(
                     PossibleItem(Staff(), 0.2f, 1..1),
                     PossibleItem(TurquoiseSword(), 0.2f, 1..1),
                     PossibleItem(AmberSword(), 0.2f, 1..1),
-                    PossibleItem(Bomb(), 0.5f, IntRange(0, 2)),
-                    PossibleItem(Explosive(), 0.1f, IntRange(1, 1))
-                         )
+                    PossibleItem(Bomb(), 0.3f, IntRange(1, 3)),
+                    PossibleItem(Explosive(), 0.6f, IntRange(1, 5))
+                         ),
+            6
                                                      )
     
     private val maxTurnsUntilTryToDisappear : Int = 4

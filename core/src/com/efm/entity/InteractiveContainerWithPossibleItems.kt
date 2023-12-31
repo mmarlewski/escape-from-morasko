@@ -11,8 +11,7 @@ import kotlin.random.Random
 
 /**
  * Entity that can be interacted with to access the items it contains.
- * Can be supplied with PossibleItems, from which random items can be drawn and added to the Container.
- * @param possibleItems PossibleItems from which items are drawn
+ * Can be supplied with PossibleItems, from which random items can be drawn.
  */
 abstract class InteractiveContainerWithPossibleItems(val possibleItems : PossibleItems? = null,
                                                      private var seed : Int = Random.nextInt()) : Container, Interactive

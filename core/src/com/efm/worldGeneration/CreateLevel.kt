@@ -11,9 +11,11 @@ import com.efm.exit.*
 import com.efm.item.*
 import com.efm.level.Level
 import com.efm.level.World
+import com.efm.multiUseMapItems.IronSword
 import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.*
 import com.efm.stackableSelfItems.Apple
+import com.efm.stackableSelfItems.HPPotionSmall
 import com.efm.worldGeneration.LevelTheme
 import com.efm.worldGeneration.LevelThemes
 import kotlin.math.*
@@ -296,9 +298,13 @@ fun createLevel(levelNumber : Int) : Level
             }
             secondRoom.addEntityAt(EnemyMushroom(), findPositionToSpawnHero(secondRoom))
         }
+        addChestToStartingRoom(startingRoom, WoodenSword(), Apple(2))
+    }
+    else
+    {
+        addChestToStartingRoom(startingRoom, IronSword(), HPPotionSmall(2))
     }
     level.startingRoom = startingRoom
-    addChestToStartingRoom(startingRoom)
     addChestsToOtherRooms(rooms, levelNumber, levelTheme)
     addNpcToRooms(rooms, levelTheme)
     level.startingPosition.set(findPositionToSpawnHero(startingRoom))
@@ -386,67 +392,70 @@ fun getPossibleItemsBasedOnLevelNumber(levelNumber : Int, levelTheme : LevelThem
 fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem = when (item)
 {
     Items.BOW             -> PossibleItem(
-            item.new(), 0.10f + (0.05f * levelNumber), IntRange(1, 2)
+            item.new(), 0.09f + (0.05f * levelNumber), IntRange(1, 2)
+                                         )
+    Items.SUN_BOW         -> PossibleItem(
+            item.new(), 0.02f + (0.03f * levelNumber), IntRange(1, 1)
                                          )
     Items.SLEDGEHAMMER    -> PossibleItem(
-            item.new(), 0.05f * levelNumber, IntRange(1, 1)
-                                         )
-    Items.SMALL_AXE       -> PossibleItem(
-            item.new(), 0.10f - (0.06f * levelNumber), IntRange(1, 2)
-                                         )
-    Items.HATCHET         -> PossibleItem(
-            item.new(), 0.08f + (0.03f * levelNumber), IntRange(1, 2)
-                                         )
-    Items.DOUBLE_BIT_AXE  -> PossibleItem(
-            item.new(), 0.06f + (0.03f * levelNumber), IntRange(1, 1)
-                                         )
-    Items.STAFF           -> PossibleItem(
             item.new(), 0.04f * levelNumber, IntRange(1, 1)
                                          )
+    Items.SMALL_AXE       -> PossibleItem(
+            item.new(), 0.09f - (0.06f * levelNumber), IntRange(1, 2)
+                                         )
+    Items.HATCHET         -> PossibleItem(
+            item.new(), 0.07f + (0.03f * levelNumber), IntRange(1, 2)
+                                         )
+    Items.DOUBLE_BIT_AXE  -> PossibleItem(
+            item.new(), 0.05f + (0.03f * levelNumber), IntRange(1, 1)
+                                         )
+    Items.STAFF           -> PossibleItem(
+            item.new(), 0.03f * levelNumber, IntRange(1, 1)
+                                         )
     Items.WOODEN_SWORD    -> PossibleItem(
-            item.new(), 0.25f - (0.03f * levelNumber), IntRange(1, 2)
+            item.new(), 0.20f - (0.03f * levelNumber), IntRange(1, 2)
                                          )
     Items.IRON_SWORD      -> PossibleItem(
-            item.new(), 0.20f - (0.01f * levelNumber), IntRange(1, 1)
+            item.new(), 0.15f - (0.01f * levelNumber), IntRange(1, 1)
                                          )
     Items.AMBER_SWORD     -> PossibleItem(
-            item.new(), 0.10f + (0.03f * levelNumber), IntRange(1, 1)
+            item.new(), 0.09f + (0.03f * levelNumber), IntRange(1, 1)
                                          )
     Items.TURQUOISE_SWORD -> PossibleItem(
-            item.new(), 0.05f + (0.04f * levelNumber), IntRange(1, 1)
+            item.new(), 0.04f + (0.04f * levelNumber), IntRange(1, 1)
                                          )
     Items.BOMB            -> PossibleItem(
-            item.new(), 0.05f, IntRange(1, 3 + levelNumber)
+            item.new(), 0.04f, IntRange(1, 3 + levelNumber)
                                          )
     Items.EXPLOSIVE       -> PossibleItem(
-            item.new(), 0.10f, IntRange(
+            item.new(), 0.09f, IntRange(
             2, 3 + levelNumber
                                        )
                                          )
     Items.SHURIKEN        -> PossibleItem(
-            item.new(), 0.10f, IntRange(
+            item.new(), 0.09f, IntRange(
             3, 3 + levelNumber * 2
                                        )
                                          )
     Items.APPLE           -> PossibleItem(
-            item.new(), 0.10f, IntRange(
+            item.new(), 0.09f, IntRange(
             3, 3 + levelNumber * 2
                                        )
                                          )
     Items.AP_POTION_BIG   -> PossibleItem(
-            item.new(), 0.06f + (0.01f * levelNumber), IntRange(1, 2 + levelNumber)
+            item.new(), 0.05f + (0.01f * levelNumber), IntRange(1, 2 + levelNumber)
                                          )
     Items.AP_POTION_SMALL -> PossibleItem(
-            item.new(), 0.14f + (0.01f * levelNumber), IntRange(1, 3 + levelNumber)
+            item.new(), 0.13f + (0.01f * levelNumber), IntRange(1, 3 + levelNumber)
                                          )
     Items.FISH            -> PossibleItem(
-            item.new(), 0.10f, IntRange(
+            item.new(), 0.09f, IntRange(
             4, 4 + levelNumber * 2
                                        )
                                          )
-    Items.HP_POTION_BIG   -> PossibleItem(item.new(), 0.08f + (0.01f * levelNumber), IntRange(1, 3 + levelNumber))
-    Items.HP_POTION_SMALL -> PossibleItem(item.new(), 0.16f + (0.01f * levelNumber), IntRange(1, 5 + levelNumber))
-    Items.MUSHROOM        -> PossibleItem(item.new(), 0.08f, IntRange(1, 5 + levelNumber))
+    Items.HP_POTION_BIG   -> PossibleItem(item.new(), 0.07f + (0.01f * levelNumber), IntRange(1, 3 + levelNumber))
+    Items.HP_POTION_SMALL -> PossibleItem(item.new(), 0.12f + (0.01f * levelNumber), IntRange(1, 5 + levelNumber))
+    Items.MUSHROOM        -> PossibleItem(item.new(), 0.07f, IntRange(1, 5 + levelNumber))
 }
 
 fun findPositionToSpawnHero(first : Room) : RoomPosition
@@ -491,12 +500,11 @@ fun randomizeBasesForARoomAndAwayFromDoors(room : Room, allowedBases : List<Base
     }
 }
 
-fun addChestToStartingRoom(first : Room)
+fun addChestToStartingRoom(first : Room, vararg items : Item)
 {
     val chest = Chest()
-    chest.addItem(WoodenSword())
-    chest.addItem(Apple(2))
-    val position = findRandomFreePositionInRoom(first)
+    items.forEach { chest.addItem(it) }
+    val position = getPositionForChest(first)
     if (position != null)
     {
         first.addEntityAt(chest, position)

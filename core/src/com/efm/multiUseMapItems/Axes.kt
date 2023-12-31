@@ -10,7 +10,7 @@ class SmallAxe : Axe()
     override var durability : Int = 16
     override var maxDurability : Int = 16
     override val durabilityUseCost : Int = 1
-    override val damage : Int = 4
+    override val damage : Int = 3
     
     override fun getTexture() : Texture = Textures.smallAxe
 }
@@ -22,7 +22,7 @@ class DoubleBitAxe : Axe()
     override var durability : Int = 30
     override var maxDurability : Int = 30
     override val durabilityUseCost : Int = 1
-    override val damage : Int = 12
+    override val damage : Int = 8
     
     override fun getTexture() : Texture = Textures.doubleBitAxe
 }
@@ -34,7 +34,7 @@ class Hatchet : Axe()
     override var durability : Int = 16
     override var maxDurability : Int = 16
     override val durabilityUseCost : Int = 1
-    override val damage : Int = 8
+    override val damage : Int = 5
     
     override fun getTexture() : Texture = Textures.hatchet
 }

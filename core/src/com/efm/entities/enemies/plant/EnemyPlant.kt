@@ -9,9 +9,11 @@ import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.entity.*
+import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
+import com.efm.stackableSelfItems.Apple
 
 class EnemyPlant : Entity, Enemy
 {
@@ -26,7 +28,9 @@ class EnemyPlant : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
-    override var loot : PossibleItems = PossibleItems()
+    override var loot : PossibleItems = PossibleItems(
+            mutableListOf(PossibleItem(Apple(), 1f, IntRange(1, 16)))
+                                                     )
     
     override fun getTile() : TiledMapTile
     {

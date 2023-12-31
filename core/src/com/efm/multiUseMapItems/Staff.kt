@@ -14,10 +14,10 @@ class Staff : MultiUseMapItem
 {
     override val name : String = "Staff"
     override var baseAPUseCost : Int = 1
-    override var durability : Int = 20
-    override var maxDurability : Int = 20
+    override var durability : Int = 12
+    override var maxDurability : Int = 12
     override val durabilityUseCost : Int = 1
-    val damage : Int = 2
+    val damage : Int = 8
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
                 "AP cost: " + baseAPUseCost + "\n" +
