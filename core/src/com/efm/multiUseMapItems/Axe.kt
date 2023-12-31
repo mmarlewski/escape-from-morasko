@@ -8,15 +8,16 @@ import com.efm.item.MultiUseMapItem
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import kotlin.math.roundToInt
 
-class SmallAxe : MultiUseMapItem
+abstract class Axe : MultiUseMapItem
 {
-    override val name : String = "Small Axe"
+    override val name : String = "Standard Axe"
     override var baseAPUseCost : Int = 1
     override var durability : Int = 20
     override var maxDurability : Int = 20
     override val durabilityUseCost : Int = 1
-    val damage : Int = 2
+    open val damage : Int = 2
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
                 "Uses left: " + durability + "\n" +
@@ -24,7 +25,7 @@ class SmallAxe : MultiUseMapItem
     
     override fun getTexture() : Texture
     {
-        return Textures.axe
+        return Textures.doubleBitAxe
     }
     
     override fun selected()
@@ -135,7 +136,7 @@ class SmallAxe : MultiUseMapItem
                 {
                     is Character ->
                     {
-                        slashEntity.damageCharacter(damage * World.hero.weaponDamageMultiplier)
+                        slashEntity.damageCharacter((this.damage * World.hero.weaponDamageMultiplier).roundToInt())
                     }
                 }
             }

@@ -16,7 +16,7 @@ enum class Boss(val bossClass : KClass<out Enemy>)
     NatureGolem(BossNatureGolem::class),
     OctopusHead(BossOctopusHead::class),
     Slime(BossSlime::class),
-    Wizard(BossWizard::class),
+    //Wizard(BossWizard::class),
     Chess(King::class)
 }
 
@@ -42,7 +42,7 @@ private fun chooseRandomUndefeatedBoss(random : Random = Random(Random.nextInt()
     return Boss.values().filter { it !in defeatedBosses }.random(random)
 }
 
-fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : Direction4 = Direction4.left)
+fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : Direction4 = Direction4.left) : Boss
 {
     val boss = chooseRandomUndefeatedBoss()
     when (boss)
@@ -59,14 +59,14 @@ fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : 
             head.addTentacle(tentacle1)
             val tentacle2 = BossOctopusTentacle()
             head.addTentacle(tentacle2)
-            room.changeBaseAt(Base.water, position.x - 2, position.y)
-            room.addEntityAt(tentacle1, position.x - 2, position.y)
-            room.changeBaseAt(Base.water, position.x - 1, position.y)
-            room.changeBaseAt(Base.waterOctopus, position.x, position.y)
-            room.addEntityAt(head, position.x, position.y)
-            room.changeBaseAt(Base.water, position.x + 1, position.y)
-            room.changeBaseAt(Base.water, position.x + 2, position.y)
-            room.addEntityAt(tentacle2, position.x + 2, position.y)
+            room.changeBaseAt(Base.water, position.x - 1, position.y - 1)
+            room.addEntityAt(tentacle1, position.x - 1, position.y - 1)
+            room.changeBaseAt(Base.water, position.x, position.y - 1)
+            room.changeBaseAt(Base.waterOctopus, position.x + 1, position.y - 1)
+            room.addEntityAt(head, position.x + 1, position.y - 1)
+            room.changeBaseAt(Base.water, position.x + 2, position.y - 1)
+            room.changeBaseAt(Base.water, position.x + 3, position.y - 1)
+            room.addEntityAt(tentacle2, position.x + 3, position.y - 1)
         }
         
         else             ->
@@ -75,6 +75,7 @@ fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : 
             room.addEntityAt(bossInstance, position)
         }
     }
+    return boss
 }
 
 fun spawnAllBossesInOneRoom(finalRoom : Room)

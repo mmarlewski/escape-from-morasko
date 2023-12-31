@@ -5,12 +5,13 @@ import com.badlogic.gdx.utils.JsonValue
 import com.efm.item.*
 import com.efm.state.getState
 import com.efm.ui.gameScreen.EquipmentStructure
+import largerMultipleOfX
+import kotlin.math.min
 import kotlin.random.Random
 
 /**
  * Entity that can be interacted with to access the items it contains.
- * Can be supplied with PossibleItems, from which random items can be drawn and added to the Container.
- * @param possibleItems PossibleItems from which items are drawn
+ * Can be supplied with PossibleItems, from which random items can be drawn.
  */
 abstract class InteractiveContainerWithPossibleItems(val possibleItems : PossibleItems? = null,
                                                      private var seed : Int = Random.nextInt()) : Container, Interactive
@@ -26,12 +27,15 @@ abstract class InteractiveContainerWithPossibleItems(val possibleItems : Possibl
         }
     }
     
-    /** Draw random items from possibleItems and add them to the Container. */
+    /** Draw random items from possibleItems and add them to the Container.
+     *  Set maxItems to the closest multiple of 5 that is larger than number of drawn items, but not larger than 25.
+     */
     fun drawItems()
     {
-        if (possibleItems!=null)
+        if (possibleItems != null)
         {
             val drawnItems = possibleItems.drawItems(seed)
+            maxItems = min(drawnItems.size.largerMultipleOfX(5), 25)
             for (item in drawnItems)
             {
                 try

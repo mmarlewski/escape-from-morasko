@@ -1,23 +1,23 @@
 package com.efm.multiUseMapItems
 
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.math.Vector2
 import com.efm.*
 import com.efm.assets.*
 import com.efm.entity.Character
 import com.efm.item.MultiUseMapItem
 import com.efm.level.World
-import com.efm.room.*
-import kotlin.math.sqrt
+import com.efm.room.Room
+import com.efm.room.RoomPosition
+import kotlin.math.roundToInt
 
 class Sledgehammer : MultiUseMapItem
 {
     override val name : String = "Sledgehammer"
     override var baseAPUseCost : Int = 1
-    override var durability : Int = 20
-    override var maxDurability : Int = 20
+    override var durability : Int = 14
+    override var maxDurability : Int = 14
     override val durabilityUseCost : Int = 1
-    val damage : Int = 2
+    val damage : Int = 5
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
                 "Uses left: " + durability + "\n" +
@@ -89,7 +89,7 @@ class Sledgehammer : MultiUseMapItem
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(this.damage * World.hero.weaponDamageMultiplier)
+                        attackedEntity.damageCharacter((this.damage * World.hero.weaponDamageMultiplier).roundToInt())
                     }
                 }
             }

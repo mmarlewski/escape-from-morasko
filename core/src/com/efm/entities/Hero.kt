@@ -12,7 +12,7 @@ import com.efm.level.World
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 import com.efm.skill.*
-import com.efm.skills.Pockets
+import com.efm.skills.*
 import com.efm.stackableMapItems.TestingBomb
 import com.efm.stackableSelfItems.Apple
 import com.efm.stackableSelfItems.Fish
@@ -50,7 +50,7 @@ class Hero(
             GameScreen.updateMapEntityLayer()
         }
     
-    var weaponDamageMultiplier = 1
+    var weaponDamageMultiplier = 1.0
     
     override fun getTile() : TiledMapTile
     {
@@ -340,7 +340,7 @@ class Hero(
                     }
                 }
             }
-            val jsonWeaponDamageMultiplier = json.readValue("weaponDamageMultiplier", Int::class.java, jsonData)
+            val jsonWeaponDamageMultiplier = json.readValue("weaponDamageMultiplier", Double::class.java, jsonData)
             if (jsonWeaponDamageMultiplier != null) this.weaponDamageMultiplier = jsonWeaponDamageMultiplier
         }
     }
@@ -359,6 +359,8 @@ class Hero(
         this.abilityPoints = this.maxAbilityPoints
         this.maxHealthPoints = Int.MAX_VALUE / 4
         this.healthPoints = this.maxHealthPoints
+        this.addSkill(LavaWalking)
+        this.addSkill(WaterWalking)
     }
     
     fun reset()
@@ -374,7 +376,7 @@ class Hero(
         this.canMoveNextTurn = true
         this.isVisible = true
         this.turnsElapsed = 0
-        this.weaponDamageMultiplier = 1
+        this.weaponDamageMultiplier = 1.0
         BodyPart.values().forEach { World.hero.bodyPartMap[it] = null }
     }
 }

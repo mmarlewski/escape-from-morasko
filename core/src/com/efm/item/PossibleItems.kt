@@ -17,14 +17,14 @@ class PossibleItem(
  * @param maxItemsPossibleToDraw maximum number of drawn items
  */
 class PossibleItems(
-        val items : MutableList<PossibleItem> = mutableListOf(), private val maxItemsPossibleToDraw : Int = items.size
+        val items : MutableList<PossibleItem> = mutableListOf(), val maxItemsPossibleToDraw : Int = items.size
                    )
 {
     fun drawItems(seed : Int = Random.nextInt()) : MutableList<Item>
     {
         val drawnItems = mutableListOf<Item>()
         val generator = Random(seed)
-        for (possibleItem in items)
+        for (possibleItem in items.shuffled())
         {
             if (drawnItems.size < maxItemsPossibleToDraw)
             {

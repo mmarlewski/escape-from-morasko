@@ -12,6 +12,7 @@ import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.multiUseMapItems.Bow
+import com.efm.multiUseMapItems.SunBow
 import com.efm.room.RoomPosition
 import com.efm.stackableSelfItems.APPotionSmall
 import com.efm.stackableSelfItems.HPPotionSmall
@@ -32,6 +33,7 @@ class EnemySkeleton : Entity, Enemy
     override var loot : PossibleItems = PossibleItems(
             mutableListOf(
                     PossibleItem(Bow(), 0.5f, IntRange(1, 1)),
+                    PossibleItem(SunBow(), 0.05f, IntRange(1, 1)),
                     PossibleItem(APPotionSmall(), 0.8f, IntRange(0, 1)),
                     PossibleItem(HPPotionSmall(), 0.8f, IntRange(0, 3))
                          )

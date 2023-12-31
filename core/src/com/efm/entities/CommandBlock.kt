@@ -6,8 +6,7 @@ import com.efm.entity.Interactive
 import com.efm.room.RoomPosition
 
 /**
- * Interactive Entity made for testing, that performs supplied action.
- * @param action code run on interaction
+ * Entity that performs supplied action when interacted with.
  */
 class CommandBlock(
         val action : () -> Unit = { }

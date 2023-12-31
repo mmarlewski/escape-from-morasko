@@ -135,9 +135,12 @@ object Textures
     val turquoiseSword = load("items/swordSmallHandle2.png")
     val amberSword = load("items/swordSmallHandle3.png")
     val hammer = load("items/hammer2.png")
-    val axe = load("items/axeDoubleBit2.png")
+    val doubleBitAxe = load("items/axeDoubleBit2.png")
+    val hatchet = load("items/axe2.png")
+    val smallAxe = load("items/axeSmall2.png")
     val staff = load("items/staff1.png")
     val bow = load("items/bow1.png")
+    val sunBow = load("items/bow3.png")
     
     // stackableMapItems
     val bomb = load("items/bomb2.png")

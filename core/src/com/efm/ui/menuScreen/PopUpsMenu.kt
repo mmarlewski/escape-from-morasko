@@ -3,12 +3,14 @@ package com.efm.ui.menuScreen
 import com.badlogic.gdx.utils.Align
 import com.efm.*
 import com.efm.Map
+import com.efm.entities.enemies.mimic.EnemyMimic
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.MenuScreen
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
+import createProcGenWorld
 
 object PopUpsMenu
 {
@@ -56,7 +58,8 @@ object PopUpsMenu
         }
         // create World
         World.levels.clear()
-        World.createWorldPrototype()
+        //World.createWorldPrototype()
+        World.createProcGenWorld()
         // set currentLevel and currentRoom
         val startingLevel = World.levels.first()
         val startingRoom = startingLevel.startingRoom
@@ -103,7 +106,7 @@ object PopUpsMenu
         // display new enemy health stacks
         for (enemy in World.currentRoom?.getEnemies() ?: listOf())
         {
-            enemy.displayOwnHealthBar()
+            if (enemy !is EnemyMimic || enemy.detected()) enemy.displayOwnHealthBar()
         }
         // update Room, Map, UI
         World.currentRoom?.updateSpacesEntities()

@@ -38,7 +38,7 @@ object AppInfoScreen : BaseScreen()
                         "- weapons have their statistics displayed when selected while playing",
                 appInfoTitle.width
                                            )
-        
+    
         val bugFixesLabel = patchNotesLabel(
                 "Bug fixes",
                 "- Game Over screen now appears when hero is killed by their own actions,\n" +
@@ -46,13 +46,13 @@ object AppInfoScreen : BaseScreen()
                         "- new items no longer appear in corpses after every loading",
                 appInfoTitle.width
                                            )
-        
+
 //        val balancingLabel = patchNotesLabel(
 //                "Balancing",
 //                "",
 //                appInfoTitle.width
 //                                            )
-        
+    
         val backButton = textButtonOf(
                 "back",
                 Fonts.inconsolata30,

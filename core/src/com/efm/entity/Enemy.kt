@@ -294,8 +294,8 @@ interface Enemy : Character
     fun scaleOwnStats()
     {
         val turnsElapsed = World.hero.turnsElapsed
-        maxHealthPoints += turnsElapsed
-        healthPoints += turnsElapsed
+        maxHealthPoints += turnsElapsed / 3
+        healthPoints += turnsElapsed / 3
         attackDamage += turnsElapsed / 3
         Gdx.app.log("Scaling", "Turns elapsed : $turnsElapsed")
         createOwnHealthBar()
