@@ -29,36 +29,29 @@ object AppInfoScreen : BaseScreen()
                                   )
         
         val versionLabel =
-                labelOf("current version: 1.0.1", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+                labelOf("current version: 1.1.0", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         
         val whatsNewLabel = patchNotesLabel(
                 "What's new?",
-                "- it is now possible to interact with objects such as chests, corpses and NPCs without the need of using movement mode, if the player’s character is next to them,\n" +
-                        "- passages between rooms change visually to show if it is possible to use them,\n" +
-                        "- added an option to exit movement mode by pressing movement button or player’s character,\n" +
-                        "- removed “quit game” button,\n" +
-                        "- added barrel throwing skill,\n" +
-                        "- expanded the tutorial,\n" +
-                        "- added an option to attack enemies with fists.",
+                "- procedural level generation,\n" +
+                        "- all items have their statistics shown when selected in equipment,\n" +
+                        "- weapons have their statistics displayed when selected while playing",
                 appInfoTitle.width
                                            )
         
         val bugFixesLabel = patchNotesLabel(
                 "Bug fixes",
-                "- fixed a movement bug that caused players to lose action points, despite not changing player’s position,\n" +
-                        "- UI is no longer visible when special event pop-ups are shown,\n" +
-                        "- missing elements of UI are now drawn after closing the game and pressing continue,\n" +
-                        "- the game now ends immediately after the player's death.",
+                "- Game Over screen now appears when hero is killed by their own actions,\n" +
+                        "- items no longer have amount of 0 when looting,\n" +
+                        "- new items no longer appear in corpses after every loading",
                 appInfoTitle.width
                                            )
         
-        val balancingLabel = patchNotesLabel(
-                "Balancing",
-                "- weapons are now more durable,\n" +
-                        "- more weapons appear in chests,\n" +
-                        "- enemies deal more damage.",
-                appInfoTitle.width
-                                            )
+//        val balancingLabel = patchNotesLabel(
+//                "Balancing",
+//                "",
+//                appInfoTitle.width
+//                                            )
         
         val backButton = textButtonOf(
                 "back",
@@ -80,7 +73,7 @@ object AppInfoScreen : BaseScreen()
                 rowOf(versionLabel),
                 rowOf(whatsNewLabel),
                 rowOf(bugFixesLabel),
-                rowOf(balancingLabel),
+//                rowOf(balancingLabel),
                 rowOf(backButton)
                              )
         
