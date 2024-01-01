@@ -21,7 +21,7 @@ object GameCompletedScreen : BaseScreen()
     init
     {
         // input processor
-        super.inputProcessor = MenuScreen.stage
+        super.inputProcessor = stage
         
         val gameOverText = labelOf("Congratulations!", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         val gameOverSubtext =
@@ -66,7 +66,7 @@ object GameCompletedScreen : BaseScreen()
         
         EscapeFromMorasko.spriteBatch.begin()
         EscapeFromMorasko.spriteBatch.draw(
-                Textures.mainMenuBackground,
+                Textures.pauseBackgroundBlack,
                 0f,
                 0f,
                 viewport.worldWidth,
