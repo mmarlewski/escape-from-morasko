@@ -7,6 +7,7 @@ import com.efm.Map
 import com.efm.MapLayer
 import com.efm.entities.Hero
 import com.efm.entities.bosses.slime.BossSlimeQuarter
+import com.efm.entities.walls.Wall
 import com.efm.entity.*
 
 /**
@@ -60,6 +61,7 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
     {
         if (isPositionWithinBounds(x, y))
         {
+            spaceList.remove(spaceArray[y][x])
             spaceArray[y][x] = null
         }
     }
@@ -69,6 +71,7 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
         if (isPositionWithinBounds(x, y))
         {
             spaceArray[y][x] = space
+            spaceList.add(space)
         }
     }
     
@@ -312,6 +315,86 @@ class Room(var name : String, var heightInSpaces : Int, var widthInSpaces : Int)
     {
         enemies.forEach { if (it is Enemy) return true }
         return false
+    }
+    
+    private fun surroundingSpaces(space : Space) : MutableList<Space>
+    {
+        val surroundingSpaces = mutableListOf<Space>()
+        space.position.surroundingPositions(1).forEach {
+            val surroundingSpace = this.getSpace(it)
+            if (surroundingSpace != null) surroundingSpaces.add(surroundingSpace)
+        }
+        return surroundingSpaces
+    }
+    
+    fun spaceIsAdjacentToWall(space : Space) = surroundingSpaces(space).any { it.getEntity() is Wall }
+    
+    fun edgePositions() : List<RoomPosition>
+    {
+        // edges
+        val upEdge = 0
+        val downEdge = this.heightInSpaces
+        val leftEdge = 0
+        val rightEdge = this.widthInSpaces
+        // find wall positions
+        val edgePositions = mutableListOf<RoomPosition>()
+        for (y in upEdge until downEdge)
+        {
+            // left edge
+            for (x in leftEdge until rightEdge)
+            {
+                if (this.getSpace(x, y) != null && this.getSpace(x, y)?.getEntity() !is Wall)
+                {
+                    val pos = RoomPosition(x, y)
+                    if (!edgePositions.contains(pos)) edgePositions.add(pos)
+                    break
+                }
+            }
+            // right edge
+            for (x in rightEdge - 1 downTo leftEdge)
+            {
+                if (this.getSpace(x, y) != null && this.getSpace(x, y)?.getEntity() !is Wall)
+                {
+                    val pos = RoomPosition(x, y)
+                    if (!edgePositions.contains(pos)) edgePositions.add(pos)
+                    break
+                }
+            }
+        }
+        for (x in leftEdge until rightEdge)
+        {
+            // up edge
+            for (y in upEdge until downEdge)
+            {
+                if (this.getSpace(x, y) != null && this.getSpace(x, y)?.getEntity() !is Wall)
+                {
+                    val pos = RoomPosition(x, y)
+                    if (!edgePositions.contains(pos)) edgePositions.add(pos)
+                    break
+                }
+            }
+            // down edge
+            for (y in downEdge - 1 downTo upEdge)
+            {
+                if (this.getSpace(x, y) != null && this.getSpace(x, y)?.getEntity() !is Wall)
+                {
+                    val pos = RoomPosition(x, y)
+                    if (!edgePositions.contains(pos)) edgePositions.add(pos)
+                    break
+                }
+            }
+        }
+        return edgePositions
+    }
+    
+    fun edgeSpaces() : List<Space>
+    {
+        val edgeSpaces = mutableListOf<Space>()
+        this.edgePositions().forEach {
+            val edgeSpace = this.getSpace(it)
+            if (edgeSpace != null) edgeSpaces.add(edgeSpace)
+        }
+        return edgeSpaces
     }
     
     // for serializing

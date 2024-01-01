@@ -158,15 +158,15 @@ class BossWizard : Entity, Enemy
         }
     }
     
-    override fun onDeath()
-    {
-        if (World.currentRoom?.name != "finalRoom")
-        {
-            showSkillAssignPopUpAfterBossKill(this)
-            addBossToDefeatedBossesList(Boss.Wizard)
-        }
-        increaseHeroStats(5, 3)
-    }
+//    override fun onDeath()
+//    {
+//        if (World.currentRoom?.name != "finalRoom")
+//        {
+//            showSkillAssignPopUpAfterBossKill(this)
+//            addBossToDefeatedBossesList(Boss.Wizard)
+//        }
+//        increaseHeroStats(5, 3)
+//    }
     
     fun areaOfEffectAttack()
     {

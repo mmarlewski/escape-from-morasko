@@ -39,7 +39,7 @@ object AppInfoScreen : BaseScreen()
                         "- new decorative elements spawn in rooms",
                 appInfoTitle.width
                                            )
-        
+    
         val bugFixesLabel = patchNotesLabel(
                 "Bug fixes",
                 "- Game Over screen now appears when hero is killed by their own actions,\n" +
@@ -48,13 +48,13 @@ object AppInfoScreen : BaseScreen()
                         "- mimic pretends to be a chest more convincingly",
                 appInfoTitle.width
                                            )
-        
+
 //        val balancingLabel = patchNotesLabel(
 //                "Balancing",
 //                "",
 //                appInfoTitle.width
 //                                            )
-        
+    
         val backButton = textButtonOf(
                 "back",
                 Fonts.inconsolata30,

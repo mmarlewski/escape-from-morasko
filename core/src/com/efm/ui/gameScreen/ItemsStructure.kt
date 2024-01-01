@@ -434,14 +434,22 @@ object ItemsStructure
                 is StackableMapItem  ->
                 {
                     stackableMapItemRow.addActor(
-                            createItemWithLabel(item.amount, item.getTexture(), item.name, item.statsDescription) { attack(item) }
+                            createItemWithLabel(item.amount, item.getTexture(), item.name, item.statsDescription) {
+                                attack(
+                                        item
+                                      )
+                            }
                                                 )
                 }
                 
                 is StackableSelfItem ->
                 {
                     stackableSelfItemRow.addActor(
-                            createItemWithLabel(item.amount, item.getTexture(), item.name, item.statsDescription) { attack(item) }
+                            createItemWithLabel(item.amount, item.getTexture(), item.name, item.statsDescription) {
+                                attack(
+                                        item
+                                      )
+                            }
                                                  )
                 }
             }

@@ -8,20 +8,20 @@ import com.efm.item.MultiUseMapItem
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import kotlin.math.roundToInt
 
-class Bow : MultiUseMapItem
+abstract class BaseBow : MultiUseMapItem
 {
-    override val name : String = "Bow"
+    override val name : String = "Standard Bow"
     override val baseAPUseCost : Int = 1
     override var durability : Int = 20
     override var maxDurability : Int = 20
     override val durabilityUseCost : Int = 1
-    val damage : Int = 2
+    open val damage : Int = 3
     override val statsDescription : String
         get() = "Damage: " + damage + "\n" +
                 "Uses left: " + durability + "\n" +
                 "AP cost: " + baseAPUseCost
-                
     
     override fun getTexture() : Texture
     {
@@ -121,7 +121,7 @@ class Bow : MultiUseMapItem
                 {
                     is Character ->
                     {
-                        attackedEntity.damageCharacter(this.damage * World.hero.weaponDamageMultiplier)
+                        attackedEntity.damageCharacter((this.damage * World.hero.weaponDamageMultiplier).roundToInt())
                     }
                 }
             })

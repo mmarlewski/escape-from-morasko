@@ -13,6 +13,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.math.roundToInt
 
 @RunWith(HeadlessTestRunner::class)
 class `damage and scaling`
@@ -61,7 +62,7 @@ class `damage and scaling`
             enemyMushroom.healthPoints = enemyMushroom.maxHealthPoints
             for (j in 1..4)
             {
-                enemyMushroom.damageCharacter(woodenSword.damage * hero.weaponDamageMultiplier)
+                enemyMushroom.damageCharacter((woodenSword.damage * hero.weaponDamageMultiplier).roundToInt())
             }
             assertFalse(enemyMushroom.alive)
         }
@@ -74,7 +75,7 @@ class `damage and scaling`
             val enemyBat = EnemyBat()
             for (j in 1..3)
             {
-                enemyBat.damageCharacter(woodenSword.damage * hero.weaponDamageMultiplier)
+                enemyBat.damageCharacter((woodenSword.damage * hero.weaponDamageMultiplier).roundToInt())
             }
             assertFalse(enemyBat.alive)
         }

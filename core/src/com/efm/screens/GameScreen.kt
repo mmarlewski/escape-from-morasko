@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.Colors
+import com.efm.entities.enemies.mimic.EnemyMimic
 import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.room.RoomPosition
@@ -151,11 +152,12 @@ object GameScreen : BaseScreen(), GestureListener
                 if (space != null)
                 {
                     val entity = space.getEntity()
-                    
-                    if (entity is Enemy)
+    
+                    // remove check for Mimic for a subtle giveway
+                    if (entity is Enemy && (entity !is EnemyMimic || entity.detected()))
                     {
                         val state = getState()
-                        
+        
                         if (
                                 (state is State.free.entitySelected && State.free.entitySelected.selectedEntity == entity) ||
                                 (state is State.constrained.entitySelected && State.constrained.entitySelected.selectedEntity == entity) ||

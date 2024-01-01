@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Scaling
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
+import com.efm.entities.enemies.mimic.EnemyMimic
 import com.efm.level.World
 import com.efm.screens.*
 import com.efm.ui.gameScreen.ItemsStructure
@@ -75,7 +76,7 @@ object TitleAndButtons
             // display new enemy health stacks
             for (enemy in World.currentRoom?.getEnemies() ?: listOf())
             {
-                enemy.displayOwnHealthBar()
+                if (enemy !is EnemyMimic || enemy.detected()) enemy.displayOwnHealthBar()
             }
             // update Room, Map, UI
             World.currentRoom?.updateSpacesEntities()

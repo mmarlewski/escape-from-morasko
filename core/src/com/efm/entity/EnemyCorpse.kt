@@ -33,7 +33,7 @@ abstract class EnemyCorpse(
     {
         if (possibleItems != null)
         {
-            maxItems = possibleItems.items.size + 2
+            maxItems = possibleItems.maxItemsPossibleToDraw + 2
             drawItems()
             maxItems = items.size + 2
         }

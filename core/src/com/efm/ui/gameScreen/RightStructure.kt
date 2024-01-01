@@ -8,9 +8,7 @@ import com.badlogic.gdx.utils.Timer
 import com.efm.*
 import com.efm.Map
 import com.efm.assets.*
-import com.efm.item.MultiUseMapItem
 import com.efm.level.World
-import com.efm.multiUseMapItems.*
 import com.efm.screens.GameScreen
 import com.efm.state.*
 
@@ -168,32 +166,34 @@ object RightStructure
             displayedStats?.remove()
             displayedStats = null
         }
-        
+    
         val statsPlace = columnOf(statsPopup(itemName, itemStats)).align(Align.bottomRight)
         statsPlace.padBottom(128f).padRight(16f)
         statsPlace.setFillParent(true)
         GameScreen.stage.addActor(statsPlace)
-        
+    
         displayedStats = statsPlace
-        
-        Timer.schedule(object : Timer.Task() {
-            override fun run() {
-                if (displayedStats == statsPlace) {
-                    statsPlace.remove()
-                    displayedStats = null
-                }
-            }
-        }, 2f)
+    
+        Timer.schedule(object : Timer.Task()
+                       {
+                           override fun run()
+                           {
+                               if (displayedStats == statsPlace)
+                               {
+                                   statsPlace.remove()
+                                   displayedStats = null
+                               }
+                           }
+                       }, 2f)
     }
     
-    fun displayStatsOnlyInEquipment(itemName : String, itemStats: String)
+    fun displayStatsOnlyInEquipment(itemName : String, itemStats : String)
     {
         if (EquipmentStructure.heroOverlay.isVisible)
         {
             displayWeaponStats(itemName, itemStats)
         }
     }
-
     
     fun display()
     {

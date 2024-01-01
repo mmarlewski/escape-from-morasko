@@ -1,4 +1,4 @@
-package com.efm.entities.enemies
+package com.efm.entities.enemies.wizard
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -9,9 +9,13 @@ import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.entity.Enemy
+import com.efm.entity.EnemyCorpse
+import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
 import com.efm.level.World
+import com.efm.multiUseMapItems.Staff
 import com.efm.room.RoomPosition
+import com.efm.stackableSelfItems.*
 
 class EnemyWizard : Enemy
 {
@@ -26,9 +30,19 @@ class EnemyWizard : Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
-    override var loot : PossibleItems = PossibleItems()
+    override var loot : PossibleItems = PossibleItems(
+            mutableListOf(
+                    PossibleItem(APPotionSmall(), 0.15f, IntRange(0, 4)),
+                    PossibleItem(APPotionBig(), 0.30f, IntRange(0, 2)),
+                    PossibleItem(HPPotionSmall(), 0.15f, IntRange(0, 4)),
+                    PossibleItem(HPPotionBig(), 0.30f, IntRange(0, 2)),
+                    PossibleItem(Staff(), 0.2f, 1..1),
+                         )
+                                                     )
     
     val apDrain = 5
+    
+    override fun getCorpse() : EnemyCorpse = EnemyWizardCorpse(this.position, loot)
     
     override fun getTile() : TiledMapTile
     {
@@ -104,7 +118,7 @@ class EnemyWizard : Enemy
             {
                 is Hero ->
                 {
-                    attackedEntity.apDrainInNextTurn = 5
+                    attackedEntity.apDrainInNextTurn = apDrain
                 }
             }
         }
