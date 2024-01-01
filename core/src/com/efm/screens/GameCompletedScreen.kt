@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.efm.*
 import com.efm.assets.*
+import com.efm.ui.menuScreen.TitleAndButtons
 
 object GameCompletedScreen : BaseScreen()
 {
@@ -39,6 +40,7 @@ object GameCompletedScreen : BaseScreen()
                                          )
         {
             Sounds.ui_1.playOnce()
+            TitleAndButtons.setButtonsVisibility(true)
             changeScreen(MenuScreen)
         }
         

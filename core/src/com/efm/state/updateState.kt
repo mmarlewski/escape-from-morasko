@@ -1,11 +1,11 @@
 package com.efm.state
 
+import checkIfLastBossDefeated
 import com.efm.*
 import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.inventoryTabSlot.InventoryTabStackableSelfItemSlot
-import com.efm.screens.GameScreen
 import com.efm.level.World
-import com.efm.screens.GameOverScreen
+import com.efm.screens.*
 
 /**
  * updates current State and sets it to new one if necessary
@@ -18,6 +18,11 @@ fun updateState()
     val newState = if (currState !is State.combat.enemies && !World.hero.alive)
     {
         changeScreen(GameOverScreen)
+        State.over
+    }
+    else if (currState !is State.combat.enemies && checkIfLastBossDefeated())
+    {
+        changeScreen(GameCompletedScreen)
         State.over
     }
     else when (currState)

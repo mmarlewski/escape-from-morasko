@@ -1898,4 +1898,26 @@ fun createChessBossRoom() : Room
     return room
 }
 
+fun findLevelByName(name : String) : Level?
+{
+    return World.levels.find { it.name == name }
+}
 
+fun checkIfLastBossDefeated() : Boolean
+{
+    val level = findLevelByName("4")
+    if (level != null)
+    {
+        val bossRoom = findRoomByLevelByName(level, "boss_room")
+        if (bossRoom != null)
+        {
+            return !bossRoom.areEnemiesInRoom()
+        }
+    }
+    return false
+}
+
+fun findRoomByLevelByName(level : Level, roomName : String) : Room?
+{
+    return level.rooms.find { it.name == roomName}
+}
