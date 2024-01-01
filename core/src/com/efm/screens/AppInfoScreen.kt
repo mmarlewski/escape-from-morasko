@@ -35,7 +35,8 @@ object AppInfoScreen : BaseScreen()
                 "What's new?",
                 "- procedural level generation,\n" +
                         "- all items have their statistics shown when selected in equipment,\n" +
-                        "- weapons have their statistics displayed when selected while playing",
+                        "- weapons have their statistics displayed when selected while playing\n" +
+                        "- new decorative elements spawn in rooms",
                 appInfoTitle.width
                                            )
         
@@ -43,7 +44,8 @@ object AppInfoScreen : BaseScreen()
                 "Bug fixes",
                 "- Game Over screen now appears when hero is killed by their own actions,\n" +
                         "- items no longer have amount of 0 when looting,\n" +
-                        "- new items no longer appear in corpses after every loading",
+                        "- new items no longer appear in corpses after every loading\n" +
+                        "- mimic pretends to be a chest more convincingly",
                 appInfoTitle.width
                                            )
         
