@@ -864,28 +864,13 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
         
         currState.areEnemiesInRoom = World.currentRoom?.getEnemies()?.isNotEmpty() ?: false
         
-        if (!currState.areEnemiesInRoom)
-        {
-            ProgressBars.abilityBar.isVisible = false
-            ProgressBars.abilityBarForFlashing.isVisible = false
-            ProgressBars.abilityBarLabel.isVisible = false
-            
-            World.hero.removeCoolDownFromAllActiveSkills()
-            ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
-            return State.free.noSelection.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-            }
-        }
-        
         val item = currState.chosenMultiUseItem
         item?.lowerDurability()
         if (item != null && item.durability < 1)
         {
             World.hero.inventory.removeItem(item)
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
+    
             return State.combat.hero.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -893,13 +878,28 @@ fun updateCombatHeroMultiUseMapItemTargetSelectedTwice(currState : State.combat.
             }
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
+    
+        if (!currState.areEnemiesInRoom)
+        {
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false
         
+            World.hero.removeCoolDownFromAllActiveSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+        
+            return State.free.noSelection.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+    
         val canBeUsedAgain = when (val chosenItem = currState.chosenMultiUseItem)
         {
             null -> false
             else -> World.hero.abilityPoints >= chosenItem.baseAPUseCost
         }
-        
+    
         if (canBeUsedAgain)
         {
             val targetPositions = State.combat.hero.multiUseMapItemChosen.targetPositions ?: emptyList()
@@ -1055,28 +1055,13 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
         
         currState.areEnemiesInRoom = World.currentRoom?.getEnemies()?.isNotEmpty() ?: false
         
-        if (!currState.areEnemiesInRoom)
-        {
-            ProgressBars.abilityBar.isVisible = false
-            ProgressBars.abilityBarForFlashing.isVisible = false
-            ProgressBars.abilityBarLabel.isVisible = false
-            
-            World.hero.removeCoolDownFromAllActiveSkills()
-            ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
-            return State.free.noSelection.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-            }
-        }
-        
         val item = currState.chosenStackableMapItem
         item?.lowerAmountByOne()
         if (item != null && item.amount < 1)
         {
             World.hero.inventory.removeItem(item)
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
+    
             return State.combat.hero.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -1084,13 +1069,28 @@ fun updateCombatHeroStackableMapItemTargetSelectedTwice(currState : State.combat
             }
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
+    
+        if (!currState.areEnemiesInRoom)
+        {
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false
         
+            World.hero.removeCoolDownFromAllActiveSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+        
+            return State.free.noSelection.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+    
         val canBeUsedAgain = when (val chosenItem = currState.chosenStackableMapItem)
         {
             null -> false
             else -> World.hero.abilityPoints >= chosenItem.baseAPUseCost
         }
-        
+    
         if (canBeUsedAgain)
         {
             ProgressBars.abilityBarForFlashing.value =

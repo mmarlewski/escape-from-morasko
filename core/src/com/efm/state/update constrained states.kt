@@ -1068,28 +1068,13 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
         
         currState.areEnemiesInRoom = World.currentRoom?.getEnemies()?.isNotEmpty() ?: false
         
-        if (!currState.areEnemiesInRoom)
-        {
-            ProgressBars.abilityBar.isVisible = false
-            ProgressBars.abilityBarForFlashing.isVisible = false
-            ProgressBars.abilityBarLabel.isVisible = false
-            
-            World.hero.removeCoolDownFromAllActiveSkills()
-            ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
-            return State.free.noSelection.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-            }
-        }
-        
         val item = currState.chosenMultiUseItem
         item?.lowerDurability()
         if (item != null && item.durability < 1)
         {
             World.hero.inventory.removeItem(item)
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
+    
             return State.constrained.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -1097,15 +1082,28 @@ fun updateConstrainedMultiUseMapItemTargetSelectedTwice(currState : State.constr
             }
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
+    
         var wasEnemyAttacked = false
+        if (!currState.areEnemiesInRoom)
+        {
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false
         
-        if (currState.areEnemiesInRoom)
+            World.hero.removeCoolDownFromAllActiveSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+        
+            return State.free.noSelection.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+        else
         {
             enemyFor@ for (enemy in World.currentRoom?.getEnemies() ?: listOf())
             {
                 val affectedPositions = State.constrained.multiUseMapItemTargetSelectedOnce.effectPositions
-                
+            
                 if (affectedPositions != null)
                 {
                     for (position in affectedPositions)
@@ -1312,28 +1310,13 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
         
         currState.areEnemiesInRoom = World.currentRoom?.getEnemies()?.isNotEmpty() ?: false
         
-        if (!currState.areEnemiesInRoom)
-        {
-            ProgressBars.abilityBar.isVisible = false
-            ProgressBars.abilityBarForFlashing.isVisible = false
-            ProgressBars.abilityBarLabel.isVisible = false
-            
-            World.hero.removeCoolDownFromAllActiveSkills()
-            ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
-            return State.free.noSelection.apply {
-                this.isHeroAlive = currState.isHeroAlive
-                this.areEnemiesInRoom = currState.areEnemiesInRoom
-            }
-        }
-        
         val item = currState.chosenStackableMapItem
         item?.lowerAmountByOne()
         if (item != null && item.amount < 1)
         {
             World.hero.inventory.removeItem(item)
             ItemsStructure.fillItemsStructureWithItemsAndSkills()
-            
+    
             return State.constrained.heroSelected.apply {
                 this.isHeroAlive = currState.isHeroAlive
                 this.areEnemiesInRoom = currState.areEnemiesInRoom
@@ -1341,15 +1324,28 @@ fun updateConstrainedStackableMapItemTargetSelectedTwice(currState : State.const
             }
         }
         ItemsStructure.fillItemsStructureWithItemsAndSkills()
-        
+    
         var wasEnemyAttacked = false
+        if (!currState.areEnemiesInRoom)
+        {
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false
         
-        if (currState.areEnemiesInRoom)
+            World.hero.removeCoolDownFromAllActiveSkills()
+            ItemsStructure.fillItemsStructureWithItemsAndSkills()
+        
+            return State.free.noSelection.apply {
+                this.isHeroAlive = currState.isHeroAlive
+                this.areEnemiesInRoom = currState.areEnemiesInRoom
+            }
+        }
+        else
         {
             enemyFor@ for (enemy in World.currentRoom?.getEnemies() ?: listOf())
             {
                 val affectedPositions = State.constrained.stackableMapItemTargetSelectedOnce.effectPositions
-                
+            
                 if (affectedPositions != null)
                 {
                     for (position in affectedPositions)

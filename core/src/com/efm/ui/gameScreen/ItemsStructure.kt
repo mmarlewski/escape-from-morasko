@@ -464,15 +464,15 @@ object ItemsStructure
             }
         }
         
-        for ((bodyPart, skill) in World.hero.bodyPartMap.entries)
+        for ((_, skill) in World.hero.bodyPartMap.entries)
         {
             when (skill)
             {
                 null           ->
                 {
-                
+            
                 }
-                
+        
                 is ActiveSkill ->
                 {
                     // if turn ends refresh drawing
