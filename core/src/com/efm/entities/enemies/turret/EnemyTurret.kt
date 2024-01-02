@@ -28,6 +28,7 @@ class EnemyTurret : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override val roamingChance : Float = 0.0f
     override var loot : PossibleItems = PossibleItems(
             mutableListOf(
                     PossibleItem(Bomb(), 0.5f, IntRange(1, 5)),

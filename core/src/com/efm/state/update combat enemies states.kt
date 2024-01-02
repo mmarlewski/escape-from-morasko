@@ -105,7 +105,7 @@ fun updateCombatEnemiesEnemyAction(currState : State.combat.enemies.enemyAction)
                 if (currEnemy != null)
                 {
                     val currEnemyPosition = currEnemy.position
-                    val animation = Animation.focusCamera(currEnemyPosition.copy(), 1f)
+                    val animation = Animation.focusCamera(currEnemyPosition.copy(), 0.5f)
                     Animating.executeAnimations(mutableListOf(animation))
                 }
                 

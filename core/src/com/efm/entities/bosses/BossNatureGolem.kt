@@ -14,13 +14,12 @@ import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 
-class BossNatureGolem : Entity, Enemy
+class BossNatureGolem : BaseBoss()
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50
     override var healthPoints = 50
     override var alive = true
-    override val detectionRange = 2
     override val attackRange = 5
     override var attackDamage = 20
     override val stepsInOneTurn = 5

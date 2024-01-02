@@ -28,6 +28,7 @@ open class EnemyMushroom : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override var roamingChance : Float = 0.8f
     override var loot : PossibleItems = PossibleItems(
             mutableListOf(
                     PossibleItem(Mushroom(), 0.8f, IntRange(0, 4)),

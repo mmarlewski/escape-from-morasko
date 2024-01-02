@@ -56,6 +56,7 @@ class EnemyGhost(
             6
                                                      )
     
+    override val roamingChance : Float = 0.0f
     private val maxTurnsUntilTryToDisappear : Int = 4
     private var turnsUntilTryToDisappear : Int = maxTurnsUntilTryToDisappear
     
