@@ -14,8 +14,8 @@ abstract class Axe : MultiUseMapItem
 {
     override val name : String = "Standard Axe"
     override var baseAPUseCost : Int = 1
-    override var durability : Int = 20
-    override var maxDurability : Int = 20
+    override var durability : Int = 10
+    override var maxDurability : Int = 10
     override val durabilityUseCost : Int = 1
     open val damage : Int = 2
     override val statsDescription : String

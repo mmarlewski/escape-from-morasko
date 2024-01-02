@@ -36,7 +36,11 @@ object AppInfoScreen : BaseScreen()
                 "- procedural level generation,\n" +
                         "- all items have their statistics shown when selected in equipment,\n" +
                         "- weapons have their statistics displayed when selected while playing\n" +
-                        "- new decorative elements spawn in rooms",
+                        "- new decorative elements spawn in rooms\n" +
+                        "- added Congratulations! screen on game completion\n" +
+                        "- enemies now have a random chance to trigger roaming\n" +
+                        "- camera movement restrictions\n" +
+                        "- collecting more than 9 items of given type now creates a scrolling option",
                 appInfoTitle.width
                                            )
     
@@ -45,7 +49,8 @@ object AppInfoScreen : BaseScreen()
                 "- Game Over screen now appears when hero is killed by their own actions,\n" +
                         "- items no longer have amount of 0 when looting,\n" +
                         "- new items no longer appear in corpses after every loading\n" +
-                        "- mimic pretends to be a chest more convincingly",
+                        "- mimic pretends to be a chest more convincingly\n" +
+                        "- enemies will detect the player more consistently",
                 appInfoTitle.width
                                            )
 

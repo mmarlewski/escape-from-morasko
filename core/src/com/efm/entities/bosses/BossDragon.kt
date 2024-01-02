@@ -16,13 +16,12 @@ import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 
-class BossDragon : Entity, Enemy
+class BossDragon : BaseBoss(), Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50
     override var healthPoints = 50
     override var alive = true
-    override val detectionRange = 3
     override val attackRange = 3
     override var attackDamage = 20
     override val stepsInOneTurn = 10

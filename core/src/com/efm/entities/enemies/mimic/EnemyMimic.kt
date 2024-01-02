@@ -29,7 +29,7 @@ class EnemyMimic : Enemy, Interactive
         Map.clearLayer(MapLayer.select)
         Map.clearLayer(MapLayer.outline)
         this.displayOwnHealthBar()
-        playSoundOnce(getMoveSound())
+        playSoundOnce(Sounds.mimicAppear)
     }
     
     override val position = RoomPosition()
@@ -43,6 +43,7 @@ class EnemyMimic : Enemy, Interactive
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override val roamingChance : Float = 0.0f
     override var loot : PossibleItems = PossibleItems(
             mutableListOf(
                     PossibleItem(APPotionSmall(), 0.33f, IntRange(0, 4)),

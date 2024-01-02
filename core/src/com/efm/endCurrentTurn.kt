@@ -32,29 +32,58 @@ fun endCurrentTurn()
             
             if (!isHeroVisible)
             {
-                newState = State.free.heroSelected.apply {
+                newState = when(currState)
+                {
+                    State.constrained.heroSelected -> State.free.heroSelected
+                    State.constrained.nothingSelected -> State.free.nothingSelected
+                    State.constrained.noSelection -> State.free.noSelection
+                    else -> State.free.noSelection
+                }.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                 }
             }
-            // enemies roaming
-            val enemyRoamingAnimations = mutableListOf<Animation>()
-            val enemyIterator = World.currentRoom?.getEnemies()?.iterator() ?: listOf<Enemy>().iterator()
-            while (enemyIterator.hasNext())
+            // do not roam in tutorial before showing combatPopup
+            if (!currState.tutorialFlags.tutorialActive || currState.tutorialFlags.combatPopupShown)
             {
-                val enemy = enemyIterator.next()
-                if (enemyIterator.hasNext())
+                // enemies roaming
+                val enemyRoamingAnimations = mutableListOf<Animation>()
+                val enemyIterator = World.currentRoom?.getEnemies()?.iterator() ?: listOf<Enemy>().iterator()
+                while (enemyIterator.hasNext())
                 {
-                    Gdx.app.log("Roaming", enemy::class.simpleName)
-                    enemyRoamingAnimations += enemy.getRoamingAnimations()
+                    val enemy = enemyIterator.next()
+                    //Gdx.app.log("Roaming position before", "$enemy.position")
+                    if (enemyIterator.hasNext())
+                    {
+                        Gdx.app.log("Roaming", enemy::class.simpleName)
+                        enemyRoamingAnimations += enemy.getRoamingAnimations()
+                    }
+                    else
+                    {
+                        Gdx.app.log("Roaming last", enemy::class.simpleName)
+                        enemyRoamingAnimations += enemy.getRoamingAnimations(focusCameraOnHero = true)
+                    }
+                    // executeAnimations() is async so enemy changes its position in getRoamingAnimations()
+                    //Gdx.app.log("Roaming position after", "$enemy.position")
+                    // detection
+                    if (World.hero.position in enemy.getDetectionPositions())
+                    {
+                        newState = when (currState)
+                        {
+                            State.constrained.heroSelected    -> State.combat.hero.heroSelected
+                            State.constrained.nothingSelected -> State.combat.hero.nothingSelected
+                            State.constrained.noSelection     -> State.combat.hero.noSelection
+                            else                              -> State.combat.hero.noSelection
+                        }.apply {
+                            this.isHeroAlive = currState.isHeroAlive
+                            this.areEnemiesInRoom = currState.areEnemiesInRoom
+                            this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                            this.tutorialFlags = currState.tutorialFlags
+                        }
+                    }
                 }
-                else
-                {
-                    Gdx.app.log("Roaming last", enemy::class.simpleName)
-                    enemyRoamingAnimations += enemy.getRoamingAnimations(focusCameraOnHero = true)
-                }
+                Animating.executeAnimations(enemyRoamingAnimations)
             }
-            Animating.executeAnimations(enemyRoamingAnimations)
             // tutorial popups
             if (newState.tutorialFlags.tutorialActive && newState.tutorialFlags.playerEndedTurn && !newState.tutorialFlags.combatPopupShown)
             {
@@ -76,7 +105,13 @@ fun endCurrentTurn()
             
             if (!isHeroVisible)
             {
-                newState = State.free.heroSelected.apply {
+                newState = when(currState)
+                {
+                    State.combat.hero.heroSelected -> State.free.heroSelected
+                    State.combat.hero.nothingSelected -> State.free.nothingSelected
+                    State.combat.hero.noSelection -> State.free.noSelection
+                    else -> State.free.noSelection
+                }.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                 }

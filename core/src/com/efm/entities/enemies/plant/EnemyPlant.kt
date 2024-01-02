@@ -28,6 +28,7 @@ class EnemyPlant : Entity, Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override val roamingChance : Float = 0.0f
     override var loot : PossibleItems = PossibleItems(
             mutableListOf(PossibleItem(Apple(), 1f, IntRange(1, 16)))
                                                      )

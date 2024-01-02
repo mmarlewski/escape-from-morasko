@@ -22,6 +22,7 @@ class Knight: Entity, Enemy
     override var alive = true
     override var isFrozen = false
     override var loot : PossibleItems = PossibleItems()
+    override val roamingChance : Float = 0.0f
     
     override fun getTile() : TiledMapTile
     {

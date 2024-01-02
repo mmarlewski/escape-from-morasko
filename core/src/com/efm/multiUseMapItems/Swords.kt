@@ -7,8 +7,8 @@ class WoodenSword : Sword()
 {
     override val name : String = "Wooden Sword"
     override var baseAPUseCost : Int = 1
-    override var durability : Int = 25
-    override var maxDurability : Int = 25
+    override var durability : Int = 15
+    override var maxDurability : Int = 15
     override val durabilityUseCost : Int = 1
     override val damage : Int = 2
     override val statsDescription : String
@@ -26,8 +26,8 @@ class IronSword : Sword()
 {
     override val name : String = "Iron Sword"
     override var baseAPUseCost : Int = 1
-    override var durability : Int = 20
-    override var maxDurability : Int = 20
+    override var durability : Int = 12
+    override var maxDurability : Int = 12
     override val durabilityUseCost : Int = 1
     override val damage : Int = 4
     override val statsDescription : String
@@ -45,8 +45,8 @@ class TurquoiseSword : Sword()
 {
     override val name : String = "Turquoise Sword"
     override var baseAPUseCost : Int = 2
-    override var durability : Int = 10
-    override var maxDurability : Int = 10
+    override var durability : Int = 7
+    override var maxDurability : Int = 7
     override val durabilityUseCost : Int = 1
     override val damage : Int = 8
     override val statsDescription : String
@@ -64,8 +64,8 @@ class AmberSword : Sword()
 {
     override val name : String = "Amber Sword"
     override var baseAPUseCost : Int = 2
-    override var durability : Int = 15
-    override var maxDurability : Int = 15
+    override var durability : Int = 10
+    override var maxDurability : Int = 10
     override val durabilityUseCost : Int = 1
     override val damage : Int = 6
     override val statsDescription : String

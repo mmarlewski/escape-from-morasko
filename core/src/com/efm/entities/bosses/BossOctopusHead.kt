@@ -9,21 +9,19 @@ import com.badlogic.gdx.utils.JsonValue
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entity.Enemy
-import com.efm.entity.Entity
+import com.efm.entity.*
 import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.Base
 import com.efm.room.RoomPosition
 import com.efm.screens.GameScreen
 
-class BossOctopusHead : Entity, Enemy
+class BossOctopusHead : BaseBoss(), Enemy
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 50
     override var healthPoints = 50
     override var alive = true
-    override val detectionRange = 3
     override val attackRange = 0
     override var attackDamage = 30
     override val stepsInOneTurn = 0

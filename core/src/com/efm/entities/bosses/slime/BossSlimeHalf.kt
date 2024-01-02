@@ -12,13 +12,12 @@ import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
 
-open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : Entity, Enemy
+open class BossSlimeHalf(position : RoomPosition = RoomPosition()) : BaseBoss()
 {
     override val position = RoomPosition()
     override var maxHealthPoints = 25
     override var healthPoints = 25
     override var alive = true
-    override val detectionRange = 1
     override val attackRange = 1
     override var attackDamage = 20
     override val stepsInOneTurn = 2

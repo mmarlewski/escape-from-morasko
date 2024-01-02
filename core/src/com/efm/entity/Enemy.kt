@@ -32,6 +32,7 @@ interface Enemy : Character
     var healthStack : Stack
     var isFrozen : Boolean
     var loot : PossibleItems
+    val roamingChance : Float
     
     fun getOutlineRedTile() : TiledMapTile?
     
@@ -215,26 +216,29 @@ interface Enemy : Character
         val animations = mutableListOf<Animation>()
         
         val currentRoom = World.currentRoom
+        var moveTo = position.copy()
         if (currentRoom != null)
         {
-            var moveTo = position
             for (i in 0 until stepsInOneTurn)
             {
-                moveTo = randomWalk(moveTo)
+                moveTo = randomWalk(moveTo.copy())
             }
-            val path = PathFinding.findPathInRoomForEntity(position, moveTo, currentRoom, this)
+            val path = PathFinding.findPathInRoomForEntity(position.copy(), moveTo.copy(), currentRoom, this)
             if (path != null)
             {
                 animations += getAnimationsUsedInMoveEnemy(
-                        position,
-                        moveTo,
+                        position.copy(),
+                        moveTo.copy(),
                         path,
                         this,
                         focusCameraOnHero = focusCameraOnHero
                                                           )
             }
         }
-        
+        // executeAnimations() is async so last Animation.action with enemy.position.set(endPosition)
+        // will not be called before detection check in endCurrentTurn()
+        // that is why enemy changes its position here in getRoamingAnimations()
+        this.position.set(moveTo.copy())
         return animations
     }
     
@@ -244,48 +248,48 @@ interface Enemy : Character
         
         val possibleSteps = mutableListOf<RoomPosition>()
         var pos = RoomPosition(moveTo.x - 1, moveTo.y - 1)
-        var space = worldCurrentRoom.getSpace(pos)
+        var space = worldCurrentRoom.getSpace(pos.copy())
         if (space != null)
         {
             if (space.isTraversableFor(this) && space.getEntity() == null)
             {
-                possibleSteps.add(pos)
+                possibleSteps.add(pos.copy())
             }
         }
         pos = RoomPosition(moveTo.x - 1, moveTo.y + 1)
-        space = worldCurrentRoom.getSpace(pos)
+        space = worldCurrentRoom.getSpace(pos.copy())
         if (space != null)
         {
             if (space.isTraversableFor(this) && space.getEntity() == null)
             {
-                possibleSteps.add(pos)
+                possibleSteps.add(pos.copy())
             }
         }
         pos = RoomPosition(moveTo.x + 1, moveTo.y - 1)
-        space = worldCurrentRoom.getSpace(pos)
+        space = worldCurrentRoom.getSpace(pos.copy())
         if (space != null)
         {
             if (space.isTraversableFor(this) && space.getEntity() == null)
             {
-                possibleSteps.add(pos)
+                possibleSteps.add(pos.copy())
             }
         }
         pos = RoomPosition(moveTo.x + 1, moveTo.y + 1)
-        space = worldCurrentRoom.getSpace(pos)
+        space = worldCurrentRoom.getSpace(pos.copy())
         if (space != null)
         {
             if (space.isTraversableFor(this) && space.getEntity() == null)
             {
-                possibleSteps.add(pos)
+                possibleSteps.add(pos.copy())
             }
         }
         return if (possibleSteps.isNotEmpty())
         {
-            possibleSteps.random()
+            possibleSteps.random().copy()
         }
         else
         {
-            moveTo
+            moveTo.copy()
         }
         
     }

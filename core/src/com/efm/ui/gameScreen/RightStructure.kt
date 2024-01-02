@@ -205,7 +205,7 @@ object RightStructure
                                       ).align(Align.bottomRight)
         
         nextTurnPlace.pad(16f)
-        moveButtonPlace.pad(16f)
+        moveButtonPlace.pad(14f)
         
         nextTurnPlace.setFillParent(true)
         moveButtonPlace.setFillParent(true)
@@ -220,7 +220,7 @@ object RightStructure
                 rowOf(moveButton)
                                       ).align(Align.bottomRight)
         
-        moveButtonPlace.pad(16f)
+        moveButtonPlace.pad(14f)
         
         moveButtonPlace.setFillParent(true)
         

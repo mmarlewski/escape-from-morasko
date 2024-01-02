@@ -30,6 +30,7 @@ class EnemyWizard : Enemy
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override val roamingChance : Float = 0.67f
     override var loot : PossibleItems = PossibleItems(
             mutableListOf(
                     PossibleItem(APPotionSmall(), 0.15f, IntRange(0, 4)),

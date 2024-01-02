@@ -21,13 +21,14 @@ class EnemyTurret : Entity, Enemy
     override var maxHealthPoints = 10
     override var healthPoints = 10
     override var alive = true
-    override val detectionRange = 2
-    override val attackRange = 3
+    override val detectionRange = 3
+    override val attackRange = 5
     override var attackDamage = 15
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
+    override val roamingChance : Float = 0.0f
     override var loot : PossibleItems = PossibleItems(
             mutableListOf(
                     PossibleItem(Bomb(), 0.5f, IntRange(1, 5)),
