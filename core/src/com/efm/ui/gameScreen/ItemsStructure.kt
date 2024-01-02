@@ -1,5 +1,6 @@
 package com.efm.ui.gameScreen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
@@ -180,14 +181,14 @@ object ItemsStructure
     {
         equipmentDisplay.pad(24f)
         
-        val maxWidth = minScreenWidth - RightStructure.moveButton.width - 32f
+        val maxWidth = Gdx.graphics.height.toFloat() - RightStructure.moveButton.width - 32f
         
         weaponDisplay.setSize(maxWidth, weaponDisplay.height)
         potionDisplay.setSize(maxWidth, potionDisplay.height)
         usableDisplay.setSize(maxWidth, usableDisplay.height)
         skillDisplay.setSize(maxWidth, skillDisplay.height)
         
-        val moveBy = weaponDisplay.width / 2 + equipmentButton.width + 24f
+        val moveBy = weaponDisplay.width / 2 + equipmentButton.width + 32f
         
         weaponDisplay.setX(moveBy, 0)
         potionDisplay.setX(moveBy, 0)
