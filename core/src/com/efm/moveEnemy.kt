@@ -50,7 +50,11 @@ fun moveEnemy(
     animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
     animations += Animation.action { enemy.displayOwnHealthBar() }
-    if (focusCameraOnHero) animations += Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
+    if (focusCameraOnHero)
+    {
+        animations += Animation.moveCameraSmoothlyWithRoomPositions(null, World.hero.position.copy(), 0.1f)
+        animations += Animation.wait(0.3f)
+    }
     Animating.executeAnimations(animations)
 }
 
@@ -95,7 +99,10 @@ fun getAnimationsUsedInMoveEnemy(
     animations += Animation.moveTileWithCameraFocus(enemy.getTile(), prevMovePosition, endPosition, 0.1f)
     animations += Animation.action(action)
     animations += Animation.action { enemy.displayOwnHealthBar() }
-    if (focusCameraOnHero) animations += Animation.showTileWithCameraFocus(null, World.hero.position.copy(), 1f)
-    
+    if (focusCameraOnHero)
+    {
+        animations += Animation.moveCameraSmoothlyWithRoomPositions(null, World.hero.position.copy(), 0.1f)
+        animations += Animation.wait(0.3f)
+    }
     return animations
 }
