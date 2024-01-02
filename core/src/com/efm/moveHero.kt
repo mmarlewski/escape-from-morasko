@@ -63,7 +63,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         if (World.hero.hasSkill(GrassHealing))
         {
             val space = worldCurrentRoom.getSpace(World.hero.position)
-            if (space != null && space.getBase() in Base.grassTiles)
+            if (space != null && space.getBase() in Base.grassHealingTiles)
             {
                 changeBaseIfDrained(space)
             }
@@ -78,7 +78,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
             animations += Animation.showTileWithCameraFocus(moveTile, space.position.copy(), 0.01f)
             prevMovePosition.set(space.position)
             
-            if (World.hero.hasSkill(GrassHealing) && space.getBase() in Base.grassTiles)
+            if (World.hero.hasSkill(GrassHealing) && space.getBase() in Base.grassHealingTiles)
             {
                 changeBaseIfDrained(space)
                 val showAndHeal = mutableListOf(
@@ -99,7 +99,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
             if (World.hero.hasSkill(GrassHealing))
             {
                 val space = worldCurrentRoom.getSpace(endPosition)
-                if (space != null && space.getBase() in Base.grassTiles)
+                if (space != null && space.getBase() in Base.grassHealingTiles)
                 {
                     changeBaseIfDrained(space)
                     val showAndHeal = mutableListOf(
@@ -117,6 +117,7 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
 
 fun changeBaseIfDrained(space : Space)
 {
+    /*
     if (space.getBase()?.tile == Tiles.grassDarkFloor1)
     {
         space.changeBase(Base.grassDarkDrained1)
@@ -127,11 +128,14 @@ fun changeBaseIfDrained(space : Space)
         space.changeBase(Base.grassDarkDrained2)
         World.hero.healCharacter(3)
     }
+    */
+    // only light grass heals
     if (space.getBase()?.tile == Tiles.grassLightFloor1)
     {
         space.changeBase(Base.grassLightDrained1)
         World.hero.healCharacter(3)
     }
+    /*
     if (space.getBase()?.tile == Tiles.grassStoneFloor1)
     {
         space.changeBase(Base.grassStoneDrained1)
@@ -147,6 +151,7 @@ fun changeBaseIfDrained(space : Space)
         space.changeBase(Base.grassStoneDrained3)
         World.hero.healCharacter(3)
     }
+    */
 }
 
 fun adjustMapLayersAfterMoving()

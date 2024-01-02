@@ -29,7 +29,7 @@ class EnemyMimic : Enemy, Interactive
         Map.clearLayer(MapLayer.select)
         Map.clearLayer(MapLayer.outline)
         this.displayOwnHealthBar()
-        playSoundOnce(getMoveSound())
+        playSoundOnce(Sounds.mimicAppear)
     }
     
     override val position = RoomPosition()

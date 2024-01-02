@@ -215,9 +215,9 @@ interface Enemy : Character
         val animations = mutableListOf<Animation>()
         
         val currentRoom = World.currentRoom
+        var moveTo = position
         if (currentRoom != null)
         {
-            var moveTo = position
             for (i in 0 until stepsInOneTurn)
             {
                 moveTo = randomWalk(moveTo)
@@ -234,7 +234,10 @@ interface Enemy : Character
                                                           )
             }
         }
-        
+        // executeAnimations() is async so last Animation.action with enemy.position.set(endPosition)
+        // will not be called before detection check in endCurrentTurn()
+        // that is why enemy changes its position here in getRoamingAnimations()
+        this.position.set(moveTo)
         return animations
     }
     

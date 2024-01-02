@@ -63,6 +63,10 @@ enum class Base(val tile : TiledMapTile, val isTreadableFor : (Entity) -> Boolea
                 grassStone3
                                )
         
+        val grassHealingTiles = listOf(
+                grassLight1
+                               )
+        
         val woodTiles = listOf(
                 wooden1,
                 wooden2,
