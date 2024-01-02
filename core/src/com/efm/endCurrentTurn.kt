@@ -32,7 +32,13 @@ fun endCurrentTurn()
             
             if (!isHeroVisible)
             {
-                newState = State.free.heroSelected.apply {
+                newState = when(currState)
+                {
+                    State.constrained.heroSelected -> State.free.heroSelected
+                    State.constrained.nothingSelected -> State.free.nothingSelected
+                    State.constrained.noSelection -> State.free.noSelection
+                    else -> State.free.noSelection
+                }.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                 }
@@ -43,6 +49,7 @@ fun endCurrentTurn()
             while (enemyIterator.hasNext())
             {
                 val enemy = enemyIterator.next()
+                //Gdx.app.log("Roaming position before", "$enemy.position")
                 if (enemyIterator.hasNext())
                 {
                     Gdx.app.log("Roaming", enemy::class.simpleName)
@@ -52,6 +59,24 @@ fun endCurrentTurn()
                 {
                     Gdx.app.log("Roaming last", enemy::class.simpleName)
                     enemyRoamingAnimations += enemy.getRoamingAnimations(focusCameraOnHero = true)
+                }
+                // executeAnimations() is async so enemy changes its position in getRoamingAnimations()
+                //Gdx.app.log("Roaming position after", "$enemy.position")
+                // detection
+                if (World.hero.position in enemy.getDetectionPositions())
+                {
+                    newState = when (currState)
+                    {
+                        State.constrained.heroSelected -> State.combat.hero.heroSelected
+                        State.constrained.nothingSelected -> State.combat.hero.nothingSelected
+                        State.constrained.noSelection -> State.combat.hero.noSelection
+                        else -> State.combat.hero.noSelection
+                    }.apply {
+                        this.isHeroAlive = currState.isHeroAlive
+                        this.areEnemiesInRoom = currState.areEnemiesInRoom
+                        this.areAnyActionPointsLeft = currState.areAnyActionPointsLeft
+                        this.tutorialFlags = currState.tutorialFlags
+                    }
                 }
             }
             Animating.executeAnimations(enemyRoamingAnimations)
@@ -76,7 +101,13 @@ fun endCurrentTurn()
             
             if (!isHeroVisible)
             {
-                newState = State.free.heroSelected.apply {
+                newState = when(currState)
+                {
+                    State.combat.hero.heroSelected -> State.free.heroSelected
+                    State.combat.hero.nothingSelected -> State.free.nothingSelected
+                    State.combat.hero.noSelection -> State.free.noSelection
+                    else -> State.free.noSelection
+                }.apply {
                     this.isHeroAlive = currState.isHeroAlive
                     this.areEnemiesInRoom = currState.areEnemiesInRoom
                 }

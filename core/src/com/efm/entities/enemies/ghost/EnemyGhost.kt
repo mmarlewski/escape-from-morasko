@@ -144,7 +144,7 @@ class EnemyGhost(
         else -> Tiles.ghostIdle1OutlineYellow
     }
     
-    override fun getMoveSound() : Sound? = null//Sounds.ghostAppear
+    override fun getMoveSound() : Sound = Sounds.ghostTimer
     
     private fun getAttackSound() : Sound = Sounds.ghostAppear
     
@@ -305,6 +305,7 @@ class EnemyGhost(
         if (positionsWhereGhostCanDisappear?.contains(position) == true)
         {
             // disappear (go into edge)
+            playSoundOnce(Sounds.ghostDisappear)
             this.healthBar.remove()
             worldCurrentRoom.removeEntity(this)
             return
@@ -353,7 +354,7 @@ class EnemyGhost(
                     stepsSpaces.size - 1
                 }
                 else stepsSpaces.size
-                // playSoundOnce(getMoveSound())
+                playSoundOnce(getMoveSound())
                 val startPosition = position
                 val endPosition = pathSpaces[stepsIndex].position
                 Gdx.app.log("EnemyGhost", "ide do $endPosition")
@@ -454,7 +455,7 @@ class EnemyGhost(
                     stepsSpaces.size - 1
                 }
                 else stepsSpaces.size
-                // playSoundOnce(getMoveSound())
+                playSoundOnce(getMoveSound())
                 val startPosition = position
                 val endPosition = pathSpaces[stepsIndex].position
                 val path = stepsSpaces
@@ -536,7 +537,7 @@ class EnemyGhost(
                     stepsSpaces.size - 1
                 }
                 else stepsSpaces.size
-                // playSoundOnce(getMoveSound())
+                playSoundOnce(getMoveSound())
                 val startPosition = position
                 val endPosition = pathSpaces[stepsIndex].position
                 val path = stepsSpaces
@@ -579,5 +580,11 @@ class EnemyGhost(
     private fun wanderAroundInAStraightLine()
     {
         Gdx.app.log("EnemyGhost", "wander around")
+    }
+    
+    override fun onDeath()
+    {
+        playSoundOnce(Sounds.ghostDie)
+        super.onDeath()
     }
 }

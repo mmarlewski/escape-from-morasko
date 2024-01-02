@@ -55,7 +55,7 @@ object GrassyTheme : LevelTheme
 object BrickyTileyTheme : LevelTheme
 {
     // Base.lava should also appear
-    override val bases : List<Base> = listOf(Base.metal) + Base.tiledTiles + Base.woodTiles + Base.tiledTilesWithBlood
+    override val bases : List<Base> = listOf(Base.metal) + Base.tiledTiles + Base.woodTiles + Base.tiledTilesWithBlood + Base.grassHealingTiles
     override val walls : List<WallStyle> = WallStyle.brickWalls + listOf(WallStyle.metal)
     override val enemies : List<Enemies> = listOf(
             // common everywhere

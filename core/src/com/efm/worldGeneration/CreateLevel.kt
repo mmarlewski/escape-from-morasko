@@ -425,11 +425,11 @@ fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem = when (item
             item.new(), 0.04f + (0.04f * levelNumber), IntRange(1, 1)
                                          )
     Items.BOMB            -> PossibleItem(
-            item.new(), 0.04f, IntRange(1, 3 + levelNumber)
+            item.new(), 0.04f, IntRange(1, 1 + levelNumber)
                                          )
     Items.EXPLOSIVE       -> PossibleItem(
             item.new(), 0.09f, IntRange(
-            2, 3 + levelNumber
+            2, 2 + levelNumber
                                        )
                                          )
     Items.SHURIKEN        -> PossibleItem(
@@ -439,23 +439,23 @@ fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem = when (item
                                          )
     Items.APPLE           -> PossibleItem(
             item.new(), 0.09f, IntRange(
-            3, 3 + levelNumber * 2
+            1, 3 + levelNumber * 2
                                        )
                                          )
     Items.AP_POTION_BIG   -> PossibleItem(
-            item.new(), 0.05f + (0.01f * levelNumber), IntRange(1, 2 + levelNumber)
+            item.new(), 0.03f + (0.01f * levelNumber), IntRange(1, 1 + levelNumber)
                                          )
     Items.AP_POTION_SMALL -> PossibleItem(
-            item.new(), 0.13f + (0.01f * levelNumber), IntRange(1, 3 + levelNumber)
+            item.new(), 0.9f + (0.00f * levelNumber), IntRange(1, 2 + levelNumber)
                                          )
     Items.FISH            -> PossibleItem(
             item.new(), 0.09f, IntRange(
-            4, 4 + levelNumber * 2
+            1, 3 + levelNumber * 2
                                        )
                                          )
-    Items.HP_POTION_BIG   -> PossibleItem(item.new(), 0.07f + (0.01f * levelNumber), IntRange(1, 3 + levelNumber))
-    Items.HP_POTION_SMALL -> PossibleItem(item.new(), 0.12f + (0.01f * levelNumber), IntRange(1, 5 + levelNumber))
-    Items.MUSHROOM        -> PossibleItem(item.new(), 0.07f, IntRange(1, 5 + levelNumber))
+    Items.HP_POTION_BIG   -> PossibleItem(item.new(), 0.04f + (0.01f * levelNumber), IntRange(1, 1 + levelNumber))
+    Items.HP_POTION_SMALL -> PossibleItem(item.new(), 0.12f + (0.00f * levelNumber), IntRange(1, 2 + levelNumber))
+    Items.MUSHROOM        -> PossibleItem(item.new(), 0.07f, IntRange(1, 3 + levelNumber))
 }
 
 fun findPositionToSpawnHero(first : Room) : RoomPosition
@@ -1886,7 +1886,7 @@ fun createChessBossRoom() : Room
         {
             if ((x + y%2) % 2 == 1)
             {
-                room.changeBaseAt(Base.grassDark1, x, y)
+                room.changeBaseAt(Base.grassDarkDrained1, x, y)
             }
             else
             {
