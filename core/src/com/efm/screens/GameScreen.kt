@@ -259,6 +259,7 @@ object GameScreen : BaseScreen(), GestureListener
         ProgressBars.flashProgressBar()
         gameStage.draw()
         stage.draw()
+        stage.act()
     }
     
     override fun resize(width : Int, height : Int)

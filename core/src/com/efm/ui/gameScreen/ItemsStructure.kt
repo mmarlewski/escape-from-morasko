@@ -27,10 +27,12 @@ object ItemsStructure
         LeftStructure.setVisibility(!LeftStructure.healingItemsButton.isVisible)
     }
     
-    val weaponDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
-    val potionDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
-    val usableDisplay = rowOf(rowOf().padLeft(100f)).align(Align.bottomLeft)
-    val skillDisplay = rowOf(rowOf().padLeft(102f)).align(Align.bottomLeft)
+    val scrollPaneStyle = ScrollPane.ScrollPaneStyle()
+    
+    val weaponDisplay = ScrollPane((rowOf().padLeft(116f).padBottom(24f)).align(Align.bottomLeft), scrollPaneStyle)
+    val potionDisplay = ScrollPane((rowOf().padLeft(116f).padBottom(24f)).align(Align.bottomLeft), scrollPaneStyle)
+    val usableDisplay = ScrollPane((rowOf().padLeft(116f).padBottom(24f)).align(Align.bottomLeft), scrollPaneStyle)
+    val skillDisplay = ScrollPane((rowOf().padLeft(116f).padBottom(24f)).align(Align.bottomLeft), scrollPaneStyle)
     val equipmentDisplay = rowOf(equipmentButton).align(Align.bottomLeft)
     
     fun setVisibility(boolean : Boolean)
@@ -177,22 +179,19 @@ object ItemsStructure
     fun display()
     {
         equipmentDisplay.pad(24f)
-        weaponDisplay.pad(16f)
-        potionDisplay.pad(16f)
-        usableDisplay.pad(16f)
-        skillDisplay.pad(14f)
+        
+        weaponDisplay.setSize(minScreenWidth, weaponDisplay.height)
+        potionDisplay.setSize(minScreenWidth, potionDisplay.height)
+        usableDisplay.setSize(minScreenWidth, usableDisplay.height)
+        skillDisplay.setSize(minScreenWidth, skillDisplay.height)
         
         equipmentDisplay.setFillParent(true)
-        weaponDisplay.setFillParent(true)
-        potionDisplay.setFillParent(true)
-        usableDisplay.setFillParent(true)
-        skillDisplay.setFillParent(true)
         
-        GameScreen.stage.addActor(equipmentDisplay)
         GameScreen.stage.addActor(weaponDisplay)
         GameScreen.stage.addActor(potionDisplay)
         GameScreen.stage.addActor(usableDisplay)
         GameScreen.stage.addActor(skillDisplay)
+        GameScreen.stage.addActor(equipmentDisplay)
         
         setWeaponDisplay()
     }
