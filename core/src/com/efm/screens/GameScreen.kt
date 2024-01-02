@@ -152,12 +152,12 @@ object GameScreen : BaseScreen(), GestureListener
                 if (space != null)
                 {
                     val entity = space.getEntity()
-    
+                    
                     // remove check for Mimic for a subtle giveway
                     if (entity is Enemy && (entity !is EnemyMimic || entity.detected()))
                     {
                         val state = getState()
-        
+                        
                         if (
                                 (state is State.free.entitySelected && State.free.entitySelected.selectedEntity == entity) ||
                                 (state is State.constrained.entitySelected && State.constrained.entitySelected.selectedEntity == entity) ||
@@ -338,6 +338,11 @@ object GameScreen : BaseScreen(), GestureListener
                         dragOriginPosition.x - dragDifference.x, dragOriginPosition.y - dragDifference.y, 0f
                                                )
                 gameCamera.position.set(newCameraPosition)
+                
+                if (gameCamera.position.x < 1000.0f) gameCamera.position.x = 1000.0f
+                if (gameCamera.position.x > 3000.0f) gameCamera.position.x = 3000.0f
+                if (gameCamera.position.y < 0.0f) gameCamera.position.y = 0.0f
+                if (gameCamera.position.y > 1500.0f) gameCamera.position.y = 1500.0f
             }
             else
             {
