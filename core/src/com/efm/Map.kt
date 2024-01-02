@@ -15,8 +15,8 @@ enum class MapLayer
  */
 object Map
 {
-    val mapWidthInTiles = 25
-    val mapHeightInTiles = 25
+    val mapWidthInTiles = 60
+    val mapHeightInTiles = 60
     
     val tileLengthInPixels = 64
     val tileLengthHalfInPixels = 32
