@@ -8,6 +8,9 @@ import com.efm.item.StackableMapItem
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import com.efm.state.State
+import com.efm.state.getState
+import com.efm.ui.gameScreen.*
 
 open class Bomb(
         override var amount : Int = 1
@@ -72,7 +75,9 @@ open class Bomb(
         val showAreaOfSmoke = Animation.simultaneous(showAreaOfSmokeAnimations)
         
         val animations = mutableListOf<Animation>()
-        
+        animations += Animation.action{PopUps.setBackgroundVisibility(false)}
+        animations += Animation.action{LeftStructure.menuButton.isVisible = false}
+        val currentlyOpenedTab = findOpenedTab()
         animations += Animation.moveTileWithArch(Tiles.bomb, World.hero.position, targetPosition.copy(), 1.0f, 0.5f)
         animations += Animation.action { playSoundOnce(Sounds.bomb) }
         animations += Animation.simultaneous(
@@ -102,7 +107,19 @@ open class Bomb(
                 }
             }
         }
-        
+        animations += Animation.action{ interfaceVisibilityWithTutorial()}
+        if (currentlyOpenedTab != null && currentlyOpenedTab != ItemsStructure.weaponDisplay)
+        {
+            animations += Animation.action{ hideWeaponsAndShowOtherTab(currentlyOpenedTab) }
+        }
+        animations += Animation.action{LeftStructure.menuButton.isVisible = true}
+        if (getState() is State.free)
+        {
+            animations += Animation.action{
+                ProgressBars.abilityBar.isVisible = false
+                ProgressBars.abilityBarForFlashing.isVisible = false
+                ProgressBars.abilityBarLabel.isVisible = false}
+        }
         Animating.executeAnimations(animations)
     }
 }

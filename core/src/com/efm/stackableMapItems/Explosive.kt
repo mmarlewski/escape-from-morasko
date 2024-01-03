@@ -8,6 +8,9 @@ import com.efm.item.StackableMapItem
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import com.efm.state.State
+import com.efm.state.getState
+import com.efm.ui.gameScreen.*
 
 class Explosive(
         override var amount : Int = 1
@@ -66,7 +69,9 @@ class Explosive(
         }
         
         val animations = mutableListOf<Animation>()
-        
+        animations += Animation.action{PopUps.setBackgroundVisibility(false)}
+        animations += Animation.action{LeftStructure.menuButton.isVisible = false}
+        val currentlyOpenedTab = findOpenedTab()
         animations.add(Animation.moveTile(Tiles.explosive, World.hero.position, targetPosition.copy(), 0.5f))
         animations.add(Animation.action { playSoundOnce(Sounds.explosive) })
         animations.add(
@@ -78,7 +83,6 @@ class Explosive(
                                       )
                       )
         animations.add(Animation.action {
-            
             for (blastPosition in blastPerimeterPositions + targetPosition)
             {
                 val blastSpace = room.getSpace(blastPosition)
@@ -92,7 +96,19 @@ class Explosive(
                 }
             }
         })
-        
+        animations += Animation.action{ interfaceVisibilityWithTutorial()}
+        if (currentlyOpenedTab != null && currentlyOpenedTab != ItemsStructure.weaponDisplay)
+        {
+            animations += Animation.action{ hideWeaponsAndShowOtherTab(currentlyOpenedTab) }
+        }
+        animations += Animation.action{LeftStructure.menuButton.isVisible = true}
+        if (getState() is State.free)
+        {
+            animations += Animation.action{
+                ProgressBars.abilityBar.isVisible = false
+                ProgressBars.abilityBarForFlashing.isVisible = false
+                ProgressBars.abilityBarLabel.isVisible = false}
+        }
         Animating.executeAnimations(animations)
     }
 }

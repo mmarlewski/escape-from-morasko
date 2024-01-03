@@ -1,11 +1,15 @@
 package com.efm
 
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.efm.assets.Tiles
 import com.efm.entities.Hero
 import com.efm.level.World
 import com.efm.room.*
 import com.efm.screens.GameScreen
 import com.efm.skills.GrassHealing
+import com.efm.state.State
+import com.efm.state.getState
+import com.efm.ui.gameScreen.*
 
 /**
  * prepares Hero move and its Animations
@@ -59,6 +63,9 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
         }
         
         val animations = mutableListOf<Animation>()
+        animations += Animation.action{PopUps.setBackgroundVisibility(false)}
+        animations += Animation.action{LeftStructure.menuButton.isVisible = false}
+        val currentlyOpenedTab = findOpenedTab()
         animations += Animation.action { Map.changeTile(MapLayer.entity, World.hero.position, null) }
         if (World.hero.hasSkill(GrassHealing))
         {
@@ -111,8 +118,40 @@ fun moveHero(startPosition : RoomPosition, endPosition : RoomPosition, path : Li
             }
         }
         animations += Animation.action(action)
+        animations += Animation.action{ interfaceVisibilityWithTutorial()}
+        if (currentlyOpenedTab != null && currentlyOpenedTab != ItemsStructure.weaponDisplay)
+        {
+            animations += Animation.action{ hideWeaponsAndShowOtherTab(currentlyOpenedTab) }
+        }
+        animations += Animation.action{LeftStructure.menuButton.isVisible = true}
+        if (getState() is State.free)
+        {
+            animations += Animation.action{
+            ProgressBars.abilityBar.isVisible = false
+            ProgressBars.abilityBarForFlashing.isVisible = false
+            ProgressBars.abilityBarLabel.isVisible = false}
+        }
         Animating.executeAnimations(animations)
     }
+}
+
+fun hideWeaponsAndShowOtherTab(currentlyOpenedTab : ScrollPane)
+{
+    ItemsStructure.weaponDisplay.isVisible = false
+    currentlyOpenedTab.isVisible = true
+}
+
+fun findOpenedTab() : ScrollPane?
+{
+    return when
+    {
+        ItemsStructure.potionDisplay.isVisible -> ItemsStructure.potionDisplay
+        ItemsStructure.skillDisplay.isVisible -> ItemsStructure.skillDisplay
+        ItemsStructure.usableDisplay.isVisible -> ItemsStructure.usableDisplay
+        ItemsStructure.weaponDisplay.isVisible -> ItemsStructure.weaponDisplay
+        else -> null
+    }
+    
 }
 
 fun changeBaseIfDrained(space : Space)

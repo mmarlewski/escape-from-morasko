@@ -16,6 +16,7 @@ import com.efm.screens.*
 import com.efm.skill.BodyPart
 import com.efm.skill.Skill
 import com.efm.state.State
+import com.efm.state.getState
 import com.efm.ui.gameScreen.*
 import com.efm.ui.menuScreen.TitleAndButtons
 
@@ -1027,6 +1028,12 @@ fun interfaceVisibilityWithTutorial()
                 }
             }
         }
+    }
+    if (getState() is State.free)
+    {
+        ProgressBars.abilityBar.isVisible = false
+        ProgressBars.abilityBarForFlashing.isVisible = false
+        ProgressBars.abilityBarLabel.isVisible = false
     }
 }
 

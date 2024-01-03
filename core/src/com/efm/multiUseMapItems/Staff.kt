@@ -8,6 +8,9 @@ import com.efm.item.MultiUseMapItem
 import com.efm.level.World
 import com.efm.room.Room
 import com.efm.room.RoomPosition
+import com.efm.state.State
+import com.efm.state.getState
+import com.efm.ui.gameScreen.*
 import kotlin.math.roundToInt
 
 class Staff : MultiUseMapItem
@@ -83,7 +86,9 @@ class Staff : MultiUseMapItem
         }
         
         val animations = mutableListOf<Animation>()
-        
+        animations += Animation.action{ PopUps.setBackgroundVisibility(false)}
+        animations += Animation.action{ LeftStructure.menuButton.isVisible = false}
+        val currentlyOpenedTab = findOpenedTab()
         val beamShowSeconds = 0.4f
         if (targetDirection != null)
         {
@@ -138,7 +143,19 @@ class Staff : MultiUseMapItem
                 }
             })
         }
-        
+        animations += Animation.action{ interfaceVisibilityWithTutorial()}
+        if (currentlyOpenedTab != null && currentlyOpenedTab != ItemsStructure.weaponDisplay)
+        {
+            animations += Animation.action{ hideWeaponsAndShowOtherTab(currentlyOpenedTab) }
+        }
+        animations += Animation.action{LeftStructure.menuButton.isVisible = true}
+        if (getState() is State.free)
+        {
+            animations += Animation.action{
+                ProgressBars.abilityBar.isVisible = false
+                ProgressBars.abilityBarForFlashing.isVisible = false
+                ProgressBars.abilityBarLabel.isVisible = false}
+        }
         Animating.executeAnimations(animations)
     }
 }
