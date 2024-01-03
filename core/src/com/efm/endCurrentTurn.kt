@@ -1,12 +1,12 @@
 package com.efm
 
 import com.badlogic.gdx.Gdx
-import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.screens.GameScreen
 import com.efm.screens.SettingsScreen
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
+import kotlin.random.Random
 
 /**
  * ends Hero turn and then acts accordingly to game and world state
@@ -48,21 +48,22 @@ fun endCurrentTurn()
             if (!currState.tutorialFlags.tutorialActive || currState.tutorialFlags.combatPopupShown)
             {
                 // enemies roaming
+                val roamingEnemies = World.currentRoom?.getEnemies()?.filter { Random.nextFloat() < it.roamingChance }?: listOf()
                 val enemyRoamingAnimations = mutableListOf<Animation>()
-                val enemyIterator = World.currentRoom?.getEnemies()?.iterator() ?: listOf<Enemy>().iterator()
+                val enemyIterator = roamingEnemies.iterator()
                 while (enemyIterator.hasNext())
                 {
                     val enemy = enemyIterator.next()
                     //Gdx.app.log("Roaming position before", "$enemy.position")
-                    if (enemyIterator.hasNext())
+                    enemyRoamingAnimations += if (enemyIterator.hasNext())
                     {
                         Gdx.app.log("Roaming", enemy::class.simpleName)
-                        enemyRoamingAnimations += enemy.getRoamingAnimations()
+                        enemy.getRoamingAnimations()
                     }
                     else
                     {
                         Gdx.app.log("Roaming last", enemy::class.simpleName)
-                        enemyRoamingAnimations += enemy.getRoamingAnimations(focusCameraOnHero = true)
+                        enemy.getRoamingAnimations(focusCameraOnHero = true)
                     }
                     // executeAnimations() is async so enemy changes its position in getRoamingAnimations()
                     //Gdx.app.log("Roaming position after", "$enemy.position")
