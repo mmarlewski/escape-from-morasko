@@ -1,5 +1,6 @@
 package com.efm
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -11,8 +12,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.efm.assets.*
 import com.efm.level.World
-import com.efm.screens.GameScreen
-import com.efm.screens.MenuScreen
+import com.efm.screens.*
 import com.efm.skill.BodyPart
 import com.efm.skill.Skill
 import com.efm.state.State
@@ -596,6 +596,9 @@ fun menuPopup(
         window.isVisible = false
         PopUps.setBackgroundVisibility(true)
         saveGame()
+        // save tutorial preference
+        val file = Gdx.files.local("additional_settings.txt")
+        file.writeString(json.prettyPrint(SettingsScreen.skipTutorialCheckbox.isChecked), false)
     }
     
     window.add(columnOf(resumeButton, equipmentButton, settingsButton, backToMenuButton)).pad(50f)

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.efm.entity.Enemy
 import com.efm.level.World
 import com.efm.screens.GameScreen
+import com.efm.screens.SettingsScreen
 import com.efm.state.*
 import com.efm.ui.gameScreen.*
 
@@ -91,6 +92,8 @@ fun endCurrentTurn()
                 PopUps.setBackgroundVisibility(false)
                 LeftStructure.menuButton.isVisible = false
                 newState.tutorialFlags.combatPopupShown = true
+                // skip tutorial next time when starting new game
+                SettingsScreen.skipTutorialCheckbox.isChecked = true
             }
         }
         

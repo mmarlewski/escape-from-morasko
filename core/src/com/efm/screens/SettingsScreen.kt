@@ -1,5 +1,6 @@
 package com.efm.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -108,7 +109,7 @@ object SettingsScreen : BaseScreen()
                                         setMusicVolume(musicSlider.value)
                                     }
                                 })
-        
+    
         soundSlider.addListener(object : ChangeListener()
                                 {
                                     override fun changed(event : ChangeEvent, actor : Actor)
@@ -116,7 +117,13 @@ object SettingsScreen : BaseScreen()
                                         setSoundVolume(soundSlider.value)
                                     }
                                 })
-        
+    
+        val file = Gdx.files.local("additional_settings.txt")
+        if (file.exists())
+        {
+            val jsonTutorialActive = json.fromJson(Boolean::class.java, file.readString())
+            skipTutorialCheckbox.isChecked = jsonTutorialActive
+        }
     }
     
     override fun render(delta : Float)
