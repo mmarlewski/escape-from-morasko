@@ -1,4 +1,4 @@
-package com.efm.entities.enemies.skeleton
+package com.efm.entities.bosses
 
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.maps.tiled.TiledMapTile
@@ -8,69 +8,57 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entity.*
-import com.efm.item.PossibleItem
 import com.efm.item.PossibleItems
 import com.efm.level.World
-import com.efm.multiUseMapItems.Bow
-import com.efm.multiUseMapItems.SunBow
+import com.efm.room.Base
 import com.efm.room.RoomPosition
-import com.efm.stackableSelfItems.APPotionSmall
-import com.efm.stackableSelfItems.HPPotionSmall
+import com.efm.screens.GameScreen
 
-class EnemySkeleton : Entity, Enemy
+class BossGoblinBow : BaseBoss()
 {
     override val position = RoomPosition()
-    override var maxHealthPoints = 8
-    override var healthPoints = 8
+    override var maxHealthPoints = 20
+    override var healthPoints = 20
     override var alive = true
-    override val detectionRange = 2
     override val attackRange = 5
     override var attackDamage = 10
-    override val stepsInOneTurn = 1
+    override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
     override var isFrozen = false
-    override val roamingChance : Float = 0.33f
-    override var loot : PossibleItems = PossibleItems(
-            mutableListOf(
-                    PossibleItem(Bow(), 0.5f, IntRange(1, 1)),
-                    PossibleItem(SunBow(), 0.05f, IntRange(1, 1)),
-                    PossibleItem(APPotionSmall(), 0.8f, IntRange(0, 1)),
-                    PossibleItem(HPPotionSmall(), 0.8f, IntRange(0, 3))
-                         )
-                                                     )
+    override var loot : PossibleItems = PossibleItems()
     
     override fun getTile() : TiledMapTile
     {
-        return Tiles.skeletonIdle1
+        return Tiles.goblinBowIdle1
     }
     
     override fun getOutlineYellowTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
-            1    -> Tiles.skeletonIdle1OutlineYellow
-            2    -> Tiles.skeletonIdle3OutlineYellow
-            3    -> Tiles.skeletonIdle2OutlineYellow
-            4    -> Tiles.skeletonIdle1OutlineYellow
-            else -> Tiles.skeletonIdle1OutlineYellow
+            1    -> Tiles.goblinBowIdle1OutlineYellow
+            2    -> Tiles.goblinBowIdle2OutlineYellow
+            3    -> Tiles.goblinBowIdle1OutlineYellow
+            4    -> Tiles.goblinBowIdle2OutlineYellow
+            else -> Tiles.goblinBowIdle1OutlineYellow
         }
     }
     
     override fun getOutlineRedTile() : TiledMapTile
     {
-        return Tiles.skeletonIdle1OutlineRed
+        return Tiles.goblinBowIdle1OutlineRed
     }
     
     override fun getIdleTile(n : Int) : TiledMapTile
     {
         return when (n)
         {
-            1    -> Tiles.skeletonIdle1
-            2    -> Tiles.skeletonIdle3
-            3    -> Tiles.skeletonIdle2
-            4    -> Tiles.skeletonIdle1
-            else -> Tiles.skeletonIdle1
+            1    -> Tiles.goblinBowIdle1
+            2    -> Tiles.goblinBowIdle2
+            3    -> Tiles.goblinBowIdle1
+            4    -> Tiles.goblinBowIdle2
+            else -> Tiles.goblinBowIdle1
         }
     }
     
@@ -78,20 +66,23 @@ class EnemySkeleton : Entity, Enemy
     {
         return when (n)
         {
-            1    -> Tiles.skeletonMove1
-            2    -> Tiles.skeletonMove2
-            3    -> Tiles.skeletonMove2
-            4    -> Tiles.skeletonMove3
-            else -> Tiles.skeletonMove1
+            1    -> Tiles.goblinBowMove1
+            2    -> Tiles.goblinBowMove1
+            3    -> Tiles.goblinBowMove2
+            4    -> Tiles.goblinBowMove2
+            else -> Tiles.goblinBowMove1
         }
     }
     
     override fun getAttackTile() : TiledMapTile
     {
-        return Tiles.skeletonAttack
+        return Tiles.goblinBowAttack
     }
     
-    override fun getMoveSound() : Sound = Sounds.skeletonMove
+    override fun getMoveSound() : Sound
+    {
+        return Sounds.goblinMove
+    }
     
     override fun enemyAttack()
     {
@@ -123,9 +114,17 @@ class EnemySkeleton : Entity, Enemy
                 }
             }
         }
-    
+        
         Animating.executeAnimations(animations)
     }
     
-    override fun getCorpse() : EnemyCorpse = EnemySkeletonCorpse(this.position, loot)
+    override fun onDeath()
+    {
+//        if (World.currentRoom?.name != "finalRoom")
+//        {
+//            showSkillAssignPopUpAfterBossKill(this)
+//            addBossToDefeatedBossesList(Boss.NatureGolem)
+//        }
+//        increaseHeroStats(5, 3)
+    }
 }

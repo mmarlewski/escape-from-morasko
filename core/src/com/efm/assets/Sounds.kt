@@ -26,6 +26,7 @@ object Sounds
     val beam = load("beam.mp3")
     val axe = load("axe.mp3")
     val hammer = load("hammer.mp3")
+    val spear = load("spear.mp3")
     
     // stackable map items
     
