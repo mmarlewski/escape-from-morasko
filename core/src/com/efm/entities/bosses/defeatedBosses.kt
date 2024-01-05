@@ -45,7 +45,8 @@ private fun chooseRandomUndefeatedBoss(random : Random = Random(Random.nextInt()
 
 fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : Direction4 = Direction4.left) : Boss
 {
-    val boss = chooseRandomUndefeatedBoss()
+    //val boss = chooseRandomUndefeatedBoss()
+    val boss = Boss.Goblin
     when (boss)
     {
         Boss.Chess       ->
@@ -84,6 +85,23 @@ fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : 
             }
             
         }
+        
+        Boss.Goblin ->
+        {
+            if (direction == Direction4.down || direction == Direction4.up)
+            {
+                room.addEntityAt(BossGoblinSpear(), position.x, position.y - 1)
+                room.addEntityAt(BossGoblinBarrel(), position.x + 1, position.y - 2)
+                room.addEntityAt(BossGoblinBow(), position.x - 1, position.y - 2)
+            }
+            else
+            {
+                room.addEntityAt(BossGoblinSpear(), position.x, position.y)
+                room.addEntityAt(BossGoblinBarrel(), position.x + 1, position.y + 1)
+                room.addEntityAt(BossGoblinBow(), position.x + 1, position.y - 1)
+            }
+        }
+        
         
         else             ->
         {
