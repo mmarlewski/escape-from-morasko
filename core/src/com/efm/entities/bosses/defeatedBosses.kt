@@ -17,7 +17,8 @@ enum class Boss(val bossClass : KClass<out Enemy>)
     OctopusHead(BossOctopusHead::class),
     Slime(BossSlime::class),
     //Wizard(BossWizard::class),
-    Chess(King::class)
+    Chess(King::class),
+    Goblin(BossGoblinSpear::class)
 }
 
 val defeatedBosses = mutableListOf<Boss>()
@@ -59,14 +60,29 @@ fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : 
             head.addTentacle(tentacle1)
             val tentacle2 = BossOctopusTentacle()
             head.addTentacle(tentacle2)
-            room.changeBaseAt(Base.water, position.x - 1, position.y - 1)
-            room.addEntityAt(tentacle1, position.x - 1, position.y - 1)
-            room.changeBaseAt(Base.water, position.x, position.y - 1)
-            room.changeBaseAt(Base.waterOctopus, position.x + 1, position.y - 1)
-            room.addEntityAt(head, position.x + 1, position.y - 1)
-            room.changeBaseAt(Base.water, position.x + 2, position.y - 1)
-            room.changeBaseAt(Base.water, position.x + 3, position.y - 1)
-            room.addEntityAt(tentacle2, position.x + 3, position.y - 1)
+            if (direction == Direction4.down || direction == Direction4.up)
+            {
+                room.changeBaseAt(Base.water, position.x - 1, position.y - 1)
+                room.addEntityAt(tentacle1, position.x - 1, position.y - 1)
+                room.changeBaseAt(Base.water, position.x, position.y - 1)
+                room.changeBaseAt(Base.waterOctopus, position.x + 1, position.y - 1)
+                room.addEntityAt(head, position.x + 1, position.y - 1)
+                room.changeBaseAt(Base.water, position.x + 2, position.y - 1)
+                room.changeBaseAt(Base.water, position.x + 3, position.y - 1)
+                room.addEntityAt(tentacle2, position.x + 3, position.y - 1)
+            }
+            else
+            {
+                room.changeBaseAt(Base.water, position.x + 1, position.y - 1)
+                room.addEntityAt(tentacle1, position.x + 1, position.y - 1)
+                room.changeBaseAt(Base.water, position.x, position.y)
+                room.changeBaseAt(Base.waterOctopus, position.x + 1, position.y + 1)
+                room.addEntityAt(head, position.x + 1, position.y + 1)
+                room.changeBaseAt(Base.water, position.x + 1, position.y + 2)
+                room.changeBaseAt(Base.water, position.x + 1, position.y + 3)
+                room.addEntityAt(tentacle2, position.x + 1, position.y + 3)
+            }
+            
         }
         
         else             ->
