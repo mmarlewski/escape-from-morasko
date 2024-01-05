@@ -45,8 +45,7 @@ private fun chooseRandomUndefeatedBoss(random : Random = Random(Random.nextInt()
 
 fun spawnRandomUndefeatedBoss(room : Room, position : RoomPosition, direction : Direction4 = Direction4.left) : Boss
 {
-    //val boss = chooseRandomUndefeatedBoss()
-    val boss = Boss.Goblin
+    val boss = chooseRandomUndefeatedBoss()
     when (boss)
     {
         Boss.Chess       ->

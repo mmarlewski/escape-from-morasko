@@ -117,14 +117,4 @@ class BossGoblinBow : BaseBoss()
         
         Animating.executeAnimations(animations)
     }
-    
-    override fun onDeath()
-    {
-//        if (World.currentRoom?.name != "finalRoom")
-//        {
-//            showSkillAssignPopUpAfterBossKill(this)
-//            addBossToDefeatedBossesList(Boss.NatureGolem)
-//        }
-//        increaseHeroStats(5, 3)
-    }
 }
