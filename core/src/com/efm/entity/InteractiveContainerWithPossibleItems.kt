@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.JsonValue
 import com.efm.item.*
 import com.efm.state.getState
 import com.efm.ui.gameScreen.EquipmentStructure
-import largerMultipleOfX
+import com.efm.worldGeneration.largerMultipleOfX
 import kotlin.math.min
 import kotlin.random.Random
 
