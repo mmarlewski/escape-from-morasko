@@ -461,11 +461,30 @@ fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem = when (item
 fun findPositionToSpawnHero(first : Room) : RoomPosition
 {
     var space = first.getSpaces().random()
-    while (!space.isTreadableFor(World.hero) || !space.isTraversableFor(World.hero) || !first.isPositionWithinBounds(space.position.x, space.position.y))
+    while (!space.isTreadableFor(World.hero) || !space.isTraversableFor(World.hero) || !first.isPositionWithinBounds(space.position.x, space.position.y) || !isTherePathFromSpaceToExit(space, first))
     {
         space = first.getSpaces().random()
     }
     return RoomPosition(space.position.x, space.position.y)
+}
+
+fun isTherePathFromSpaceToExit(space : Space, room : Room) : Boolean
+{
+    val startPos = RoomPosition(space.position.x, space.position.y)
+    val exitPos = findExitPositionInRoom(room)
+    return PathFinding.findPathInRoomForEntity(startPos, exitPos, room, World.hero)?.isNotEmpty() ?: false
+}
+
+fun findExitPositionInRoom(room : Room) : RoomPosition
+{
+    for (entity in room.getEntities())
+    {
+        if (entity is Exit)
+        {
+            return entity.position
+        }
+    }
+    return RoomPosition(room.widthInSpaces - 1, room.heightInSpaces - 1)
 }
 
 fun randomizeBasesForARoomAndAwayFromDoors(room : Room, allowedBases : List<Base>, roomBasesArray : Array<IntArray>, repetitions : Int)
