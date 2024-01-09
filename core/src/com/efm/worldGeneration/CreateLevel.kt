@@ -327,17 +327,58 @@ fun createMorePassages(
         whileBreaker += 1
         val currentRoom = findRoomByName(i.value.toString(), rooms)
         val roomToConnectTo = findRoomByName(roomToConnectToPatch.value.toString(), rooms)
-        if (roomToConnectTo != null && getRoomSize(roomToConnectTo) > 40 && currentRoom?.let { getRoomSize(it) }!! > 40 && canTwoRoomsBeConnectedInAStraightLine(i, roomToConnectToPatch, roomData) && i.value !in connections && roomToConnectToPatch.value !in connections)
+        if (roomToConnectTo != null && getRoomSize(roomToConnectTo) > 40 && currentRoom?.let { getRoomSize(it) }!! > 40 && canTwoRoomsBeConnectedInAStraightLine(i, roomToConnectToPatch, roomData) && i.value !in connections && roomToConnectToPatch.value !in connections && i.value != 1 && roomToConnectToPatch.value != 1)
         {
-            createPassagesBasedOnRelativePosition(i, roomToConnectToPatch, currentRoom, roomToConnectTo, level)
-            connections.add(i.value)
-            connections.add(roomToConnectToPatch.value)
+            if (!roomsAreAlreadyConnected(currentRoom, roomToConnectTo))
+            {
+                createPassagesBasedOnRelativePosition(i, roomToConnectToPatch, currentRoom, roomToConnectTo, level)
+                connections.add(i.value)
+                connections.add(roomToConnectToPatch.value)
+            }
         }
         else
         {
             continue
         }
     }
+}
+
+fun roomsAreAlreadyConnected(currentRoom : Room, roomToConnectTo : Room) : Boolean
+{
+    val passagesA = mutableListOf<RoomExit>()
+    for (entity in currentRoom.getEntities())
+    {
+        if (entity is RoomExit)
+        {
+            passagesA.add(entity)
+        }
+    }
+    val passagesB = mutableListOf<RoomExit>()
+    for (entity in roomToConnectTo.getEntities())
+    {
+        if (entity is RoomExit)
+        {
+            passagesB.add(entity)
+        }
+    }
+    if (passagesA.isNotEmpty() && passagesB.isNotEmpty())
+    {
+        for (passageA in passagesA)
+        {
+            if (passageA.endRoomName == roomToConnectTo.name)
+            {
+                return true
+            }
+        }
+        for (passageB in passagesB)
+        {
+            if (passageB.endRoomName == currentRoom.name)
+            {
+                return true
+            }
+        }
+    }
+    return false
 }
 
 fun canTwoRoomsBeConnectedInAStraightLine(startRoom : PatchCenter, endRoom : PatchCenter, roomData : Array<IntArray>) : Boolean
