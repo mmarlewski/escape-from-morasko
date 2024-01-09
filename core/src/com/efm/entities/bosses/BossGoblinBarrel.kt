@@ -183,14 +183,4 @@ class BossGoblinBarrel : BaseBoss()
             isBarrel = true
         }
     }
-    
-    override fun onDeath()
-    {
-//        if (World.currentRoom?.name != "finalRoom")
-//        {
-//            showSkillAssignPopUpAfterBossKill(this)
-//            addBossToDefeatedBossesList(Boss.NatureGolem)
-//        }
-//        increaseHeroStats(5, 3)
-    }
 }

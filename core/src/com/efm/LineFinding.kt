@@ -75,4 +75,32 @@ object LineFinding
         
         return if (isLineObstructed) null else linePositions.toList()
     }
+    fun findLineWithinMatrix(startPosition : RoomPosition, endPosition : RoomPosition, matrix : Array<IntArray>) : List<Int>?
+    {
+        val distance = diagonalDistance(startPosition.toVector2(), endPosition.toVector2())
+        val linePositions = mutableListOf<RoomPosition>()
+        val resultingLine = mutableListOf<Int>()
+        
+        if (distance > 0)
+        {
+            for (i in 0..distance)
+            {
+                val newLinePosition =
+                        lerpPosition(startPosition.toVector2(), endPosition.toVector2(), i.toFloat() / distance)
+                linePositions.add(newLinePosition.toRoomPosition())
+            }
+        }
+        else
+        {
+            return null
+        }
+        
+        for (position in linePositions)
+        {
+            resultingLine.add(matrix[position.x][position.y])
+        }
+        
+        return resultingLine.toList()
+    }
+    
 }
