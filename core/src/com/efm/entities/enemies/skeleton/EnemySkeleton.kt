@@ -25,7 +25,7 @@ class EnemySkeleton : Entity, Enemy
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 5
-    override var attackDamage = 10
+    override var attackDamage = 13
     override val stepsInOneTurn = 1
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

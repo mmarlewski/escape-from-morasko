@@ -24,7 +24,7 @@ class EnemyBoar(
     
     override val detectionRange : Int = 3
     override val attackRange : Int = 3
-    override var attackDamage = 15
+    override var attackDamage = 20
     override val stepsInOneTurn : Int = 2
     
     override lateinit var healthBar : ProgressBar

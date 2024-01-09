@@ -23,7 +23,7 @@ class EnemyPlant : Entity, Enemy
     override var alive = true
     override val detectionRange = 2
     override val attackRange = 1
-    override var attackDamage = 20
+    override var attackDamage = 26
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

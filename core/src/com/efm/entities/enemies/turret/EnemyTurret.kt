@@ -23,7 +23,7 @@ class EnemyTurret : Entity, Enemy
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 5
-    override var attackDamage = 15
+    override var attackDamage = 20
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

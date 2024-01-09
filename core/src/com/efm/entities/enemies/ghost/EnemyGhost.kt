@@ -35,7 +35,7 @@ class EnemyGhost(
     
     override val detectionRange : Int = 4
     override val attackRange : Int = 1
-    override var attackDamage = 20
+    override var attackDamage = 26
     override val stepsInOneTurn : Int = 4
     
     override lateinit var healthBar : ProgressBar
