@@ -23,7 +23,7 @@ class BossDragon : BaseBoss(), Enemy
     override var healthPoints = 50
     override var alive = true
     override val attackRange = 3
-    override var attackDamage = 20
+    override var attackDamage = 26
     override val stepsInOneTurn = 10
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

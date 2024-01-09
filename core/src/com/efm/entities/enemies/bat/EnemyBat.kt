@@ -20,7 +20,7 @@ class EnemyBat : Entity, Enemy
     override var alive = true
     override val detectionRange = 3
     override val attackRange = 1
-    override var attackDamage = 12
+    override var attackDamage = 16
     override val stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
