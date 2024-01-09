@@ -403,7 +403,7 @@ fun addChestsToOtherRooms(rooms : MutableList<Room>, levelNumber : Int, levelThe
 {
     for (room in rooms)
     {
-        val amountOfChests = nextInt(getRoomSize(room) / 100, max((getRoomSize(room) / 60), 1))
+        val amountOfChests = nextInt(getRoomSize(room) /80, (getRoomSize(room) /60)+1)
         if (room.name != "1" && room.name != "boss_room")
         {
             for (i in 0 until amountOfChests)
@@ -447,7 +447,7 @@ fun getPossibleItemsBasedOnLevelNumber(levelNumber : Int, levelTheme : LevelThem
     val possibleItems = mutableListOf<PossibleItem>()
     for (item in levelTheme.items)
     {
-        possibleItems.add(getPossibleItem(item, levelNumber).apply { this.chance -= 0.01f })
+        possibleItems.add(getPossibleItem(item, levelNumber))
     }
     // max Chest capacity 25 = 24 items + 1 slot for swapping items
     val maxItemsPossibleToDraw = min(nextInt(levelNumber + 1, levelNumber + 3), 24)

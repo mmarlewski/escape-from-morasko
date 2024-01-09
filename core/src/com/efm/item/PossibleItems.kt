@@ -8,7 +8,7 @@ import kotlin.random.Random
 
 class PossibleItem(
         val item : Item,
-        var chance : Float,
+        val chance : Float,
         val amountRange : IntRange
                   )
 
