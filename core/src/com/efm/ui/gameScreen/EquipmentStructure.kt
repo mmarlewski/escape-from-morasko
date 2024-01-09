@@ -131,9 +131,9 @@ object EquipmentStructure
         deleteButton = createDeleteButton()
         arrowButton = createArrowButton()
         
-        heroOverlay = equipmentOverlay("HERO'S EQUIPMENT")
+        heroOverlay = equipmentOverlay("EQUIPMENT")
         heroOverlay.isVisible = false
-        containerOverlay = equipmentOverlay("CONTAINER'S EQUIPMENT")
+        containerOverlay = equipmentOverlay("")
         containerOverlay.isVisible = false
     }
     
