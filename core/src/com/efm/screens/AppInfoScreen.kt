@@ -29,28 +29,21 @@ object AppInfoScreen : BaseScreen()
                                   )
         
         val versionLabel =
-                labelOf("current version: 1.1.0", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
+                labelOf("current version: 1.1.1", Fonts.pixeloid30, Colors.white, Textures.translucentNinePatch)
         
         val whatsNewLabel = patchNotesLabel(
                 "What's new?",
-                "- procedural level generation,\n" +
-                        "- all items have their statistics shown when selected in equipment,\n" +
-                        "- weapons have their statistics displayed when selected while playing\n" +
-                        "- new decorative elements spawn in rooms\n" +
-                        "- added Congratulations! screen on game completion\n" +
-                        "- enemies now have a random chance to trigger roaming\n" +
-                        "- camera movement restrictions\n" +
-                        "- collecting more than 9 items of given type now creates a scrolling option",
+                "- new kind of a boss in the form of three goblins\n" +
+                        "- level complexity changes",
                 appInfoTitle.width
                                            )
     
         val bugFixesLabel = patchNotesLabel(
                 "Bug fixes",
-                "- Game Over screen now appears when hero is killed by their own actions,\n" +
-                        "- items no longer have amount of 0 when looting,\n" +
-                        "- new items no longer appear in corpses after every loading\n" +
-                        "- mimic pretends to be a chest more convincingly\n" +
-                        "- enemies will detect the player more consistently",
+                "- looting view no longer contains container's equipment label\n" +
+                        "- AP bar no longer appears in empty rooms\n" +
+                        "- UI disappears when moving and using bombs\n" +
+                        "- fixed an occurence when player could spawn in a place that they can't leave\n",
                 appInfoTitle.width
                                            )
 
