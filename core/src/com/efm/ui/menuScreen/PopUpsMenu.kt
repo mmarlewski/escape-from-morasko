@@ -10,7 +10,7 @@ import com.efm.screens.MenuScreen
 import com.efm.state.State
 import com.efm.state.setState
 import com.efm.ui.gameScreen.ItemsStructure
-import createProcGenWorld
+import com.efm.worldGeneration.createProcGenWorld
 
 object PopUpsMenu
 {

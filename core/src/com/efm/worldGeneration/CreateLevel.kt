@@ -1,3 +1,5 @@
+package com.efm.worldGeneration
+
 import com.efm.*
 import com.efm.entities.Modifier
 import com.efm.entities.Npc
@@ -16,8 +18,6 @@ import com.efm.multiUseMapItems.WoodenSword
 import com.efm.room.*
 import com.efm.stackableSelfItems.Apple
 import com.efm.stackableSelfItems.HPPotionSmall
-import com.efm.worldGeneration.LevelTheme
-import com.efm.worldGeneration.LevelThemes
 import kotlin.math.*
 import kotlin.random.Random
 import kotlin.random.Random.Default.nextFloat
@@ -239,6 +239,7 @@ fun createLevel(levelNumber : Int) : Level
     }
     //add Passages
     createPassages(rooms, patchCenters, possibleRoomsValues, level)
+    createMorePassages(rooms, patchCenters, level, roomData)
     for (room in rooms)
     {
         val x1 = getRoomX1(room.name.toInt(), roomData)
@@ -248,7 +249,7 @@ fun createLevel(levelNumber : Int) : Level
         val roomBasesArray = getMatrixBasedOnCoordinates(roomData, x1, x2, y1, y2, room.name.toInt())
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.water), roomBasesArray, 2)
         randomizeBasesForARoomAndAwayFromDoors(room, listOf(Base.lava), roomBasesArray, 1)
-        spawnEnemiesInTheRoom(room, levelTheme, levelNumber)
+        spawnEnemiesInTheRoom(room, levelTheme)
         spawnPropsInTheRoom(room)
     }
     val bossRoom = createChessBossRoom()
@@ -262,14 +263,13 @@ fun createLevel(levelNumber : Int) : Level
         }
     }
     val bossRoomEntranceDirection = getBossRoomEntranceDirection(bossRoom)
-    val chessKingPos : RoomPosition
-    if (bossRoomEntranceDirection == Direction4.down)
+    val chessKingPos : RoomPosition = if (bossRoomEntranceDirection == Direction4.down)
     {
-        chessKingPos = RoomPosition(6, 11)
+        RoomPosition(6, 11)
     }
     else
     {
-        chessKingPos = RoomPosition(1, 5)
+        RoomPosition(1, 5)
     }
     val boss = spawnRandomUndefeatedBoss(bossRoom, chessKingPos, bossRoomEntranceDirection.opposite())
     defeatedBosses.add(boss)
@@ -311,6 +311,64 @@ fun createLevel(levelNumber : Int) : Level
     return level
 }
 
+fun createMorePassages(
+        rooms : MutableList<Room>,
+        patchCenters : List<PatchCenter>,
+        level : Level,
+        roomData : Array<IntArray>
+                      )
+{
+    val connections = mutableListOf<Int>()
+    var whileBreaker = 0
+    while (whileBreaker < 20 && connections.size < 10)
+    {
+        val i = patchCenters.random()
+        val roomToConnectToPatch = patchCenters.random()
+        whileBreaker += 1
+        val currentRoom = findRoomByName(i.value.toString(), rooms)
+        val roomToConnectTo = findRoomByName(roomToConnectToPatch.value.toString(), rooms)
+        if (roomToConnectTo != null && getRoomSize(roomToConnectTo) > 40 && currentRoom?.let { getRoomSize(it) }!! > 40 && canTwoRoomsBeConnectedInAStraightLine(i, roomToConnectToPatch, roomData) && i.value !in connections && roomToConnectToPatch.value !in connections)
+        {
+            createPassagesBasedOnRelativePosition(i, roomToConnectToPatch, currentRoom, roomToConnectTo, level)
+            connections.add(i.value)
+            connections.add(roomToConnectToPatch.value)
+        }
+        else
+        {
+            continue
+        }
+    }
+}
+
+fun canTwoRoomsBeConnectedInAStraightLine(startRoom : PatchCenter, endRoom : PatchCenter, roomData : Array<IntArray>) : Boolean
+{
+    val startPos = RoomPosition(startRoom.x, startRoom.y)
+    val endPos = RoomPosition(endRoom.x, endRoom.y)
+    val lineBetweenRooms = LineFinding.findLineWithinMatrix(startPos, endPos, roomData)
+    if (lineBetweenRooms != null) {
+        if (lineBetweenRooms.isNotEmpty())
+        {
+            if (listContainsOnlyGivenTwoValuesAndZero(startRoom.value, endRoom.value, lineBetweenRooms))
+            {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+fun listContainsOnlyGivenTwoValuesAndZero(value : Int, value1 : Int, lineBetweenRooms : List<Int>) : Boolean
+{
+    for (element in lineBetweenRooms)
+    {
+        if (element != value && element != value1 && element != 0)
+        {
+            return false
+        }
+    }
+    return true
+}
+
 fun getBossRoomEntranceDirection(bossRoom : Room) : Direction4
 {
     for (entity in bossRoom.getEntities())
@@ -326,9 +384,11 @@ fun getBossRoomEntranceDirection(bossRoom : Room) : Direction4
 fun addNpcToRooms(rooms : MutableList<Room>, levelTheme : LevelTheme)
 {
     var room = rooms.random()
-    while (room.name == "1" || room.name == "boss_room")
+    var whileBreaker = 0
+    while (whileBreaker < 20 || room.name == "1" || room.name == "boss_room")
     {
         room = rooms.random()
+        whileBreaker += 1
     }
     val randomModifier = getRandomModifier(levelTheme)
     room.addEntityAt(Npc().apply { modifier = randomModifier }, getPositionForChest(room))
@@ -343,7 +403,7 @@ fun addChestsToOtherRooms(rooms : MutableList<Room>, levelNumber : Int, levelThe
 {
     for (room in rooms)
     {
-        val amountOfChests = nextInt(getRoomSize(room)/80, (getRoomSize(room)/60)+1)
+        val amountOfChests = nextInt(getRoomSize(room) /80, (getRoomSize(room) /60)+1)
         if (room.name != "1" && room.name != "boss_room")
         {
             for (i in 0 until amountOfChests)
@@ -367,12 +427,14 @@ fun Int.largerMultipleOfX(x : Int) : Int
 fun getPositionForChest(room : Room) : RoomPosition
 {
     var space = room.getSpaces().random()
-    while (space.getBase() == null || space.getBase() == Base.water || space.getBase() == Base.lava || space.getEntity() != null || !checkIfNoOtherPassagesNearby(
+    var whileBreaker = 0
+    while (whileBreaker < 20 || space.getBase() == null || space.getBase() == Base.water || space.getBase() == Base.lava || space.getEntity() != null || !checkIfNoOtherPassagesNearby(
                     room, space, 2.0
-                                                                                                                                                                 )
+                                                                                                                                                                                      )
     )
     {
         space = room.getSpaces().random()
+        whileBreaker += 1
     }
     return RoomPosition(space.position.x, space.position.y)
 }
@@ -461,11 +523,32 @@ fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem = when (item
 fun findPositionToSpawnHero(first : Room) : RoomPosition
 {
     var space = first.getSpaces().random()
-    while (!space.isTreadableFor(World.hero) || !space.isTraversableFor(World.hero) || !first.isPositionWithinBounds(space.position.x, space.position.y))
+    var whileBreaker = 0
+    while (whileBreaker < 20 || !space.isTreadableFor(World.hero) || !space.isTraversableFor(World.hero) || !first.isPositionWithinBounds(space.position.x, space.position.y) || !isTherePathFromSpaceToExit(space, first))
     {
         space = first.getSpaces().random()
+        whileBreaker += 1
     }
     return RoomPosition(space.position.x, space.position.y)
+}
+
+fun isTherePathFromSpaceToExit(space : Space, room : Room) : Boolean
+{
+    val startPos = RoomPosition(space.position.x, space.position.y)
+    val exitPos = findExitPositionInRoom(room)
+    return PathFinding.findPathInRoomForEntity(startPos, exitPos, room, World.hero)?.isNotEmpty() ?: false
+}
+
+fun findExitPositionInRoom(room : Room) : RoomPosition
+{
+    for (entity in room.getEntities())
+    {
+        if (entity is Exit)
+        {
+            return entity.position
+        }
+    }
+    return RoomPosition(room.widthInSpaces - 1, room.heightInSpaces - 1)
 }
 
 fun randomizeBasesForARoomAndAwayFromDoors(room : Room, allowedBases : List<Base>, roomBasesArray : Array<IntArray>, repetitions : Int)
@@ -475,11 +558,13 @@ fun randomizeBasesForARoomAndAwayFromDoors(room : Room, allowedBases : List<Base
         var randomY = roomBasesArray.indices.random()
         var randomX = roomBasesArray[randomY].indices.random()
         var pickedPoint = roomBasesArray[randomY][randomX]
-        while (pickedPoint == 0)
+        var whileBreaker = 0
+        while (whileBreaker < 20 || pickedPoint == 0)
         {
             randomY = roomBasesArray.indices.random()
             randomX = roomBasesArray[randomY].indices.random()
             pickedPoint = roomBasesArray[randomY][randomX]
+            whileBreaker += 1
         }
         val randomBase = allowedBases.random()
         val randomSpace = room.getSpace(RoomPosition(randomX, randomY))
@@ -505,13 +590,10 @@ fun addChestToStartingRoom(first : Room, vararg items : Item)
     val chest = Chest()
     items.forEach { chest.addItem(it) }
     val position = getPositionForChest(first)
-    if (position != null)
-    {
-        first.addEntityAt(chest, position)
-    }
+    first.addEntityAt(chest, position)
 }
 
-fun spawnEnemiesInTheRoom(room : Room, theme : LevelTheme, levelNumber : Int)
+fun spawnEnemiesInTheRoom(room : Room, theme : LevelTheme)
 {
     if (room.name != "1")
     {
@@ -637,11 +719,13 @@ fun randomizeBasesForARoom(room : Room, allowedBases : List<Base>, roomBasesArra
         var randomY = roomBasesArray.indices.random()
         var randomX = roomBasesArray[randomY].indices.random()
         var pickedPoint = roomBasesArray[randomY][randomX]
-        while (pickedPoint == 0)
+        var whileBreaker = 0
+        while (whileBreaker < 20 || pickedPoint == 0)
         {
             randomY = roomBasesArray.indices.random()
             randomX = roomBasesArray[randomY].indices.random()
             pickedPoint = roomBasesArray[randomY][randomX]
+            whileBreaker += 1
         }
         var randomBases = getRandomBasesThatFitTogether(allowedBases)
         val randomSpace = room.getSpace(RoomPosition(randomX, randomY))
@@ -754,8 +838,10 @@ fun createPassages(
 {
     val connections = mutableListOf<Int>()
     var i = patchCenters[0]
-    while (!areAllRoomsConnected(connections, possibleRoomsValues))
+    var whileBreaker = 0
+    while (whileBreaker < 20 || !areAllRoomsConnected(connections, possibleRoomsValues))
     {
+        whileBreaker += 1
         val currentRoom = findRoomByName(i.value.toString(), rooms)
         val closestPatch = findClosestPatchThatIsNotInConnections(connections, patchCenters, i)
         if (closestPatch != null && currentRoom != null)

@@ -1,6 +1,6 @@
 package com.efm.state
 
-import checkIfLastBossDefeated
+import com.efm.worldGeneration.checkIfLastBossDefeated
 import com.efm.*
 import com.efm.inventoryTabSlot.InventoryTabSlot
 import com.efm.inventoryTabSlot.InventoryTabStackableSelfItemSlot

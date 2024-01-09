@@ -139,6 +139,8 @@ object ProgressBars
     
     fun updateHeroApHpBars()
     {
+        healthBar.isVisible = false
+        healthBarLabel.isVisible = false
         healthBar = createBar(
                 24f,
                 Textures.knobHealthbarAfterNinePatch,
@@ -146,7 +148,9 @@ object ProgressBars
                 World.hero.maxHealthPoints
                              )
         healthBarLabel = createLabel(World.hero.healthPoints, World.hero.maxHealthPoints)
-    
+        abilityBar.isVisible = false
+        abilityBarForFlashing.isVisible = false
+        abilityBarLabel.isVisible = false
         abilityBar = createBar(
                 24f,
                 Textures.knobAbilitybarAfterNinePatch,
