@@ -12,22 +12,22 @@ class `math utils`
 {
     @Test fun `positionToOrtho test`()
     {
-        assertTrue(positionToOrtho(Vector2(1f, 1f)) == Vector2(32.0f, 736.0f))
+        assertTrue(positionToOrtho(Vector2(1f, 1f)) == Vector2(32.0f, 1856.0f))
     }
     
     @Test fun `orthoToPosition test`()
     {
-        assertTrue(orthoToPosition(Vector2(1f, 1f)) == Vector2(0.0f, 24.0f))
+        assertTrue(orthoToPosition(Vector2(1f, 1f)) == Vector2(0.0f, 59.0f))
     }
     
     @Test fun `roomPositionToOrtho test`()
     {
-        assertTrue(roomPositionToOrtho(RoomPosition(1, 1)) == Vector2(32.0f, 736.0f))
+        assertTrue(roomPositionToOrtho(RoomPosition(1, 1)) == Vector2(32.0f, 1856.0f))
     }
     
     @Test fun `orthoToRoomPosition test`()
     {
-        assertTrue(orthoToRoomPosition(Vector2(1f, 1f)) == RoomPosition(0, 24))
+        assertTrue(orthoToRoomPosition(Vector2(1f, 1f)) == RoomPosition(0, 59))
     }
     
     @Test fun `orthoToIso test`()
