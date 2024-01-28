@@ -58,10 +58,13 @@ Skills can be Passive or Dynamic.
 Items and Skills trigger Animations that are executed on Map.  
 Game world and state data can be serialised into json save files and then loaded into game again.  
 
-### Screenshots
-![image](screenshot_1.png)
-![image](screenshot_2.png)
-![image](screenshot_3.png)
-![image](screenshot_4.png)
-![image](screenshot_5.png)
-![image](screenshot_6.png)
+### Gifs
+![image](gif_1.gif)
+![image](gif_2.gif)
+![image](gif_3.gif)
+![image](gif_4.gif)
+![image](gif_5.gif)
+![image](gif_6.gif)
+![image](gif_7.gif)
+![image](gif_8.gif)
+![image](gif_9.gif)
