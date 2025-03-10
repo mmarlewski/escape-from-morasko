@@ -9,7 +9,8 @@ import com.badlogic.gdx.utils.JsonValue
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entity.*
+import com.efm.entity.BaseBoss
+import com.efm.entity.Enemy
 import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.Base
@@ -23,7 +24,7 @@ class BossOctopusHead : BaseBoss(), Enemy
     override var healthPoints = 50
     override var alive = true
     override val attackRange = 0
-    override var attackDamage = 30
+    override var attackDamage = 40
     override val stepsInOneTurn = 0
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

@@ -450,7 +450,7 @@ fun addChestsToOtherRooms(rooms : MutableList<Room>, levelNumber : Int, levelThe
             for (i in 0 until amountOfChests)
             {
                 val chest = Chest(getPossibleItemsBasedOnLevelNumber(levelNumber, levelTheme))
-                room.addEntityAt(chest, getPositionForChest(room))
+                if (chest.items.isNotEmpty()) room.addEntityAt(chest, getPositionForChest(room))
             }
         }
     }
@@ -460,9 +460,12 @@ fun addChestsToOtherRooms(rooms : MutableList<Room>, levelNumber : Int, levelThe
 fun Int.largerMultipleOfX(x : Int) : Int
 {
     val xAbs = abs(x)
-    return if (xAbs == 0) 0
-    else if (this >= 0) this + (xAbs - this % xAbs)
-    else this + xAbs - (xAbs + this % xAbs) % xAbs
+    return when
+    {
+        xAbs == 0 -> 0
+        this >= 0 -> this + (xAbs - this % xAbs)
+        else      -> this + xAbs - (xAbs + this % xAbs) % xAbs
+    }
 }
 
 fun getPositionForChest(room : Room) : RoomPosition
@@ -537,28 +540,28 @@ fun getPossibleItem(item : Items, levelNumber : Int) : PossibleItem = when (item
                                          )
     Items.SHURIKEN        -> PossibleItem(
             item.new(), 0.09f, IntRange(
-            3, 3 + levelNumber * 2
+            3, 2 + levelNumber * 2
                                        )
                                          )
     Items.APPLE           -> PossibleItem(
             item.new(), 0.09f, IntRange(
-            1, 3 + levelNumber * 2
+            1, 2 + levelNumber * 2
                                        )
                                          )
     Items.AP_POTION_BIG   -> PossibleItem(
-            item.new(), 0.03f + (0.01f * levelNumber), IntRange(1, 1 + levelNumber)
+            item.new(), 0.03f + (0.01f * levelNumber), IntRange(1, 0 + levelNumber)
                                          )
     Items.AP_POTION_SMALL -> PossibleItem(
-            item.new(), 0.9f + (0.00f * levelNumber), IntRange(1, 2 + levelNumber)
+            item.new(), 0.9f + (0.00f * levelNumber), IntRange(1, 1 + levelNumber)
                                          )
     Items.FISH            -> PossibleItem(
             item.new(), 0.09f, IntRange(
-            1, 3 + levelNumber * 2
+            1, 2 + levelNumber * 2
                                        )
                                          )
-    Items.HP_POTION_BIG   -> PossibleItem(item.new(), 0.04f + (0.01f * levelNumber), IntRange(1, 1 + levelNumber))
-    Items.HP_POTION_SMALL -> PossibleItem(item.new(), 0.12f + (0.00f * levelNumber), IntRange(1, 2 + levelNumber))
-    Items.MUSHROOM        -> PossibleItem(item.new(), 0.07f, IntRange(1, 3 + levelNumber))
+    Items.HP_POTION_BIG   -> PossibleItem(item.new(), 0.04f + (0.01f * levelNumber), IntRange(1, 0 + levelNumber))
+    Items.HP_POTION_SMALL -> PossibleItem(item.new(), 0.12f + (0.00f * levelNumber), IntRange(1, 1 + levelNumber))
+    Items.MUSHROOM        -> PossibleItem(item.new(), 0.07f, IntRange(1, 2 + levelNumber))
 }
 
 fun findPositionToSpawnHero(first : Room) : RoomPosition

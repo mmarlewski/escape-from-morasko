@@ -10,42 +10,44 @@ import com.efm.*
 import com.efm.assets.*
 
 val assetsCreditsString =
-        " mushroom :     LuizMelo            (itch.io)\n" +
-                " bat :          bagzie              (opengameart.org)\n" +
-                " skeleton :     Calciumtrice        (opengameart.org)\n" +
-                " boar :         BenCreating         (opengameart.org)\n" +
-                " rock :         Unnamed             (opengameart.org)\n" +
-                " rock pile :    FunwithPixels       (opengameart.org)\n" +
-                " ghost :        Balmer              (opengameart.org)\n" +
-                " plant :        Aswino              (opengameart.org)\n" +
-                " wizard :       Merry Dream Games   (opengameart.org)\n" +
-                " turret :       bluecarrot16        (opengameart.org)\n" +
-                "\n" +
-                " goblins :      William.Thompsonj   (opengameart.org)\n" +
-                " barrel :       Lil Pie             (opengameart.org)\n" +
-                " explosion :    Pompei2             (opengameart.org)\n" +
-                " dragon :       ZaPaper             (opengameart.org)\n" +
-                " chess :        Nem_                (opengameart.org)\n" +
-                " slime :        Chrisblue           (opengameart.org)\n" +
-                " golem :        William.Thompsonj   (opengameart.org)\n" +
-                " npc :          Syrsly              (opengameart.org)\n" +
-                "\n" +
-                " floors :       Anokolisa           (itch.io)\n" +
-                " walls :        hawkbirdtree        (opengameart.org)\n" +
-                "\n" +
-                " music :\n" +
-                " \"Dungeon 01\"       Fantasy Musica  (opengameart.org)\n" +
-                " \"Dungeon 03\"       Fantasy Musica  (opengameart.org)\n" +
-                " \"Dungeon 05\"       Fantasy Musica  (opengameart.org)\n" +
-                " \"Dungeon Deep\"     adn_adn         (opengameart.org)\n" +
-                " \"Dark Fallout\"     remaxim         (opengameart.org)\n" +
-                " \"Dungeon Ambience\" yd              (opengameart.org)\n" +
-                " \"Dungeon Theme\"    remaxim         (opengameart.org)\n" +
-                " \"Caves\"        Alexandr Zhelanov   (opengameart.org)\n" +
-                "\n" +
-                " ui sound effects : ColorAlpha      (itch.io)\n" +
-                "\n" +
-                " other sound effects from Pixabay and Mixkit"
+        """ mushroom :     LuizMelo            (itch.io)
+ bat :          bagzie              (opengameart.org)
+ skeleton :     Calciumtrice        (opengameart.org)
+ boar :         BenCreating         (opengameart.org)
+ rock :         Unnamed             (opengameart.org)
+ rock pile :    FunwithPixels       (opengameart.org)
+ ghost :        Balmer              (opengameart.org)
+ plant :        Aswino              (opengameart.org)
+ wizard :       Merry Dream Games   (opengameart.org)
+ turret :       bluecarrot16        (opengameart.org)
+
+ goblins :      William.Thompsonj   (opengameart.org)
+ barrel :       Lil Pie             (opengameart.org)
+ explosion :    Pompei2             (opengameart.org)
+ dragon :       ZaPaper             (opengameart.org)
+ chess :        Nem_                (opengameart.org)
+ slime :        Chrisblue           (opengameart.org)
+ golem :        William.Thompsonj   (opengameart.org)
+ npc :          Syrsly              (opengameart.org)
+
+ floors :       Anokolisa           (itch.io)
+ walls :        hawkbirdtree        (opengameart.org)
+
+ music :
+ "Dungeon 01"       Fantasy Musica  (opengameart.org)
+ "Dungeon 03"       Fantasy Musica  (opengameart.org)
+ "Dungeon 05"       Fantasy Musica  (opengameart.org)
+ "Dungeon Deep"     adn_adn         (opengameart.org)
+ "Dark Fallout"     remaxim         (opengameart.org)
+ "Dungeon Ambience" yd              (opengameart.org)
+ "Dungeon Theme"    remaxim         (opengameart.org)
+ "Caves"        Alexandr Zhelanov   (opengameart.org)
+
+ ui sound effects : ColorAlpha      (itch.io)
+
+ other sound effects from Pixabay and Mixkit
+
+ made possible with libGDX"""
 
 object CreditsScreen : BaseScreen()
 {

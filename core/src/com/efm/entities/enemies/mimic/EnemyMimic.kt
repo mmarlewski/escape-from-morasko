@@ -38,7 +38,7 @@ class EnemyMimic : Enemy, Interactive
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
-    override var attackDamage = 20
+    override var attackDamage = 26
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

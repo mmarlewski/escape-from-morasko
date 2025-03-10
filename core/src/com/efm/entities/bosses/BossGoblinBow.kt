@@ -7,12 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
-import com.efm.entity.*
+import com.efm.entity.BaseBoss
+import com.efm.entity.Character
 import com.efm.item.PossibleItems
 import com.efm.level.World
-import com.efm.room.Base
 import com.efm.room.RoomPosition
-import com.efm.screens.GameScreen
 
 class BossGoblinBow : BaseBoss()
 {
@@ -21,7 +20,7 @@ class BossGoblinBow : BaseBoss()
     override var healthPoints = 20
     override var alive = true
     override val attackRange = 5
-    override var attackDamage = 10
+    override var attackDamage = 13
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack
