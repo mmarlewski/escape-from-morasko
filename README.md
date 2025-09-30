@@ -2,7 +2,8 @@
 # Escape From Morasko
 Turn based roguelike tactical game
 
-[![Google Play](https://img.shields.io/static/v1?label=Google&message=Play&color=607D8B&logo=google-play)](https://play.google.com/store/apps/details?id=com.efm)
+[itch.io link](https://escapefrommorasko.itch.io/escape-from-morasko)
+<!-- [![Google Play](https://img.shields.io/static/v1?label=Google&message=Play&color=607D8B&logo=google-play)](https://play.google.com/store/apps/details?id=com.efm) -->
 
 Explore an underground dungeon filled with with vired environments. Fight monsters using action points in a turn based combat. Gather new items from hidden chests and defeated foes. Aquire new skills that give you new ways to fight and explore.
 
