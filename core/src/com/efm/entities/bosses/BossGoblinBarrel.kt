@@ -8,12 +8,10 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entities.ExplodingBarrel
-import com.efm.entity.*
+import com.efm.entity.BaseBoss
 import com.efm.item.PossibleItems
 import com.efm.level.World
-import com.efm.room.Base
 import com.efm.room.RoomPosition
-import com.efm.screens.GameScreen
 
 class BossGoblinBarrel : BaseBoss()
 {
@@ -22,7 +20,7 @@ class BossGoblinBarrel : BaseBoss()
     override var healthPoints = 20
     override var alive = true
     override val attackRange = 5
-    override var attackDamage = 10
+    override var attackDamage = 13
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

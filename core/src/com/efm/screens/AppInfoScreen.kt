@@ -43,15 +43,16 @@ object AppInfoScreen : BaseScreen()
                 "- looting view no longer contains container's equipment label\n" +
                         "- AP bar no longer appears in empty rooms\n" +
                         "- UI disappears when moving and using bombs\n" +
-                        "- fixed an occurence when player could spawn in a place that they can't leave\n",
+                        "- chests cannot spawn completely empty\n" +
+                        "- fixed an occurrence when player could spawn in a place that they can't leave\n",
                 appInfoTitle.width
                                            )
 
-//        val balancingLabel = patchNotesLabel(
-//                "Balancing",
-//                "",
-//                appInfoTitle.width
-//                                            )
+        val balancingLabel = patchNotesLabel(
+                "Balancing",
+                "- enemies deal more damage",
+                appInfoTitle.width
+                                            )
     
         val backButton = textButtonOf(
                 "back",
@@ -73,7 +74,7 @@ object AppInfoScreen : BaseScreen()
                 rowOf(versionLabel),
                 rowOf(whatsNewLabel),
                 rowOf(bugFixesLabel),
-//                rowOf(balancingLabel),
+                rowOf(balancingLabel),
                 rowOf(backButton)
                              )
         

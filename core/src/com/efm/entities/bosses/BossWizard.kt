@@ -8,7 +8,8 @@ import com.efm.*
 import com.efm.assets.Sounds
 import com.efm.assets.Tiles
 import com.efm.entities.enemies.bat.EnemyBat
-import com.efm.entity.*
+import com.efm.entity.BaseBoss
+import com.efm.entity.Character
 import com.efm.item.PossibleItems
 import com.efm.level.World
 import com.efm.room.RoomPosition
@@ -22,7 +23,7 @@ class BossWizard : BaseBoss()
     override var healthPoints = 30
     override var alive = true
     override val attackRange = 5
-    override var attackDamage = 20
+    override var attackDamage = 26
     override val stepsInOneTurn = 3
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

@@ -21,7 +21,7 @@ class EnemySlimeQuarter : Enemy
     override var alive = true
     override val detectionRange = 1
     override val attackRange = 1
-    override var attackDamage = 10
+    override var attackDamage = 13
     override val stepsInOneTurn = 2
     override lateinit var healthBar : ProgressBar
     override lateinit var healthStack : Stack

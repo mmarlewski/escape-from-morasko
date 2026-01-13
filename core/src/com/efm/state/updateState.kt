@@ -205,28 +205,7 @@ fun updateState()
     if (!(currState is State.free && newState is State.free) && !(currState is State.constrained && newState is State.constrained) && !(currState is State.combat && newState is State.combat)) GameScreen.updateMapEntityLayer()
     
     
-    if ((currState is State.combat.enemies && newState !is State.combat.enemies) || (newState != currState && newState in listOf(
-                    
-                    State.free.moveSelectedTwice,
-                    State.free.multiUseMapItemTargetSelectedTwice,
-                    State.free.stackableMapItemTargetSelectedTwice,
-                    State.free.stackableSelfItemChosen,
-                    State.free.activeSkillTargetSelectedTwice,
-                    
-                    State.constrained.moveSelectedTwice,
-                    State.constrained.multiUseMapItemTargetSelectedTwice,
-                    State.constrained.stackableMapItemTargetSelectedTwice,
-                    State.constrained.stackableSelfItemChosen,
-                    State.constrained.activeSkillTargetSelectedTwice,
-                    
-                    State.combat.hero.moveSelectedTwice,
-                    State.combat.hero.multiUseMapItemTargetSelectedTwice,
-                    State.combat.hero.stackableMapItemTargetSelectedTwice,
-                    State.combat.hero.stackableSelfItemChosen,
-                    State.combat.hero.activeSkillTargetSelectedTwice
-                                                           )
-                    )
-    )
+    if ((currState is State.combat.enemies && newState !is State.combat.enemies))
     {
         saveGame()
     }
